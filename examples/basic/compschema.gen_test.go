@@ -59,17 +59,6 @@ func TestCompschema_LineItem_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_OrderStatus_JSONSchemaBytes(t *testing.T) {
-	b := OrderStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Order_JSONSchemaBytes(t *testing.T) {
 	b := (Order{}).JSONSchemaBytes()
 	if len(b) == 0 {

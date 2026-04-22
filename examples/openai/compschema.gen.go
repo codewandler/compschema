@@ -50,9 +50,6 @@ func compschemaValidator(name string) *jsonschema.Schema {
 	return sch
 }
 
-// JSONSchemaBytes returns the JSON Schema for FileCitationBodyType.
-func (FileCitationBodyType) JSONSchemaBytes() []byte { return compschemaDefBytes("FileCitationBodyType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FileCitationBody.
 func (FileCitationBody) JSONSchemaBytes() []byte { return compschemaDefBytes("FileCitationBody") }
 
@@ -79,9 +76,6 @@ func DecodeFileCitationBody(data []byte) (FileCitationBody, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for FilePathType.
-func (FilePathType) JSONSchemaBytes() []byte { return compschemaDefBytes("FilePathType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FilePath.
 func (FilePath) JSONSchemaBytes() []byte { return compschemaDefBytes("FilePath") }
 
@@ -107,9 +101,6 @@ func DecodeFilePath(data []byte) (FilePath, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for URLCitationBodyType.
-func (URLCitationBodyType) JSONSchemaBytes() []byte { return compschemaDefBytes("URLCitationBodyType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for URLCitationBody.
 func (URLCitationBody) JSONSchemaBytes() []byte { return compschemaDefBytes("URLCitationBody") }
@@ -169,12 +160,6 @@ func DecodeApproximateLocation(data []byte) (ApproximateLocation, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ClickButton.
-func (ClickButton) JSONSchemaBytes() []byte { return compschemaDefBytes("ClickButton") }
-
-// JSONSchemaBytes returns the JSON Schema for ClickType.
-func (ClickType) JSONSchemaBytes() []byte { return compschemaDefBytes("ClickType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Click.
 func (Click) JSONSchemaBytes() []byte { return compschemaDefBytes("Click") }
 
@@ -227,9 +212,6 @@ func DecodeCodeInterpreterFileOutputFilesElem(data []byte) (CodeInterpreterFileO
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for CodeInterpreterFileOutputType.
-func (CodeInterpreterFileOutputType) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterFileOutputType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterFileOutput.
 func (CodeInterpreterFileOutput) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterFileOutput") }
 
@@ -255,9 +237,6 @@ func DecodeCodeInterpreterFileOutput(data []byte) (CodeInterpreterFileOutput, er
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for CodeInterpreterTextOutputType.
-func (CodeInterpreterTextOutputType) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterTextOutputType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterTextOutput.
 func (CodeInterpreterTextOutput) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterTextOutput") }
@@ -288,12 +267,6 @@ func DecodeCodeInterpreterTextOutput(data []byte) (CodeInterpreterTextOutput, er
 // CodeInterpreterToolOutputJSONSchemaBytes returns the JSON Schema for the CodeInterpreterToolOutput union.
 func CodeInterpreterToolOutputJSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterToolOutput") }
 
-// JSONSchemaBytes returns the JSON Schema for CodeInterpreterToolCallStatus.
-func (CodeInterpreterToolCallStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterToolCallStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for CodeInterpreterToolCallType.
-func (CodeInterpreterToolCallType) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterToolCallType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolCall.
 func (CodeInterpreterToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("CodeInterpreterToolCall") }
 
@@ -319,9 +292,6 @@ func DecodeCodeInterpreterToolCall(data []byte) (CodeInterpreterToolCall, error)
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ComparisonFilterType.
-func (ComparisonFilterType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComparisonFilterType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComparisonFilter.
 func (ComparisonFilter) JSONSchemaBytes() []byte { return compschemaDefBytes("ComparisonFilter") }
@@ -349,9 +319,6 @@ func DecodeComparisonFilter(data []byte) (ComparisonFilter, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for CompoundFilterType.
-func (CompoundFilterType) JSONSchemaBytes() []byte { return compschemaDefBytes("CompoundFilterType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for CompoundFilter.
 func (CompoundFilter) JSONSchemaBytes() []byte { return compschemaDefBytes("CompoundFilter") }
 
@@ -377,9 +344,6 @@ func DecodeCompoundFilter(data []byte) (CompoundFilter, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for DoubleClickType.
-func (DoubleClickType) JSONSchemaBytes() []byte { return compschemaDefBytes("DoubleClickType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for DoubleClick.
 func (DoubleClick) JSONSchemaBytes() []byte { return compschemaDefBytes("DoubleClick") }
@@ -433,9 +397,6 @@ func DecodeCoordinate(data []byte) (Coordinate, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for DragType.
-func (DragType) JSONSchemaBytes() []byte { return compschemaDefBytes("DragType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Drag.
 func (Drag) JSONSchemaBytes() []byte { return compschemaDefBytes("Drag") }
 
@@ -461,9 +422,6 @@ func DecodeDrag(data []byte) (Drag, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for KeyPressType.
-func (KeyPressType) JSONSchemaBytes() []byte { return compschemaDefBytes("KeyPressType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for KeyPress.
 func (KeyPress) JSONSchemaBytes() []byte { return compschemaDefBytes("KeyPress") }
@@ -491,9 +449,6 @@ func DecodeKeyPress(data []byte) (KeyPress, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for MoveType.
-func (MoveType) JSONSchemaBytes() []byte { return compschemaDefBytes("MoveType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Move.
 func (Move) JSONSchemaBytes() []byte { return compschemaDefBytes("Move") }
 
@@ -519,9 +474,6 @@ func DecodeMove(data []byte) (Move, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ScreenshotType.
-func (ScreenshotType) JSONSchemaBytes() []byte { return compschemaDefBytes("ScreenshotType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for Screenshot.
 func (Screenshot) JSONSchemaBytes() []byte { return compschemaDefBytes("Screenshot") }
@@ -549,9 +501,6 @@ func DecodeScreenshot(data []byte) (Screenshot, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ScrollType.
-func (ScrollType) JSONSchemaBytes() []byte { return compschemaDefBytes("ScrollType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Scroll.
 func (Scroll) JSONSchemaBytes() []byte { return compschemaDefBytes("Scroll") }
 
@@ -578,9 +527,6 @@ func DecodeScroll(data []byte) (Scroll, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for TypeType.
-func (TypeType) JSONSchemaBytes() []byte { return compschemaDefBytes("TypeType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Type.
 func (Type) JSONSchemaBytes() []byte { return compschemaDefBytes("Type") }
 
@@ -606,9 +552,6 @@ func DecodeType(data []byte) (Type, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for WaitType.
-func (WaitType) JSONSchemaBytes() []byte { return compschemaDefBytes("WaitType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for Wait.
 func (Wait) JSONSchemaBytes() []byte { return compschemaDefBytes("Wait") }
@@ -668,9 +611,6 @@ func DecodeComputerCallSafetyCheckParam(data []byte) (ComputerCallSafetyCheckPar
 // JSONSchemaBytes returns the JSON Schema for ComputerCallOutputItemParamAcknowledgedSafetyChecks.
 func (ComputerCallOutputItemParamAcknowledgedSafetyChecks) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerCallOutputItemParamAcknowledgedSafetyChecks") }
 
-// JSONSchemaBytes returns the JSON Schema for ComputerScreenshotImageType.
-func (ComputerScreenshotImageType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerScreenshotImageType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerScreenshotImage.
 func (ComputerScreenshotImage) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerScreenshotImage") }
 
@@ -696,12 +636,6 @@ func DecodeComputerScreenshotImage(data []byte) (ComputerScreenshotImage, error)
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerCallOutputItemParamStatus.
-func (ComputerCallOutputItemParamStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerCallOutputItemParamStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerCallOutputItemParamType.
-func (ComputerCallOutputItemParamType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerCallOutputItemParamType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutputItemParam.
 func (ComputerCallOutputItemParam) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerCallOutputItemParam") }
@@ -755,12 +689,6 @@ func DecodeComputerToolCallSafetyCheck(data []byte) (ComputerToolCallSafetyCheck
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallStatus.
-func (ComputerToolCallStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallType.
-func (ComputerToolCallType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCall.
 func (ComputerToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCall") }
 
@@ -786,12 +714,6 @@ func DecodeComputerToolCall(data []byte) (ComputerToolCall, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallOutputStatus.
-func (ComputerToolCallOutputStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutputStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallOutputType.
-func (ComputerToolCallOutputType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutputType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutput.
 func (ComputerToolCallOutput) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutput") }
@@ -819,12 +741,6 @@ func DecodeComputerToolCallOutput(data []byte) (ComputerToolCallOutput, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallOutputResourceStatus.
-func (ComputerToolCallOutputResourceStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutputResourceStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerToolCallOutputResourceType.
-func (ComputerToolCallOutputResourceType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutputResourceType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutputResource.
 func (ComputerToolCallOutputResource) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCallOutputResource") }
 
@@ -850,12 +766,6 @@ func DecodeComputerToolCallOutputResource(data []byte) (ComputerToolCallOutputRe
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerUsePreviewToolEnvironment.
-func (ComputerUsePreviewToolEnvironment) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerUsePreviewToolEnvironment") }
-
-// JSONSchemaBytes returns the JSON Schema for ComputerUsePreviewToolType.
-func (ComputerUsePreviewToolType) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerUsePreviewToolType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewTool.
 func (ComputerUsePreviewTool) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerUsePreviewTool") }
@@ -915,20 +825,8 @@ func DecodeCreateModelResponseProperties(data []byte) (CreateModelResponseProper
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for Includable.
-func (Includable) JSONSchemaBytes() []byte { return compschemaDefBytes("Includable") }
-
 // JSONSchemaBytes returns the JSON Schema for CreateResponseInclude.
 func (CreateResponseInclude) JSONSchemaBytes() []byte { return compschemaDefBytes("CreateResponseInclude") }
-
-// JSONSchemaBytes returns the JSON Schema for ReasoningEffort.
-func (ReasoningEffort) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningEffort") }
-
-// JSONSchemaBytes returns the JSON Schema for ReasoningGenerateSummary.
-func (ReasoningGenerateSummary) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningGenerateSummary") }
-
-// JSONSchemaBytes returns the JSON Schema for ReasoningSummary.
-func (ReasoningSummary) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningSummary") }
 
 // JSONSchemaBytes returns the JSON Schema definition for Reasoning.
 func (Reasoning) JSONSchemaBytes() []byte { return compschemaDefBytes("Reasoning") }
@@ -956,9 +854,6 @@ func DecodeReasoning(data []byte) (Reasoning, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonObjectType.
-func (ResponseFormatJsonObjectType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatJsonObjectType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFormatJsonObject.
 func (ResponseFormatJsonObject) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatJsonObject") }
 
@@ -984,9 +879,6 @@ func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, erro
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseFormatTextType.
-func (ResponseFormatTextType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatTextType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
 func (ResponseFormatText) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatText") }
@@ -1016,9 +908,6 @@ func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
 
 // JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
 func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatJsonSchemaSchema") }
-
-// JSONSchemaBytes returns the JSON Schema for TextResponseFormatJsonSchemaType.
-func (TextResponseFormatJsonSchemaType) JSONSchemaBytes() []byte { return compschemaDefBytes("TextResponseFormatJsonSchemaType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for TextResponseFormatJsonSchema.
 func (TextResponseFormatJsonSchema) JSONSchemaBytes() []byte { return compschemaDefBytes("TextResponseFormatJsonSchema") }
@@ -1075,9 +964,6 @@ func DecodeCreateResponseText(data []byte) (CreateResponseText, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for RankingOptionsRanker.
-func (RankingOptionsRanker) JSONSchemaBytes() []byte { return compschemaDefBytes("RankingOptionsRanker") }
-
 // JSONSchemaBytes returns the JSON Schema definition for RankingOptions.
 func (RankingOptions) JSONSchemaBytes() []byte { return compschemaDefBytes("RankingOptions") }
 
@@ -1103,9 +989,6 @@ func DecodeRankingOptions(data []byte) (RankingOptions, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for FileSearchToolType.
-func (FileSearchToolType) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for FileSearchTool.
 func (FileSearchTool) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchTool") }
@@ -1136,9 +1019,6 @@ func DecodeFileSearchTool(data []byte) (FileSearchTool, error) {
 // JSONSchemaBytes returns the JSON Schema for FunctionToolParameters.
 func (FunctionToolParameters) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolParameters") }
 
-// JSONSchemaBytes returns the JSON Schema for FunctionToolType.
-func (FunctionToolType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionTool.
 func (FunctionTool) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionTool") }
 
@@ -1164,12 +1044,6 @@ func DecodeFunctionTool(data []byte) (FunctionTool, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for WebSearchPreviewToolSearchContextSize.
-func (WebSearchPreviewToolSearchContextSize) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchPreviewToolSearchContextSize") }
-
-// JSONSchemaBytes returns the JSON Schema for WebSearchPreviewToolType.
-func (WebSearchPreviewToolType) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchPreviewToolType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewToolUserLocation.
 func (WebSearchPreviewToolUserLocation) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchPreviewToolUserLocation") }
@@ -1226,9 +1100,6 @@ func DecodeWebSearchPreviewTool(data []byte) (WebSearchPreviewTool, error) {
 // ToolJSONSchemaBytes returns the JSON Schema for the Tool union.
 func ToolJSONSchemaBytes() []byte { return compschemaDefBytes("Tool") }
 
-// JSONSchemaBytes returns the JSON Schema for CreateResponseTruncation.
-func (CreateResponseTruncation) JSONSchemaBytes() []byte { return compschemaDefBytes("CreateResponseTruncation") }
-
 // JSONSchemaBytes returns the JSON Schema definition for CreateResponse.
 func (CreateResponse) JSONSchemaBytes() []byte { return compschemaDefBytes("CreateResponse") }
 
@@ -1254,12 +1125,6 @@ func DecodeCreateResponse(data []byte) (CreateResponse, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for EasyInputMessageRole.
-func (EasyInputMessageRole) JSONSchemaBytes() []byte { return compschemaDefBytes("EasyInputMessageRole") }
-
-// JSONSchemaBytes returns the JSON Schema for EasyInputMessageType.
-func (EasyInputMessageType) JSONSchemaBytes() []byte { return compschemaDefBytes("EasyInputMessageType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for EasyInputMessage.
 func (EasyInputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("EasyInputMessage") }
@@ -1316,12 +1181,6 @@ func DecodeError(data []byte) (Error, error) {
 // JSONSchemaBytes returns the JSON Schema for FileSearchToolCallResults.
 func (FileSearchToolCallResults) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolCallResults") }
 
-// JSONSchemaBytes returns the JSON Schema for FileSearchToolCallStatus.
-func (FileSearchToolCallStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolCallStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FileSearchToolCallType.
-func (FileSearchToolCallType) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolCallType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FileSearchToolCall.
 func (FileSearchToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolCall") }
 
@@ -1351,12 +1210,6 @@ func DecodeFileSearchToolCall(data []byte) (FileSearchToolCall, error) {
 // FiltersJSONSchemaBytes returns the JSON Schema for the Filters union.
 func FiltersJSONSchemaBytes() []byte { return compschemaDefBytes("Filters") }
 
-// JSONSchemaBytes returns the JSON Schema for FunctionCallOutputItemParamStatus.
-func (FunctionCallOutputItemParamStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionCallOutputItemParamStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionCallOutputItemParamType.
-func (FunctionCallOutputItemParamType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionCallOutputItemParamType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParam.
 func (FunctionCallOutputItemParam) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionCallOutputItemParam") }
 
@@ -1382,12 +1235,6 @@ func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallStatus.
-func (FunctionToolCallStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallType.
-func (FunctionToolCallType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCall.
 func (FunctionToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCall") }
@@ -1415,12 +1262,6 @@ func DecodeFunctionToolCall(data []byte) (FunctionToolCall, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallOutputStatus.
-func (FunctionToolCallOutputStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutputStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallOutputType.
-func (FunctionToolCallOutputType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutputType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
 func (FunctionToolCallOutput) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutput") }
 
@@ -1446,12 +1287,6 @@ func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallOutputResourceStatus.
-func (FunctionToolCallOutputResourceStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutputResourceStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallOutputResourceType.
-func (FunctionToolCallOutputResourceType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutputResourceType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
 func (FunctionToolCallOutputResource) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallOutputResource") }
@@ -1479,12 +1314,6 @@ func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputRe
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallResourceStatus.
-func (FunctionToolCallResourceStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallResourceStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for FunctionToolCallResourceType.
-func (FunctionToolCallResourceType) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallResourceType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
 func (FunctionToolCallResource) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCallResource") }
 
@@ -1510,9 +1339,6 @@ func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, erro
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for InputFileContentType.
-func (InputFileContentType) JSONSchemaBytes() []byte { return compschemaDefBytes("InputFileContentType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputFileContent.
 func (InputFileContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputFileContent") }
@@ -1540,12 +1366,6 @@ func DecodeInputFileContent(data []byte) (InputFileContent, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for InputImageContentDetail.
-func (InputImageContentDetail) JSONSchemaBytes() []byte { return compschemaDefBytes("InputImageContentDetail") }
-
-// JSONSchemaBytes returns the JSON Schema for InputImageContentType.
-func (InputImageContentType) JSONSchemaBytes() []byte { return compschemaDefBytes("InputImageContentType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for InputImageContent.
 func (InputImageContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputImageContent") }
 
@@ -1571,9 +1391,6 @@ func DecodeInputImageContent(data []byte) (InputImageContent, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for InputTextContentType.
-func (InputTextContentType) JSONSchemaBytes() []byte { return compschemaDefBytes("InputTextContentType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputTextContent.
 func (InputTextContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputTextContent") }
@@ -1607,9 +1424,6 @@ func InputContentJSONSchemaBytes() []byte { return compschemaDefBytes("InputCont
 // JSONSchemaBytes returns the JSON Schema for Item.
 func (Item) JSONSchemaBytes() []byte { return compschemaDefBytes("Item") }
 
-// JSONSchemaBytes returns the JSON Schema for ItemReferenceParamType.
-func (ItemReferenceParamType) JSONSchemaBytes() []byte { return compschemaDefBytes("ItemReferenceParamType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ItemReferenceParam.
 func (ItemReferenceParam) JSONSchemaBytes() []byte { return compschemaDefBytes("ItemReferenceParam") }
 
@@ -1642,15 +1456,6 @@ func InputItemJSONSchemaBytes() []byte { return compschemaDefBytes("InputItem") 
 // JSONSchemaBytes returns the JSON Schema for InputMessageContentList.
 func (InputMessageContentList) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageContentList") }
 
-// JSONSchemaBytes returns the JSON Schema for InputMessageRole.
-func (InputMessageRole) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageRole") }
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageStatus.
-func (InputMessageStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageType.
-func (InputMessageType) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for InputMessage.
 func (InputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessage") }
 
@@ -1676,15 +1481,6 @@ func DecodeInputMessage(data []byte) (InputMessage, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageResourceRole.
-func (InputMessageResourceRole) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageResourceRole") }
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageResourceStatus.
-func (InputMessageResourceStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageResourceStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageResourceType.
-func (InputMessageResourceType) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageResourceType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputMessageResource.
 func (InputMessageResource) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessageResource") }
@@ -1712,9 +1508,6 @@ func DecodeInputMessageResource(data []byte) (InputMessageResource, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for OutputTextContentType.
-func (OutputTextContentType) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputTextContentType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for OutputTextContent.
 func (OutputTextContent) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputTextContent") }
 
@@ -1740,9 +1533,6 @@ func DecodeOutputTextContent(data []byte) (OutputTextContent, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for RefusalContentType.
-func (RefusalContentType) JSONSchemaBytes() []byte { return compschemaDefBytes("RefusalContentType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for RefusalContent.
 func (RefusalContent) JSONSchemaBytes() []byte { return compschemaDefBytes("RefusalContent") }
@@ -1773,15 +1563,6 @@ func DecodeRefusalContent(data []byte) (RefusalContent, error) {
 // OutputContentJSONSchemaBytes returns the JSON Schema for the OutputContent union.
 func OutputContentJSONSchemaBytes() []byte { return compschemaDefBytes("OutputContent") }
 
-// JSONSchemaBytes returns the JSON Schema for OutputMessageRole.
-func (OutputMessageRole) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputMessageRole") }
-
-// JSONSchemaBytes returns the JSON Schema for OutputMessageStatus.
-func (OutputMessageStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputMessageStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for OutputMessageType.
-func (OutputMessageType) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputMessageType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for OutputMessage.
 func (OutputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputMessage") }
 
@@ -1807,12 +1588,6 @@ func DecodeOutputMessage(data []byte) (OutputMessage, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for WebSearchToolCallStatus.
-func (WebSearchToolCallStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchToolCallStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for WebSearchToolCallType.
-func (WebSearchToolCallType) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchToolCallType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchToolCall.
 func (WebSearchToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchToolCall") }
@@ -1872,12 +1647,6 @@ func DecodeModelResponseProperties(data []byte) (ModelResponseProperties, error)
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ReasoningItemStatus.
-func (ReasoningItemStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItemStatus") }
-
-// JSONSchemaBytes returns the JSON Schema for ReasoningItemSummaryElemType.
-func (ReasoningItemSummaryElemType) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItemSummaryElemType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ReasoningItemSummaryElem.
 func (ReasoningItemSummaryElem) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItemSummaryElem") }
 
@@ -1903,9 +1672,6 @@ func DecodeReasoningItemSummaryElem(data []byte) (ReasoningItemSummaryElem, erro
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ReasoningItemType.
-func (ReasoningItemType) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItemType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ReasoningItem.
 func (ReasoningItem) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItem") }
@@ -1936,9 +1702,6 @@ func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
 // OutputItemJSONSchemaBytes returns the JSON Schema for the OutputItem union.
 func OutputItemJSONSchemaBytes() []byte { return compschemaDefBytes("OutputItem") }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseErrorCode.
-func (ResponseErrorCode) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseErrorCode") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseError.
 func (ResponseError) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseError") }
 
@@ -1964,9 +1727,6 @@ func DecodeResponseError(data []byte) (ResponseError, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseIncompleteDetailsReason.
-func (ResponseIncompleteDetailsReason) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseIncompleteDetailsReason") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteDetails.
 func (ResponseIncompleteDetails) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseIncompleteDetails") }
@@ -1994,12 +1754,6 @@ func DecodeResponseIncompleteDetails(data []byte) (ResponseIncompleteDetails, er
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseObject.
-func (ResponseObject) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseObject") }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseStatus.
-func (ResponseStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseStatus") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseText.
 func (ResponseText) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseText") }
 
@@ -2025,9 +1779,6 @@ func DecodeResponseText(data []byte) (ResponseText, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseTruncation.
-func (ResponseTruncation) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTruncation") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
 func (ResponseUsageInputTokensDetails) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseUsageInputTokensDetails") }
@@ -2133,9 +1884,6 @@ func DecodeResponse(data []byte) (Response, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseAudioDeltaEventType.
-func (ResponseAudioDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioDeltaEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDeltaEvent.
 func (ResponseAudioDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioDeltaEvent") }
 
@@ -2161,9 +1909,6 @@ func DecodeResponseAudioDeltaEvent(data []byte) (ResponseAudioDeltaEvent, error)
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseAudioDoneEventType.
-func (ResponseAudioDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDoneEvent.
 func (ResponseAudioDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioDoneEvent") }
@@ -2191,9 +1936,6 @@ func DecodeResponseAudioDoneEvent(data []byte) (ResponseAudioDoneEvent, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseAudioTranscriptDeltaEventType.
-func (ResponseAudioTranscriptDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioTranscriptDeltaEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDeltaEvent.
 func (ResponseAudioTranscriptDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioTranscriptDeltaEvent") }
 
@@ -2219,9 +1961,6 @@ func DecodeResponseAudioTranscriptDeltaEvent(data []byte) (ResponseAudioTranscri
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseAudioTranscriptDoneEventType.
-func (ResponseAudioTranscriptDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioTranscriptDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDoneEvent.
 func (ResponseAudioTranscriptDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseAudioTranscriptDoneEvent") }
@@ -2249,9 +1988,6 @@ func DecodeResponseAudioTranscriptDoneEvent(data []byte) (ResponseAudioTranscrip
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseCodeInterpreterCallCodeDeltaEventType.
-func (ResponseCodeInterpreterCallCodeDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDeltaEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDeltaEvent.
 func (ResponseCodeInterpreterCallCodeDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDeltaEvent") }
 
@@ -2277,9 +2013,6 @@ func DecodeResponseCodeInterpreterCallCodeDeltaEvent(data []byte) (ResponseCodeI
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseCodeInterpreterCallCodeDoneEventType.
-func (ResponseCodeInterpreterCallCodeDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDoneEvent.
 func (ResponseCodeInterpreterCallCodeDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDoneEvent") }
@@ -2307,9 +2040,6 @@ func DecodeResponseCodeInterpreterCallCodeDoneEvent(data []byte) (ResponseCodeIn
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseCodeInterpreterCallCompletedEventType.
-func (ResponseCodeInterpreterCallCompletedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCompletedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCompletedEvent.
 func (ResponseCodeInterpreterCallCompletedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallCompletedEvent") }
 
@@ -2335,9 +2065,6 @@ func DecodeResponseCodeInterpreterCallCompletedEvent(data []byte) (ResponseCodeI
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseCodeInterpreterCallInProgressEventType.
-func (ResponseCodeInterpreterCallInProgressEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallInProgressEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInProgressEvent.
 func (ResponseCodeInterpreterCallInProgressEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallInProgressEvent") }
@@ -2365,9 +2092,6 @@ func DecodeResponseCodeInterpreterCallInProgressEvent(data []byte) (ResponseCode
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseCodeInterpreterCallInterpretingEventType.
-func (ResponseCodeInterpreterCallInterpretingEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallInterpretingEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInterpretingEvent.
 func (ResponseCodeInterpreterCallInterpretingEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCodeInterpreterCallInterpretingEvent") }
 
@@ -2393,9 +2117,6 @@ func DecodeResponseCodeInterpreterCallInterpretingEvent(data []byte) (ResponseCo
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseCompletedEventType.
-func (ResponseCompletedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCompletedEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCompletedEvent.
 func (ResponseCompletedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCompletedEvent") }
@@ -2423,9 +2144,6 @@ func DecodeResponseCompletedEvent(data []byte) (ResponseCompletedEvent, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseContentPartAddedEventType.
-func (ResponseContentPartAddedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseContentPartAddedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartAddedEvent.
 func (ResponseContentPartAddedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseContentPartAddedEvent") }
 
@@ -2451,9 +2169,6 @@ func DecodeResponseContentPartAddedEvent(data []byte) (ResponseContentPartAddedE
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseContentPartDoneEventType.
-func (ResponseContentPartDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseContentPartDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartDoneEvent.
 func (ResponseContentPartDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseContentPartDoneEvent") }
@@ -2481,9 +2196,6 @@ func DecodeResponseContentPartDoneEvent(data []byte) (ResponseContentPartDoneEve
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseCreatedEventType.
-func (ResponseCreatedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCreatedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCreatedEvent.
 func (ResponseCreatedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseCreatedEvent") }
 
@@ -2509,9 +2221,6 @@ func DecodeResponseCreatedEvent(data []byte) (ResponseCreatedEvent, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseErrorEventType.
-func (ResponseErrorEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseErrorEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseErrorEvent.
 func (ResponseErrorEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseErrorEvent") }
@@ -2539,9 +2248,6 @@ func DecodeResponseErrorEvent(data []byte) (ResponseErrorEvent, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseFailedEventType.
-func (ResponseFailedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFailedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFailedEvent.
 func (ResponseFailedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFailedEvent") }
 
@@ -2567,9 +2273,6 @@ func DecodeResponseFailedEvent(data []byte) (ResponseFailedEvent, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseFileSearchCallCompletedEventType.
-func (ResponseFileSearchCallCompletedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallCompletedEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallCompletedEvent.
 func (ResponseFileSearchCallCompletedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallCompletedEvent") }
@@ -2597,9 +2300,6 @@ func DecodeResponseFileSearchCallCompletedEvent(data []byte) (ResponseFileSearch
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseFileSearchCallInProgressEventType.
-func (ResponseFileSearchCallInProgressEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallInProgressEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallInProgressEvent.
 func (ResponseFileSearchCallInProgressEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallInProgressEvent") }
 
@@ -2625,9 +2325,6 @@ func DecodeResponseFileSearchCallInProgressEvent(data []byte) (ResponseFileSearc
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseFileSearchCallSearchingEventType.
-func (ResponseFileSearchCallSearchingEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallSearchingEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallSearchingEvent.
 func (ResponseFileSearchCallSearchingEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFileSearchCallSearchingEvent") }
@@ -2655,9 +2352,6 @@ func DecodeResponseFileSearchCallSearchingEvent(data []byte) (ResponseFileSearch
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseFunctionCallArgumentsDeltaEventType.
-func (ResponseFunctionCallArgumentsDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFunctionCallArgumentsDeltaEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDeltaEvent.
 func (ResponseFunctionCallArgumentsDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFunctionCallArgumentsDeltaEvent") }
 
@@ -2683,9 +2377,6 @@ func DecodeResponseFunctionCallArgumentsDeltaEvent(data []byte) (ResponseFunctio
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseFunctionCallArgumentsDoneEventType.
-func (ResponseFunctionCallArgumentsDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFunctionCallArgumentsDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDoneEvent.
 func (ResponseFunctionCallArgumentsDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFunctionCallArgumentsDoneEvent") }
@@ -2713,9 +2404,6 @@ func DecodeResponseFunctionCallArgumentsDoneEvent(data []byte) (ResponseFunction
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseInProgressEventType.
-func (ResponseInProgressEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseInProgressEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseInProgressEvent.
 func (ResponseInProgressEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseInProgressEvent") }
 
@@ -2741,9 +2429,6 @@ func DecodeResponseInProgressEvent(data []byte) (ResponseInProgressEvent, error)
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseIncompleteEventType.
-func (ResponseIncompleteEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseIncompleteEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteEvent.
 func (ResponseIncompleteEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseIncompleteEvent") }
@@ -2771,9 +2456,6 @@ func DecodeResponseIncompleteEvent(data []byte) (ResponseIncompleteEvent, error)
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseItemListObject.
-func (ResponseItemListObject) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseItemListObject") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseItemList.
 func (ResponseItemList) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseItemList") }
 
@@ -2800,9 +2482,6 @@ func DecodeResponseItemList(data []byte) (ResponseItemList, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseOutputItemAddedEventType.
-func (ResponseOutputItemAddedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseOutputItemAddedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemAddedEvent.
 func (ResponseOutputItemAddedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseOutputItemAddedEvent") }
 
@@ -2828,9 +2507,6 @@ func DecodeResponseOutputItemAddedEvent(data []byte) (ResponseOutputItemAddedEve
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseOutputItemDoneEventType.
-func (ResponseOutputItemDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseOutputItemDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemDoneEvent.
 func (ResponseOutputItemDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseOutputItemDoneEvent") }
@@ -2884,9 +2560,6 @@ func DecodeResponsePropertiesText(data []byte) (ResponsePropertiesText, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponsePropertiesTruncation.
-func (ResponsePropertiesTruncation) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponsePropertiesTruncation") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseProperties.
 func (ResponseProperties) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseProperties") }
 
@@ -2912,9 +2585,6 @@ func DecodeResponseProperties(data []byte) (ResponseProperties, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryPartAddedEventPartType.
-func (ResponseReasoningSummaryPartAddedEventPartType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEventPartType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEventPart.
 func (ResponseReasoningSummaryPartAddedEventPart) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEventPart") }
@@ -2942,9 +2612,6 @@ func DecodeResponseReasoningSummaryPartAddedEventPart(data []byte) (ResponseReas
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryPartAddedEventType.
-func (ResponseReasoningSummaryPartAddedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEvent.
 func (ResponseReasoningSummaryPartAddedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEvent") }
 
@@ -2970,9 +2637,6 @@ func DecodeResponseReasoningSummaryPartAddedEvent(data []byte) (ResponseReasonin
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryPartDoneEventPartType.
-func (ResponseReasoningSummaryPartDoneEventPartType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEventPartType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEventPart.
 func (ResponseReasoningSummaryPartDoneEventPart) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEventPart") }
@@ -3000,9 +2664,6 @@ func DecodeResponseReasoningSummaryPartDoneEventPart(data []byte) (ResponseReaso
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryPartDoneEventType.
-func (ResponseReasoningSummaryPartDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEvent.
 func (ResponseReasoningSummaryPartDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEvent") }
 
@@ -3028,9 +2689,6 @@ func DecodeResponseReasoningSummaryPartDoneEvent(data []byte) (ResponseReasoning
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryTextDeltaEventType.
-func (ResponseReasoningSummaryTextDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryTextDeltaEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDeltaEvent.
 func (ResponseReasoningSummaryTextDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryTextDeltaEvent") }
@@ -3058,9 +2716,6 @@ func DecodeResponseReasoningSummaryTextDeltaEvent(data []byte) (ResponseReasonin
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseReasoningSummaryTextDoneEventType.
-func (ResponseReasoningSummaryTextDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryTextDoneEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDoneEvent.
 func (ResponseReasoningSummaryTextDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseReasoningSummaryTextDoneEvent") }
 
@@ -3086,9 +2741,6 @@ func DecodeResponseReasoningSummaryTextDoneEvent(data []byte) (ResponseReasoning
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseRefusalDeltaEventType.
-func (ResponseRefusalDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseRefusalDeltaEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDeltaEvent.
 func (ResponseRefusalDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseRefusalDeltaEvent") }
@@ -3116,9 +2768,6 @@ func DecodeResponseRefusalDeltaEvent(data []byte) (ResponseRefusalDeltaEvent, er
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseRefusalDoneEventType.
-func (ResponseRefusalDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseRefusalDoneEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDoneEvent.
 func (ResponseRefusalDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseRefusalDoneEvent") }
 
@@ -3144,9 +2793,6 @@ func DecodeResponseRefusalDoneEvent(data []byte) (ResponseRefusalDoneEvent, erro
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseTextAnnotationDeltaEventType.
-func (ResponseTextAnnotationDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextAnnotationDeltaEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextAnnotationDeltaEvent.
 func (ResponseTextAnnotationDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextAnnotationDeltaEvent") }
@@ -3174,9 +2820,6 @@ func DecodeResponseTextAnnotationDeltaEvent(data []byte) (ResponseTextAnnotation
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseTextDeltaEventType.
-func (ResponseTextDeltaEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextDeltaEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDeltaEvent.
 func (ResponseTextDeltaEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextDeltaEvent") }
 
@@ -3202,9 +2845,6 @@ func DecodeResponseTextDeltaEvent(data []byte) (ResponseTextDeltaEvent, error) {
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseTextDoneEventType.
-func (ResponseTextDoneEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextDoneEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDoneEvent.
 func (ResponseTextDoneEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseTextDoneEvent") }
@@ -3232,9 +2872,6 @@ func DecodeResponseTextDoneEvent(data []byte) (ResponseTextDoneEvent, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseWebSearchCallCompletedEventType.
-func (ResponseWebSearchCallCompletedEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallCompletedEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallCompletedEvent.
 func (ResponseWebSearchCallCompletedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallCompletedEvent") }
 
@@ -3261,9 +2898,6 @@ func DecodeResponseWebSearchCallCompletedEvent(data []byte) (ResponseWebSearchCa
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseWebSearchCallInProgressEventType.
-func (ResponseWebSearchCallInProgressEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallInProgressEventType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallInProgressEvent.
 func (ResponseWebSearchCallInProgressEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallInProgressEvent") }
 
@@ -3289,9 +2923,6 @@ func DecodeResponseWebSearchCallInProgressEvent(data []byte) (ResponseWebSearchC
 	}
 	return result, nil
 }
-
-// JSONSchemaBytes returns the JSON Schema for ResponseWebSearchCallSearchingEventType.
-func (ResponseWebSearchCallSearchingEventType) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallSearchingEventType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallSearchingEvent.
 func (ResponseWebSearchCallSearchingEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseWebSearchCallSearchingEvent") }
@@ -3322,9 +2953,6 @@ func DecodeResponseWebSearchCallSearchingEvent(data []byte) (ResponseWebSearchCa
 // ResponseStreamEventJSONSchemaBytes returns the JSON Schema for the ResponseStreamEvent union.
 func ResponseStreamEventJSONSchemaBytes() []byte { return compschemaDefBytes("ResponseStreamEvent") }
 
-// JSONSchemaBytes returns the JSON Schema for ToolChoiceFunctionType.
-func (ToolChoiceFunctionType) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceFunctionType") }
-
 // JSONSchemaBytes returns the JSON Schema definition for ToolChoiceFunction.
 func (ToolChoiceFunction) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceFunction") }
 
@@ -3353,9 +2981,6 @@ func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
 
 // JSONSchemaBytes returns the JSON Schema for ToolChoiceOptions.
 func (ToolChoiceOptions) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceOptions") }
-
-// JSONSchemaBytes returns the JSON Schema for ToolChoiceTypesType.
-func (ToolChoiceTypesType) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceTypesType") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
 func (ToolChoiceTypes) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceTypes") }

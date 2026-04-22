@@ -68,12 +68,24 @@
       "description": "A click action.",
       "properties": {
         "button": {
-          "$ref": "#/$defs/ClickButton",
-          "description": "Indicates which mouse button was pressed during the click. One of `left`,\n`right`, `wheel`, `back`, or `forward`."
+          "description": "Indicates which mouse button was pressed during the click. One of `left`,\n`right`, `wheel`, `back`, or `forward`.",
+          "enum": [
+            "back",
+            "forward",
+            "left",
+            "right",
+            "wheel"
+          ],
+          "title": "ClickButton",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ClickType",
-          "description": "Specifies the event type. For a click action, this property is\nalways set to `click`."
+          "description": "Specifies the event type. For a click action, this property is\nalways set to `click`.",
+          "enum": [
+            "click"
+          ],
+          "title": "ClickType",
+          "type": "string"
         },
         "x": {
           "description": "The x-coordinate where the click occurred.",
@@ -93,24 +105,6 @@
       "title": "Click",
       "type": "object"
     },
-    "ClickButton": {
-      "enum": [
-        "back",
-        "forward",
-        "left",
-        "right",
-        "wheel"
-      ],
-      "title": "ClickButton",
-      "type": "string"
-    },
-    "ClickType": {
-      "enum": [
-        "click"
-      ],
-      "title": "ClickType",
-      "type": "string"
-    },
     "CodeInterpreterFileOutput": {
       "additionalProperties": false,
       "description": "The output of a code interpreter tool call that is a file.",
@@ -122,8 +116,12 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterFileOutputType",
-          "description": "The type of the code interpreter file output. Always `files`."
+          "description": "The type of the code interpreter file output. Always `files`.",
+          "enum": [
+            "files"
+          ],
+          "title": "CodeInterpreterFileOutputType",
+          "type": "string"
         }
       },
       "required": [
@@ -152,13 +150,6 @@
       "title": "CodeInterpreterFileOutputFilesElem",
       "type": "object"
     },
-    "CodeInterpreterFileOutputType": {
-      "enum": [
-        "files"
-      ],
-      "title": "CodeInterpreterFileOutputType",
-      "type": "string"
-    },
     "CodeInterpreterTextOutput": {
       "additionalProperties": false,
       "description": "The output of a code interpreter tool call that is text.",
@@ -168,8 +159,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterTextOutputType",
-          "description": "The type of the code interpreter text output. Always `logs`."
+          "description": "The type of the code interpreter text output. Always `logs`.",
+          "enum": [
+            "logs"
+          ],
+          "title": "CodeInterpreterTextOutputType",
+          "type": "string"
         }
       },
       "required": [
@@ -178,13 +173,6 @@
       ],
       "title": "CodeInterpreterTextOutput",
       "type": "object"
-    },
-    "CodeInterpreterTextOutputType": {
-      "enum": [
-        "logs"
-      ],
-      "title": "CodeInterpreterTextOutputType",
-      "type": "string"
     },
     "CodeInterpreterToolCall": {
       "additionalProperties": false,
@@ -206,12 +194,22 @@
           "type": "array"
         },
         "status": {
-          "$ref": "#/$defs/CodeInterpreterToolCallStatus",
-          "description": "The status of the code interpreter tool call."
+          "description": "The status of the code interpreter tool call.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "interpreting"
+          ],
+          "title": "CodeInterpreterToolCallStatus",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterToolCallType",
-          "description": "The type of the code interpreter tool call. Always `code_interpreter_call`."
+          "description": "The type of the code interpreter tool call. Always `code_interpreter_call`.",
+          "enum": [
+            "code_interpreter_call"
+          ],
+          "title": "CodeInterpreterToolCallType",
+          "type": "string"
         }
       },
       "required": [
@@ -223,22 +221,6 @@
       ],
       "title": "CodeInterpreterToolCall",
       "type": "object"
-    },
-    "CodeInterpreterToolCallStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "interpreting"
-      ],
-      "title": "CodeInterpreterToolCallStatus",
-      "type": "string"
-    },
-    "CodeInterpreterToolCallType": {
-      "enum": [
-        "code_interpreter_call"
-      ],
-      "title": "CodeInterpreterToolCallType",
-      "type": "string"
     },
     "CodeInterpreterToolOutput": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -260,8 +242,17 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ComparisonFilterType",
-          "description": "Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.\n- `eq`: equals\n- `ne`: not equal\n- `gt`: greater than\n- `gte`: greater than or equal\n- `lt`: less than\n- `lte`: less than or equal"
+          "description": "Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.\n- `eq`: equals\n- `ne`: not equal\n- `gt`: greater than\n- `gte`: greater than or equal\n- `lt`: less than\n- `lte`: less than or equal",
+          "enum": [
+            "eq",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "ne"
+          ],
+          "title": "ComparisonFilterType",
+          "type": "string"
         },
         "value": {
           "description": "The value to compare against the attribute key; supports string, number, or\nboolean types."
@@ -275,18 +266,6 @@
       "title": "ComparisonFilter",
       "type": "object"
     },
-    "ComparisonFilterType": {
-      "enum": [
-        "eq",
-        "gt",
-        "gte",
-        "lt",
-        "lte",
-        "ne"
-      ],
-      "title": "ComparisonFilterType",
-      "type": "string"
-    },
     "CompoundFilter": {
       "additionalProperties": false,
       "description": "Combine multiple filters using `and` or `or`.",
@@ -297,8 +276,13 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/CompoundFilterType",
-          "description": "Type of operation: `and` or `or`."
+          "description": "Type of operation: `and` or `or`.",
+          "enum": [
+            "and",
+            "or"
+          ],
+          "title": "CompoundFilterType",
+          "type": "string"
         }
       },
       "required": [
@@ -307,14 +291,6 @@
       ],
       "title": "CompoundFilter",
       "type": "object"
-    },
-    "CompoundFilterType": {
-      "enum": [
-        "and",
-        "or"
-      ],
-      "title": "CompoundFilterType",
-      "type": "string"
     },
     "ComputerAction": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -381,7 +357,13 @@
           "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ComputerCallOutputItemParamStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "ComputerCallOutputItemParamStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -389,8 +371,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerCallOutputItemParamType",
-          "description": "The type of the computer tool call output. Always `computer_call_output`."
+          "description": "The type of the computer tool call output. Always `computer_call_output`.",
+          "enum": [
+            "computer_call_output"
+          ],
+          "title": "ComputerCallOutputItemParamType",
+          "type": "string"
         }
       },
       "required": [
@@ -406,22 +392,6 @@
         "$ref": "#/$defs/ComputerCallSafetyCheckParam"
       },
       "type": "array"
-    },
-    "ComputerCallOutputItemParamStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ComputerCallOutputItemParamStatus",
-      "type": "string"
-    },
-    "ComputerCallOutputItemParamType": {
-      "enum": [
-        "computer_call_output"
-      ],
-      "title": "ComputerCallOutputItemParamType",
-      "type": "string"
     },
     "ComputerCallSafetyCheckParam": {
       "additionalProperties": false,
@@ -471,8 +441,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerScreenshotImageType",
-          "description": "Specifies the event type. For a computer screenshot, this property is\nalways set to `computer_screenshot`."
+          "description": "Specifies the event type. For a computer screenshot, this property is\nalways set to `computer_screenshot`.",
+          "enum": [
+            "computer_screenshot"
+          ],
+          "title": "ComputerScreenshotImageType",
+          "type": "string"
         }
       },
       "required": [
@@ -480,13 +454,6 @@
       ],
       "title": "ComputerScreenshotImage",
       "type": "object"
-    },
-    "ComputerScreenshotImageType": {
-      "enum": [
-        "computer_screenshot"
-      ],
-      "title": "ComputerScreenshotImageType",
-      "type": "string"
     },
     "ComputerToolCall": {
       "additionalProperties": false,
@@ -511,12 +478,22 @@
           "type": "array"
         },
         "status": {
-          "$ref": "#/$defs/ComputerToolCallStatus",
-          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API."
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "incomplete"
+          ],
+          "title": "ComputerToolCallStatus",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallType",
-          "description": "The type of the computer call. Always `computer_call`."
+          "description": "The type of the computer call. Always `computer_call`.",
+          "enum": [
+            "computer_call"
+          ],
+          "title": "ComputerToolCallType",
+          "type": "string"
         }
       },
       "required": [
@@ -559,7 +536,13 @@
           "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ComputerToolCallOutputStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "ComputerToolCallOutputStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -567,8 +550,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallOutputType",
-          "description": "The type of the computer tool call output. Always `computer_call_output`."
+          "description": "The type of the computer tool call output. Always `computer_call_output`.",
+          "enum": [
+            "computer_call_output"
+          ],
+          "title": "ComputerToolCallOutputType",
+          "type": "string"
         }
       },
       "required": [
@@ -605,7 +592,13 @@
           "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ComputerToolCallOutputResourceStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "ComputerToolCallOutputResourceStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -613,8 +606,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallOutputResourceType",
-          "description": "The type of the computer tool call output. Always `computer_call_output`."
+          "description": "The type of the computer tool call output. Always `computer_call_output`.",
+          "enum": [
+            "computer_call_output"
+          ],
+          "title": "ComputerToolCallOutputResourceType",
+          "type": "string"
         }
       },
       "required": [
@@ -625,38 +622,6 @@
       ],
       "title": "ComputerToolCallOutputResource",
       "type": "object"
-    },
-    "ComputerToolCallOutputResourceStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ComputerToolCallOutputResourceStatus",
-      "type": "string"
-    },
-    "ComputerToolCallOutputResourceType": {
-      "enum": [
-        "computer_call_output"
-      ],
-      "title": "ComputerToolCallOutputResourceType",
-      "type": "string"
-    },
-    "ComputerToolCallOutputStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ComputerToolCallOutputStatus",
-      "type": "string"
-    },
-    "ComputerToolCallOutputType": {
-      "enum": [
-        "computer_call_output"
-      ],
-      "title": "ComputerToolCallOutputType",
-      "type": "string"
     },
     "ComputerToolCallSafetyCheck": {
       "additionalProperties": false,
@@ -683,22 +648,6 @@
       "title": "ComputerToolCallSafetyCheck",
       "type": "object"
     },
-    "ComputerToolCallStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ComputerToolCallStatus",
-      "type": "string"
-    },
-    "ComputerToolCallType": {
-      "enum": [
-        "computer_call"
-      ],
-      "title": "ComputerToolCallType",
-      "type": "string"
-    },
     "ComputerUsePreviewTool": {
       "additionalProperties": false,
       "description": "A tool that controls a virtual computer. Learn more about the [computer\ntool](https://platform.openai.com/docs/guides/tools-computer-use).",
@@ -712,12 +661,24 @@
           "type": "integer"
         },
         "environment": {
-          "$ref": "#/$defs/ComputerUsePreviewToolEnvironment",
-          "description": "The type of computer environment to control."
+          "description": "The type of computer environment to control.",
+          "enum": [
+            "browser",
+            "linux",
+            "mac",
+            "ubuntu",
+            "windows"
+          ],
+          "title": "ComputerUsePreviewToolEnvironment",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ComputerUsePreviewToolType",
-          "description": "The type of the computer use tool. Always `computer_use_preview`."
+          "description": "The type of the computer use tool. Always `computer_use_preview`.",
+          "enum": [
+            "computer_use_preview"
+          ],
+          "title": "ComputerUsePreviewToolType",
+          "type": "string"
         }
       },
       "required": [
@@ -728,24 +689,6 @@
       ],
       "title": "ComputerUsePreviewTool",
       "type": "object"
-    },
-    "ComputerUsePreviewToolEnvironment": {
-      "enum": [
-        "browser",
-        "linux",
-        "mac",
-        "ubuntu",
-        "windows"
-      ],
-      "title": "ComputerUsePreviewToolEnvironment",
-      "type": "string"
-    },
-    "ComputerUsePreviewToolType": {
-      "enum": [
-        "computer_use_preview"
-      ],
-      "title": "ComputerUsePreviewToolType",
-      "type": "string"
     },
     "Coordinate": {
       "additionalProperties": false,
@@ -930,7 +873,12 @@
           "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "$ref": "#/$defs/CreateResponseTruncation"
+              "enum": [
+                "auto",
+                "disabled"
+              ],
+              "title": "CreateResponseTruncation",
+              "type": "string"
             },
             {
               "type": "null"
@@ -954,7 +902,13 @@
     },
     "CreateResponseInclude": {
       "items": {
-        "$ref": "#/$defs/Includable"
+        "enum": [
+          "computer_call_output.output.image_url",
+          "file_search_call.results",
+          "message.input_image.image_url"
+        ],
+        "title": "Includable",
+        "type": "string"
       },
       "type": "array"
     },
@@ -969,21 +923,17 @@
       "title": "CreateResponseText",
       "type": "object"
     },
-    "CreateResponseTruncation": {
-      "enum": [
-        "auto",
-        "disabled"
-      ],
-      "title": "CreateResponseTruncation",
-      "type": "string"
-    },
     "DoubleClick": {
       "additionalProperties": false,
       "description": "A double click action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/DoubleClickType",
-          "description": "Specifies the event type. For a double click action, this property is\nalways set to `double_click`."
+          "description": "Specifies the event type. For a double click action, this property is\nalways set to `double_click`.",
+          "enum": [
+            "double_click"
+          ],
+          "title": "DoubleClickType",
+          "type": "string"
         },
         "x": {
           "description": "The x-coordinate where the double click occurred.",
@@ -1002,13 +952,6 @@
       "title": "DoubleClick",
       "type": "object"
     },
-    "DoubleClickType": {
-      "enum": [
-        "double_click"
-      ],
-      "title": "DoubleClickType",
-      "type": "string"
-    },
     "Drag": {
       "additionalProperties": false,
       "description": "A drag action.",
@@ -1021,8 +964,12 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/DragType",
-          "description": "Specifies the event type. For a drag action, this property is\nalways set to `drag`."
+          "description": "Specifies the event type. For a drag action, this property is\nalways set to `drag`.",
+          "enum": [
+            "drag"
+          ],
+          "title": "DragType",
+          "type": "string"
         }
       },
       "required": [
@@ -1032,13 +979,6 @@
       "title": "Drag",
       "type": "object"
     },
-    "DragType": {
-      "enum": [
-        "drag"
-      ],
-      "title": "DragType",
-      "type": "string"
-    },
     "EasyInputMessage": {
       "additionalProperties": false,
       "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the `developer` or `system` role take\nprecedence over instructions given with the `user` role. Messages with the\n`assistant` role are presumed to have been generated by the model in previous\ninteractions.",
@@ -1047,14 +987,25 @@
           "description": "Text, image, or audio input to the model, used to generate a response.\nCan also contain previous assistant responses."
         },
         "role": {
-          "$ref": "#/$defs/EasyInputMessageRole",
-          "description": "The role of the message input. One of `user`, `assistant`, `system`, or\n`developer`."
+          "description": "The role of the message input. One of `user`, `assistant`, `system`, or\n`developer`.",
+          "enum": [
+            "assistant",
+            "developer",
+            "system",
+            "user"
+          ],
+          "title": "EasyInputMessageRole",
+          "type": "string"
         },
         "type": {
           "description": "The type of the message input. Always `message`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/EasyInputMessageType"
+              "enum": [
+                "message"
+              ],
+              "title": "EasyInputMessageType",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1068,23 +1019,6 @@
       ],
       "title": "EasyInputMessage",
       "type": "object"
-    },
-    "EasyInputMessageRole": {
-      "enum": [
-        "assistant",
-        "developer",
-        "system",
-        "user"
-      ],
-      "title": "EasyInputMessageRole",
-      "type": "string"
-    },
-    "EasyInputMessageType": {
-      "enum": [
-        "message"
-      ],
-      "title": "EasyInputMessageType",
-      "type": "string"
     },
     "Error": {
       "additionalProperties": false,
@@ -1130,8 +1064,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/FileCitationBodyType",
-          "description": "The type of the file citation. Always `file_citation`."
+          "description": "The type of the file citation. Always `file_citation`.",
+          "enum": [
+            "file_citation"
+          ],
+          "title": "FileCitationBodyType",
+          "type": "string"
         }
       },
       "required": [
@@ -1141,13 +1079,6 @@
       ],
       "title": "FileCitationBody",
       "type": "object"
-    },
-    "FileCitationBodyType": {
-      "enum": [
-        "file_citation"
-      ],
-      "title": "FileCitationBodyType",
-      "type": "string"
     },
     "FilePath": {
       "additionalProperties": false,
@@ -1162,8 +1093,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/FilePathType",
-          "description": "The type of the file path. Always `file_path`."
+          "description": "The type of the file path. Always `file_path`.",
+          "enum": [
+            "file_path"
+          ],
+          "title": "FilePathType",
+          "type": "string"
         }
       },
       "required": [
@@ -1173,13 +1108,6 @@
       ],
       "title": "FilePath",
       "type": "object"
-    },
-    "FilePathType": {
-      "enum": [
-        "file_path"
-      ],
-      "title": "FilePathType",
-      "type": "string"
     },
     "FileSearchTool": {
       "additionalProperties": false,
@@ -1204,8 +1132,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FileSearchToolType",
-          "description": "The type of the file search tool. Always `file_search`."
+          "description": "The type of the file search tool. Always `file_search`.",
+          "enum": [
+            "file_search"
+          ],
+          "title": "FileSearchToolType",
+          "type": "string"
         },
         "vector_store_ids": {
           "description": "The IDs of the vector stores to search.",
@@ -1249,12 +1181,24 @@
           ]
         },
         "status": {
-          "$ref": "#/$defs/FileSearchToolCallStatus",
-          "description": "The status of the file search tool call. One of `in_progress`,\n`searching`, `incomplete` or `failed`,"
+          "description": "The status of the file search tool call. One of `in_progress`,\n`searching`, `incomplete` or `failed`,",
+          "enum": [
+            "completed",
+            "failed",
+            "in_progress",
+            "incomplete",
+            "searching"
+          ],
+          "title": "FileSearchToolCallStatus",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/FileSearchToolCallType",
-          "description": "The type of the file search tool call. Always `file_search_call`."
+          "description": "The type of the file search tool call. Always `file_search_call`.",
+          "enum": [
+            "file_search_call"
+          ],
+          "title": "FileSearchToolCallType",
+          "type": "string"
         }
       },
       "required": [
@@ -1269,31 +1213,6 @@
     "FileSearchToolCallResults": {
       "items": {},
       "type": "array"
-    },
-    "FileSearchToolCallStatus": {
-      "enum": [
-        "completed",
-        "failed",
-        "in_progress",
-        "incomplete",
-        "searching"
-      ],
-      "title": "FileSearchToolCallStatus",
-      "type": "string"
-    },
-    "FileSearchToolCallType": {
-      "enum": [
-        "file_search_call"
-      ],
-      "title": "FileSearchToolCallType",
-      "type": "string"
-    },
-    "FileSearchToolType": {
-      "enum": [
-        "file_search"
-      ],
-      "title": "FileSearchToolType",
-      "type": "string"
     },
     "Filters": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
@@ -1329,7 +1248,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or `incomplete`.\nPopulated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/FunctionCallOutputItemParamStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "FunctionCallOutputItemParamStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1337,8 +1262,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionCallOutputItemParamType",
-          "description": "The type of the function tool call output. Always `function_call_output`."
+          "description": "The type of the function tool call output. Always `function_call_output`.",
+          "enum": [
+            "function_call_output"
+          ],
+          "title": "FunctionCallOutputItemParamType",
+          "type": "string"
         }
       },
       "required": [
@@ -1348,22 +1277,6 @@
       ],
       "title": "FunctionCallOutputItemParam",
       "type": "object"
-    },
-    "FunctionCallOutputItemParamStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "FunctionCallOutputItemParamStatus",
-      "type": "string"
-    },
-    "FunctionCallOutputItemParamType": {
-      "enum": [
-        "function_call_output"
-      ],
-      "title": "FunctionCallOutputItemParamType",
-      "type": "string"
     },
     "FunctionTool": {
       "additionalProperties": false,
@@ -1399,8 +1312,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolType",
-          "description": "The type of the function tool. Always `function`."
+          "description": "The type of the function tool. Always `function`.",
+          "enum": [
+            "function"
+          ],
+          "title": "FunctionToolType",
+          "type": "string"
         }
       },
       "required": [
@@ -1439,7 +1356,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/FunctionToolCallStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "FunctionToolCallStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1447,8 +1370,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallType",
-          "description": "The type of the function tool call. Always `function_call`."
+          "description": "The type of the function tool call. Always `function_call`.",
+          "enum": [
+            "function_call"
+          ],
+          "title": "FunctionToolCallType",
+          "type": "string"
         }
       },
       "required": [
@@ -1483,7 +1410,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/FunctionToolCallOutputStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "FunctionToolCallOutputStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1491,8 +1424,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallOutputType",
-          "description": "The type of the function tool call output. Always `function_call_output`."
+          "description": "The type of the function tool call output. Always `function_call_output`.",
+          "enum": [
+            "function_call_output"
+          ],
+          "title": "FunctionToolCallOutputType",
+          "type": "string"
         }
       },
       "required": [
@@ -1523,7 +1460,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/FunctionToolCallOutputResourceStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "FunctionToolCallOutputResourceStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1531,8 +1474,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallOutputResourceType",
-          "description": "The type of the function tool call output. Always `function_call_output`."
+          "description": "The type of the function tool call output. Always `function_call_output`.",
+          "enum": [
+            "function_call_output"
+          ],
+          "title": "FunctionToolCallOutputResourceType",
+          "type": "string"
         }
       },
       "required": [
@@ -1543,38 +1490,6 @@
       ],
       "title": "FunctionToolCallOutputResource",
       "type": "object"
-    },
-    "FunctionToolCallOutputResourceStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "FunctionToolCallOutputResourceStatus",
-      "type": "string"
-    },
-    "FunctionToolCallOutputResourceType": {
-      "enum": [
-        "function_call_output"
-      ],
-      "title": "FunctionToolCallOutputResourceType",
-      "type": "string"
-    },
-    "FunctionToolCallOutputStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "FunctionToolCallOutputStatus",
-      "type": "string"
-    },
-    "FunctionToolCallOutputType": {
-      "enum": [
-        "function_call_output"
-      ],
-      "title": "FunctionToolCallOutputType",
-      "type": "string"
     },
     "FunctionToolCallResource": {
       "additionalProperties": false,
@@ -1600,7 +1515,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/FunctionToolCallResourceStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "FunctionToolCallResourceStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1608,8 +1529,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallResourceType",
-          "description": "The type of the function tool call. Always `function_call`."
+          "description": "The type of the function tool call. Always `function_call`.",
+          "enum": [
+            "function_call"
+          ],
+          "title": "FunctionToolCallResourceType",
+          "type": "string"
         }
       },
       "required": [
@@ -1622,57 +1547,9 @@
       "title": "FunctionToolCallResource",
       "type": "object"
     },
-    "FunctionToolCallResourceStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "FunctionToolCallResourceStatus",
-      "type": "string"
-    },
-    "FunctionToolCallResourceType": {
-      "enum": [
-        "function_call"
-      ],
-      "title": "FunctionToolCallResourceType",
-      "type": "string"
-    },
-    "FunctionToolCallStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "FunctionToolCallStatus",
-      "type": "string"
-    },
-    "FunctionToolCallType": {
-      "enum": [
-        "function_call"
-      ],
-      "title": "FunctionToolCallType",
-      "type": "string"
-    },
     "FunctionToolParameters": {
       "additionalProperties": {},
       "type": "object"
-    },
-    "FunctionToolType": {
-      "enum": [
-        "function"
-      ],
-      "title": "FunctionToolType",
-      "type": "string"
-    },
-    "Includable": {
-      "enum": [
-        "computer_call_output.output.image_url",
-        "file_search_call.results",
-        "message.input_image.image_url"
-      ],
-      "title": "Includable",
-      "type": "string"
     },
     "InputContent": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -1714,8 +1591,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/InputFileContentType",
-          "description": "The type of the input item. Always `input_file`."
+          "description": "The type of the input item. Always `input_file`.",
+          "enum": [
+            "input_file"
+          ],
+          "title": "InputFileContentType",
+          "type": "string"
         }
       },
       "required": [
@@ -1724,20 +1605,19 @@
       "title": "InputFileContent",
       "type": "object"
     },
-    "InputFileContentType": {
-      "enum": [
-        "input_file"
-      ],
-      "title": "InputFileContentType",
-      "type": "string"
-    },
     "InputImageContent": {
       "additionalProperties": false,
       "description": "An image input to the model. Learn about [image inputs](/docs/guides/vision).",
       "properties": {
         "detail": {
-          "$ref": "#/$defs/InputImageContentDetail",
-          "description": "The detail level of the image to be sent to the model. One of `high`, `low`, or\n`auto`. Defaults to `auto`."
+          "description": "The detail level of the image to be sent to the model. One of `high`, `low`, or\n`auto`. Defaults to `auto`.",
+          "enum": [
+            "auto",
+            "high",
+            "low"
+          ],
+          "title": "InputImageContentDetail",
+          "type": "string"
         },
         "file_id": {
           "description": "The ID of the file to be sent to the model.",
@@ -1754,8 +1634,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/InputImageContentType",
-          "description": "The type of the input item. Always `input_image`."
+          "description": "The type of the input item. Always `input_image`.",
+          "enum": [
+            "input_image"
+          ],
+          "title": "InputImageContentType",
+          "type": "string"
         }
       },
       "required": [
@@ -1764,22 +1648,6 @@
       ],
       "title": "InputImageContent",
       "type": "object"
-    },
-    "InputImageContentDetail": {
-      "enum": [
-        "auto",
-        "high",
-        "low"
-      ],
-      "title": "InputImageContentDetail",
-      "type": "string"
-    },
-    "InputImageContentType": {
-      "enum": [
-        "input_image"
-      ],
-      "title": "InputImageContentType",
-      "type": "string"
     },
     "InputItem": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -1803,14 +1671,26 @@
           "$ref": "#/$defs/InputMessageContentList"
         },
         "role": {
-          "$ref": "#/$defs/InputMessageRole",
-          "description": "The role of the message input. One of `user`, `system`, or `developer`."
+          "description": "The role of the message input. One of `user`, `system`, or `developer`.",
+          "enum": [
+            "developer",
+            "system",
+            "user"
+          ],
+          "title": "InputMessageRole",
+          "type": "string"
         },
         "status": {
           "description": "The status of item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/InputMessageStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "InputMessageStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1821,7 +1701,11 @@
           "description": "The type of the message input. Always set to `message`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/InputMessageType"
+              "enum": [
+                "message"
+              ],
+              "title": "InputMessageType",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1854,14 +1738,26 @@
           "type": "string"
         },
         "role": {
-          "$ref": "#/$defs/InputMessageResourceRole",
-          "description": "The role of the message input. One of `user`, `system`, or `developer`."
+          "description": "The role of the message input. One of `user`, `system`, or `developer`.",
+          "enum": [
+            "developer",
+            "system",
+            "user"
+          ],
+          "title": "InputMessageResourceRole",
+          "type": "string"
         },
         "status": {
           "description": "The status of item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/InputMessageResourceStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "InputMessageResourceStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1872,7 +1768,11 @@
           "description": "The type of the message input. Always set to `message`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/InputMessageResourceType"
+              "enum": [
+                "message"
+              ],
+              "title": "InputMessageResourceType",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1888,56 +1788,6 @@
       "title": "InputMessageResource",
       "type": "object"
     },
-    "InputMessageResourceRole": {
-      "enum": [
-        "developer",
-        "system",
-        "user"
-      ],
-      "title": "InputMessageResourceRole",
-      "type": "string"
-    },
-    "InputMessageResourceStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "InputMessageResourceStatus",
-      "type": "string"
-    },
-    "InputMessageResourceType": {
-      "enum": [
-        "message"
-      ],
-      "title": "InputMessageResourceType",
-      "type": "string"
-    },
-    "InputMessageRole": {
-      "enum": [
-        "developer",
-        "system",
-        "user"
-      ],
-      "title": "InputMessageRole",
-      "type": "string"
-    },
-    "InputMessageStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "InputMessageStatus",
-      "type": "string"
-    },
-    "InputMessageType": {
-      "enum": [
-        "message"
-      ],
-      "title": "InputMessageType",
-      "type": "string"
-    },
     "InputTextContent": {
       "additionalProperties": false,
       "description": "A text input to the model.",
@@ -1947,8 +1797,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/InputTextContentType",
-          "description": "The type of the input item. Always `input_text`."
+          "description": "The type of the input item. Always `input_text`.",
+          "enum": [
+            "input_text"
+          ],
+          "title": "InputTextContentType",
+          "type": "string"
         }
       },
       "required": [
@@ -1957,13 +1811,6 @@
       ],
       "title": "InputTextContent",
       "type": "object"
-    },
-    "InputTextContentType": {
-      "enum": [
-        "input_text"
-      ],
-      "title": "InputTextContentType",
-      "type": "string"
     },
     "Item": {
       "additionalProperties": {},
@@ -1981,7 +1828,11 @@
           "description": "The type of item to reference. Always `item_reference`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ItemReferenceParamType"
+              "enum": [
+                "item_reference"
+              ],
+              "title": "ItemReferenceParamType",
+              "type": "string"
             },
             {
               "type": "null"
@@ -1994,13 +1845,6 @@
       ],
       "title": "ItemReferenceParam",
       "type": "object"
-    },
-    "ItemReferenceParamType": {
-      "enum": [
-        "item_reference"
-      ],
-      "title": "ItemReferenceParamType",
-      "type": "string"
     },
     "ItemResource": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -2043,8 +1887,12 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/KeyPressType",
-          "description": "Specifies the event type. For a keypress action, this property is\nalways set to `keypress`."
+          "description": "Specifies the event type. For a keypress action, this property is\nalways set to `keypress`.",
+          "enum": [
+            "keypress"
+          ],
+          "title": "KeyPressType",
+          "type": "string"
         }
       },
       "required": [
@@ -2053,13 +1901,6 @@
       ],
       "title": "KeyPress",
       "type": "object"
-    },
-    "KeyPressType": {
-      "enum": [
-        "keypress"
-      ],
-      "title": "KeyPressType",
-      "type": "string"
     },
     "Metadata": {
       "additionalProperties": {
@@ -2116,8 +1957,12 @@
       "description": "A mouse move action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/MoveType",
-          "description": "Specifies the event type. For a move action, this property is\nalways set to `move`."
+          "description": "Specifies the event type. For a move action, this property is\nalways set to `move`.",
+          "enum": [
+            "move"
+          ],
+          "title": "MoveType",
+          "type": "string"
         },
         "x": {
           "description": "The x-coordinate to move to.",
@@ -2135,13 +1980,6 @@
       ],
       "title": "Move",
       "type": "object"
-    },
-    "MoveType": {
-      "enum": [
-        "move"
-      ],
-      "title": "MoveType",
-      "type": "string"
     },
     "OutputContent": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -2193,16 +2031,30 @@
           "type": "string"
         },
         "role": {
-          "$ref": "#/$defs/OutputMessageRole",
-          "description": "The role of the output message. Always `assistant`."
+          "description": "The role of the output message. Always `assistant`.",
+          "enum": [
+            "assistant"
+          ],
+          "title": "OutputMessageRole",
+          "type": "string"
         },
         "status": {
-          "$ref": "#/$defs/OutputMessageStatus",
-          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API."
+          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "incomplete"
+          ],
+          "title": "OutputMessageStatus",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/OutputMessageType",
-          "description": "The type of the output message. Always `message`."
+          "description": "The type of the output message. Always `message`.",
+          "enum": [
+            "message"
+          ],
+          "title": "OutputMessageType",
+          "type": "string"
         }
       },
       "required": [
@@ -2214,29 +2066,6 @@
       ],
       "title": "OutputMessage",
       "type": "object"
-    },
-    "OutputMessageRole": {
-      "enum": [
-        "assistant"
-      ],
-      "title": "OutputMessageRole",
-      "type": "string"
-    },
-    "OutputMessageStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "OutputMessageStatus",
-      "type": "string"
-    },
-    "OutputMessageType": {
-      "enum": [
-        "message"
-      ],
-      "title": "OutputMessageType",
-      "type": "string"
     },
     "OutputTextContent": {
       "additionalProperties": false,
@@ -2254,8 +2083,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/OutputTextContentType",
-          "description": "The type of the output text. Always `output_text`."
+          "description": "The type of the output text. Always `output_text`.",
+          "enum": [
+            "output_text"
+          ],
+          "title": "OutputTextContentType",
+          "type": "string"
         }
       },
       "required": [
@@ -2266,13 +2099,6 @@
       "title": "OutputTextContent",
       "type": "object"
     },
-    "OutputTextContentType": {
-      "enum": [
-        "output_text"
-      ],
-      "title": "OutputTextContentType",
-      "type": "string"
-    },
     "RankingOptions": {
       "additionalProperties": false,
       "properties": {
@@ -2280,7 +2106,12 @@
           "description": "The ranker to use for the file search.",
           "oneOf": [
             {
-              "$ref": "#/$defs/RankingOptionsRanker"
+              "enum": [
+                "auto",
+                "default-2024-11-15"
+              ],
+              "title": "RankingOptionsRanker",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2298,14 +2129,6 @@
       "title": "RankingOptions",
       "type": "object"
     },
-    "RankingOptionsRanker": {
-      "enum": [
-        "auto",
-        "default-2024-11-15"
-      ],
-      "title": "RankingOptionsRanker",
-      "type": "string"
-    },
     "Reasoning": {
       "additionalProperties": false,
       "description": "**o-series models only**\n\nConfiguration options for\n[reasoning models](https://platform.openai.com/docs/guides/reasoning).",
@@ -2313,7 +2136,13 @@
         "effort": {
           "oneOf": [
             {
-              "$ref": "#/$defs/ReasoningEffort"
+              "enum": [
+                "high",
+                "low",
+                "medium"
+              ],
+              "title": "ReasoningEffort",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2324,7 +2153,13 @@
           "description": "**Deprecated:** use `summary` instead.\n\nA summary of the reasoning performed by the model. This can be\nuseful for debugging and understanding the model's reasoning process.\nOne of `auto`, `concise`, or `detailed`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ReasoningGenerateSummary"
+              "enum": [
+                "auto",
+                "concise",
+                "detailed"
+              ],
+              "title": "ReasoningGenerateSummary",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2335,7 +2170,13 @@
           "description": "A summary of the reasoning performed by the model. This can be\nuseful for debugging and understanding the model's reasoning process.\nOne of `auto`, `concise`, or `detailed`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ReasoningSummary"
+              "enum": [
+                "auto",
+                "concise",
+                "detailed"
+              ],
+              "title": "ReasoningSummary",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2345,24 +2186,6 @@
       },
       "title": "Reasoning",
       "type": "object"
-    },
-    "ReasoningEffort": {
-      "enum": [
-        "high",
-        "low",
-        "medium"
-      ],
-      "title": "ReasoningEffort",
-      "type": "string"
-    },
-    "ReasoningGenerateSummary": {
-      "enum": [
-        "auto",
-        "concise",
-        "detailed"
-      ],
-      "title": "ReasoningGenerateSummary",
-      "type": "string"
     },
     "ReasoningItem": {
       "additionalProperties": false,
@@ -2376,7 +2199,13 @@
           "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ReasoningItemStatus"
+              "enum": [
+                "completed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "ReasoningItemStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2391,8 +2220,12 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/ReasoningItemType",
-          "description": "The type of the object. Always `reasoning`."
+          "description": "The type of the object. Always `reasoning`.",
+          "enum": [
+            "reasoning"
+          ],
+          "title": "ReasoningItemType",
+          "type": "string"
         }
       },
       "required": [
@@ -2403,15 +2236,6 @@
       "title": "ReasoningItem",
       "type": "object"
     },
-    "ReasoningItemStatus": {
-      "enum": [
-        "completed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ReasoningItemStatus",
-      "type": "string"
-    },
     "ReasoningItemSummaryElem": {
       "additionalProperties": false,
       "properties": {
@@ -2420,8 +2244,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ReasoningItemSummaryElemType",
-          "description": "The type of the object. Always `summary_text`."
+          "description": "The type of the object. Always `summary_text`.",
+          "enum": [
+            "summary_text"
+          ],
+          "title": "ReasoningItemSummaryElemType",
+          "type": "string"
         }
       },
       "required": [
@@ -2430,29 +2258,6 @@
       ],
       "title": "ReasoningItemSummaryElem",
       "type": "object"
-    },
-    "ReasoningItemSummaryElemType": {
-      "enum": [
-        "summary_text"
-      ],
-      "title": "ReasoningItemSummaryElemType",
-      "type": "string"
-    },
-    "ReasoningItemType": {
-      "enum": [
-        "reasoning"
-      ],
-      "title": "ReasoningItemType",
-      "type": "string"
-    },
-    "ReasoningSummary": {
-      "enum": [
-        "auto",
-        "concise",
-        "detailed"
-      ],
-      "title": "ReasoningSummary",
-      "type": "string"
     },
     "RefusalContent": {
       "additionalProperties": false,
@@ -2463,8 +2268,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/RefusalContentType",
-          "description": "The type of the refusal. Always `refusal`."
+          "description": "The type of the refusal. Always `refusal`.",
+          "enum": [
+            "refusal"
+          ],
+          "title": "RefusalContentType",
+          "type": "string"
         }
       },
       "required": [
@@ -2473,13 +2282,6 @@
       ],
       "title": "RefusalContent",
       "type": "object"
-    },
-    "RefusalContentType": {
-      "enum": [
-        "refusal"
-      ],
-      "title": "RefusalContentType",
-      "type": "string"
     },
     "Response": {
       "additionalProperties": false,
@@ -2525,8 +2327,12 @@
         },
         "model": {},
         "object": {
-          "$ref": "#/$defs/ResponseObject",
-          "description": "The object type of this resource - always set to `response`."
+          "description": "The object type of this resource - always set to `response`.",
+          "enum": [
+            "response"
+          ],
+          "title": "ResponseObject",
+          "type": "string"
         },
         "output": {
           "description": "An array of content items generated by the model.\n\n- The length and order of items in the `output` array is dependent\n  on the model's response.\n- Rather than accessing the first item in the `output` array and\n  assuming it's an `assistant` message with the content generated by\n  the model, you might consider using the `output_text` property where\n  supported in SDKs.",
@@ -2577,7 +2383,14 @@
           "description": "The status of the response generation. One of `completed`, `failed`,\n`in_progress`, or `incomplete`.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ResponseStatus"
+              "enum": [
+                "completed",
+                "failed",
+                "in_progress",
+                "incomplete"
+              ],
+              "title": "ResponseStatus",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2623,7 +2436,12 @@
           "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ResponseTruncation"
+              "enum": [
+                "auto",
+                "disabled"
+              ],
+              "title": "ResponseTruncation",
+              "type": "string"
             },
             {
               "type": "null"
@@ -2676,8 +2494,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseAudioDeltaEventType",
-          "description": "The type of the event. Always `response.audio.delta`."
+          "description": "The type of the event. Always `response.audio.delta`.",
+          "enum": [
+            "response.audio.delta"
+          ],
+          "title": "ResponseAudioDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2687,20 +2509,17 @@
       "title": "ResponseAudioDeltaEvent",
       "type": "object"
     },
-    "ResponseAudioDeltaEventType": {
-      "enum": [
-        "response.audio.delta"
-      ],
-      "title": "ResponseAudioDeltaEventType",
-      "type": "string"
-    },
     "ResponseAudioDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when the audio response is complete.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseAudioDoneEventType",
-          "description": "The type of the event. Always `response.audio.done`."
+          "description": "The type of the event. Always `response.audio.done`.",
+          "enum": [
+            "response.audio.done"
+          ],
+          "title": "ResponseAudioDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2708,13 +2527,6 @@
       ],
       "title": "ResponseAudioDoneEvent",
       "type": "object"
-    },
-    "ResponseAudioDoneEventType": {
-      "enum": [
-        "response.audio.done"
-      ],
-      "title": "ResponseAudioDoneEventType",
-      "type": "string"
     },
     "ResponseAudioTranscriptDeltaEvent": {
       "additionalProperties": false,
@@ -2725,8 +2537,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseAudioTranscriptDeltaEventType",
-          "description": "The type of the event. Always `response.audio.transcript.delta`."
+          "description": "The type of the event. Always `response.audio.transcript.delta`.",
+          "enum": [
+            "response.audio.transcript.delta"
+          ],
+          "title": "ResponseAudioTranscriptDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2736,20 +2552,17 @@
       "title": "ResponseAudioTranscriptDeltaEvent",
       "type": "object"
     },
-    "ResponseAudioTranscriptDeltaEventType": {
-      "enum": [
-        "response.audio.transcript.delta"
-      ],
-      "title": "ResponseAudioTranscriptDeltaEventType",
-      "type": "string"
-    },
     "ResponseAudioTranscriptDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when the full audio transcript is completed.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseAudioTranscriptDoneEventType",
-          "description": "The type of the event. Always `response.audio.transcript.done`."
+          "description": "The type of the event. Always `response.audio.transcript.done`.",
+          "enum": [
+            "response.audio.transcript.done"
+          ],
+          "title": "ResponseAudioTranscriptDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2757,13 +2570,6 @@
       ],
       "title": "ResponseAudioTranscriptDoneEvent",
       "type": "object"
-    },
-    "ResponseAudioTranscriptDoneEventType": {
-      "enum": [
-        "response.audio.transcript.done"
-      ],
-      "title": "ResponseAudioTranscriptDoneEventType",
-      "type": "string"
     },
     "ResponseCodeInterpreterCallCodeDeltaEvent": {
       "additionalProperties": false,
@@ -2778,8 +2584,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDeltaEventType",
-          "description": "The type of the event. Always `response.code_interpreter_call.code.delta`."
+          "description": "The type of the event. Always `response.code_interpreter_call.code.delta`.",
+          "enum": [
+            "response.code_interpreter_call.code.delta"
+          ],
+          "title": "ResponseCodeInterpreterCallCodeDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2789,13 +2599,6 @@
       ],
       "title": "ResponseCodeInterpreterCallCodeDeltaEvent",
       "type": "object"
-    },
-    "ResponseCodeInterpreterCallCodeDeltaEventType": {
-      "enum": [
-        "response.code_interpreter_call.code.delta"
-      ],
-      "title": "ResponseCodeInterpreterCallCodeDeltaEventType",
-      "type": "string"
     },
     "ResponseCodeInterpreterCallCodeDoneEvent": {
       "additionalProperties": false,
@@ -2810,8 +2613,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDoneEventType",
-          "description": "The type of the event. Always `response.code_interpreter_call.code.done`."
+          "description": "The type of the event. Always `response.code_interpreter_call.code.done`.",
+          "enum": [
+            "response.code_interpreter_call.code.done"
+          ],
+          "title": "ResponseCodeInterpreterCallCodeDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2821,13 +2628,6 @@
       ],
       "title": "ResponseCodeInterpreterCallCodeDoneEvent",
       "type": "object"
-    },
-    "ResponseCodeInterpreterCallCodeDoneEventType": {
-      "enum": [
-        "response.code_interpreter_call.code.done"
-      ],
-      "title": "ResponseCodeInterpreterCallCodeDoneEventType",
-      "type": "string"
     },
     "ResponseCodeInterpreterCallCompletedEvent": {
       "additionalProperties": false,
@@ -2841,8 +2641,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCompletedEventType",
-          "description": "The type of the event. Always `response.code_interpreter_call.completed`."
+          "description": "The type of the event. Always `response.code_interpreter_call.completed`.",
+          "enum": [
+            "response.code_interpreter_call.completed"
+          ],
+          "title": "ResponseCodeInterpreterCallCompletedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2852,13 +2656,6 @@
       ],
       "title": "ResponseCodeInterpreterCallCompletedEvent",
       "type": "object"
-    },
-    "ResponseCodeInterpreterCallCompletedEventType": {
-      "enum": [
-        "response.code_interpreter_call.completed"
-      ],
-      "title": "ResponseCodeInterpreterCallCompletedEventType",
-      "type": "string"
     },
     "ResponseCodeInterpreterCallInProgressEvent": {
       "additionalProperties": false,
@@ -2872,8 +2669,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallInProgressEventType",
-          "description": "The type of the event. Always `response.code_interpreter_call.in_progress`."
+          "description": "The type of the event. Always `response.code_interpreter_call.in_progress`.",
+          "enum": [
+            "response.code_interpreter_call.in_progress"
+          ],
+          "title": "ResponseCodeInterpreterCallInProgressEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2883,13 +2684,6 @@
       ],
       "title": "ResponseCodeInterpreterCallInProgressEvent",
       "type": "object"
-    },
-    "ResponseCodeInterpreterCallInProgressEventType": {
-      "enum": [
-        "response.code_interpreter_call.in_progress"
-      ],
-      "title": "ResponseCodeInterpreterCallInProgressEventType",
-      "type": "string"
     },
     "ResponseCodeInterpreterCallInterpretingEvent": {
       "additionalProperties": false,
@@ -2903,8 +2697,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallInterpretingEventType",
-          "description": "The type of the event. Always `response.code_interpreter_call.interpreting`."
+          "description": "The type of the event. Always `response.code_interpreter_call.interpreting`.",
+          "enum": [
+            "response.code_interpreter_call.interpreting"
+          ],
+          "title": "ResponseCodeInterpreterCallInterpretingEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2915,13 +2713,6 @@
       "title": "ResponseCodeInterpreterCallInterpretingEvent",
       "type": "object"
     },
-    "ResponseCodeInterpreterCallInterpretingEventType": {
-      "enum": [
-        "response.code_interpreter_call.interpreting"
-      ],
-      "title": "ResponseCodeInterpreterCallInterpretingEventType",
-      "type": "string"
-    },
     "ResponseCompletedEvent": {
       "additionalProperties": false,
       "description": "Emitted when the model response is complete.",
@@ -2930,8 +2721,12 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCompletedEventType",
-          "description": "The type of the event. Always `response.completed`."
+          "description": "The type of the event. Always `response.completed`.",
+          "enum": [
+            "response.completed"
+          ],
+          "title": "ResponseCompletedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2940,13 +2735,6 @@
       ],
       "title": "ResponseCompletedEvent",
       "type": "object"
-    },
-    "ResponseCompletedEventType": {
-      "enum": [
-        "response.completed"
-      ],
-      "title": "ResponseCompletedEventType",
-      "type": "string"
     },
     "ResponseContentPartAddedEvent": {
       "additionalProperties": false,
@@ -2968,8 +2756,12 @@
           "$ref": "#/$defs/OutputContent"
         },
         "type": {
-          "$ref": "#/$defs/ResponseContentPartAddedEventType",
-          "description": "The type of the event. Always `response.content_part.added`."
+          "description": "The type of the event. Always `response.content_part.added`.",
+          "enum": [
+            "response.content_part.added"
+          ],
+          "title": "ResponseContentPartAddedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -2981,13 +2773,6 @@
       ],
       "title": "ResponseContentPartAddedEvent",
       "type": "object"
-    },
-    "ResponseContentPartAddedEventType": {
-      "enum": [
-        "response.content_part.added"
-      ],
-      "title": "ResponseContentPartAddedEventType",
-      "type": "string"
     },
     "ResponseContentPartDoneEvent": {
       "additionalProperties": false,
@@ -3009,8 +2794,12 @@
           "$ref": "#/$defs/OutputContent"
         },
         "type": {
-          "$ref": "#/$defs/ResponseContentPartDoneEventType",
-          "description": "The type of the event. Always `response.content_part.done`."
+          "description": "The type of the event. Always `response.content_part.done`.",
+          "enum": [
+            "response.content_part.done"
+          ],
+          "title": "ResponseContentPartDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3023,13 +2812,6 @@
       "title": "ResponseContentPartDoneEvent",
       "type": "object"
     },
-    "ResponseContentPartDoneEventType": {
-      "enum": [
-        "response.content_part.done"
-      ],
-      "title": "ResponseContentPartDoneEventType",
-      "type": "string"
-    },
     "ResponseCreatedEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response is created.",
@@ -3038,8 +2820,12 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCreatedEventType",
-          "description": "The type of the event. Always `response.created`."
+          "description": "The type of the event. Always `response.created`.",
+          "enum": [
+            "response.created"
+          ],
+          "title": "ResponseCreatedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3049,19 +2835,33 @@
       "title": "ResponseCreatedEvent",
       "type": "object"
     },
-    "ResponseCreatedEventType": {
-      "enum": [
-        "response.created"
-      ],
-      "title": "ResponseCreatedEventType",
-      "type": "string"
-    },
     "ResponseError": {
       "additionalProperties": false,
       "description": "An error object returned when the model fails to generate a Response.",
       "properties": {
         "code": {
-          "$ref": "#/$defs/ResponseErrorCode"
+          "enum": [
+            "empty_image_file",
+            "failed_to_download_image",
+            "image_content_policy_violation",
+            "image_file_not_found",
+            "image_file_too_large",
+            "image_parse_error",
+            "image_too_large",
+            "image_too_small",
+            "invalid_base64_image",
+            "invalid_image",
+            "invalid_image_format",
+            "invalid_image_mode",
+            "invalid_image_url",
+            "invalid_prompt",
+            "rate_limit_exceeded",
+            "server_error",
+            "unsupported_image_media_type",
+            "vector_store_timeout"
+          ],
+          "title": "ResponseErrorCode",
+          "type": "string"
         },
         "message": {
           "description": "A human-readable description of the error.",
@@ -3074,30 +2874,6 @@
       ],
       "title": "ResponseError",
       "type": "object"
-    },
-    "ResponseErrorCode": {
-      "enum": [
-        "empty_image_file",
-        "failed_to_download_image",
-        "image_content_policy_violation",
-        "image_file_not_found",
-        "image_file_too_large",
-        "image_parse_error",
-        "image_too_large",
-        "image_too_small",
-        "invalid_base64_image",
-        "invalid_image",
-        "invalid_image_format",
-        "invalid_image_mode",
-        "invalid_image_url",
-        "invalid_prompt",
-        "rate_limit_exceeded",
-        "server_error",
-        "unsupported_image_media_type",
-        "vector_store_timeout"
-      ],
-      "title": "ResponseErrorCode",
-      "type": "string"
     },
     "ResponseErrorEvent": {
       "additionalProperties": false,
@@ -3122,8 +2898,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ResponseErrorEventType",
-          "description": "The type of the event. Always `error`."
+          "description": "The type of the event. Always `error`.",
+          "enum": [
+            "error"
+          ],
+          "title": "ResponseErrorEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3135,13 +2915,6 @@
       "title": "ResponseErrorEvent",
       "type": "object"
     },
-    "ResponseErrorEventType": {
-      "enum": [
-        "error"
-      ],
-      "title": "ResponseErrorEventType",
-      "type": "string"
-    },
     "ResponseFailedEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response fails.",
@@ -3150,8 +2923,12 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFailedEventType",
-          "description": "The type of the event. Always `response.failed`."
+          "description": "The type of the event. Always `response.failed`.",
+          "enum": [
+            "response.failed"
+          ],
+          "title": "ResponseFailedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3160,13 +2937,6 @@
       ],
       "title": "ResponseFailedEvent",
       "type": "object"
-    },
-    "ResponseFailedEventType": {
-      "enum": [
-        "response.failed"
-      ],
-      "title": "ResponseFailedEventType",
-      "type": "string"
     },
     "ResponseFileSearchCallCompletedEvent": {
       "additionalProperties": false,
@@ -3181,8 +2951,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallCompletedEventType",
-          "description": "The type of the event. Always `response.file_search_call.completed`."
+          "description": "The type of the event. Always `response.file_search_call.completed`.",
+          "enum": [
+            "response.file_search_call.completed"
+          ],
+          "title": "ResponseFileSearchCallCompletedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3192,13 +2966,6 @@
       ],
       "title": "ResponseFileSearchCallCompletedEvent",
       "type": "object"
-    },
-    "ResponseFileSearchCallCompletedEventType": {
-      "enum": [
-        "response.file_search_call.completed"
-      ],
-      "title": "ResponseFileSearchCallCompletedEventType",
-      "type": "string"
     },
     "ResponseFileSearchCallInProgressEvent": {
       "additionalProperties": false,
@@ -3213,8 +2980,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallInProgressEventType",
-          "description": "The type of the event. Always `response.file_search_call.in_progress`."
+          "description": "The type of the event. Always `response.file_search_call.in_progress`.",
+          "enum": [
+            "response.file_search_call.in_progress"
+          ],
+          "title": "ResponseFileSearchCallInProgressEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3224,13 +2995,6 @@
       ],
       "title": "ResponseFileSearchCallInProgressEvent",
       "type": "object"
-    },
-    "ResponseFileSearchCallInProgressEventType": {
-      "enum": [
-        "response.file_search_call.in_progress"
-      ],
-      "title": "ResponseFileSearchCallInProgressEventType",
-      "type": "string"
     },
     "ResponseFileSearchCallSearchingEvent": {
       "additionalProperties": false,
@@ -3245,8 +3009,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallSearchingEventType",
-          "description": "The type of the event. Always `response.file_search_call.searching`."
+          "description": "The type of the event. Always `response.file_search_call.searching`.",
+          "enum": [
+            "response.file_search_call.searching"
+          ],
+          "title": "ResponseFileSearchCallSearchingEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3257,20 +3025,17 @@
       "title": "ResponseFileSearchCallSearchingEvent",
       "type": "object"
     },
-    "ResponseFileSearchCallSearchingEventType": {
-      "enum": [
-        "response.file_search_call.searching"
-      ],
-      "title": "ResponseFileSearchCallSearchingEventType",
-      "type": "string"
-    },
     "ResponseFormatJsonObject": {
       "additionalProperties": false,
       "description": "JSON object response format. An older method of generating JSON responses.\nUsing `json_schema` is recommended for models that support it. Note that the\nmodel will not generate JSON without a system or user message instructing it\nto do so.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseFormatJsonObjectType",
-          "description": "The type of response format being defined. Always `json_object`."
+          "description": "The type of response format being defined. Always `json_object`.",
+          "enum": [
+            "json_object"
+          ],
+          "title": "ResponseFormatJsonObjectType",
+          "type": "string"
         }
       },
       "required": [
@@ -3278,13 +3043,6 @@
       ],
       "title": "ResponseFormatJsonObject",
       "type": "object"
-    },
-    "ResponseFormatJsonObjectType": {
-      "enum": [
-        "json_object"
-      ],
-      "title": "ResponseFormatJsonObjectType",
-      "type": "string"
     },
     "ResponseFormatJsonSchemaSchema": {
       "additionalProperties": {},
@@ -3295,8 +3053,12 @@
       "description": "Default response format. Used to generate text responses.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseFormatTextType",
-          "description": "The type of response format being defined. Always `text`."
+          "description": "The type of response format being defined. Always `text`.",
+          "enum": [
+            "text"
+          ],
+          "title": "ResponseFormatTextType",
+          "type": "string"
         }
       },
       "required": [
@@ -3304,13 +3066,6 @@
       ],
       "title": "ResponseFormatText",
       "type": "object"
-    },
-    "ResponseFormatTextType": {
-      "enum": [
-        "text"
-      ],
-      "title": "ResponseFormatTextType",
-      "type": "string"
     },
     "ResponseFunctionCallArgumentsDeltaEvent": {
       "additionalProperties": false,
@@ -3329,8 +3084,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFunctionCallArgumentsDeltaEventType",
-          "description": "The type of the event. Always `response.function_call_arguments.delta`."
+          "description": "The type of the event. Always `response.function_call_arguments.delta`.",
+          "enum": [
+            "response.function_call_arguments.delta"
+          ],
+          "title": "ResponseFunctionCallArgumentsDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3341,13 +3100,6 @@
       ],
       "title": "ResponseFunctionCallArgumentsDeltaEvent",
       "type": "object"
-    },
-    "ResponseFunctionCallArgumentsDeltaEventType": {
-      "enum": [
-        "response.function_call_arguments.delta"
-      ],
-      "title": "ResponseFunctionCallArgumentsDeltaEventType",
-      "type": "string"
     },
     "ResponseFunctionCallArgumentsDoneEvent": {
       "additionalProperties": false,
@@ -3366,7 +3118,11 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFunctionCallArgumentsDoneEventType"
+          "enum": [
+            "response.function_call_arguments.done"
+          ],
+          "title": "ResponseFunctionCallArgumentsDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3378,13 +3134,6 @@
       "title": "ResponseFunctionCallArgumentsDoneEvent",
       "type": "object"
     },
-    "ResponseFunctionCallArgumentsDoneEventType": {
-      "enum": [
-        "response.function_call_arguments.done"
-      ],
-      "title": "ResponseFunctionCallArgumentsDoneEventType",
-      "type": "string"
-    },
     "ResponseInProgressEvent": {
       "additionalProperties": false,
       "description": "Emitted when the response is in progress.",
@@ -3393,8 +3142,12 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseInProgressEventType",
-          "description": "The type of the event. Always `response.in_progress`."
+          "description": "The type of the event. Always `response.in_progress`.",
+          "enum": [
+            "response.in_progress"
+          ],
+          "title": "ResponseInProgressEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3404,13 +3157,6 @@
       "title": "ResponseInProgressEvent",
       "type": "object"
     },
-    "ResponseInProgressEventType": {
-      "enum": [
-        "response.in_progress"
-      ],
-      "title": "ResponseInProgressEventType",
-      "type": "string"
-    },
     "ResponseIncompleteDetails": {
       "additionalProperties": false,
       "description": "Details about why the response is incomplete.",
@@ -3419,7 +3165,12 @@
           "description": "The reason why the response is incomplete.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ResponseIncompleteDetailsReason"
+              "enum": [
+                "content_filter",
+                "max_output_tokens"
+              ],
+              "title": "ResponseIncompleteDetailsReason",
+              "type": "string"
             },
             {
               "type": "null"
@@ -3430,14 +3181,6 @@
       "title": "ResponseIncompleteDetails",
       "type": "object"
     },
-    "ResponseIncompleteDetailsReason": {
-      "enum": [
-        "content_filter",
-        "max_output_tokens"
-      ],
-      "title": "ResponseIncompleteDetailsReason",
-      "type": "string"
-    },
     "ResponseIncompleteEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response finishes as incomplete.",
@@ -3446,8 +3189,12 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseIncompleteEventType",
-          "description": "The type of the event. Always `response.incomplete`."
+          "description": "The type of the event. Always `response.incomplete`.",
+          "enum": [
+            "response.incomplete"
+          ],
+          "title": "ResponseIncompleteEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3456,13 +3203,6 @@
       ],
       "title": "ResponseIncompleteEvent",
       "type": "object"
-    },
-    "ResponseIncompleteEventType": {
-      "enum": [
-        "response.incomplete"
-      ],
-      "title": "ResponseIncompleteEventType",
-      "type": "string"
     },
     "ResponseItemList": {
       "additionalProperties": false,
@@ -3488,8 +3228,12 @@
           "type": "string"
         },
         "object": {
-          "$ref": "#/$defs/ResponseItemListObject",
-          "description": "The type of object returned, must be `list`."
+          "description": "The type of object returned, must be `list`.",
+          "enum": [
+            "list"
+          ],
+          "title": "ResponseItemListObject",
+          "type": "string"
         }
       },
       "required": [
@@ -3501,20 +3245,6 @@
       ],
       "title": "ResponseItemList",
       "type": "object"
-    },
-    "ResponseItemListObject": {
-      "enum": [
-        "list"
-      ],
-      "title": "ResponseItemListObject",
-      "type": "string"
-    },
-    "ResponseObject": {
-      "enum": [
-        "response"
-      ],
-      "title": "ResponseObject",
-      "type": "string"
     },
     "ResponseOutputItemAddedEvent": {
       "additionalProperties": false,
@@ -3528,8 +3258,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseOutputItemAddedEventType",
-          "description": "The type of the event. Always `response.output_item.added`."
+          "description": "The type of the event. Always `response.output_item.added`.",
+          "enum": [
+            "response.output_item.added"
+          ],
+          "title": "ResponseOutputItemAddedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3539,13 +3273,6 @@
       ],
       "title": "ResponseOutputItemAddedEvent",
       "type": "object"
-    },
-    "ResponseOutputItemAddedEventType": {
-      "enum": [
-        "response.output_item.added"
-      ],
-      "title": "ResponseOutputItemAddedEventType",
-      "type": "string"
     },
     "ResponseOutputItemDoneEvent": {
       "additionalProperties": false,
@@ -3559,8 +3286,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseOutputItemDoneEventType",
-          "description": "The type of the event. Always `response.output_item.done`."
+          "description": "The type of the event. Always `response.output_item.done`.",
+          "enum": [
+            "response.output_item.done"
+          ],
+          "title": "ResponseOutputItemDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3570,13 +3301,6 @@
       ],
       "title": "ResponseOutputItemDoneEvent",
       "type": "object"
-    },
-    "ResponseOutputItemDoneEventType": {
-      "enum": [
-        "response.output_item.done"
-      ],
-      "title": "ResponseOutputItemDoneEventType",
-      "type": "string"
     },
     "ResponseProperties": {
       "additionalProperties": false,
@@ -3638,7 +3362,12 @@
           "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "$ref": "#/$defs/ResponsePropertiesTruncation"
+              "enum": [
+                "auto",
+                "disabled"
+              ],
+              "title": "ResponsePropertiesTruncation",
+              "type": "string"
             },
             {
               "type": "null"
@@ -3659,14 +3388,6 @@
       },
       "title": "ResponsePropertiesText",
       "type": "object"
-    },
-    "ResponsePropertiesTruncation": {
-      "enum": [
-        "auto",
-        "disabled"
-      ],
-      "title": "ResponsePropertiesTruncation",
-      "type": "string"
     },
     "ResponseReasoningSummaryPartAddedEvent": {
       "additionalProperties": false,
@@ -3689,8 +3410,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventType",
-          "description": "The type of the event. Always `response.reasoning_summary_part.added`."
+          "description": "The type of the event. Always `response.reasoning_summary_part.added`.",
+          "enum": [
+            "response.reasoning_summary_part.added"
+          ],
+          "title": "ResponseReasoningSummaryPartAddedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3712,8 +3437,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPartType",
-          "description": "The type of the summary part. Always `summary_text`."
+          "description": "The type of the summary part. Always `summary_text`.",
+          "enum": [
+            "summary_text"
+          ],
+          "title": "ResponseReasoningSummaryPartAddedEventPartType",
+          "type": "string"
         }
       },
       "required": [
@@ -3722,20 +3451,6 @@
       ],
       "title": "ResponseReasoningSummaryPartAddedEventPart",
       "type": "object"
-    },
-    "ResponseReasoningSummaryPartAddedEventPartType": {
-      "enum": [
-        "summary_text"
-      ],
-      "title": "ResponseReasoningSummaryPartAddedEventPartType",
-      "type": "string"
-    },
-    "ResponseReasoningSummaryPartAddedEventType": {
-      "enum": [
-        "response.reasoning_summary_part.added"
-      ],
-      "title": "ResponseReasoningSummaryPartAddedEventType",
-      "type": "string"
     },
     "ResponseReasoningSummaryPartDoneEvent": {
       "additionalProperties": false,
@@ -3758,8 +3473,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventType",
-          "description": "The type of the event. Always `response.reasoning_summary_part.done`."
+          "description": "The type of the event. Always `response.reasoning_summary_part.done`.",
+          "enum": [
+            "response.reasoning_summary_part.done"
+          ],
+          "title": "ResponseReasoningSummaryPartDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3781,8 +3500,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPartType",
-          "description": "The type of the summary part. Always `summary_text`."
+          "description": "The type of the summary part. Always `summary_text`.",
+          "enum": [
+            "summary_text"
+          ],
+          "title": "ResponseReasoningSummaryPartDoneEventPartType",
+          "type": "string"
         }
       },
       "required": [
@@ -3791,20 +3514,6 @@
       ],
       "title": "ResponseReasoningSummaryPartDoneEventPart",
       "type": "object"
-    },
-    "ResponseReasoningSummaryPartDoneEventPartType": {
-      "enum": [
-        "summary_text"
-      ],
-      "title": "ResponseReasoningSummaryPartDoneEventPartType",
-      "type": "string"
-    },
-    "ResponseReasoningSummaryPartDoneEventType": {
-      "enum": [
-        "response.reasoning_summary_part.done"
-      ],
-      "title": "ResponseReasoningSummaryPartDoneEventType",
-      "type": "string"
     },
     "ResponseReasoningSummaryTextDeltaEvent": {
       "additionalProperties": false,
@@ -3827,8 +3536,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryTextDeltaEventType",
-          "description": "The type of the event. Always `response.reasoning_summary_text.delta`."
+          "description": "The type of the event. Always `response.reasoning_summary_text.delta`.",
+          "enum": [
+            "response.reasoning_summary_text.delta"
+          ],
+          "title": "ResponseReasoningSummaryTextDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3840,13 +3553,6 @@
       ],
       "title": "ResponseReasoningSummaryTextDeltaEvent",
       "type": "object"
-    },
-    "ResponseReasoningSummaryTextDeltaEventType": {
-      "enum": [
-        "response.reasoning_summary_text.delta"
-      ],
-      "title": "ResponseReasoningSummaryTextDeltaEventType",
-      "type": "string"
     },
     "ResponseReasoningSummaryTextDoneEvent": {
       "additionalProperties": false,
@@ -3869,8 +3575,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryTextDoneEventType",
-          "description": "The type of the event. Always `response.reasoning_summary_text.done`."
+          "description": "The type of the event. Always `response.reasoning_summary_text.done`.",
+          "enum": [
+            "response.reasoning_summary_text.done"
+          ],
+          "title": "ResponseReasoningSummaryTextDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3882,13 +3592,6 @@
       ],
       "title": "ResponseReasoningSummaryTextDoneEvent",
       "type": "object"
-    },
-    "ResponseReasoningSummaryTextDoneEventType": {
-      "enum": [
-        "response.reasoning_summary_text.done"
-      ],
-      "title": "ResponseReasoningSummaryTextDoneEventType",
-      "type": "string"
     },
     "ResponseRefusalDeltaEvent": {
       "additionalProperties": false,
@@ -3911,8 +3614,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseRefusalDeltaEventType",
-          "description": "The type of the event. Always `response.refusal.delta`."
+          "description": "The type of the event. Always `response.refusal.delta`.",
+          "enum": [
+            "response.refusal.delta"
+          ],
+          "title": "ResponseRefusalDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3924,13 +3631,6 @@
       ],
       "title": "ResponseRefusalDeltaEvent",
       "type": "object"
-    },
-    "ResponseRefusalDeltaEventType": {
-      "enum": [
-        "response.refusal.delta"
-      ],
-      "title": "ResponseRefusalDeltaEventType",
-      "type": "string"
     },
     "ResponseRefusalDoneEvent": {
       "additionalProperties": false,
@@ -3953,8 +3653,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseRefusalDoneEventType",
-          "description": "The type of the event. Always `response.refusal.done`."
+          "description": "The type of the event. Always `response.refusal.done`.",
+          "enum": [
+            "response.refusal.done"
+          ],
+          "title": "ResponseRefusalDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -3966,23 +3670,6 @@
       ],
       "title": "ResponseRefusalDoneEvent",
       "type": "object"
-    },
-    "ResponseRefusalDoneEventType": {
-      "enum": [
-        "response.refusal.done"
-      ],
-      "title": "ResponseRefusalDoneEventType",
-      "type": "string"
-    },
-    "ResponseStatus": {
-      "enum": [
-        "completed",
-        "failed",
-        "in_progress",
-        "incomplete"
-      ],
-      "title": "ResponseStatus",
-      "type": "string"
     },
     "ResponseStreamEvent": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
@@ -4132,8 +3819,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextAnnotationDeltaEventType",
-          "description": "The type of the event. Always `response.output_text.annotation.added`."
+          "description": "The type of the event. Always `response.output_text.annotation.added`.",
+          "enum": [
+            "response.output_text.annotation.added"
+          ],
+          "title": "ResponseTextAnnotationDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4146,13 +3837,6 @@
       ],
       "title": "ResponseTextAnnotationDeltaEvent",
       "type": "object"
-    },
-    "ResponseTextAnnotationDeltaEventType": {
-      "enum": [
-        "response.output_text.annotation.added"
-      ],
-      "title": "ResponseTextAnnotationDeltaEventType",
-      "type": "string"
     },
     "ResponseTextDeltaEvent": {
       "additionalProperties": false,
@@ -4175,8 +3859,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextDeltaEventType",
-          "description": "The type of the event. Always `response.output_text.delta`."
+          "description": "The type of the event. Always `response.output_text.delta`.",
+          "enum": [
+            "response.output_text.delta"
+          ],
+          "title": "ResponseTextDeltaEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4188,13 +3876,6 @@
       ],
       "title": "ResponseTextDeltaEvent",
       "type": "object"
-    },
-    "ResponseTextDeltaEventType": {
-      "enum": [
-        "response.output_text.delta"
-      ],
-      "title": "ResponseTextDeltaEventType",
-      "type": "string"
     },
     "ResponseTextDoneEvent": {
       "additionalProperties": false,
@@ -4217,8 +3898,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextDoneEventType",
-          "description": "The type of the event. Always `response.output_text.done`."
+          "description": "The type of the event. Always `response.output_text.done`.",
+          "enum": [
+            "response.output_text.done"
+          ],
+          "title": "ResponseTextDoneEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4230,21 +3915,6 @@
       ],
       "title": "ResponseTextDoneEvent",
       "type": "object"
-    },
-    "ResponseTextDoneEventType": {
-      "enum": [
-        "response.output_text.done"
-      ],
-      "title": "ResponseTextDoneEventType",
-      "type": "string"
-    },
-    "ResponseTruncation": {
-      "enum": [
-        "auto",
-        "disabled"
-      ],
-      "title": "ResponseTruncation",
-      "type": "string"
     },
     "ResponseUsage": {
       "additionalProperties": false,
@@ -4324,8 +3994,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallCompletedEventType",
-          "description": "The type of the event. Always `response.web_search_call.completed`."
+          "description": "The type of the event. Always `response.web_search_call.completed`.",
+          "enum": [
+            "response.web_search_call.completed"
+          ],
+          "title": "ResponseWebSearchCallCompletedEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4335,13 +4009,6 @@
       ],
       "title": "ResponseWebSearchCallCompletedEvent",
       "type": "object"
-    },
-    "ResponseWebSearchCallCompletedEventType": {
-      "enum": [
-        "response.web_search_call.completed"
-      ],
-      "title": "ResponseWebSearchCallCompletedEventType",
-      "type": "string"
     },
     "ResponseWebSearchCallInProgressEvent": {
       "additionalProperties": false,
@@ -4356,8 +4023,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallInProgressEventType",
-          "description": "The type of the event. Always `response.web_search_call.in_progress`."
+          "description": "The type of the event. Always `response.web_search_call.in_progress`.",
+          "enum": [
+            "response.web_search_call.in_progress"
+          ],
+          "title": "ResponseWebSearchCallInProgressEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4367,13 +4038,6 @@
       ],
       "title": "ResponseWebSearchCallInProgressEvent",
       "type": "object"
-    },
-    "ResponseWebSearchCallInProgressEventType": {
-      "enum": [
-        "response.web_search_call.in_progress"
-      ],
-      "title": "ResponseWebSearchCallInProgressEventType",
-      "type": "string"
     },
     "ResponseWebSearchCallSearchingEvent": {
       "additionalProperties": false,
@@ -4388,8 +4052,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallSearchingEventType",
-          "description": "The type of the event. Always `response.web_search_call.searching`."
+          "description": "The type of the event. Always `response.web_search_call.searching`.",
+          "enum": [
+            "response.web_search_call.searching"
+          ],
+          "title": "ResponseWebSearchCallSearchingEventType",
+          "type": "string"
         }
       },
       "required": [
@@ -4400,20 +4068,17 @@
       "title": "ResponseWebSearchCallSearchingEvent",
       "type": "object"
     },
-    "ResponseWebSearchCallSearchingEventType": {
-      "enum": [
-        "response.web_search_call.searching"
-      ],
-      "title": "ResponseWebSearchCallSearchingEventType",
-      "type": "string"
-    },
     "Screenshot": {
       "additionalProperties": false,
       "description": "A screenshot action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ScreenshotType",
-          "description": "Specifies the event type. For a screenshot action, this property is\nalways set to `screenshot`."
+          "description": "Specifies the event type. For a screenshot action, this property is\nalways set to `screenshot`.",
+          "enum": [
+            "screenshot"
+          ],
+          "title": "ScreenshotType",
+          "type": "string"
         }
       },
       "required": [
@@ -4421,13 +4086,6 @@
       ],
       "title": "Screenshot",
       "type": "object"
-    },
-    "ScreenshotType": {
-      "enum": [
-        "screenshot"
-      ],
-      "title": "ScreenshotType",
-      "type": "string"
     },
     "Scroll": {
       "additionalProperties": false,
@@ -4442,8 +4100,12 @@
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ScrollType",
-          "description": "Specifies the event type. For a scroll action, this property is\nalways set to `scroll`."
+          "description": "Specifies the event type. For a scroll action, this property is\nalways set to `scroll`.",
+          "enum": [
+            "scroll"
+          ],
+          "title": "ScrollType",
+          "type": "string"
         },
         "x": {
           "description": "The x-coordinate where the scroll occurred.",
@@ -4463,13 +4125,6 @@
       ],
       "title": "Scroll",
       "type": "object"
-    },
-    "ScrollType": {
-      "enum": [
-        "scroll"
-      ],
-      "title": "ScrollType",
-      "type": "string"
     },
     "ServiceTier": {
       "enum": [
@@ -4520,8 +4175,12 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/TextResponseFormatJsonSchemaType",
-          "description": "The type of response format being defined. Always `json_schema`."
+          "description": "The type of response format being defined. Always `json_schema`.",
+          "enum": [
+            "json_schema"
+          ],
+          "title": "TextResponseFormatJsonSchemaType",
+          "type": "string"
         }
       },
       "required": [
@@ -4531,13 +4190,6 @@
       ],
       "title": "TextResponseFormatJsonSchema",
       "type": "object"
-    },
-    "TextResponseFormatJsonSchemaType": {
-      "enum": [
-        "json_schema"
-      ],
-      "title": "TextResponseFormatJsonSchemaType",
-      "type": "string"
     },
     "Tool": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -4565,8 +4217,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ToolChoiceFunctionType",
-          "description": "For function calling, the type is always `function`."
+          "description": "For function calling, the type is always `function`.",
+          "enum": [
+            "function"
+          ],
+          "title": "ToolChoiceFunctionType",
+          "type": "string"
         }
       },
       "required": [
@@ -4575,13 +4231,6 @@
       ],
       "title": "ToolChoiceFunction",
       "type": "object"
-    },
-    "ToolChoiceFunctionType": {
-      "enum": [
-        "function"
-      ],
-      "title": "ToolChoiceFunctionType",
-      "type": "string"
     },
     "ToolChoiceOptions": {
       "enum": [
@@ -4597,8 +4246,15 @@
       "description": "Indicates that the model should use a built-in tool to generate a response.\n[Learn more about built-in tools](/docs/guides/tools).",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ToolChoiceTypesType",
-          "description": "The type of hosted tool the model should to use. Learn more about\n[built-in tools](/docs/guides/tools).\n\nAllowed values are:\n- `file_search`\n- `web_search_preview`\n- `computer_use_preview`"
+          "description": "The type of hosted tool the model should to use. Learn more about\n[built-in tools](/docs/guides/tools).\n\nAllowed values are:\n- `file_search`\n- `web_search_preview`\n- `computer_use_preview`",
+          "enum": [
+            "computer_use_preview",
+            "file_search",
+            "web_search_preview",
+            "web_search_preview_2025_03_11"
+          ],
+          "title": "ToolChoiceTypesType",
+          "type": "string"
         }
       },
       "required": [
@@ -4606,16 +4262,6 @@
       ],
       "title": "ToolChoiceTypes",
       "type": "object"
-    },
-    "ToolChoiceTypesType": {
-      "enum": [
-        "computer_use_preview",
-        "file_search",
-        "web_search_preview",
-        "web_search_preview_2025_03_11"
-      ],
-      "title": "ToolChoiceTypesType",
-      "type": "string"
     },
     "Type": {
       "additionalProperties": false,
@@ -4626,8 +4272,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/TypeType",
-          "description": "Specifies the event type. For a type action, this property is\nalways set to `type`."
+          "description": "Specifies the event type. For a type action, this property is\nalways set to `type`.",
+          "enum": [
+            "type"
+          ],
+          "title": "TypeType",
+          "type": "string"
         }
       },
       "required": [
@@ -4636,13 +4286,6 @@
       ],
       "title": "Type",
       "type": "object"
-    },
-    "TypeType": {
-      "enum": [
-        "type"
-      ],
-      "title": "TypeType",
-      "type": "string"
     },
     "URLCitationBody": {
       "additionalProperties": false,
@@ -4661,8 +4304,12 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/URLCitationBodyType",
-          "description": "The type of the URL citation. Always `url_citation`."
+          "description": "The type of the URL citation. Always `url_citation`.",
+          "enum": [
+            "url_citation"
+          ],
+          "title": "URLCitationBodyType",
+          "type": "string"
         },
         "url": {
           "description": "The URL of the web resource.",
@@ -4679,13 +4326,6 @@
       "title": "URLCitationBody",
       "type": "object"
     },
-    "URLCitationBodyType": {
-      "enum": [
-        "url_citation"
-      ],
-      "title": "URLCitationBodyType",
-      "type": "string"
-    },
     "VectorStoreFileAttributes": {
       "additionalProperties": {},
       "type": "object"
@@ -4695,8 +4335,12 @@
       "description": "A wait action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/WaitType",
-          "description": "Specifies the event type. For a wait action, this property is\nalways set to `wait`."
+          "description": "Specifies the event type. For a wait action, this property is\nalways set to `wait`.",
+          "enum": [
+            "wait"
+          ],
+          "title": "WaitType",
+          "type": "string"
         }
       },
       "required": [
@@ -4704,13 +4348,6 @@
       ],
       "title": "Wait",
       "type": "object"
-    },
-    "WaitType": {
-      "enum": [
-        "wait"
-      ],
-      "title": "WaitType",
-      "type": "string"
     },
     "WebSearchPreviewTool": {
       "additionalProperties": false,
@@ -4720,7 +4357,13 @@
           "description": "High level guidance for the amount of context window space to use for the\nsearch. One of `low`, `medium`, or `high`. `medium` is the default.",
           "oneOf": [
             {
-              "$ref": "#/$defs/WebSearchPreviewToolSearchContextSize"
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "title": "WebSearchPreviewToolSearchContextSize",
+              "type": "string"
             },
             {
               "type": "null"
@@ -4728,8 +4371,13 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/WebSearchPreviewToolType",
-          "description": "The type of the web search tool. One of `web_search_preview` or\n`web_search_preview_2025_03_11`."
+          "description": "The type of the web search tool. One of `web_search_preview` or\n`web_search_preview_2025_03_11`.",
+          "enum": [
+            "web_search_preview",
+            "web_search_preview_2025_03_11"
+          ],
+          "title": "WebSearchPreviewToolType",
+          "type": "string"
         },
         "user_location": {
           "oneOf": [
@@ -4747,23 +4395,6 @@
       ],
       "title": "WebSearchPreviewTool",
       "type": "object"
-    },
-    "WebSearchPreviewToolSearchContextSize": {
-      "enum": [
-        "low",
-        "medium",
-        "high"
-      ],
-      "title": "WebSearchPreviewToolSearchContextSize",
-      "type": "string"
-    },
-    "WebSearchPreviewToolType": {
-      "enum": [
-        "web_search_preview",
-        "web_search_preview_2025_03_11"
-      ],
-      "title": "WebSearchPreviewToolType",
-      "type": "string"
     },
     "WebSearchPreviewToolUserLocation": {
       "additionalProperties": false,
@@ -4816,12 +4447,23 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/$defs/WebSearchToolCallStatus",
-          "description": "The status of the web search tool call."
+          "description": "The status of the web search tool call.",
+          "enum": [
+            "in_progress",
+            "searching",
+            "completed",
+            "failed"
+          ],
+          "title": "WebSearchToolCallStatus",
+          "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/WebSearchToolCallType",
-          "description": "The type of the web search tool call. Always `web_search_call`."
+          "description": "The type of the web search tool call. Always `web_search_call`.",
+          "enum": [
+            "web_search_call"
+          ],
+          "title": "WebSearchToolCallType",
+          "type": "string"
         }
       },
       "required": [
@@ -4831,23 +4473,6 @@
       ],
       "title": "WebSearchToolCall",
       "type": "object"
-    },
-    "WebSearchToolCallStatus": {
-      "enum": [
-        "in_progress",
-        "searching",
-        "completed",
-        "failed"
-      ],
-      "title": "WebSearchToolCallStatus",
-      "type": "string"
-    },
-    "WebSearchToolCallType": {
-      "enum": [
-        "web_search_call"
-      ],
-      "title": "WebSearchToolCallType",
-      "type": "string"
     }
   },
   "$schema": "https://json-schema.org/draft/2020-12/schema"

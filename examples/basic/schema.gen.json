@@ -61,7 +61,14 @@
           ]
         },
         "status": {
-          "$ref": "#/$defs/OrderStatus"
+          "description": "is an enum of valid order states.",
+          "enum": [
+            "pending",
+            "confirmed",
+            "shipped"
+          ],
+          "title": "OrderStatus",
+          "type": "string"
         }
       },
       "required": [
@@ -71,16 +78,6 @@
       ],
       "title": "Order",
       "type": "object"
-    },
-    "OrderStatus": {
-      "description": "is an enum of valid order states.",
-      "enum": [
-        "pending",
-        "confirmed",
-        "shipped"
-      ],
-      "title": "OrderStatus",
-      "type": "string"
     },
     "Rectangle": {
       "additionalProperties": false,

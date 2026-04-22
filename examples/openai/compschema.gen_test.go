@@ -14,17 +14,6 @@ func TestCompschema_SchemaIsValidJSON(t *testing.T) {
 	}
 }
 
-func TestCompschema_FileCitationBodyType_JSONSchemaBytes(t *testing.T) {
-	b := FileCitationBodyType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FileCitationBody_JSONSchemaBytes(t *testing.T) {
 	b := (FileCitationBody{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -70,17 +59,6 @@ func TestCompschema_FileCitationBody_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_FilePathType_JSONSchemaBytes(t *testing.T) {
-	b := FilePathType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FilePath_JSONSchemaBytes(t *testing.T) {
 	b := (FilePath{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -124,17 +102,6 @@ func TestCompschema_FilePath_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_URLCitationBodyType_JSONSchemaBytes(t *testing.T) {
-	b := URLCitationBodyType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_URLCitationBody_JSONSchemaBytes(t *testing.T) {
@@ -249,28 +216,6 @@ func TestCompschema_ApproximateLocation_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ClickButton_JSONSchemaBytes(t *testing.T) {
-	b := ClickButton("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ClickType_JSONSchemaBytes(t *testing.T) {
-	b := ClickType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Click_JSONSchemaBytes(t *testing.T) {
 	b := (Click{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -361,17 +306,6 @@ func TestCompschema_CodeInterpreterFileOutputFilesElem_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_CodeInterpreterFileOutputType_JSONSchemaBytes(t *testing.T) {
-	b := CodeInterpreterFileOutputType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_CodeInterpreterFileOutput_JSONSchemaBytes(t *testing.T) {
 	b := (CodeInterpreterFileOutput{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -415,17 +349,6 @@ func TestCompschema_CodeInterpreterFileOutput_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_CodeInterpreterTextOutputType_JSONSchemaBytes(t *testing.T) {
-	b := CodeInterpreterTextOutputType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_CodeInterpreterTextOutput_JSONSchemaBytes(t *testing.T) {
@@ -484,28 +407,6 @@ func TestCompschema_CodeInterpreterToolOutput_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_CodeInterpreterToolCallStatus_JSONSchemaBytes(t *testing.T) {
-	b := CodeInterpreterToolCallStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_CodeInterpreterToolCallType_JSONSchemaBytes(t *testing.T) {
-	b := CodeInterpreterToolCallType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_CodeInterpreterToolCall_JSONSchemaBytes(t *testing.T) {
 	b := (CodeInterpreterToolCall{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -540,17 +441,6 @@ func TestCompschema_CodeInterpreterToolCall_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_CodeInterpreterToolCall_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ComparisonFilterType_JSONSchemaBytes(t *testing.T) {
-	b := ComparisonFilterType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ComparisonFilter_JSONSchemaBytes(t *testing.T) {
@@ -589,17 +479,6 @@ func TestCompschema_ComparisonFilter_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_CompoundFilterType_JSONSchemaBytes(t *testing.T) {
-	b := CompoundFilterType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_CompoundFilter_JSONSchemaBytes(t *testing.T) {
 	b := (CompoundFilter{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -634,17 +513,6 @@ func TestCompschema_CompoundFilter_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_CompoundFilter_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_DoubleClickType_JSONSchemaBytes(t *testing.T) {
-	b := DoubleClickType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_DoubleClick_JSONSchemaBytes(t *testing.T) {
@@ -737,17 +605,6 @@ func TestCompschema_Coordinate_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_DragType_JSONSchemaBytes(t *testing.T) {
-	b := DragType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Drag_JSONSchemaBytes(t *testing.T) {
 	b := (Drag{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -791,17 +648,6 @@ func TestCompschema_Drag_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_KeyPressType_JSONSchemaBytes(t *testing.T) {
-	b := KeyPressType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_KeyPress_JSONSchemaBytes(t *testing.T) {
@@ -849,17 +695,6 @@ func TestCompschema_KeyPress_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_MoveType_JSONSchemaBytes(t *testing.T) {
-	b := MoveType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Move_JSONSchemaBytes(t *testing.T) {
 	b := (Move{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -903,17 +738,6 @@ func TestCompschema_Move_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ScreenshotType_JSONSchemaBytes(t *testing.T) {
-	b := ScreenshotType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_Screenshot_JSONSchemaBytes(t *testing.T) {
@@ -961,17 +785,6 @@ func TestCompschema_Screenshot_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ScrollType_JSONSchemaBytes(t *testing.T) {
-	b := ScrollType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Scroll_JSONSchemaBytes(t *testing.T) {
 	b := (Scroll{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1017,17 +830,6 @@ func TestCompschema_Scroll_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_TypeType_JSONSchemaBytes(t *testing.T) {
-	b := TypeType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_Type_JSONSchemaBytes(t *testing.T) {
 	b := (Type{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1071,17 +873,6 @@ func TestCompschema_Type_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_WaitType_JSONSchemaBytes(t *testing.T) {
-	b := WaitType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_Wait_JSONSchemaBytes(t *testing.T) {
@@ -1196,17 +987,6 @@ func TestCompschema_ComputerCallOutputItemParamAcknowledgedSafetyChecks_JSONSche
 	}
 }
 
-func TestCompschema_ComputerScreenshotImageType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerScreenshotImageType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ComputerScreenshotImage_JSONSchemaBytes(t *testing.T) {
 	b := (ComputerScreenshotImage{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1250,28 +1030,6 @@ func TestCompschema_ComputerScreenshotImage_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ComputerCallOutputItemParamStatus_JSONSchemaBytes(t *testing.T) {
-	b := ComputerCallOutputItemParamStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ComputerCallOutputItemParamType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerCallOutputItemParamType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ComputerCallOutputItemParam_JSONSchemaBytes(t *testing.T) {
@@ -1364,28 +1122,6 @@ func TestCompschema_ComputerToolCallSafetyCheck_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ComputerToolCallStatus_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ComputerToolCallType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ComputerToolCall_JSONSchemaBytes(t *testing.T) {
 	b := (ComputerToolCall{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1420,28 +1156,6 @@ func TestCompschema_ComputerToolCall_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_ComputerToolCall_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ComputerToolCallOutputStatus_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallOutputStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ComputerToolCallOutputType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallOutputType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ComputerToolCallOutput_JSONSchemaBytes(t *testing.T) {
@@ -1489,28 +1203,6 @@ func TestCompschema_ComputerToolCallOutput_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ComputerToolCallOutputResourceStatus_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallOutputResourceStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ComputerToolCallOutputResourceType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerToolCallOutputResourceType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ComputerToolCallOutputResource_JSONSchemaBytes(t *testing.T) {
 	b := (ComputerToolCallOutputResource{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1554,28 +1246,6 @@ func TestCompschema_ComputerToolCallOutputResource_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ComputerUsePreviewToolEnvironment_JSONSchemaBytes(t *testing.T) {
-	b := ComputerUsePreviewToolEnvironment("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ComputerUsePreviewToolType_JSONSchemaBytes(t *testing.T) {
-	b := ComputerUsePreviewToolType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ComputerUsePreviewTool_JSONSchemaBytes(t *testing.T) {
@@ -1683,52 +1353,8 @@ func TestCompschema_CreateModelResponseProperties_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_Includable_JSONSchemaBytes(t *testing.T) {
-	b := Includable("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_CreateResponseInclude_JSONSchemaBytes(t *testing.T) {
 	b := (CreateResponseInclude{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ReasoningEffort_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningEffort("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ReasoningGenerateSummary_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningGenerateSummary("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ReasoningSummary_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningSummary("").JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -1776,17 +1402,6 @@ func TestCompschema_Reasoning_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseFormatJsonObjectType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFormatJsonObjectType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseFormatJsonObject_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseFormatJsonObject{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1830,17 +1445,6 @@ func TestCompschema_ResponseFormatJsonObject_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseFormatTextType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFormatTextType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseFormatText_JSONSchemaBytes(t *testing.T) {
@@ -1890,17 +1494,6 @@ func TestCompschema_ResponseFormatText_RoundTrip(t *testing.T) {
 
 func TestCompschema_ResponseFormatJsonSchemaSchema_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseFormatJsonSchemaSchema{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchemaType_JSONSchemaBytes(t *testing.T) {
-	b := TextResponseFormatJsonSchemaType("").JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -2004,17 +1597,6 @@ func TestCompschema_CreateResponseText_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_RankingOptionsRanker_JSONSchemaBytes(t *testing.T) {
-	b := RankingOptionsRanker("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_RankingOptions_JSONSchemaBytes(t *testing.T) {
 	b := (RankingOptions{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2051,17 +1633,6 @@ func TestCompschema_RankingOptions_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_FileSearchToolType_JSONSchemaBytes(t *testing.T) {
-	b := FileSearchToolType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_FileSearchTool_JSONSchemaBytes(t *testing.T) {
@@ -2120,17 +1691,6 @@ func TestCompschema_FunctionToolParameters_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_FunctionToolType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FunctionTool_JSONSchemaBytes(t *testing.T) {
 	b := (FunctionTool{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2174,28 +1734,6 @@ func TestCompschema_FunctionTool_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_WebSearchPreviewToolSearchContextSize_JSONSchemaBytes(t *testing.T) {
-	b := WebSearchPreviewToolSearchContextSize("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_WebSearchPreviewToolType_JSONSchemaBytes(t *testing.T) {
-	b := WebSearchPreviewToolType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_WebSearchPreviewToolUserLocation_JSONSchemaBytes(t *testing.T) {
@@ -2299,17 +1837,6 @@ func TestCompschema_Tool_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_CreateResponseTruncation_JSONSchemaBytes(t *testing.T) {
-	b := CreateResponseTruncation("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_CreateResponse_JSONSchemaBytes(t *testing.T) {
 	b := (CreateResponse{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2344,28 +1871,6 @@ func TestCompschema_CreateResponse_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_CreateResponse_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_EasyInputMessageRole_JSONSchemaBytes(t *testing.T) {
-	b := EasyInputMessageRole("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_EasyInputMessageType_JSONSchemaBytes(t *testing.T) {
-	b := EasyInputMessageType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_EasyInputMessage_JSONSchemaBytes(t *testing.T) {
@@ -2460,28 +1965,6 @@ func TestCompschema_FileSearchToolCallResults_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_FileSearchToolCallStatus_JSONSchemaBytes(t *testing.T) {
-	b := FileSearchToolCallStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FileSearchToolCallType_JSONSchemaBytes(t *testing.T) {
-	b := FileSearchToolCallType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FileSearchToolCall_JSONSchemaBytes(t *testing.T) {
 	b := (FileSearchToolCall{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2538,28 +2021,6 @@ func TestCompschema_Filters_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_FunctionCallOutputItemParamStatus_JSONSchemaBytes(t *testing.T) {
-	b := FunctionCallOutputItemParamStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FunctionCallOutputItemParamType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionCallOutputItemParamType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FunctionCallOutputItemParam_JSONSchemaBytes(t *testing.T) {
 	b := (FunctionCallOutputItemParam{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2603,28 +2064,6 @@ func TestCompschema_FunctionCallOutputItemParam_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_FunctionToolCallStatus_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FunctionToolCallType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_FunctionToolCall_JSONSchemaBytes(t *testing.T) {
@@ -2672,28 +2111,6 @@ func TestCompschema_FunctionToolCall_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_FunctionToolCallOutputStatus_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallOutputStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FunctionToolCallOutputType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallOutputType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FunctionToolCallOutput_JSONSchemaBytes(t *testing.T) {
 	b := (FunctionToolCallOutput{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2737,28 +2154,6 @@ func TestCompschema_FunctionToolCallOutput_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_FunctionToolCallOutputResourceStatus_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallOutputResourceStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FunctionToolCallOutputResourceType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallOutputResourceType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_FunctionToolCallOutputResource_JSONSchemaBytes(t *testing.T) {
@@ -2806,28 +2201,6 @@ func TestCompschema_FunctionToolCallOutputResource_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_FunctionToolCallResourceStatus_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallResourceStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_FunctionToolCallResourceType_JSONSchemaBytes(t *testing.T) {
-	b := FunctionToolCallResourceType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_FunctionToolCallResource_JSONSchemaBytes(t *testing.T) {
 	b := (FunctionToolCallResource{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2871,17 +2244,6 @@ func TestCompschema_FunctionToolCallResource_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_InputFileContentType_JSONSchemaBytes(t *testing.T) {
-	b := InputFileContentType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_InputFileContent_JSONSchemaBytes(t *testing.T) {
@@ -2929,28 +2291,6 @@ func TestCompschema_InputFileContent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_InputImageContentDetail_JSONSchemaBytes(t *testing.T) {
-	b := InputImageContentDetail("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_InputImageContentType_JSONSchemaBytes(t *testing.T) {
-	b := InputImageContentType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_InputImageContent_JSONSchemaBytes(t *testing.T) {
 	b := (InputImageContent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -2994,17 +2334,6 @@ func TestCompschema_InputImageContent_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_InputTextContentType_JSONSchemaBytes(t *testing.T) {
-	b := InputTextContentType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_InputTextContent_JSONSchemaBytes(t *testing.T) {
@@ -3065,17 +2394,6 @@ func TestCompschema_InputContent_JSONSchemaBytes(t *testing.T) {
 
 func TestCompschema_Item_JSONSchemaBytes(t *testing.T) {
 	b := (Item{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ItemReferenceParamType_JSONSchemaBytes(t *testing.T) {
-	b := ItemReferenceParamType("").JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -3152,39 +2470,6 @@ func TestCompschema_InputMessageContentList_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_InputMessageRole_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageRole("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_InputMessageStatus_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_InputMessageType_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_InputMessage_JSONSchemaBytes(t *testing.T) {
 	b := (InputMessage{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3228,39 +2513,6 @@ func TestCompschema_InputMessage_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_InputMessageResourceRole_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageResourceRole("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_InputMessageResourceStatus_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageResourceStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_InputMessageResourceType_JSONSchemaBytes(t *testing.T) {
-	b := InputMessageResourceType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_InputMessageResource_JSONSchemaBytes(t *testing.T) {
@@ -3308,17 +2560,6 @@ func TestCompschema_InputMessageResource_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_OutputTextContentType_JSONSchemaBytes(t *testing.T) {
-	b := OutputTextContentType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_OutputTextContent_JSONSchemaBytes(t *testing.T) {
 	b := (OutputTextContent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3353,17 +2594,6 @@ func TestCompschema_OutputTextContent_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_OutputTextContent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_RefusalContentType_JSONSchemaBytes(t *testing.T) {
-	b := RefusalContentType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_RefusalContent_JSONSchemaBytes(t *testing.T) {
@@ -3422,39 +2652,6 @@ func TestCompschema_OutputContent_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_OutputMessageRole_JSONSchemaBytes(t *testing.T) {
-	b := OutputMessageRole("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_OutputMessageStatus_JSONSchemaBytes(t *testing.T) {
-	b := OutputMessageStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_OutputMessageType_JSONSchemaBytes(t *testing.T) {
-	b := OutputMessageType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_OutputMessage_JSONSchemaBytes(t *testing.T) {
 	b := (OutputMessage{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3489,28 +2686,6 @@ func TestCompschema_OutputMessage_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_OutputMessage_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_WebSearchToolCallStatus_JSONSchemaBytes(t *testing.T) {
-	b := WebSearchToolCallStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_WebSearchToolCallType_JSONSchemaBytes(t *testing.T) {
-	b := WebSearchToolCallType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_WebSearchToolCall_JSONSchemaBytes(t *testing.T) {
@@ -3618,28 +2793,6 @@ func TestCompschema_ModelResponseProperties_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ReasoningItemStatus_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningItemStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ReasoningItemSummaryElemType_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningItemSummaryElemType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ReasoningItemSummaryElem_JSONSchemaBytes(t *testing.T) {
 	b := (ReasoningItemSummaryElem{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3683,17 +2836,6 @@ func TestCompschema_ReasoningItemSummaryElem_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ReasoningItemType_JSONSchemaBytes(t *testing.T) {
-	b := ReasoningItemType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ReasoningItem_JSONSchemaBytes(t *testing.T) {
@@ -3752,17 +2894,6 @@ func TestCompschema_OutputItem_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_ResponseErrorCode_JSONSchemaBytes(t *testing.T) {
-	b := ResponseErrorCode("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseError_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseError{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3808,17 +2939,6 @@ func TestCompschema_ResponseError_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseIncompleteDetailsReason_JSONSchemaBytes(t *testing.T) {
-	b := ResponseIncompleteDetailsReason("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseIncompleteDetails_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseIncompleteDetails{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3857,28 +2977,6 @@ func TestCompschema_ResponseIncompleteDetails_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseObject_JSONSchemaBytes(t *testing.T) {
-	b := ResponseObject("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseStatus_JSONSchemaBytes(t *testing.T) {
-	b := ResponseStatus("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseText_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseText{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3915,17 +3013,6 @@ func TestCompschema_ResponseText_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseTruncation_JSONSchemaBytes(t *testing.T) {
-	b := ResponseTruncation("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseUsageInputTokensDetails_JSONSchemaBytes(t *testing.T) {
@@ -4099,17 +3186,6 @@ func TestCompschema_Response_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseAudioDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseAudioDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseAudioDeltaEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseAudioDeltaEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4153,17 +3229,6 @@ func TestCompschema_ResponseAudioDeltaEvent_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseAudioDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseAudioDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseAudioDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -4211,17 +3276,6 @@ func TestCompschema_ResponseAudioDoneEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseAudioTranscriptDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseAudioTranscriptDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseAudioTranscriptDeltaEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseAudioTranscriptDeltaEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4265,17 +3319,6 @@ func TestCompschema_ResponseAudioTranscriptDeltaEvent_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseAudioTranscriptDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseAudioTranscriptDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseAudioTranscriptDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -4323,17 +3366,6 @@ func TestCompschema_ResponseAudioTranscriptDoneEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseCodeInterpreterCallCodeDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCodeInterpreterCallCodeDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseCodeInterpreterCallCodeDeltaEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseCodeInterpreterCallCodeDeltaEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4377,17 +3409,6 @@ func TestCompschema_ResponseCodeInterpreterCallCodeDeltaEvent_RoundTrip(t *testi
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseCodeInterpreterCallCodeDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCodeInterpreterCallCodeDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseCodeInterpreterCallCodeDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -4435,17 +3456,6 @@ func TestCompschema_ResponseCodeInterpreterCallCodeDoneEvent_RoundTrip(t *testin
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseCodeInterpreterCallCompletedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCodeInterpreterCallCompletedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseCodeInterpreterCallCompletedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseCodeInterpreterCallCompletedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4480,17 +3490,6 @@ func TestCompschema_ResponseCodeInterpreterCallCompletedEvent_ValidateRejectsEmp
 
 func TestCompschema_ResponseCodeInterpreterCallCompletedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseCodeInterpreterCallInProgressEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCodeInterpreterCallInProgressEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseCodeInterpreterCallInProgressEvent_JSONSchemaBytes(t *testing.T) {
@@ -4529,17 +3528,6 @@ func TestCompschema_ResponseCodeInterpreterCallInProgressEvent_RoundTrip(t *test
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseCodeInterpreterCallInterpretingEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCodeInterpreterCallInterpretingEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseCodeInterpreterCallInterpretingEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseCodeInterpreterCallInterpretingEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4574,17 +3562,6 @@ func TestCompschema_ResponseCodeInterpreterCallInterpretingEvent_ValidateRejects
 
 func TestCompschema_ResponseCodeInterpreterCallInterpretingEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseCompletedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCompletedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseCompletedEvent_JSONSchemaBytes(t *testing.T) {
@@ -4623,17 +3600,6 @@ func TestCompschema_ResponseCompletedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseContentPartAddedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseContentPartAddedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseContentPartAddedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseContentPartAddedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4668,17 +3634,6 @@ func TestCompschema_ResponseContentPartAddedEvent_ValidateRejectsEmpty(t *testin
 
 func TestCompschema_ResponseContentPartAddedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseContentPartDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseContentPartDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseContentPartDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -4717,17 +3672,6 @@ func TestCompschema_ResponseContentPartDoneEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseCreatedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseCreatedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseCreatedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseCreatedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4762,17 +3706,6 @@ func TestCompschema_ResponseCreatedEvent_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_ResponseCreatedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseErrorEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseErrorEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseErrorEvent_JSONSchemaBytes(t *testing.T) {
@@ -4820,17 +3753,6 @@ func TestCompschema_ResponseErrorEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseFailedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFailedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseFailedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseFailedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4865,17 +3787,6 @@ func TestCompschema_ResponseFailedEvent_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_ResponseFailedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseFileSearchCallCompletedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFileSearchCallCompletedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseFileSearchCallCompletedEvent_JSONSchemaBytes(t *testing.T) {
@@ -4923,17 +3834,6 @@ func TestCompschema_ResponseFileSearchCallCompletedEvent_RoundTrip(t *testing.T)
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseFileSearchCallInProgressEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFileSearchCallInProgressEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseFileSearchCallInProgressEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseFileSearchCallInProgressEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4977,17 +3877,6 @@ func TestCompschema_ResponseFileSearchCallInProgressEvent_RoundTrip(t *testing.T
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseFileSearchCallSearchingEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFileSearchCallSearchingEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseFileSearchCallSearchingEvent_JSONSchemaBytes(t *testing.T) {
@@ -5035,17 +3924,6 @@ func TestCompschema_ResponseFileSearchCallSearchingEvent_RoundTrip(t *testing.T)
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseFunctionCallArgumentsDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFunctionCallArgumentsDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseFunctionCallArgumentsDeltaEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseFunctionCallArgumentsDeltaEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5089,17 +3967,6 @@ func TestCompschema_ResponseFunctionCallArgumentsDeltaEvent_RoundTrip(t *testing
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseFunctionCallArgumentsDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseFunctionCallArgumentsDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseFunctionCallArgumentsDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -5147,17 +4014,6 @@ func TestCompschema_ResponseFunctionCallArgumentsDoneEvent_RoundTrip(t *testing.
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseInProgressEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseInProgressEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseInProgressEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseInProgressEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5192,17 +4048,6 @@ func TestCompschema_ResponseInProgressEvent_ValidateRejectsEmpty(t *testing.T) {
 
 func TestCompschema_ResponseInProgressEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseIncompleteEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseIncompleteEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseIncompleteEvent_JSONSchemaBytes(t *testing.T) {
@@ -5241,17 +4086,6 @@ func TestCompschema_ResponseIncompleteEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseItemListObject_JSONSchemaBytes(t *testing.T) {
-	b := ResponseItemListObject("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseItemList_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseItemList{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5288,17 +4122,6 @@ func TestCompschema_ResponseItemList_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
-func TestCompschema_ResponseOutputItemAddedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseOutputItemAddedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseOutputItemAddedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseOutputItemAddedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5333,17 +4156,6 @@ func TestCompschema_ResponseOutputItemAddedEvent_ValidateRejectsEmpty(t *testing
 
 func TestCompschema_ResponseOutputItemAddedEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseOutputItemDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseOutputItemDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseOutputItemDoneEvent_JSONSchemaBytes(t *testing.T) {
@@ -5420,17 +4232,6 @@ func TestCompschema_ResponsePropertiesText_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponsePropertiesTruncation_JSONSchemaBytes(t *testing.T) {
-	b := ResponsePropertiesTruncation("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseProperties_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseProperties{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5467,17 +4268,6 @@ func TestCompschema_ResponseProperties_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseReasoningSummaryPartAddedEventPartType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryPartAddedEventPartType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseReasoningSummaryPartAddedEventPart_JSONSchemaBytes(t *testing.T) {
@@ -5525,17 +4315,6 @@ func TestCompschema_ResponseReasoningSummaryPartAddedEventPart_RoundTrip(t *test
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseReasoningSummaryPartAddedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryPartAddedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseReasoningSummaryPartAddedEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseReasoningSummaryPartAddedEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5579,17 +4358,6 @@ func TestCompschema_ResponseReasoningSummaryPartAddedEvent_RoundTrip(t *testing.
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseReasoningSummaryPartDoneEventPartType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryPartDoneEventPartType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseReasoningSummaryPartDoneEventPart_JSONSchemaBytes(t *testing.T) {
@@ -5637,17 +4405,6 @@ func TestCompschema_ResponseReasoningSummaryPartDoneEventPart_RoundTrip(t *testi
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseReasoningSummaryPartDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryPartDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseReasoningSummaryPartDoneEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseReasoningSummaryPartDoneEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5691,17 +4448,6 @@ func TestCompschema_ResponseReasoningSummaryPartDoneEvent_RoundTrip(t *testing.T
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseReasoningSummaryTextDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryTextDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseReasoningSummaryTextDeltaEvent_JSONSchemaBytes(t *testing.T) {
@@ -5749,17 +4495,6 @@ func TestCompschema_ResponseReasoningSummaryTextDeltaEvent_RoundTrip(t *testing.
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseReasoningSummaryTextDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseReasoningSummaryTextDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseReasoningSummaryTextDoneEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseReasoningSummaryTextDoneEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5803,17 +4538,6 @@ func TestCompschema_ResponseReasoningSummaryTextDoneEvent_RoundTrip(t *testing.T
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseRefusalDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseRefusalDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseRefusalDeltaEvent_JSONSchemaBytes(t *testing.T) {
@@ -5861,17 +4585,6 @@ func TestCompschema_ResponseRefusalDeltaEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseRefusalDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseRefusalDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseRefusalDoneEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseRefusalDoneEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5917,17 +4630,6 @@ func TestCompschema_ResponseRefusalDoneEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseTextAnnotationDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseTextAnnotationDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseTextAnnotationDeltaEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseTextAnnotationDeltaEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -5962,17 +4664,6 @@ func TestCompschema_ResponseTextAnnotationDeltaEvent_ValidateRejectsEmpty(t *tes
 
 func TestCompschema_ResponseTextAnnotationDeltaEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ResponseTextDeltaEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseTextDeltaEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseTextDeltaEvent_JSONSchemaBytes(t *testing.T) {
@@ -6020,17 +4711,6 @@ func TestCompschema_ResponseTextDeltaEvent_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseTextDoneEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseTextDoneEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseTextDoneEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseTextDoneEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -6074,17 +4754,6 @@ func TestCompschema_ResponseTextDoneEvent_RoundTrip(t *testing.T) {
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseWebSearchCallCompletedEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseWebSearchCallCompletedEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseWebSearchCallCompletedEvent_JSONSchemaBytes(t *testing.T) {
@@ -6132,17 +4801,6 @@ func TestCompschema_ResponseWebSearchCallCompletedEvent_RoundTrip(t *testing.T) 
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseWebSearchCallInProgressEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseWebSearchCallInProgressEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ResponseWebSearchCallInProgressEvent_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseWebSearchCallInProgressEvent{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -6186,17 +4844,6 @@ func TestCompschema_ResponseWebSearchCallInProgressEvent_RoundTrip(t *testing.T)
 		t.Fatalf("re-marshal: %v", err)
 	}
 	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseWebSearchCallSearchingEventType_JSONSchemaBytes(t *testing.T) {
-	b := ResponseWebSearchCallSearchingEventType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
 }
 
 func TestCompschema_ResponseWebSearchCallSearchingEvent_JSONSchemaBytes(t *testing.T) {
@@ -6255,17 +4902,6 @@ func TestCompschema_ResponseStreamEvent_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_ToolChoiceFunctionType_JSONSchemaBytes(t *testing.T) {
-	b := ToolChoiceFunctionType("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ToolChoiceFunction_JSONSchemaBytes(t *testing.T) {
 	b := (ToolChoiceFunction{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -6313,17 +4949,6 @@ func TestCompschema_ToolChoiceFunction_RoundTrip(t *testing.T) {
 
 func TestCompschema_ToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
 	b := ToolChoiceOptions("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ToolChoiceTypesType_JSONSchemaBytes(t *testing.T) {
-	b := ToolChoiceTypesType("").JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}

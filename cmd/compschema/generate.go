@@ -55,7 +55,7 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "package %s: %d types\n", pkg.Name, len(pkg.Types))
 
 				// 1. JSON Schema
-				schemaJSON, err := emitter.JSONSchema(pkg)
+				schemaJSON, inlined, err := emitter.JSONSchema(pkg)
 				if err != nil {
 					return fmt.Errorf("emit schema: %w", err)
 				}
@@ -77,7 +77,7 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "  ✓ %s (%d bytes)\n", schemaPath, len(schemaJSON))
 
 				// 2. Go codegen
-				goCode := emitter.GoCodegen(pkg)
+				goCode := emitter.GoCodegen(pkg, inlined)
 				goPath := filepath.Join(dir, "compschema.gen.go")
 				if err := os.WriteFile(goPath, []byte(goCode), 0644); err != nil {
 					return fmt.Errorf("write codegen: %w", err)
@@ -85,7 +85,7 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "  ✓ %s\n", goPath)
 
 				// 3. Tests
-				testCode := emitter.GoTests(pkg)
+				testCode := emitter.GoTests(pkg, inlined)
 				testPath := filepath.Join(dir, "compschema.gen_test.go")
 				if err := os.WriteFile(testPath, []byte(testCode), 0644); err != nil {
 					return fmt.Errorf("write tests: %w", err)

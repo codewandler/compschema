@@ -76,9 +76,6 @@ func DecodeLineItem(data []byte) (LineItem, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for OrderStatus.
-func (OrderStatus) JSONSchemaBytes() []byte { return compschemaDefBytes("OrderStatus") }
-
 // JSONSchemaBytes returns the JSON Schema definition for Order.
 func (Order) JSONSchemaBytes() []byte { return compschemaDefBytes("Order") }
 
