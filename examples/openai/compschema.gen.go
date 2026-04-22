@@ -2166,49 +2166,59 @@ func DecodeItemResource(data []byte) (ItemResource, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
+	var keys map[string]bool
 	{
+		var obj map[string]json.RawMessage
+		if err := json.Unmarshal(data, &obj); err == nil {
+			keys = make(map[string]bool, len(obj))
+			for k := range obj {
+				keys[k] = true
+			}
+		}
+	}
+	if keys["action"] && keys["call_id"] && keys["id"] && keys["pending_safety_checks"] && keys["status"] && keys["type"] {
 		var val ComputerToolCall
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
-		var val ComputerToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val FunctionToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
+	if keys["arguments"] && keys["call_id"] && keys["id"] && keys["name"] && keys["type"] {
 		var val FunctionToolCallResource
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
-		var val InputMessageResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
+	if keys["content"] && keys["id"] && keys["role"] && keys["status"] && keys["type"] {
 		var val OutputMessage
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
+	if keys["call_id"] && keys["id"] && keys["output"] && keys["type"] {
+		var val ComputerToolCallOutputResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["queries"] && keys["status"] && keys["type"] {
+		var val FileSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["id"] && keys["output"] && keys["type"] {
+		var val FunctionToolCallOutputResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["content"] && keys["id"] && keys["role"] {
+		var val InputMessageResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["status"] && keys["type"] {
 		var val WebSearchToolCall
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
@@ -2328,37 +2338,47 @@ func DecodeOutputItem(data []byte) (OutputItem, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
+	var keys map[string]bool
 	{
+		var obj map[string]json.RawMessage
+		if err := json.Unmarshal(data, &obj); err == nil {
+			keys = make(map[string]bool, len(obj))
+			for k := range obj {
+				keys[k] = true
+			}
+		}
+	}
+	if keys["action"] && keys["call_id"] && keys["id"] && keys["pending_safety_checks"] && keys["status"] && keys["type"] {
 		var val ComputerToolCall
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
+	if keys["content"] && keys["id"] && keys["role"] && keys["status"] && keys["type"] {
 		var val OutputMessage
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
+	if keys["id"] && keys["queries"] && keys["status"] && keys["type"] {
+		var val FileSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["arguments"] && keys["call_id"] && keys["name"] && keys["type"] {
+		var val FunctionToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["summary"] && keys["type"] {
 		var val ReasoningItem
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	{
+	if keys["id"] && keys["status"] && keys["type"] {
 		var val WebSearchToolCall
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil

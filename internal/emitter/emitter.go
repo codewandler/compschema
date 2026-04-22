@@ -4,6 +4,7 @@ package emitter
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/codewandler/compschema/internal/ir"
@@ -511,24 +512,111 @@ func emitUnionDecode(b *strings.Builder, name string, t *ir.Type, pkg *ir.Packag
 		b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn nil, fmt.Errorf(\"unknown %s %%q for %s\", disc.D)\n", t.Discriminator, name))
 		b.WriteString("\t}\n")
 	} else {
-		// Non-discriminated: try each variant in order.
+		// No discriminator — match on required property sets.
+		// Extract the JSON keys present in the input, then try variants
+		// sorted by specificity (most required fields first).
+		var candidates []variantReq
 		for _, v := range t.Variants {
 			if v.Name == "" {
 				continue
 			}
-			if vt, ok := pkg.Types[v.Name]; ok && vt.Kind != ir.KindStruct {
+			vt, ok := pkg.Types[v.Name]
+			if !ok || vt.Kind != ir.KindStruct {
 				continue
 			}
-			b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", v.Name))
-			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
-			b.WriteString("\t\t\treturn &val, nil\n")
+			var req []string
+			for _, f := range vt.Fields {
+				if f.Required {
+					req = append(req, f.JSONName)
+				}
+			}
+			candidates = append(candidates, variantReq{v.Name, req})
+		}
+
+		if len(candidates) > 0 && hasDistinctRequiredSets(candidates) {
+			// Sort by specificity (most required fields first).
+			b.WriteString("\tvar keys map[string]bool\n")
+			b.WriteString("\t{\n")
+			b.WriteString("\t\tvar obj map[string]json.RawMessage\n")
+			b.WriteString("\t\tif err := json.Unmarshal(data, &obj); err == nil {\n")
+			b.WriteString("\t\t\tkeys = make(map[string]bool, len(obj))\n")
+			b.WriteString("\t\t\tfor k := range obj {\n")
+			b.WriteString("\t\t\t\tkeys[k] = true\n")
+			b.WriteString("\t\t\t}\n")
 			b.WriteString("\t\t}\n")
 			b.WriteString("\t}\n")
+
+			// Sort candidates: most required fields first for specificity.
+			sort.Slice(candidates, func(i, j int) bool {
+				return len(candidates[i].required) > len(candidates[j].required)
+			})
+
+			for _, c := range candidates {
+				if len(c.required) == 0 {
+					// No required fields — always matches, use as last resort.
+					continue
+				}
+				// Check if all required fields are present.
+				var checks []string
+				for _, r := range c.required {
+					checks = append(checks, fmt.Sprintf("keys[%q]", r))
+				}
+				b.WriteString(fmt.Sprintf("\tif %s {\n", strings.Join(checks, " && ")))
+				b.WriteString(fmt.Sprintf("\t\tvar val %s\n", c.name))
+				b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
+				b.WriteString("\t\t\treturn &val, nil\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString("\t}\n")
+			}
+
+			// Fallback: try variants with no required fields.
+			for _, c := range candidates {
+				if len(c.required) > 0 {
+					continue
+				}
+				b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", c.name))
+				b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
+				b.WriteString("\t\t\treturn &val, nil\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString("\t}\n")
+			}
+		} else {
+			// Truly ambiguous — brute force try each.
+			for _, c := range candidates {
+				b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", c.name))
+				b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
+				b.WriteString("\t\t\treturn &val, nil\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString("\t}\n")
+			}
 		}
 		b.WriteString(fmt.Sprintf("\treturn nil, fmt.Errorf(\"no matching variant for %s\")\n", name))
 	}
 
 	b.WriteString("}\n\n")
+}
+
+// variantReq pairs a variant name with its required JSON fields.
+type variantReq struct {
+	name     string
+	required []string
+}
+
+// hasDistinctRequiredSets checks if at least some variants have unique required
+// property sets that can be used for structural discrimination.
+func hasDistinctRequiredSets(candidates []variantReq) bool {
+	seen := make(map[string]int)
+	for _, c := range candidates {
+		if len(c.required) == 0 {
+			continue
+		}
+		sorted := make([]string, len(c.required))
+		copy(sorted, c.required)
+		sort.Strings(sorted)
+		k := strings.Join(sorted, ",")
+		seen[k]++
+	}
+	return len(seen) >= 2
 }
 
 // hasDiscriminatorValues returns true if at least one variant has a discriminator value.
