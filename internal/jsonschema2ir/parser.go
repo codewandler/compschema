@@ -160,19 +160,13 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 			var vs schemaNode
 			json.Unmarshal(raw, &vs)
 			if vs.Ref != "" {
-				// Follow $ref to check if it's also a string enum.
 				refName := vs.Ref
 				if strings.HasPrefix(refName, "#/$defs/") {
 					refName = strings.TrimPrefix(refName, "#/$defs/")
 				}
-				if refDef, ok := ctx.defs[refName]; ok {
-					refType := resolveType(refDef.Type)
-					if refType == "string" || (len(refDef.Enum) > 0 && refType == "") {
-						if len(refDef.Enum) > 0 {
-							combinedEnums = append(combinedEnums, refDef.Enum...)
-						}
-						continue
-					}
+				if enums, ok := ctx.resolveStringEnums(refName); ok {
+					combinedEnums = append(combinedEnums, enums...)
+					continue
 				}
 				allString = false
 				break
@@ -408,4 +402,70 @@ func collectConstraints(s *schemaNode) []ir.Constraint {
 		cs = append(cs, ir.Constraint{Keyword: "const", Value: s.Const})
 	}
 	return cs
+}
+
+// resolveStringEnums checks if a named $def is a string enum or an anyOf
+// of string enums, and returns the combined enum values.
+func (ctx *parseContext) resolveStringEnums(name string) ([]any, bool) {
+	def, ok := ctx.defs[name]
+	if !ok {
+		return nil, false
+	}
+
+	// Direct string enum.
+	refType := resolveType(def.Type)
+	if refType == "string" {
+		if len(def.Enum) > 0 {
+			return def.Enum, true
+		}
+		// Plain string (no enum) — still string-typed.
+		return nil, true
+	}
+
+	// anyOf of strings — recursively resolve.
+	variants := def.AnyOf
+	if len(variants) == 0 {
+		variants = def.OneOf
+	}
+	if len(variants) == 0 {
+		return nil, false
+	}
+
+	var combined []any
+	for _, raw := range variants {
+		var vs schemaNode
+		json.Unmarshal(raw, &vs)
+
+		if vs.Ref != "" {
+			childRef := vs.Ref
+			if strings.HasPrefix(childRef, "#/$defs/") {
+				childRef = strings.TrimPrefix(childRef, "#/$defs/")
+			}
+			if childRef == name {
+				return nil, false // self-reference, avoid infinite loop
+			}
+			childEnums, ok := ctx.resolveStringEnums(childRef)
+			if !ok {
+				return nil, false
+			}
+			combined = append(combined, childEnums...)
+			continue
+		}
+
+		vType := resolveType(vs.Type)
+		if vType == "null" {
+			continue // nullable variant, skip
+		}
+		if vType != "string" {
+			return nil, false
+		}
+		if len(vs.Enum) > 0 {
+			combined = append(combined, vs.Enum...)
+		}
+	}
+
+	if len(combined) > 0 {
+		return combined, true
+	}
+	return nil, true // all string, no enums
 }

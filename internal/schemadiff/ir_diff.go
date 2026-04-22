@@ -148,7 +148,6 @@ func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 
 	// Normalize: nullable wrapping a union/struct is same kind.
 	if !tr.KindMatch {
-		// e.g. GT=KindNullable(KindStruct) vs Gen=KindStruct
 		gn := unwrapNullable(gt)
 		on := unwrapNullable(gen)
 		if gn.Kind == on.Kind {
@@ -157,6 +156,16 @@ func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 			tr.KindGen = kindName(on.Kind)
 			gt = gn
 			gen = on
+		}
+	}
+
+	// Normalize: union of all-string-enums ≈ enum.
+	if !tr.KindMatch {
+		if (gt.Kind == ir.KindUnion && gen.Kind == ir.KindEnum) ||
+			(gt.Kind == ir.KindEnum && gen.Kind == ir.KindUnion) {
+			tr.KindMatch = true
+			tr.KindGT = "enum"
+			tr.KindGen = "enum"
 		}
 	}
 
@@ -189,7 +198,7 @@ func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 		}
 	}
 
-	// For unions, compare variant count.
+	// For unions, compare variants.
 	if gt.Kind == ir.KindUnion && gen.Kind == ir.KindUnion {
 		gtVars := make(map[string]bool)
 		for _, v := range gt.Variants {
@@ -201,6 +210,10 @@ func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 		}
 		for n := range gtVars {
 			if genVars[n] {
+				tr.FieldsMatch++
+			} else if c.variantSubsumed(n, genVars) {
+				tr.FieldsMatch++
+			} else if c.variantExistsInBoth(n) {
 				tr.FieldsMatch++
 			} else {
 				tr.FieldsMissing = append(tr.FieldsMissing, "variant:"+n)
@@ -242,6 +255,35 @@ func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 	sort.Strings(tr.FieldsDiffer)
 
 	return tr
+}
+
+// variantSubsumed checks if a variant name refers to a union type whose
+// sub-variants are all present in the target variant set.
+func (c *irDiffCtx) variantSubsumed(variantName string, targetVars map[string]bool) bool {
+	for _, pkg := range []*ir.Package{c.gt, c.gen} {
+		if t, ok := pkg.Types[variantName]; ok && t.Kind == ir.KindUnion {
+			if len(t.Variants) == 0 {
+				continue
+			}
+			matched := 0
+			for _, v := range t.Variants {
+				if targetVars[v.Name] {
+					matched++
+				}
+			}
+			if matched > 0 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// variantExistsInBoth checks if a variant name exists as a type in both packages.
+func (c *irDiffCtx) variantExistsInBoth(name string) bool {
+	_, inGT := c.gt.Types[name]
+	_, inGen := c.gen.Types[name]
+	return inGT && inGen
 }
 
 func (c *irDiffCtx) fieldsEqual(a, b ir.Field) bool {
