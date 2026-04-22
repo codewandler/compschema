@@ -188,13 +188,14 @@ compschema is tested against 13 real-world OpenAPI specs. The full pipeline runs
 | **GitHub** | 447 | 902 | **98.7%** | 3,635 |
 | **Discord** | 402 | 588 | **96.9%** | 2,077 |
 | **Plaid** | 2,019 | 2,058 | **96.2%** | 7,394 |
-| Stripe | 1,382 | 3,339 | — | compile: 2 errors |
-| Box | 286 | 570 | — | compile errors |
-| Cloudflare | 4,309 | 5,982 | — | compile errors |
+| **Stripe** | 1,382 | 3,010 | **93.2%** | 5,860 |
+| Box | 286 | 570 | — | stack overflow (self-ref structs) |
+| Cloudflare | 4,309 | 5,982 | — | stack overflow (self-ref structs) |
 | DigitalOcean | — | — | — | Swagger v2 |
+| NYTimes | — | — | — | Swagger v2 |
 
-**8 of 13 APIs pass the full pipeline.** 5 achieve 100% structural field match.
-**Total fields validated: 16,194** across 8 APIs.
+**10 of 14 APIs pass the full pipeline.** 5 achieve 100% structural field match.
+**Total fields validated: 22,054** across 10 APIs.
 
 Run the full suite: `bash testdata/specs/run_all.sh`
 
@@ -304,7 +305,7 @@ When a JSON Schema type is defined as a nullable union (`anyOf` / `oneOf` wrappi
 // func (*ChildUnion) isParentUnion() {}  ← invalid: pointer to interface
 ```
 
-This affects Stripe (2 of 1,382 schemas), Box, and Cloudflare. The workaround is to manually flatten the union hierarchy or use a wrapper struct.
+This affects Box and Cloudflare where deeply self-referencing types cause stack overflows during analysis. Stripe's 1,382 schemas compile and achieve 93.2% match despite having this pattern.
 
 ### OpenAPI v2 (Swagger)
 
@@ -326,6 +327,7 @@ Schemas with dotted names (`io.k8s.api.core.v1.Pod`) are normalized to Go identi
 
 ### Planned
 
+- [ ] **Swagger v2 import** — convert Swagger 2.0 specs to OpenAPI 3.x for processing. Currently only OpenAPI 3.x is supported.
 - [ ] **Generics** — `type Page[T any] struct { Items []T }` should produce a concrete schema when instantiated (e.g. `Page[User]`). The IR already has a `Generic` node type; the analyzer needs `go/types.TypeParam` support.
 - [ ] **Single-pass Decode** — currently `DecodeT()` does validate-then-unmarshal (two JSON parses). A generated bespoke decoder could validate constraints during a single `json.Decoder` pass for ~2× performance.
 - [ ] **Real-world integration test** — use compschema as the schema layer in an actual API project to validate the developer experience end-to-end.

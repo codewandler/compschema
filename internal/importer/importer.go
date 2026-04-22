@@ -233,14 +233,21 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 		primType := ""
 
 		if v.TypeRef.Name != "" {
-			if vt, ok := pkg.Types[v.TypeRef.Name]; ok {
-				// Only structs can have pointer receiver methods.
-				if vt.Kind != ir.KindStruct {
-					canHaveMethods = false
-				}
+			vGoName := toGoName(v.TypeRef.Name)
+			canHaveMethods = false // default: don't emit
+			// Only re-enable for structs.
+			if vt, ok := pkg.Types[v.TypeRef.Name]; ok && vt.Kind == ir.KindStruct {
+				canHaveMethods = true
 			} else {
-				canHaveMethods = false
+				// Try matching by Go name.
+				for _, pt := range pkg.Types {
+					if toGoName(pt.Name) == vGoName && pt.Kind == ir.KindStruct {
+						canHaveMethods = true
+						break
+					}
+				}
 			}
+			_ = vGoName
 		} else if v.TypeRef.Inline != nil {
 			switch v.TypeRef.Inline.Kind {
 			case ir.KindScalar:
@@ -251,6 +258,25 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 				primType = "[]" + typeRefGoType(v.TypeRef.Inline.Items, pkg)
 			case ir.KindMap:
 				canHaveMethods = false
+			case ir.KindRef:
+				// Resolve the ref and check if it's a struct.
+				if rt, ok := pkg.Types[v.TypeRef.Inline.RefName]; ok && rt.Kind == ir.KindStruct {
+					vName = toGoName(v.TypeRef.Inline.RefName)
+				} else {
+					canHaveMethods = false
+				}
+			default:
+				canHaveMethods = false
+			}
+		}
+
+		if canHaveMethods && vName != "" {
+			// Final safety: check if vName is itself a union interface.
+			for _, pt := range pkg.Types {
+				if toGoName(pt.Name) == vName && pt.Kind != ir.KindStruct {
+					canHaveMethods = false
+					break
+				}
 			}
 		}
 
@@ -397,6 +423,19 @@ func toGoName(s string) string {
 	s = strings.ReplaceAll(s, ":", "_")
 	s = strings.ReplaceAll(s, "#", "Hash")
 	s = strings.ReplaceAll(s, "@", "At")
+	s = strings.ReplaceAll(s, "$", "")
+	s = strings.ReplaceAll(s, "<=", "Lte")
+	s = strings.ReplaceAll(s, ">=", "Gte")
+	s = strings.ReplaceAll(s, "<", "Lt")
+	s = strings.ReplaceAll(s, ">", "Gt")
+	s = strings.ReplaceAll(s, "=", "Eq")
+	s = strings.ReplaceAll(s, "!", "Not")
+	s = strings.ReplaceAll(s, "~", "")
+	s = strings.ReplaceAll(s, "?", "")
+	s = strings.ReplaceAll(s, ";", "")
+	s = strings.ReplaceAll(s, "%", "Pct")
+	s = strings.ReplaceAll(s, "^", "")
+	s = strings.ReplaceAll(s, "`", "")
 
 	parts := strings.FieldsFunc(s, func(r rune) bool {
 		return r == '_' || r == '-' || r == '.' || r == '[' || r == ']' || r == ' ' || r == ','
@@ -515,8 +554,17 @@ func extractInlineEnums(pkg *ir.Package) {
 				continue
 			}
 
+			// Single-variant union → use the variant type directly (likely nullable ref).
+			if inline.Kind == ir.KindUnion && len(inline.Variants) == 1 {
+				v := inline.Variants[0]
+				if v.TypeRef.Name != "" {
+					t.Fields[i].Type = ir.TypeRef{Name: v.TypeRef.Name}
+				}
+				continue
+			}
+
 			// Extract inline unions as sealed interfaces.
-			if inline.Kind == ir.KindUnion && len(inline.Variants) > 0 {
+			if inline.Kind == ir.KindUnion && len(inline.Variants) > 1 {
 				typeName := name + toGoName(f.JSONName)
 				if _, exists := pkg.Types[typeName]; !exists {
 					unionType := &ir.Type{
