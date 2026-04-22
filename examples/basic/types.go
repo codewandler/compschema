@@ -1,3 +1,4 @@
+// Package basic demonstrates compschema with Order, LineItem, and Shape types.
 package basic
 
 //go:generate compschema generate ./...

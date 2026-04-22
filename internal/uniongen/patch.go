@@ -3,7 +3,6 @@ package uniongen
 import (
 	"fmt"
 	"regexp"
-	"strings"
 )
 
 // StripInterfaceDecls removes `type X interface{}` declarations from Go source
@@ -52,10 +51,6 @@ func PatchGeneratedTypes(source string, unionNames []string) string {
 	source = StripInterfaceDecls(source, unionNames)
 
 	// Ensure "fmt" is imported if we have unions that need it
-	if len(unionNames) > 0 && !strings.Contains(source, `"fmt"`) {
-		// The generated types file might not import fmt — our unions.gen.go does
-		// but it's a separate file, so no action needed on the types file.
-	}
 
 	return source
 }

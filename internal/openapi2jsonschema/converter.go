@@ -561,6 +561,7 @@ func (c *Converter) ensureDef(name string) {
 	}
 	c.convertSchema(name, schema)
 }
+
 // isEmptySchema returns true if a schema has no meaningful content — typically
 // the result of an unresolved $recursiveRef in OpenAPI 3.0 specs.
 func (c *Converter) isEmptySchema(s *v3base.Schema) bool {
@@ -724,7 +725,7 @@ func (c *Converter) simplifyNullableComposition(proxies []*v3base.SchemaProxy) (
 	}
 
 	// Find which is the null variant and which is the concrete variant.
-	var nullIdx, concreteIdx int = -1, -1
+	var nullIdx, concreteIdx = -1, -1
 	for i, proxy := range proxies {
 		// Skip $ref proxies — they can't be the null variant.
 		if proxy.GetReference() != "" {

@@ -8,10 +8,10 @@ package ir
 
 // Package is the root IR node — all types discovered in a Go package.
 type Package struct {
-	Name  string             // Go package name
-	Path  string             // import path
-	Types map[string]*Type   // named types, keyed by Go type name
-	Order []string           // insertion order for deterministic output
+	Name  string           // Go package name
+	Path  string           // import path
+	Types map[string]*Type // named types, keyed by Go type name
+	Order []string         // insertion order for deterministic output
 }
 
 // NewPackage creates an empty Package IR.
@@ -55,8 +55,8 @@ type Type struct {
 	Fields []Field
 
 	// KindEnum
-	EnumValues []any    // string or int values
-	EnumType   string   // "string" or "integer"
+	EnumValues []any  // string or int values
+	EnumType   string // "string" or "integer"
 
 	// KindUnion
 	Variants      []Variant
@@ -86,7 +86,7 @@ type Field struct {
 	Name        string // Go field name
 	JSONName    string // from json tag
 	Description string
-	Required    bool   // true if no omitempty/omitzero
+	Required    bool // true if no omitempty/omitzero
 	Type        TypeRef
 	Constraints []Constraint
 }

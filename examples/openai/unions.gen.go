@@ -14,8 +14,8 @@ type Annotation interface {
 }
 
 func (*FileCitationBody) isAnnotation() {}
-func (*URLCitationBody) isAnnotation() {}
-func (*FilePath) isAnnotation() {}
+func (*URLCitationBody) isAnnotation()  {}
+func (*FilePath) isAnnotation()         {}
 
 // UnmarshalAnnotation unmarshals JSON into the correct Annotation variant
 // based on the "type" discriminator field.
@@ -92,15 +92,15 @@ type ComputerAction interface {
 	isComputerAction()
 }
 
-func (*Click) isComputerAction() {}
+func (*Click) isComputerAction()       {}
 func (*DoubleClick) isComputerAction() {}
-func (*Drag) isComputerAction() {}
-func (*KeyPress) isComputerAction() {}
-func (*Move) isComputerAction() {}
-func (*Screenshot) isComputerAction() {}
-func (*Scroll) isComputerAction() {}
-func (*Type) isComputerAction() {}
-func (*Wait) isComputerAction() {}
+func (*Drag) isComputerAction()        {}
+func (*KeyPress) isComputerAction()    {}
+func (*Move) isComputerAction()        {}
+func (*Screenshot) isComputerAction()  {}
+func (*Scroll) isComputerAction()      {}
+func (*Type) isComputerAction()        {}
+func (*Wait) isComputerAction()        {}
 
 // UnmarshalComputerAction unmarshals JSON into the correct ComputerAction variant
 // based on the "type" discriminator field.
@@ -178,7 +178,7 @@ type Filters interface {
 }
 
 func (*ComparisonFilter) isFilters() {}
-func (*CompoundFilter) isFilters() {}
+func (*CompoundFilter) isFilters()   {}
 
 // UnmarshalFilters unmarshals JSON into the correct Filters variant
 // based on the "type" discriminator field.
@@ -213,9 +213,9 @@ type InputContent interface {
 	isInputContent()
 }
 
-func (*InputTextContent) isInputContent() {}
+func (*InputTextContent) isInputContent()  {}
 func (*InputImageContent) isInputContent() {}
-func (*InputFileContent) isInputContent() {}
+func (*InputFileContent) isInputContent()  {}
 
 // UnmarshalInputContent unmarshals JSON into the correct InputContent variant
 // based on the "type" discriminator field.
@@ -256,8 +256,8 @@ type InputItem interface {
 	isInputItem()
 }
 
-func (*EasyInputMessage) isInputItem() {}
-func (*Item) isInputItem() {}
+func (*EasyInputMessage) isInputItem()   {}
+func (*Item) isInputItem()               {}
 func (*ItemReferenceParam) isInputItem() {}
 
 // UnmarshalInputItem unmarshals JSON into the correct InputItem variant
@@ -293,13 +293,13 @@ type ItemResource interface {
 	isItemResource()
 }
 
-func (*InputMessageResource) isItemResource() {}
-func (*OutputMessage) isItemResource() {}
-func (*FileSearchToolCall) isItemResource() {}
-func (*ComputerToolCall) isItemResource() {}
+func (*InputMessageResource) isItemResource()           {}
+func (*OutputMessage) isItemResource()                  {}
+func (*FileSearchToolCall) isItemResource()             {}
+func (*ComputerToolCall) isItemResource()               {}
 func (*ComputerToolCallOutputResource) isItemResource() {}
-func (*WebSearchToolCall) isItemResource() {}
-func (*FunctionToolCallResource) isItemResource() {}
+func (*WebSearchToolCall) isItemResource()              {}
+func (*FunctionToolCallResource) isItemResource()       {}
 func (*FunctionToolCallOutputResource) isItemResource() {}
 
 // UnmarshalItemResource unmarshals JSON into the correct ItemResource variant
@@ -374,7 +374,7 @@ type OutputContent interface {
 }
 
 func (*OutputTextContent) isOutputContent() {}
-func (*RefusalContent) isOutputContent() {}
+func (*RefusalContent) isOutputContent()    {}
 
 // UnmarshalOutputContent unmarshals JSON into the correct OutputContent variant
 // based on the "type" discriminator field.
@@ -409,12 +409,12 @@ type OutputItem interface {
 	isOutputItem()
 }
 
-func (*OutputMessage) isOutputItem() {}
+func (*OutputMessage) isOutputItem()      {}
 func (*FileSearchToolCall) isOutputItem() {}
-func (*FunctionToolCall) isOutputItem() {}
-func (*WebSearchToolCall) isOutputItem() {}
-func (*ComputerToolCall) isOutputItem() {}
-func (*ReasoningItem) isOutputItem() {}
+func (*FunctionToolCall) isOutputItem()   {}
+func (*WebSearchToolCall) isOutputItem()  {}
+func (*ComputerToolCall) isOutputItem()   {}
+func (*ReasoningItem) isOutputItem()      {}
 
 // UnmarshalOutputItem unmarshals JSON into the correct OutputItem variant
 // based on the "type" discriminator field.
@@ -473,42 +473,42 @@ type ResponseStreamEvent interface {
 	isResponseStreamEvent()
 }
 
-func (*ResponseAudioDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioDoneEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallInProgressEvent) isResponseStreamEvent() {}
+func (*ResponseAudioDeltaEvent) isResponseStreamEvent()                      {}
+func (*ResponseAudioDoneEvent) isResponseStreamEvent()                       {}
+func (*ResponseAudioTranscriptDeltaEvent) isResponseStreamEvent()            {}
+func (*ResponseAudioTranscriptDoneEvent) isResponseStreamEvent()             {}
+func (*ResponseCodeInterpreterCallCodeDeltaEvent) isResponseStreamEvent()    {}
+func (*ResponseCodeInterpreterCallCodeDoneEvent) isResponseStreamEvent()     {}
+func (*ResponseCodeInterpreterCallCompletedEvent) isResponseStreamEvent()    {}
+func (*ResponseCodeInterpreterCallInProgressEvent) isResponseStreamEvent()   {}
 func (*ResponseCodeInterpreterCallInterpretingEvent) isResponseStreamEvent() {}
-func (*ResponseCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCreatedEvent) isResponseStreamEvent() {}
-func (*ResponseErrorEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallSearchingEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDoneEvent) isResponseStreamEvent() {}
-func (*ResponseInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFailedEvent) isResponseStreamEvent() {}
-func (*ResponseIncompleteEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemAddedEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDoneEvent) isResponseStreamEvent() {}
-func (*ResponseTextAnnotationDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallSearchingEvent) isResponseStreamEvent() {}
+func (*ResponseCompletedEvent) isResponseStreamEvent()                       {}
+func (*ResponseContentPartAddedEvent) isResponseStreamEvent()                {}
+func (*ResponseContentPartDoneEvent) isResponseStreamEvent()                 {}
+func (*ResponseCreatedEvent) isResponseStreamEvent()                         {}
+func (*ResponseErrorEvent) isResponseStreamEvent()                           {}
+func (*ResponseFileSearchCallCompletedEvent) isResponseStreamEvent()         {}
+func (*ResponseFileSearchCallInProgressEvent) isResponseStreamEvent()        {}
+func (*ResponseFileSearchCallSearchingEvent) isResponseStreamEvent()         {}
+func (*ResponseFunctionCallArgumentsDeltaEvent) isResponseStreamEvent()      {}
+func (*ResponseFunctionCallArgumentsDoneEvent) isResponseStreamEvent()       {}
+func (*ResponseInProgressEvent) isResponseStreamEvent()                      {}
+func (*ResponseFailedEvent) isResponseStreamEvent()                          {}
+func (*ResponseIncompleteEvent) isResponseStreamEvent()                      {}
+func (*ResponseOutputItemAddedEvent) isResponseStreamEvent()                 {}
+func (*ResponseOutputItemDoneEvent) isResponseStreamEvent()                  {}
+func (*ResponseReasoningSummaryPartAddedEvent) isResponseStreamEvent()       {}
+func (*ResponseReasoningSummaryPartDoneEvent) isResponseStreamEvent()        {}
+func (*ResponseReasoningSummaryTextDeltaEvent) isResponseStreamEvent()       {}
+func (*ResponseReasoningSummaryTextDoneEvent) isResponseStreamEvent()        {}
+func (*ResponseRefusalDeltaEvent) isResponseStreamEvent()                    {}
+func (*ResponseRefusalDoneEvent) isResponseStreamEvent()                     {}
+func (*ResponseTextAnnotationDeltaEvent) isResponseStreamEvent()             {}
+func (*ResponseTextDeltaEvent) isResponseStreamEvent()                       {}
+func (*ResponseTextDoneEvent) isResponseStreamEvent()                        {}
+func (*ResponseWebSearchCallCompletedEvent) isResponseStreamEvent()          {}
+func (*ResponseWebSearchCallInProgressEvent) isResponseStreamEvent()         {}
+func (*ResponseWebSearchCallSearchingEvent) isResponseStreamEvent()          {}
 
 // UnmarshalResponseStreamEvent unmarshals JSON into the correct ResponseStreamEvent variant
 // based on the "type" discriminator field.
@@ -747,9 +747,9 @@ type TextResponseFormatConfiguration interface {
 	isTextResponseFormatConfiguration()
 }
 
-func (*ResponseFormatText) isTextResponseFormatConfiguration() {}
+func (*ResponseFormatText) isTextResponseFormatConfiguration()           {}
 func (*TextResponseFormatJsonSchema) isTextResponseFormatConfiguration() {}
-func (*ResponseFormatJsonObject) isTextResponseFormatConfiguration() {}
+func (*ResponseFormatJsonObject) isTextResponseFormatConfiguration()     {}
 
 // UnmarshalTextResponseFormatConfiguration unmarshals JSON into the correct TextResponseFormatConfiguration variant
 // based on the "type" discriminator field.
@@ -790,9 +790,9 @@ type Tool interface {
 	isTool()
 }
 
-func (*FileSearchTool) isTool() {}
-func (*FunctionTool) isTool() {}
-func (*WebSearchPreviewTool) isTool() {}
+func (*FileSearchTool) isTool()         {}
+func (*FunctionTool) isTool()           {}
+func (*WebSearchPreviewTool) isTool()   {}
 func (*ComputerUsePreviewTool) isTool() {}
 
 // UnmarshalTool unmarshals JSON into the correct Tool variant
@@ -833,4 +833,3 @@ func UnmarshalTool(data []byte) (Tool, error) {
 		return nil, fmt.Errorf("unknown type %q for Tool", disc.D)
 	}
 }
-

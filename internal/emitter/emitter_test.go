@@ -55,7 +55,7 @@ func TestJSONSchema_BasicPackage(t *testing.T) {
 	}
 
 	// Check status property — should be an enum (inlined or $ref).
-	statusVal, _ := props["status"]
+	statusVal := props["status"]
 	statusMap, _ := statusVal.(map[string]any)
 	if statusMap != nil {
 		// Check it has enum values (inlined) or $ref.

@@ -26,9 +26,9 @@ type Union struct {
 
 // Variant is one arm of a union.
 type Variant struct {
-	RefName       string // name of the $ref target (e.g. "FileSearchTool"), or "" for inline
-	TypeConstVal  string // value of the discriminator const/enum, if known
-	InlineType    string // for non-$ref variants: "string", "number", etc.
+	RefName      string // name of the $ref target (e.g. "FileSearchTool"), or "" for inline
+	TypeConstVal string // value of the discriminator const/enum, if known
+	InlineType   string // for non-$ref variants: "string", "number", etc.
 }
 
 // Schema is a minimal JSON Schema representation for union analysis.
@@ -38,13 +38,13 @@ type Schema struct {
 
 // SchemaDef is a single schema definition.
 type SchemaDef struct {
-	OneOf            []SchemaRef       `json:"oneOf,omitempty"`
-	AnyOf            []SchemaRef       `json:"anyOf,omitempty"`
-	AllOf            []SchemaRef       `json:"allOf,omitempty"`
-	Type             any               `json:"type,omitempty"`
-	Properties       map[string]any    `json:"properties,omitempty"`
-	XDiscriminator   *Discriminator    `json:"x-discriminator,omitempty"`
-	Enum             []any             `json:"enum,omitempty"`
+	OneOf          []SchemaRef    `json:"oneOf,omitempty"`
+	AnyOf          []SchemaRef    `json:"anyOf,omitempty"`
+	AllOf          []SchemaRef    `json:"allOf,omitempty"`
+	Type           any            `json:"type,omitempty"`
+	Properties     map[string]any `json:"properties,omitempty"`
+	XDiscriminator *Discriminator `json:"x-discriminator,omitempty"`
+	Enum           []any          `json:"enum,omitempty"`
 }
 
 type SchemaRef struct {
@@ -242,6 +242,7 @@ func inferDiscriminator(defs map[string]SchemaDef, refs []SchemaRef) string {
 
 	return ""
 }
+
 // buildCapitalizationReplacer creates a function that applies Go capitalization
 // rules (e.g. "Url" → "URL", "Id" → "ID") to schema names.
 func buildCapitalizationReplacer(capitalizations []string) func(string) string {
@@ -309,15 +310,6 @@ func GenerateUnionCode(pkg string, unions []Union, capitalizations ...string) st
 	}
 
 	return b.String()
-}
-
-func allDiscriminated(u Union) bool {
-	for _, v := range u.Variants {
-		if v.TypeConstVal == "" {
-			return false
-		}
-	}
-	return true
 }
 
 func generateUnmarshalJSON(b *strings.Builder, u Union, goName func(string) string) {

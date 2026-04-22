@@ -156,4 +156,3 @@ func DecodeRectangle(data []byte) (Rectangle, error) {
 
 // ShapeJSONSchemaBytes returns the JSON Schema for the Shape union.
 func ShapeJSONSchemaBytes() []byte { return compschemaDefBytes("Shape") }
-

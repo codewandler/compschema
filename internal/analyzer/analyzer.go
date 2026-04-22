@@ -79,8 +79,8 @@ func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 type pkgAnalyzer struct {
 	pkg       *packages.Package
 	irPkg     *ir.Package
-	seen      map[string]bool    // for ensureType
-	resolving map[string]bool    // for resolveTypeRef cycle detection
+	seen      map[string]bool // for ensureType
+	resolving map[string]bool // for resolveTypeRef cycle detection
 	enumMap   map[string][]any
 	fieldDocs map[string]string
 }
@@ -595,11 +595,6 @@ func (o tagOptions) contains(name string) bool {
 }
 
 // Metadata keywords that go to Field.Description / Type properties, not JSON Schema constraints.
-var metaKeywords = map[string]bool{
-	"title": true, "description": true, "format": true,
-	"default": true, "examples": true,
-	"required": true, // invopop compat: boolean flag
-}
 
 // parseConstraintsAndMeta parses a jsonschema:"..." tag into constraints and
 // a description string. Compatible with invopop/jsonschema tag format.

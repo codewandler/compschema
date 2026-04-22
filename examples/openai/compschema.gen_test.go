@@ -5013,4 +5013,3 @@ func TestCompschema_VectorStoreFileAttributes_JSONSchemaBytes(t *testing.T) {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
 }
-

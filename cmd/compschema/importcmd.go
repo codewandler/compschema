@@ -9,7 +9,7 @@ import (
 
 func newImportCmd() *cobra.Command {
 	var (
-		pkg    string
+		pkg     string
 		outPath string
 	)
 

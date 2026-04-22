@@ -1,0 +1,117 @@
+version: '3'
+
+vars:
+  COMPSCHEMA: go run ./cmd/compschema
+  SPEC_FILE: testdata/openai/openapi.yaml
+  SCHEMA_OUT: testdata/openai/responses.schema.json
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list-all
+
+  # ── Development ──────────────────────────────────────────
+
+  build:
+    desc: Build the compschema binary
+    cmds:
+      - go build ./...
+
+  install:
+    desc: Install compschema to $GOPATH/bin
+    cmds:
+      - go install ./cmd/compschema/
+
+  test:
+    desc: Run all tests
+    cmds:
+      - go test ./... -count=1
+
+  test:verbose:
+    desc: Run all tests with verbose output
+    cmds:
+      - go test ./... -v -count=1
+
+  lint:
+    desc: Run golangci-lint
+    cmds:
+      - golangci-lint run ./...
+
+  fmt:
+    desc: Format all Go files
+    cmds:
+      - goimports -w .
+      - gofmt -w -s .
+
+  vet:
+    desc: Run go vet
+    cmds:
+      - go vet ./...
+
+  check:
+    desc: Run all checks (fmt, vet, lint, test)
+    cmds:
+      - task: fmt
+      - task: vet
+      - task: lint
+      - task: test
+
+  # ── Code generation ──────────────────────────────────────
+
+  generate:basic:
+    desc: Regenerate examples/basic
+    cmds:
+      - rm -f examples/basic/compschema* examples/basic/schema.gen.json
+      - "{{.COMPSCHEMA}} generate --validate --out examples/basic ./examples/basic"
+
+  generate:openai:
+    desc: Regenerate examples/openai
+    cmds:
+      - rm -f examples/openai/compschema* examples/openai/schema.gen.json
+      - "{{.COMPSCHEMA}} generate --all --validate --out examples/openai ./examples/openai"
+
+  generate:
+    desc: Regenerate all examples
+    cmds:
+      - task: generate:basic
+      - task: generate:openai
+
+  # ── Pipeline ─────────────────────────────────────────────
+
+  pipeline:fetch:
+    desc: Download the OpenAI OpenAPI spec
+    cmds:
+      - mkdir -p $(dirname {{.SPEC_FILE}})
+      - curl -sL -o {{.SPEC_FILE}} 'https://raw.githubusercontent.com/openai/openai-openapi/refs/heads/manual_spec/openapi.yaml'
+    status:
+      - test -f {{.SPEC_FILE}}
+
+  pipeline:extract:
+    desc: Extract JSON Schema from OpenAI spec
+    deps: [pipeline:fetch]
+    cmds:
+      - "{{.COMPSCHEMA}} extract --spec {{.SPEC_FILE}} --path /responses --validate --out {{.SCHEMA_OUT}}"
+
+  pipeline:
+    desc: Run the full OpenAI round-trip pipeline
+    cmds:
+      - task: pipeline:fetch
+      - task: pipeline:extract
+      - task: generate:openai
+
+  # ── Multi-spec testing ──────────────────────────────────
+
+  specs:
+    desc: Run multi-API round-trip test suite
+    cmds:
+      - bash testdata/specs/run_all.sh
+
+  # ── Release ──────────────────────────────────────────────
+
+  clean:
+    desc: Remove generated artifacts
+    cmds:
+      - rm -f examples/basic/compschema* examples/basic/schema.gen.json
+      - rm -f examples/openai/compschema* examples/openai/schema.gen.json
+      - rm -f {{.SCHEMA_OUT}}

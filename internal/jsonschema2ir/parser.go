@@ -59,22 +59,22 @@ type parseContext struct {
 
 // schemaNode is a minimal JSON Schema representation for parsing.
 type schemaNode struct {
-	Type                 any                       `json:"type,omitempty"`
+	Type                 any                        `json:"type,omitempty"`
 	Properties           map[string]json.RawMessage `json:"properties,omitempty"`
-	Required             []string                  `json:"required,omitempty"`
-	AdditionalProperties any                       `json:"additionalProperties,omitempty"`
-	Items                json.RawMessage           `json:"items,omitempty"`
-	Enum                 []any                     `json:"enum,omitempty"`
-	Const                any                       `json:"const,omitempty"`
-	OneOf                []json.RawMessage         `json:"oneOf,omitempty"`
-	AnyOf                []json.RawMessage         `json:"anyOf,omitempty"`
-	AllOf                []json.RawMessage         `json:"allOf,omitempty"`
-	Ref                  string                    `json:"$ref,omitempty"`
-	Title                string                    `json:"title,omitempty"`
-	Description          string                    `json:"description,omitempty"`
-	Format               string                    `json:"format,omitempty"`
-	Discriminator        *discNode                 `json:"discriminator,omitempty"`
-	XDiscriminator       *discNode                 `json:"x-discriminator,omitempty"`
+	Required             []string                   `json:"required,omitempty"`
+	AdditionalProperties any                        `json:"additionalProperties,omitempty"`
+	Items                json.RawMessage            `json:"items,omitempty"`
+	Enum                 []any                      `json:"enum,omitempty"`
+	Const                any                        `json:"const,omitempty"`
+	OneOf                []json.RawMessage          `json:"oneOf,omitempty"`
+	AnyOf                []json.RawMessage          `json:"anyOf,omitempty"`
+	AllOf                []json.RawMessage          `json:"allOf,omitempty"`
+	Ref                  string                     `json:"$ref,omitempty"`
+	Title                string                     `json:"title,omitempty"`
+	Description          string                     `json:"description,omitempty"`
+	Format               string                     `json:"format,omitempty"`
+	Discriminator        *discNode                  `json:"discriminator,omitempty"`
+	XDiscriminator       *discNode                  `json:"x-discriminator,omitempty"`
 
 	// Numeric
 	Minimum          *float64 `json:"minimum,omitempty"`
@@ -139,7 +139,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 					nonNullIdx = 1
 				}
 				var inner schemaNode
-				json.Unmarshal(variants[nonNullIdx], &inner)
+				_ = json.Unmarshal(variants[nonNullIdx], &inner)
 				innerType := ctx.convertNode("", &inner)
 				if innerType != nil {
 					ref := typeToRef(innerType)
@@ -158,7 +158,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 		var combinedEnums []any
 		for _, raw := range variants {
 			var vs schemaNode
-			json.Unmarshal(raw, &vs)
+			_ = json.Unmarshal(raw, &vs)
 			if vs.Ref != "" {
 				refName := vs.Ref
 				if strings.HasPrefix(refName, "#/$defs/") {
@@ -204,7 +204,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 		}
 		for _, raw := range variants {
 			var vs schemaNode
-			json.Unmarshal(raw, &vs)
+			_ = json.Unmarshal(raw, &vs)
 			vt := ctx.convertNode("", &vs)
 			if vt != nil {
 				v := ir.Variant{TypeRef: typeToRef(vt)}
@@ -246,7 +246,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 		}
 		for propName, raw := range s.Properties {
 			var ps schemaNode
-			json.Unmarshal(raw, &ps)
+			_ = json.Unmarshal(raw, &ps)
 			propType := ctx.convertNode("", &ps)
 			ref := typeToRef(propType)
 
@@ -285,7 +285,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 		t := &ir.Type{Name: name, Kind: ir.KindList, Description: s.Description, Constraints: collectConstraints(s)}
 		if s.Items != nil {
 			var is schemaNode
-			json.Unmarshal(s.Items, &is)
+			_ = json.Unmarshal(s.Items, &is)
 			it := ctx.convertNode("", &is)
 			if it != nil {
 				ref := typeToRef(it)
@@ -346,7 +346,7 @@ func resolveType(t any) string {
 
 func isNullVariant(raw json.RawMessage) bool {
 	var s schemaNode
-	json.Unmarshal(raw, &s)
+	_ = json.Unmarshal(raw, &s)
 	return resolveType(s.Type) == "null"
 }
 
@@ -434,7 +434,7 @@ func (ctx *parseContext) resolveStringEnums(name string) ([]any, bool) {
 	var combined []any
 	for _, raw := range variants {
 		var vs schemaNode
-		json.Unmarshal(raw, &vs)
+		_ = json.Unmarshal(raw, &vs)
 
 		if vs.Ref != "" {
 			childRef := vs.Ref

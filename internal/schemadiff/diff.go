@@ -211,9 +211,6 @@ func compareDef(name string, gt, gen map[string]any) DefReport {
 }
 
 // orderInsensitiveKeys are JSON Schema keywords where array order doesn't matter.
-var orderInsensitiveKeys = map[string]bool{
-	"required": true, "enum": true, "oneOf": true, "anyOf": true, "allOf": true,
-}
 
 func valuesEqual(a, b any) bool {
 	ja, _ := json.Marshal(a)

@@ -20,7 +20,7 @@ normalizes away superficial differences like $ref vs inline, array
 ordering, nullable representation, and annotation-only differences.`,
 		Example: `  compschema diff testdata/openai/responses.schema.json examples/openai/schema.gen.json
   compschema diff --ir testdata/openai/responses.schema.json examples/openai/schema.gen.json`,
-		Args:    cobra.ExactArgs(2),
+		Args: cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if useIR {
 				report, err := schemadiff.CompareIR(args[0], args[1])

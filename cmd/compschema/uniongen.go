@@ -43,7 +43,7 @@ from that file.`,
 				}
 				fmt.Fprintf(os.Stderr, "✓ generated %d unions → %s (%d bytes)\n", len(unions), outPath, len(code))
 			} else {
-				os.Stdout.Write([]byte(code))
+				_, _ = os.Stdout.Write([]byte(code))
 			}
 
 			// Patch the types file to remove conflicting interface{} declarations

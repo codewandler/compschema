@@ -77,7 +77,7 @@ Use --validate to verify the output against the JSON Schema draft 2020-12 meta-s
 				}
 				fmt.Fprintf(os.Stderr, "✓ wrote %s (%d bytes)\n", outPath, len(data))
 			} else {
-				os.Stdout.Write(data)
+				_, _ = os.Stdout.Write(data)
 			}
 
 			return nil

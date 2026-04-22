@@ -51,9 +51,7 @@ func GenerateGo(pkg *ir.Package) string {
 	b.WriteString(fmt.Sprintf("package %s\n", pkg.Name))
 
 	names := make([]string, 0, len(pkg.Types))
-	for _, n := range pkg.Order {
-		names = append(names, n)
-	}
+	names = append(names, pkg.Order...)
 	sort.Strings(names)
 
 	emitted := make(map[string]bool)
@@ -489,7 +487,7 @@ func ImportFromFile(schemaPath, pkg, outputPath string) error {
 	var doc struct {
 		Defs map[string]json.RawMessage `json:"$defs"`
 	}
-	json.Unmarshal(data, &doc)
+	_ = json.Unmarshal(data, &doc)
 
 	if err := os.WriteFile(outputPath, []byte(code), 0644); err != nil {
 		return fmt.Errorf("write output: %w", err)

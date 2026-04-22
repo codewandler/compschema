@@ -1,0 +1,33 @@
+version: "2"
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - misspell
+    - unconvert
+
+  settings:
+    errcheck:
+      exclude-functions:
+        - (os.Stdout).Write
+        - (os.Stderr).Write
+        - (*strings.Builder).WriteString
+    staticcheck:
+      checks:
+        - "all"
+        - "-QF1012"  # WriteString(Sprintf(...)) is deliberate in codegen
+        - "-S1017"   # HasPrefix+TrimPrefix is clearer for $ref resolution
+
+issues:
+  exclude-dirs:
+    - testdata
+    - examples

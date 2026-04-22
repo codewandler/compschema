@@ -181,8 +181,8 @@ func (c *irDiffCtx) normalizedKind(ref ir.TypeRef, pkg *ir.Package) (ir.Kind, st
 func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 	tr := IRTypeReport{
 		Name:      name,
-		KindGT:   kindName(gt.Kind),
-		KindGen:  kindName(gen.Kind),
+		KindGT:    kindName(gt.Kind),
+		KindGen:   kindName(gen.Kind),
 		KindMatch: gt.Kind == gen.Kind,
 	}
 
