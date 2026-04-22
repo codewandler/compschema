@@ -172,7 +172,7 @@ func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Pa
 	// Collect struct variants with discriminator values.
 	type discVariant struct {
 		GoName   string
-		Value    string
+		Values   []string
 		IsStruct bool
 	}
 	var known []discVariant
@@ -184,8 +184,8 @@ func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Pa
 		if v.TypeRef.Name != "" {
 			gn := r.GoName(v.TypeRef.Name)
 			is := isStructVariant(v.TypeRef.Name)
-			if v.Discriminator != "" {
-				known = append(known, discVariant{GoName: gn, Value: v.Discriminator, IsStruct: is})
+			if v.HasDiscriminator() {
+				known = append(known, discVariant{GoName: gn, Values: v.DiscriminatorValues, IsStruct: is})
 			}
 		}
 	}
@@ -204,48 +204,31 @@ func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Pa
 		b.WriteString("\t}\n")
 		b.WriteString("\tswitch disc.D {\n")
 
-		// Group by discriminator value (handle duplicates).
+		// Group variants by value set.
 		emitted := map[string]bool{}
 		for _, kv := range known {
-			if emitted[kv.Value] {
+			// Build case label: "case "eq", "gt":" for multi-value.
+			var caseValues []string
+			for _, val := range kv.Values {
+				if emitted[val] {
+					continue
+				}
+				caseValues = append(caseValues, fmt.Sprintf("%q", val))
+				emitted[val] = true
+			}
+			if len(caseValues) == 0 {
 				continue
 			}
-			emitted[kv.Value] = true
 
-			// Collect all variants for this value.
-			var variants []discVariant
-			for _, kv2 := range known {
-				if kv2.Value == kv.Value {
-					variants = append(variants, kv2)
-				}
-			}
-
-			b.WriteString(fmt.Sprintf("\tcase %q:\n", kv.Value))
-			if len(variants) == 1 {
-				v := variants[0]
-				if !v.IsStruct {
-					// Non-struct variant (interface, enum, etc.) — skip.
-					b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"variant %s for %s=%%q is not directly unmarshalable\", disc.D)\n", v.GoName, t.Discriminator))
-				} else {
-					b.WriteString(fmt.Sprintf("\t\tvar val %s\n", v.GoName))
-					b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
-					b.WriteString("\t\t\treturn nil, err\n")
-					b.WriteString("\t\t}\n")
-					b.WriteString("\t\treturn &val, nil\n")
-				}
+			b.WriteString(fmt.Sprintf("\tcase %s:\n", strings.Join(caseValues, ", ")))
+			if !kv.IsStruct {
+				b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"variant %s for %s=%%q is not directly unmarshalable\", disc.D)\n", kv.GoName, t.Discriminator))
 			} else {
-				// Try each in order.
-				for i, v := range variants {
-					if !v.IsStruct {
-						continue
-					}
-					varName := fmt.Sprintf("v%d", i)
-					b.WriteString(fmt.Sprintf("\t\tvar %s %s\n", varName, v.GoName))
-					b.WriteString(fmt.Sprintf("\t\tif err := json.Unmarshal(data, &%s); err == nil {\n", varName))
-					b.WriteString(fmt.Sprintf("\t\t\treturn &%s, nil\n", varName))
-					b.WriteString("\t\t}\n")
-				}
-				b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"no matching variant for %s=%%q in %s\", disc.D)\n", t.Discriminator, goName))
+				b.WriteString(fmt.Sprintf("\t\tvar val %s\n", kv.GoName))
+				b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
+				b.WriteString("\t\t\treturn nil, err\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString("\t\treturn &val, nil\n")
 			}
 		}
 		b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn nil, fmt.Errorf(\"unknown %s %%q for %s\", disc.D)\n", t.Discriminator, goName))

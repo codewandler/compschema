@@ -482,10 +482,12 @@ func emitUnionDecode(b *strings.Builder, name string, t *ir.Type, pkg *ir.Packag
 
 		emitted := map[string]bool{}
 		for _, v := range t.Variants {
-			if v.Discriminator == "" || emitted[v.Discriminator] {
+			if len(v.DiscriminatorValues) == 0 || emitted[v.DiscriminatorValues[0]] {
 				continue
 			}
-			emitted[v.Discriminator] = true
+			for _, dv := range v.DiscriminatorValues {
+				emitted[dv] = true
+			}
 			variantType := v.Name
 			if variantType == "" {
 				continue
@@ -494,7 +496,12 @@ func emitUnionDecode(b *strings.Builder, name string, t *ir.Type, pkg *ir.Packag
 			if vt, ok := pkg.Types[variantType]; ok && vt.Kind != ir.KindStruct {
 				continue
 			}
-			b.WriteString(fmt.Sprintf("\tcase %q:\n", v.Discriminator))
+			// Build case label with all values.
+			var caseValues []string
+			for _, dv := range v.DiscriminatorValues {
+				caseValues = append(caseValues, fmt.Sprintf("%q", dv))
+			}
+			b.WriteString(fmt.Sprintf("\tcase %s:\n", strings.Join(caseValues, ", ")))
 			b.WriteString(fmt.Sprintf("\t\tvar val %s\n", variantType))
 			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
 			b.WriteString("\t\t\treturn nil, err\n")
@@ -527,7 +534,7 @@ func emitUnionDecode(b *strings.Builder, name string, t *ir.Type, pkg *ir.Packag
 // hasDiscriminatorValues returns true if at least one variant has a discriminator value.
 func hasDiscriminatorValues(t *ir.Type) bool {
 	for _, v := range t.Variants {
-		if v.Discriminator != "" {
+		if v.HasDiscriminator() {
 			return true
 		}
 	}

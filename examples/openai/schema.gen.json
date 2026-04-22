@@ -1287,6 +1287,9 @@
     },
     "Filters": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComparisonFilter"
@@ -1746,6 +1749,9 @@
     },
     "InputItem": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "role"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/EasyInputMessage"
@@ -1945,9 +1951,6 @@
     },
     "ItemResource": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
-      "discriminator": {
-        "propertyName": "type"
-      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"
@@ -2105,9 +2108,6 @@
     },
     "OutputItem": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
-      "discriminator": {
-        "propertyName": "type"
-      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"

@@ -711,7 +711,7 @@ func DecodeComputerAction(data []byte) (ComputerAction, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "click":
+	case "back", "forward", "left", "right", "wheel":
 		var val Click
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -1384,7 +1384,7 @@ func DecodeTool(data []byte) (Tool, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "computer_use_preview":
+	case "browser", "linux", "mac", "ubuntu", "windows":
 		var val ComputerUsePreviewTool
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -1398,6 +1398,12 @@ func DecodeTool(data []byte) (Tool, error) {
 		return &val, nil
 	case "function":
 		var val FunctionTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview", "web_search_preview_2025_03_11":
+		var val WebSearchPreviewTool
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -1535,6 +1541,7 @@ func DecodeFileSearchToolCall(data []byte) (FileSearchToolCall, error) {
 func FiltersJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Filters") }
 
 // DecodeFilters validates and unmarshals JSON into the correct Filters variant.
+// Dispatches on the "type" discriminator field.
 func DecodeFilters(data []byte) (Filters, error) {
 	sch := compschemaValidator("Filters")
 	var raw any
@@ -1544,19 +1551,28 @@ func DecodeFilters(data []byte) (Filters, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	{
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "eq", "gt", "gte", "lt", "lte", "ne":
 		var val ComparisonFilter
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	{
+		return &val, nil
+	case "and", "or":
 		var val CompoundFilter
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for Filters", disc.D)
 	}
-	return nil, fmt.Errorf("no matching variant for Filters")
 }
 
 // FiltersAs extracts a variant from a Filters union value, like errors.As.
@@ -1811,7 +1827,7 @@ func DecodeInputContent(data []byte) (InputContent, error) {
 			return nil, err
 		}
 		return &val, nil
-	case "input_image":
+	case "auto", "high", "low":
 		var val InputImageContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -1878,6 +1894,7 @@ func DecodeItemReferenceParam(data []byte) (ItemReferenceParam, error) {
 func InputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItem") }
 
 // DecodeInputItem validates and unmarshals JSON into the correct InputItem variant.
+// Dispatches on the "role" discriminator field.
 func DecodeInputItem(data []byte) (InputItem, error) {
 	sch := compschemaValidator("InputItem")
 	var raw any
@@ -1887,19 +1904,22 @@ func DecodeInputItem(data []byte) (InputItem, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	{
+	var disc struct {
+		D string `json:"role"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "assistant", "developer", "system", "user":
 		var val EasyInputMessage
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown role %q for InputItem", disc.D)
 	}
-	{
-		var val ItemReferenceParam
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for InputItem")
 }
 
 // InputItemAs extracts a variant from a InputItem union value, like errors.As.
@@ -2137,7 +2157,6 @@ func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
 func ItemResourceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemResource") }
 
 // DecodeItemResource validates and unmarshals JSON into the correct ItemResource variant.
-// Dispatches on the "type" discriminator field.
 func DecodeItemResource(data []byte) (ItemResource, error) {
 	sch := compschemaValidator("ItemResource")
 	var raw any
@@ -2147,58 +2166,55 @@ func DecodeItemResource(data []byte) (ItemResource, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "computer_call":
+	{
 		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
 		}
-		return &val, nil
-	case "computer_call_output":
-		var val ComputerToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call_output":
-		var val FunctionToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCallResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "assistant":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ItemResource", disc.D)
 	}
+	{
+		var val ComputerToolCallOutputResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FileSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionToolCallOutputResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionToolCallResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val InputMessageResource
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputMessage
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val WebSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ItemResource")
 }
 
 // ItemResourceAs extracts a variant from a ItemResource union value, like errors.As.
@@ -2303,7 +2319,6 @@ func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
 func OutputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputItem") }
 
 // DecodeOutputItem validates and unmarshals JSON into the correct OutputItem variant.
-// Dispatches on the "type" discriminator field.
 func DecodeOutputItem(data []byte) (OutputItem, error) {
 	sch := compschemaValidator("OutputItem")
 	var raw any
@@ -2313,52 +2328,43 @@ func DecodeOutputItem(data []byte) (OutputItem, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "computer_call":
+	{
 		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
 		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "assistant":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "reasoning":
-		var val ReasoningItem
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for OutputItem", disc.D)
 	}
+	{
+		var val FileSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputMessage
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ReasoningItem
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val WebSearchToolCall
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for OutputItem")
 }
 
 // OutputItemAs extracts a variant from a OutputItem union value, like errors.As.

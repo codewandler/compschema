@@ -103,9 +103,23 @@ type TypeRef struct {
 
 // Variant is one arm of a union type.
 type Variant struct {
-	Name          string // Go type name of the variant
-	TypeRef       TypeRef
-	Discriminator string // const value of the discriminator field, if known
+	Name                string   // Go type name of the variant
+	TypeRef             TypeRef
+	DiscriminatorValues []string // discriminator field values that map to this variant
+}
+
+// DiscriminatorValue returns the single discriminator value, or "" if none/multiple.
+// Use DiscriminatorValues for multi-value enum discrimination.
+func (v *Variant) DiscriminatorValue() string {
+	if len(v.DiscriminatorValues) == 1 {
+		return v.DiscriminatorValues[0]
+	}
+	return ""
+}
+
+// HasDiscriminator returns true if this variant has at least one discriminator value.
+func (v *Variant) HasDiscriminator() bool {
+	return len(v.DiscriminatorValues) > 0
 }
 
 // Constraint is a JSON Schema validation keyword.

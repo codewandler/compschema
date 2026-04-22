@@ -221,8 +221,9 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 					}
 					if resolved != nil {
 						for _, f := range resolved.Fields {
-							if dv := extractDiscriminatorValue(f); dv != "" {
-								v.Discriminator = dv
+							vals := extractDiscriminatorValues(f)
+							if len(vals) > 0 {
+								v.DiscriminatorValues = vals
 								break
 							}
 						}
@@ -529,21 +530,22 @@ func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
 		variantCount++
 
 		for _, f := range fields {
-			val := extractDiscriminatorValue(f)
-			if val != "" {
-				discFields[f.JSONName] = append(discFields[f.JSONName], val)
+			vals := extractDiscriminatorValues(f)
+			if len(vals) > 0 {
+				discFields[f.JSONName] = append(discFields[f.JSONName], vals...)
 			}
 		}
 	}
 
-	// Find a field where every variant has a unique discriminator value.
+	// Find a field where all values across variants are disjoint.
+	// Each variant must contribute at least one value.
 	for fieldName, values := range discFields {
-		if len(values) == variantCount {
+		if len(values) >= variantCount {
 			unique := make(map[string]bool, len(values))
 			for _, v := range values {
 				unique[v] = true
 			}
-			if len(unique) == variantCount {
+			if len(unique) == len(values) {
 				return fieldName
 			}
 		}
@@ -552,24 +554,28 @@ func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
 	return ""
 }
 
-// extractDiscriminatorValue gets a discriminator value from a field.
-// Checks for: const constraint, single-value enum type ref, single-value enum inline.
-func extractDiscriminatorValue(f ir.Field) string {
+// extractDiscriminatorValues gets discriminator values from a field.
+// Checks for: const constraint, enum type (single or multi-value).
+func extractDiscriminatorValues(f ir.Field) []string {
 	// Check const constraint on the field.
 	for _, c := range f.Constraints {
 		if c.Keyword == "const" {
-			return fmt.Sprintf("%v", c.Value)
+			return []string{fmt.Sprintf("%v", c.Value)}
 		}
 	}
 
-	// Check if the field type is a single-value enum.
+	// Check if the field type is an enum.
 	var t *ir.Type
 	if f.Type.Inline != nil {
 		t = f.Type.Inline
 	}
-	if t != nil && t.Kind == ir.KindEnum && len(t.EnumValues) == 1 {
-		return fmt.Sprintf("%v", t.EnumValues[0])
+	if t != nil && t.Kind == ir.KindEnum && len(t.EnumValues) > 0 {
+		vals := make([]string, len(t.EnumValues))
+		for i, v := range t.EnumValues {
+			vals[i] = fmt.Sprintf("%v", v)
+		}
+		return vals
 	}
 
-	return ""
+	return nil
 }

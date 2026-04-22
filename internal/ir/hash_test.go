@@ -135,8 +135,8 @@ func TestPackageHash_OrderIndependent(t *testing.T) {
 }
 
 func TestVariantHash(t *testing.T) {
-	v1 := Variant{Name: "String", Discriminator: "type", TypeRef: TypeRef{Name: "StringValue"}}
-	v2 := Variant{Name: "Number", Discriminator: "type", TypeRef: TypeRef{Name: "NumberValue"}}
+	v1 := Variant{Name: "String", DiscriminatorValues: []string{"type"}, TypeRef: TypeRef{Name: "StringValue"}}
+	v2 := Variant{Name: "Number", DiscriminatorValues: []string{"type"}, TypeRef: TypeRef{Name: "NumberValue"}}
 
 	if v1.Hash() == v2.Hash() {
 		t.Error("different variants should produce different hashes")

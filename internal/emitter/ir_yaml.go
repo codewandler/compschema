@@ -146,8 +146,12 @@ func variantToIR(v ir.Variant) map[string]any {
 		"name": v.Name,
 		"type": typeRefToIR(v.TypeRef),
 	}
-	if v.Discriminator != "" {
-		m["discriminator_value"] = v.Discriminator
+	if len(v.DiscriminatorValues) > 0 {
+		if len(v.DiscriminatorValues) == 1 {
+			m["discriminator_value"] = v.DiscriminatorValues[0]
+		} else {
+			m["discriminator_values"] = v.DiscriminatorValues
+		}
 	}
 	return m
 }

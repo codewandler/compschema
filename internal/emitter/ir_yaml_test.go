@@ -76,7 +76,7 @@ func TestIRToYAML_AllKinds(t *testing.T) {
 		Kind:          ir.KindUnion,
 		Discriminator: "type",
 		Variants: []ir.Variant{
-			{Name: "Circle", Discriminator: "circle", TypeRef: ir.TypeRef{Name: "Circle"}},
+			{Name: "Circle", DiscriminatorValues: []string{"circle"}, TypeRef: ir.TypeRef{Name: "Circle"}},
 		},
 	})
 	// List

@@ -186,7 +186,9 @@ func (v *Variant) Hash() [32]byte {
 	h := sha256.New()
 	h.Write([]byte("variant\x00"))
 	writeString(h, v.Name)
-	writeString(h, v.Discriminator)
+	for _, dv := range v.DiscriminatorValues {
+		writeString(h, dv)
+	}
 	th := v.TypeRef.Hash()
 	h.Write(th[:])
 

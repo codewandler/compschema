@@ -391,7 +391,18 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 				}
 
 				if discValue != "" {
-					v.Discriminator = discValue
+					v.DiscriminatorValues = []string{discValue}
+					if irType.Discriminator == "" {
+						irType.Discriminator = jsonName
+					} else if irType.Discriminator != jsonName {
+						irType.Discriminator = ""
+					}
+					break
+				}
+
+				// Check if field type is a multi-value enum (disjoint sets).
+				if vals := enumValues(f.Type(), a.pkg); len(vals) > 0 {
+					v.DiscriminatorValues = vals
 					if irType.Discriminator == "" {
 						irType.Discriminator = jsonName
 					} else if irType.Discriminator != jsonName {
@@ -405,7 +416,28 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 		irType.Variants = append(irType.Variants, v)
 	}
 
+	// Validate discriminator: all variant value sets must be disjoint.
+	if irType.Discriminator != "" {
+		if !variantValuesDisjoint(irType.Variants) {
+			irType.Discriminator = ""
+		}
+	}
+
 	return irType
+}
+
+// variantValuesDisjoint checks that no two variants share a discriminator value.
+func variantValuesDisjoint(variants []ir.Variant) bool {
+	seen := make(map[string]bool)
+	for _, v := range variants {
+		for _, val := range v.DiscriminatorValues {
+			if seen[val] {
+				return false
+			}
+			seen[val] = true
+		}
+	}
+	return true
 }
 
 // convertEnum builds a KindEnum IR type.
@@ -773,24 +805,21 @@ func parseTagValue(s string) any {
 	return s
 }
 
-// singleEnumValue checks if a type is a named type with exactly one const value
-// (a single-value enum like `type ClickType string; const ClickTypeClick ClickType = "click"`).
-// Returns the const value string, or "" if not a single-value enum.
-func singleEnumValue(t types.Type, pkg *packages.Package) string {
+// enumValues returns all const values for a named enum type.
+// Returns nil if the type is not a named string/integer type with const values.
+func enumValues(t types.Type, pkg *packages.Package) []string {
 	named, ok := t.(*types.Named)
 	if !ok {
-		return ""
+		return nil
 	}
-	// Must be a string or integer type.
 	basic, ok := named.Underlying().(*types.Basic)
 	if !ok {
-		return ""
+		return nil
 	}
 	if basic.Info()&(types.IsString|types.IsInteger) == 0 {
-		return ""
+		return nil
 	}
 
-	// Scan the package scope for const declarations of this type.
 	var values []string
 	scope := pkg.Types.Scope()
 	for _, name := range scope.Names() {
@@ -803,15 +832,19 @@ func singleEnumValue(t types.Type, pkg *packages.Package) string {
 			continue
 		}
 		val := c.Val().ExactString()
-		// Strip quotes from string constants.
 		if len(val) >= 2 && val[0] == '"' {
 			val = val[1 : len(val)-1]
 		}
 		values = append(values, val)
 	}
+	return values
+}
 
-	if len(values) == 1 {
-		return values[0]
+// singleEnumValue returns the const value if the type has exactly one.
+func singleEnumValue(t types.Type, pkg *packages.Package) string {
+	vals := enumValues(t, pkg)
+	if len(vals) == 1 {
+		return vals[0]
 	}
 	return ""
 }
