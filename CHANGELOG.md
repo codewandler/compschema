@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-04-22
+
+### Added
+- `compschema import` command — generates Go structs from JSON Schema, replacing `go-jsonschema`:
+  - Sealed interfaces for `oneOf`/`anyOf` unions with `//compschema:generate` annotations
+  - Enum types with const blocks
+  - Constraints preserved in `jsonschema:"..."` tags
+  - Descriptions in comments and tags
+  - Inline enum extraction from titles
+  - Nullable as `*T` pointers
+- IR diff normalization: nullable, `$ref` resolution, kind unwrapping
+  - IR field match rate: 82.6% → **97.7%** (go-jsonschema pipeline)
+  - Only 10 truly structural diffs remain (all `interface{}` / Go type system limitations)
+- `internal/importer` package — JSON Schema → IR → Go code generation
+- `internal/jsonschema2ir` package — JSON Schema parser into Schema IR
+
+### Fixed
+- Skip empty unions (0 implementors) in analyzer
+- Backtick sanitization in generated struct tags
+
+### Changed
+- Full round-trip without `go-jsonschema`:
+  OpenAPI → extract → JSON Schema → import → Go structs → generate → JSON Schema → diff
+  Result: 96.3% field match, 0 extra types
+
 ## [0.6.0] - 2026-04-22
 
 ### Added
@@ -92,7 +117,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/codewandler/compschema/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/codewandler/compschema/compare/v0.4.0...v0.6.0
 [0.4.0]: https://github.com/codewandler/compschema/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/codewandler/compschema/compare/v0.2.0...v0.3.0
