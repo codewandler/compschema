@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-04-23
+
+### Added
+- **Smart union dispatch** — generated `DecodeX()` functions use a 3-tier strategy:
+  1. **Discriminator switch** — O(1) dispatch when variants have distinct `const` or enum values on a shared field
+  2. **Required-set matching** — O(keys) when variants have different required property sets
+  3. **Brute-force try-each** — O(variants) fallback only when required sets are identical
+- **Disjoint multi-value enum discrimination** — when variant A has `enum(eq, gt)` and variant B has `enum(and, or)` on the same field, generates `case "eq", "gt":` multi-case switch
+- **Single-value enum discriminator detection** — `type ClickType string` with one const value is detected as a discriminator (not just `jsonschema:"const=..."` tags)
+- **`DecodeX()` for unions** — generated alongside `JSONSchemaBytes()`. Validates against schema, then dispatches to the correct variant
+- **`XAs[T, P]` for unions** — type-safe variant extraction like `errors.As`. Compile-time checked: only types implementing the union interface can be used as target
+- **`--examples` Decode tests** — `TestCompschema_ExamplesDecode` tests `DecodeX()` round-trip for every type with an example
+- **Struct tag tracking** — `ir.Field.Tags` captures all source struct tags (`json`, `yaml`, `mapstructure`, `db`, etc.) for hash computation and IR YAML emission
+- `buildJSONSchemaTag` now preserves `default`, `minProperties`, `maxProperties`, and unknown/custom keywords
+
+### Changed
+- IR YAML hashes moved from `_hash` per-type to top-level `hash` + `hashes` map — clean data/metadata separation
+- `Variant.Discriminator string` → `Variant.DiscriminatorValues []string` with `DiscriminatorValue()` and `HasDiscriminator()` helpers
+- Test generator skips `KindNullable` types (pointer aliases like `type Foo *string`) that can't be composite-literal'd
+
+### Breaking Changes
+- `ir.Variant.Discriminator` field removed → use `Variant.DiscriminatorValues` (slice) or `Variant.DiscriminatorValue()` (single value helper)
+
 ## [2.3.0] - 2026-04-23
 
 ### Added
@@ -304,7 +327,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v2.3.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/codewandler/compschema/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/codewandler/compschema/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/codewandler/compschema/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/codewandler/compschema/compare/v2.1.0...v2.1.1
