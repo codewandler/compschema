@@ -11,7 +11,8 @@ Compile-time JSON Schema generator for Go. Converts Go types → JSON Schema + V
 task check
 
 # Individual steps
-task build          # go build ./...
+task build          # go build ./... + binary to ./bin/
+task build:bin      # build binary only
 task test           # go test ./... -count=1
 task lint           # golangci-lint run ./...
 task fmt            # goimports + gofmt
@@ -21,12 +22,14 @@ task vet            # go vet ./...
 task install        # go install ./cmd/compschema/
 
 # Code generation
-task generate       # regenerate examples/basic + examples/openai
+task generate       # regenerate examples/basic + examples/openai + config schema
 task generate:basic
 task generate:openai
+task generate:config-schema
 
-# Multi-API test suite (11 OpenAPI specs)
-task specs          # bash testdata/specs/run_all.sh
+# Pipelines (via .compschema.yaml)
+task pipeline       # run the OpenAI round-trip pipeline
+task specs          # run multi-API round-trip test suite
 
 # Cleanup
 task clean          # remove generated artifacts
@@ -42,16 +45,19 @@ cmd/compschema/                    # CLI (cobra) — all subcommands
   importcmd.go                     # JSON Schema → Go structs
   generate.go                      # Go types → JSON Schema + Validate + Decode + tests
   diff.go                          # JSON Schema structural comparison
-  run.go                           # config-driven pipeline runner
+  run.go                           # config-driven pipeline runner (multi-source, reports, cache)
 internal/config/                    # Pipeline config file format (.compschema.yaml)
   config.go                        # File, Pipeline, Action types + YAML parser
+  template.go                      # {name}/{source}/{hash} template expansion
 internal/ir/                       # Schema IR — the core data model
   types.go                         # Type, Field, Constraint, Variant, TypeRef, Kind enum
+  hash.go                          # Merkle hash methods on all IR nodes
 internal/analyzer/                 # Go source → IR (the forward direction)
   analyzer.go                      # go/packages + go/types → IR Package
   analyzer_test.go
 internal/emitter/                  # IR → output files (the reverse direction)
   emitter.go                       # JSONSchema(), GoCodegen(), GoTests() emitters
+  ir_yaml.go                       # IRToYAML() — human-readable IR dump with hashes
   emitter_test.go
 internal/importer/                 # JSON Schema → Go source (import direction)
   importer.go                      # GenerateGo, emitStruct/Enum/Union, type helpers
@@ -67,12 +73,19 @@ internal/schemadiff/               # Schema comparison
   ir_diff.go                       # IR-level structural diff (normalized)
 internal/uniongen/                 # Sealed interface generation for oneOf/anyOf unions
   uniongen.go                      # EmitUnion() — IR-based, used by importer (reusable)
+internal/source/                   # Source abstraction for pipeline inputs
+  source.go                        # Source interface + Meta type
+  file.go, http.go, git.go         # FileSource, HTTPSource, GitSource implementations
+  parse.go                         # Parse(any) → []Source (polymorphic config parser)
+internal/report/                   # Structured pipeline reports
+  report.go                        # PipelineReport, StepReport, TestResults
+internal/cache/                    # File-backed hash cache
+  cache.go                         # Cache, Entry, Load/Save/IsStale
 examples/basic/                    # Simple example: Order, LineItem, Shape union
 examples/openai/                   # Real-world: OpenAI Responses API (261 types)
 testdata/basic/                    # Test fixture source for examples/basic
 testdata/openai/                   # OpenAI OpenAPI spec + extracted JSON Schema
 testdata/specs/                    # Multi-API test suite (11 OpenAPI specs)
-  run_all.sh                       # Runs extract → import → compile → generate → diff → test
 docs/DESIGN.md                     # Architecture, IR design, validation strategy
 ```
 
@@ -95,10 +108,13 @@ Types are discovered via `//compschema:generate` comments or `--all` flag. Const
 
 ### Generated Files
 
-`compschema generate` produces 3 files per package:
+`compschema generate` produces 3 files per package (+ optional IR YAML):
 - `schema.gen.json` — JSON Schema draft 2020-12 (all types as `$defs`)
 - `compschema.gen.go` — `JSONSchemaBytes()`, `Validate()`, `DecodeT()` per type
 - `compschema.gen_test.go` — smoke tests (schema validity, validation, round-trip)
+- `schema.gen.ir.yaml` — human-readable IR with Merkle hashes (with `--emit-ir`)
+
+Generation is cached via `.compschema.cache.json` — unchanged packages are skipped.
 
 ## Code Style Guidelines
 

@@ -265,15 +265,19 @@ Every field on the OpenAPI 3.x Schema Object is explicitly handled:
 
 ```
 schema.go                      compschema.Schema interface (importable)
-cmd/compschema/                CLI (cobra): extract, import, generate, diff, schemas
-internal/ir/                   Schema IR types (Type, Field, Constraint, Variant, TypeRef)
+cmd/compschema/                CLI (cobra): extract, import, generate, diff, schemas, run
+internal/ir/                   Schema IR types + Merkle hashing
 internal/analyzer/             Go types → IR (go/packages + go/types)
-internal/emitter/              IR → JSON Schema + Go codegen + tests
+internal/emitter/              IR → JSON Schema + Go codegen + tests + IR YAML
 internal/importer/             JSON Schema → Go structs (with sealed interfaces + constraints)
 internal/jsonschema2ir/        JSON Schema → IR parser (for diff + import)
 internal/openapi2jsonschema/   OpenAPI → JSON Schema converter (exhaustive field coverage)
 internal/uniongen/             Sealed interface generation for oneOf/anyOf unions (IR-based)
 internal/schemadiff/           JSON Schema + IR structural diff
+internal/config/               Pipeline config format + template expansion
+internal/source/               Source abstraction (file, HTTP, Git) with content hashing
+internal/report/               Structured pipeline reports with metrics
+internal/cache/                File-backed hash cache for incremental compilation
 examples/basic/                Basic example (Order, LineItem, Shape union — 23 tests)
 examples/openai/               OpenAI Responses API (261 types — 587 tests)
 testdata/specs/               Multi-API test suite (11 OpenAPI specs)

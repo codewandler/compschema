@@ -52,6 +52,8 @@ type Type struct {
 	Kind        Kind
 	Description string
 
+	cache hashCache // lazy hash cache (unexported, not serialized)
+
 	// KindStruct
 	Fields []Field
 

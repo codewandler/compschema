@@ -12,6 +12,10 @@
           "description": "Analyze all exported types (not just annotated)",
           "type": "boolean"
         },
+        "emit_ir": {
+          "description": "Write IR YAML alongside generated output",
+          "type": "boolean"
+        },
         "exclude": {
           "description": "Glob patterns for type names to skip",
           "items": {
@@ -52,6 +56,10 @@
         "spec": {
           "description": "Path to the OpenAPI spec file",
           "type": "string"
+        },
+        "test": {
+          "description": "Run generated tests after code generation",
+          "type": "boolean"
         },
         "validate": {
           "description": "Validate generated schema against meta-schema",

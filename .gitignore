@@ -1,6 +1,7 @@
 # Binaries
 /compschema
 /pipeline
+/bin/
 
 # IDE
 .idea/
@@ -16,3 +17,4 @@ Thumbs.db
 # Test artifacts
 /tmp/
 coverage.out
+.compschema.cache.json

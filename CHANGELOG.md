@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.1.0] - 2026-04-23
+
+### Added
+- **`compschema run` multi-source pipelines** — array `source` fields expand the pipeline per source with `{name}`, `{source}`, `{hash}` template variables
+- **`--test` flag on `generate`** — runs generated tests via `go test -json`, reports pass/fail/skip counts
+- **`--emit-ir` flag on `generate`** — writes `schema.gen.ir.yaml` with human-readable IR and Merkle hashes
+- **`--no-cache` flag on `generate`** — forces regeneration, skipping the hash cache
+- **Pipeline reports** — structured metrics (schemas, types, defs, test results, duration) printed after every pipeline and generate run
+- **`--report` flag on `run`** — writes pipeline report to a YAML file
+- **Source abstraction** (`internal/source/`) — pluggable sources for pipeline inputs:
+  - `FileSource` — local files with SHA-256 content hashing
+  - `HTTPSource` — URL fetching with content hashing
+  - `GitSource` — git clone + file extraction with commit hash tracking
+- **Merkle hashing** (`internal/ir/hash.go`) — deterministic content hashing on all IR nodes (Package, Type, Field, TypeRef, Variant, Constraint) with lazy caching via `sync.Once`
+- **Hash cache** (`internal/cache/`) — `.compschema.cache.json` stores per-package IR hashes and per-type hashes for skip-if-unchanged semantics
+- **IR YAML emitter** (`internal/emitter/ir_yaml.go`) — serializes IR Package to YAML with `_hash` annotations per type
+- **Template expansion** (`internal/config/template.go`) — `{name}`, `{source}`, `{hash}` variable substitution in pipeline actions
+- **`.compschema.yaml`** — pipeline config for `openai` and `specs` pipelines, replacing Makefile + run_all.sh
+- `build:bin` and `generate:config-schema` Taskfile tasks
+
+### Changed
+- `generate` CLI now prints a summary report after completion (types, defs, cached count, test results)
+- `run` pipeline generate uses caching — skips packages whose IR hash is unchanged
+- Taskfile `pipeline` and `specs` tasks now use `compschema run` instead of manual shell commands
+- `Source` field on `config.Action` is polymorphic (`string | map | array`), excluded from JSON Schema validation via `stripSourceFields`
+- Config schema regenerated with `Test` and `EmitIR` fields on Action
 
 ## [2.0.1] - 2026-04-22
 
@@ -245,7 +271,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/codewandler/compschema/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/codewandler/compschema/compare/v2.0.0...v2.0.1
 [1.1.0]: https://github.com/codewandler/compschema/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/codewandler/compschema/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/codewandler/compschema/compare/v0.8.0...v0.9.0

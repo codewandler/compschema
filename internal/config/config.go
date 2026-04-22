@@ -50,8 +50,9 @@ type Action struct {
 	Action string `json:"action" jsonschema:"description=CLI subcommand to run,enum=extract,enum=import,enum=generate,enum=diff"`
 
 	// extract flags
-	Spec string `json:"spec,omitempty" jsonschema:"description=Path to the OpenAPI spec file"`
-	Path string `json:"path,omitempty" jsonschema:"description=API path prefix to extract (e.g. /responses)"`
+	Spec   string `json:"spec,omitempty" jsonschema:"description=Path to the OpenAPI spec file"`
+	Path   string `json:"path,omitempty" jsonschema:"description=API path prefix to extract (e.g. /responses)"`
+	Source any    `json:"-" yaml:"source"` // parsed separately; polymorphic (string, map, array)
 
 	// import flags
 	Schema  string            `json:"schema,omitempty" jsonschema:"description=Path to the JSON Schema file"`
@@ -62,6 +63,8 @@ type Action struct {
 	// generate flags
 	All      bool     `json:"all,omitempty" jsonschema:"description=Analyze all exported types (not just annotated)"`
 	Packages []string `json:"packages,omitempty" jsonschema:"description=Go package patterns to analyze"`
+	Test     bool     `json:"test,omitempty" jsonschema:"description=Run generated tests after code generation"`
+	EmitIR   bool     `json:"emit_ir,omitempty" jsonschema:"description=Write IR YAML alongside generated output"`
 
 	// shared flags
 	ValidateSchema bool `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`
@@ -86,7 +89,10 @@ func Parse(data []byte) (*File, error) {
 		return nil, fmt.Errorf("parse config: %w", err)
 	}
 	// Validate against the generated JSON Schema.
-	jsonData, err := json.Marshal(normalizeYAML(raw))
+	// Strip "source" fields before validation (polymorphic, not in schema).
+	normalized := normalizeYAML(raw)
+	stripSourceFields(normalized)
+	jsonData, err := json.Marshal(normalized)
 	if err != nil {
 		return nil, fmt.Errorf("marshal config for validation: %w", err)
 	}
@@ -136,6 +142,26 @@ func normalizeYAML(v any) any {
 		return result
 	default:
 		return v
+	}
+}
+
+// stripSourceFields removes "source" keys from action maps before JSON Schema
+// validation. The source field is polymorphic (string|map|array) and handled
+// separately from the schema-validated fields.
+func stripSourceFields(v any) {
+	switch val := v.(type) {
+	case map[string]any:
+		// If this looks like an action (has "action" key), strip "source".
+		if _, ok := val["action"]; ok {
+			delete(val, "source")
+		}
+		for _, child := range val {
+			stripSourceFields(child)
+		}
+	case []any:
+		for _, item := range val {
+			stripSourceFields(item)
+		}
 	}
 }
 

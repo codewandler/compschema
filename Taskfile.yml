@@ -2,6 +2,7 @@ version: '3'
 
 vars:
   COMPSCHEMA: go run ./cmd/compschema
+  BIN: ./bin/compschema
   SPEC_FILE: testdata/openai/openapi.yaml
   SCHEMA_OUT: testdata/openai/responses.schema.json
 
@@ -14,9 +15,16 @@ tasks:
   # ── Development ──────────────────────────────────────────
 
   build:
-    desc: Build the compschema binary
+    desc: Build compschema (compile check + binary)
     cmds:
       - go build ./...
+      - task: build:bin
+
+  build:bin:
+    desc: Build compschema binary to ./bin/
+    cmds:
+      - mkdir -p bin
+      - go build -o {{.BIN}} ./cmd/compschema
 
   install:
     desc: Install compschema to $GOPATH/bin
@@ -71,11 +79,18 @@ tasks:
       - rm -f examples/openai/compschema* examples/openai/schema.gen.json
       - "{{.COMPSCHEMA}} generate --all --validate --out examples/openai ./examples/openai"
 
+  generate:config-schema:
+    desc: Regenerate config schema (dogfooding compschema on itself)
+    deps: [build:bin]
+    cmds:
+      - "{{.BIN}} generate --all --validate --out internal/config ./internal/config/"
+
   generate:
-    desc: Regenerate all examples
+    desc: Regenerate all examples + config schema
     cmds:
       - task: generate:basic
       - task: generate:openai
+      - task: generate:config-schema
 
   # ── Pipeline ─────────────────────────────────────────────
 
@@ -87,25 +102,20 @@ tasks:
     status:
       - test -f {{.SPEC_FILE}}
 
-  pipeline:extract:
-    desc: Extract JSON Schema from OpenAI spec
-    deps: [pipeline:fetch]
-    cmds:
-      - "{{.COMPSCHEMA}} extract --spec {{.SPEC_FILE}} --path /responses --validate --out {{.SCHEMA_OUT}}"
-
   pipeline:
     desc: Run the full OpenAI round-trip pipeline
+    deps: [build:bin]
     cmds:
       - task: pipeline:fetch
-      - task: pipeline:extract
-      - task: generate:openai
+      - "{{.BIN}} run openai"
 
   # ── Multi-spec testing ──────────────────────────────────
 
   specs:
     desc: Run multi-API round-trip test suite
+    deps: [build:bin]
     cmds:
-      - bash testdata/specs/run_all.sh
+      - "{{.BIN}} run specs"
 
   # ── Release ──────────────────────────────────────────────
 
@@ -115,3 +125,4 @@ tasks:
       - rm -f examples/basic/compschema* examples/basic/schema.gen.json
       - rm -f examples/openai/compschema* examples/openai/schema.gen.json
       - rm -f {{.SCHEMA_OUT}}
+      - rm -rf bin/

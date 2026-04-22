@@ -1,0 +1,44 @@
+pipelines:
+  openai:
+    - action: extract
+      spec: testdata/openai/openapi.yaml
+      path: /responses
+      validate: true
+      out: testdata/openai/responses.schema.json
+    - action: import
+      schema: testdata/openai/responses.schema.json
+      package: openairesponses
+      out: examples/openai/types.go
+    - action: generate
+      all: true
+      validate: true
+      test: true
+      out: examples/openai
+      packages:
+        - "./examples/openai/"
+
+  specs:
+    - action: extract
+      source:
+        - testdata/specs/petstore.yaml
+        - testdata/specs/twilio.yaml
+        - testdata/specs/spotify.yaml
+        - testdata/specs/stripe.yaml
+        - testdata/specs/github.yaml
+        - testdata/specs/kubernetes.yaml
+        - testdata/specs/discord.yaml
+        - testdata/specs/cloudflare.yaml
+        - testdata/specs/plaid.yaml
+        - testdata/specs/box.yaml
+        - testdata/specs/asana.yaml
+      path: /
+      out: "/tmp/compschema-specs/{name}/schema.json"
+    - action: import
+      schema: "/tmp/compschema-specs/{name}/schema.json"
+      package: "{name}"
+      out: "/tmp/compschema-specs/{name}/types.go"
+    - action: generate
+      all: true
+      test: true
+      packages:
+        - "/tmp/compschema-specs/{name}/"
