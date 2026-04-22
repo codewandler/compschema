@@ -106,22 +106,30 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		out.Set("allOf", items)
 	}
 
-	// oneOf
+	// oneOf — with nullable simplification
 	if len(schema.OneOf) > 0 {
-		items := make([]any, 0, len(schema.OneOf))
-		for _, proxy := range schema.OneOf {
-			items = append(items, c.convertProxy(proxy))
+		if simplified, ok := c.simplifyNullableComposition(schema.OneOf); ok {
+			mergeInto(out, simplified)
+		} else {
+			items := make([]any, 0, len(schema.OneOf))
+			for _, proxy := range schema.OneOf {
+				items = append(items, c.convertProxy(proxy))
+			}
+			out.Set("oneOf", items)
 		}
-		out.Set("oneOf", items)
 	}
 
-	// anyOf
+	// anyOf — with nullable simplification
 	if len(schema.AnyOf) > 0 {
-		items := make([]any, 0, len(schema.AnyOf))
-		for _, proxy := range schema.AnyOf {
-			items = append(items, c.convertProxy(proxy))
+		if simplified, ok := c.simplifyNullableComposition(schema.AnyOf); ok {
+			mergeInto(out, simplified)
+		} else {
+			items := make([]any, 0, len(schema.AnyOf))
+			for _, proxy := range schema.AnyOf {
+				items = append(items, c.convertProxy(proxy))
+			}
+			out.Set("anyOf", items)
 		}
-		out.Set("anyOf", items)
 	}
 
 	// not
@@ -525,6 +533,102 @@ func (c *Converter) ensureDef(name string) {
 		return
 	}
 	c.convertSchema(name, schema)
+}
+
+// simplifyNullableComposition checks if a oneOf/anyOf is just [T, {type:null}]
+// and if so, returns a simplified schema where null is merged into the type.
+//
+// Pattern: anyOf: [{type: "string"}, {type: "null"}]  → type: ["string", "null"]
+// Pattern: anyOf: [{$ref: "#/$defs/Foo"}, {type: "null"}] → allOf: [{$ref}] with nullable
+//
+// This is extremely common in OpenAPI specs that use anyOf for nullable fields
+// instead of the nullable keyword.
+func (c *Converter) simplifyNullableComposition(proxies []*v3base.SchemaProxy) (*orderedmap.Map[string, any], bool) {
+	if len(proxies) != 2 {
+		return nil, false
+	}
+
+	// Find which is the null variant and which is the concrete variant.
+	var nullIdx, concreteIdx int = -1, -1
+	for i, proxy := range proxies {
+		// Skip $ref proxies — they can't be the null variant.
+		if proxy.GetReference() != "" {
+			concreteIdx = i
+			continue
+		}
+		s, err := proxy.BuildSchema()
+		if err != nil {
+			return nil, false
+		}
+		if len(s.Type) == 1 && s.Type[0] == "null" && s.Properties == nil && len(s.AllOf) == 0 && len(s.OneOf) == 0 && len(s.AnyOf) == 0 {
+			nullIdx = i
+		} else {
+			concreteIdx = i
+		}
+	}
+
+	if nullIdx == -1 || concreteIdx == -1 {
+		return nil, false
+	}
+
+	// Convert the concrete variant.
+	concrete := c.convertProxy(proxies[concreteIdx])
+	concreteMap, ok := concrete.(*orderedmap.Map[string, any])
+	if !ok {
+		return nil, false
+	}
+
+	// If the concrete variant is a $ref, don't simplify — go-jsonschema
+	// already handles anyOf($ref, null) correctly by generating a pointer
+	// to the referenced type. Our allOf+null wrapping would break that.
+	if _, hasRef := concreteMap.Get("$ref"); hasRef {
+		return nil, false
+	}
+
+	// Concrete has a type — merge null into it.
+	if typeVal, hasType := concreteMap.Get("type"); hasType {
+		switch t := typeVal.(type) {
+		case string:
+			concreteMap.Set("type", []any{t, "null"})
+		case []any:
+			// Check null isn't already there.
+			hasNull := false
+			for _, v := range t {
+				if v == "null" {
+					hasNull = true
+				}
+			}
+			if !hasNull {
+				concreteMap.Set("type", append(t, "null"))
+			}
+		case []string:
+			hasNull := false
+			for _, v := range t {
+				if v == "null" {
+					hasNull = true
+				}
+			}
+			if !hasNull {
+				newTypes := make([]any, len(t)+1)
+				for i, v := range t {
+					newTypes[i] = v
+				}
+				newTypes[len(t)] = "null"
+				concreteMap.Set("type", newTypes)
+			}
+		}
+		return concreteMap, true
+	}
+
+	// No type on concrete — can't simplify cleanly.
+	return nil, false
+}
+
+// mergeInto copies all entries from src into dst.
+func mergeInto(dst, src *orderedmap.Map[string, any]) {
+	for pair := src.Oldest(); pair != nil; pair = pair.Next() {
+		dst.Set(pair.Key, pair.Value)
+	}
 }
 
 // refToName extracts the schema name from a $ref like "#/components/schemas/Foo".

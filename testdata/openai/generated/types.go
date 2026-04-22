@@ -5,35 +5,37 @@ package openairesponses
 type Annotation interface{}
 
 type ApproximateLocation struct {
-	// City corresponds to the JSON schema field "city".
-	City interface{} `json:"city,omitempty,omitzero" yaml:"city,omitempty" mapstructure:"city,omitempty"`
+	// Free text input for the city of the user, e.g. `San Francisco`.
+	City ApproximateLocationCity `json:"city,omitempty,omitzero" yaml:"city,omitempty" mapstructure:"city,omitempty"`
 
-	// Country corresponds to the JSON schema field "country".
-	Country interface{} `json:"country,omitempty,omitzero" yaml:"country,omitempty" mapstructure:"country,omitempty"`
+	// The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+	// the user, e.g. `US`.
+	Country ApproximateLocationCountry `json:"country,omitempty,omitzero" yaml:"country,omitempty" mapstructure:"country,omitempty"`
 
-	// Region corresponds to the JSON schema field "region".
-	Region interface{} `json:"region,omitempty,omitzero" yaml:"region,omitempty" mapstructure:"region,omitempty"`
+	// Free text input for the region of the user, e.g. `California`.
+	Region ApproximateLocationRegion `json:"region,omitempty,omitzero" yaml:"region,omitempty" mapstructure:"region,omitempty"`
 
-	// Timezone corresponds to the JSON schema field "timezone".
-	Timezone interface{} `json:"timezone,omitempty,omitzero" yaml:"timezone,omitempty" mapstructure:"timezone,omitempty"`
+	// The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+	// user, e.g. `America/Los_Angeles`.
+	Timezone ApproximateLocationTimezone `json:"timezone,omitempty,omitzero" yaml:"timezone,omitempty" mapstructure:"timezone,omitempty"`
 
 	// The type of location approximation. Always `approximate`.
 	Type ApproximateLocationType `json:"type" yaml:"type" mapstructure:"type"`
 }
 
 // Free text input for the city of the user, e.g. `San Francisco`.
-type ApproximateLocationCity_0 *string
+type ApproximateLocationCity *string
 
 // The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
 // the user, e.g. `US`.
-type ApproximateLocationCountry_0 *string
+type ApproximateLocationCountry *string
 
 // Free text input for the region of the user, e.g. `California`.
-type ApproximateLocationRegion_0 *string
+type ApproximateLocationRegion *string
 
 // The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
 // user, e.g. `America/Los_Angeles`.
-type ApproximateLocationTimezone_0 *string
+type ApproximateLocationTimezone *string
 
 type ApproximateLocationType string
 
@@ -195,21 +197,22 @@ type ComputerAction interface{}
 
 // The output of a computer tool call.
 type ComputerCallOutputItemParam struct {
-	// AcknowledgedSafetyChecks corresponds to the JSON schema field
-	// "acknowledged_safety_checks".
+	// The safety checks reported by the API that have been acknowledged by the
+	// developer.
 	AcknowledgedSafetyChecks *ComputerCallOutputItemParamAcknowledgedSafetyChecks `json:"acknowledged_safety_checks,omitempty,omitzero" yaml:"acknowledged_safety_checks,omitempty" mapstructure:"acknowledged_safety_checks,omitempty"`
 
 	// The ID of the computer tool call that produced the output.
 	CallID string `json:"call_id" yaml:"call_id" mapstructure:"call_id"`
 
-	// ID corresponds to the JSON schema field "id".
-	ID interface{} `json:"id,omitempty,omitzero" yaml:"id,omitempty" mapstructure:"id,omitempty"`
+	// The ID of the computer tool call output.
+	ID ComputerCallOutputItemParamID `json:"id,omitempty,omitzero" yaml:"id,omitempty" mapstructure:"id,omitempty"`
 
 	// Output corresponds to the JSON schema field "output".
 	Output ComputerScreenshotImage `json:"output" yaml:"output" mapstructure:"output"`
 
-	// Status corresponds to the JSON schema field "status".
-	Status interface{} `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+	// The status of the message input. One of `in_progress`, `completed`, or
+	// `incomplete`. Populated when input items are returned via API.
+	Status *ComputerCallOutputItemParamStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
 
 	// The type of the computer tool call output. Always `computer_call_output`.
 	Type ComputerCallOutputItemParamType `json:"type" yaml:"type" mapstructure:"type"`
@@ -219,18 +222,14 @@ type ComputerCallOutputItemParam struct {
 // developer.
 type ComputerCallOutputItemParamAcknowledgedSafetyChecks []ComputerCallSafetyCheckParam
 
-// The safety checks reported by the API that have been acknowledged by the
-// developer.
-type ComputerCallOutputItemParamAcknowledgedSafetyChecks_0 []ComputerCallSafetyCheckParam
-
 // The ID of the computer tool call output.
-type ComputerCallOutputItemParamID_0 *string
+type ComputerCallOutputItemParamID *string
 
-type ComputerCallOutputItemParamStatus_0 string
+type ComputerCallOutputItemParamStatus string
 
-const ComputerCallOutputItemParamStatus_0_Completed ComputerCallOutputItemParamStatus_0 = "completed"
-const ComputerCallOutputItemParamStatus_0_InProgress ComputerCallOutputItemParamStatus_0 = "in_progress"
-const ComputerCallOutputItemParamStatus_0_Incomplete ComputerCallOutputItemParamStatus_0 = "incomplete"
+const ComputerCallOutputItemParamStatusCompleted ComputerCallOutputItemParamStatus = "completed"
+const ComputerCallOutputItemParamStatusInProgress ComputerCallOutputItemParamStatus = "in_progress"
+const ComputerCallOutputItemParamStatusIncomplete ComputerCallOutputItemParamStatus = "incomplete"
 
 type ComputerCallOutputItemParamType string
 
@@ -238,21 +237,21 @@ const ComputerCallOutputItemParamTypeComputerCallOutput ComputerCallOutputItemPa
 
 // A pending safety check for the computer call.
 type ComputerCallSafetyCheckParam struct {
-	// Code corresponds to the JSON schema field "code".
-	Code interface{} `json:"code,omitempty,omitzero" yaml:"code,omitempty" mapstructure:"code,omitempty"`
+	// The type of the pending safety check.
+	Code ComputerCallSafetyCheckParamCode `json:"code,omitempty,omitzero" yaml:"code,omitempty" mapstructure:"code,omitempty"`
 
 	// The ID of the pending safety check.
 	ID string `json:"id" yaml:"id" mapstructure:"id"`
 
-	// Message corresponds to the JSON schema field "message".
-	Message interface{} `json:"message,omitempty,omitzero" yaml:"message,omitempty" mapstructure:"message,omitempty"`
+	// Details about the pending safety check.
+	Message ComputerCallSafetyCheckParamMessage `json:"message,omitempty,omitzero" yaml:"message,omitempty" mapstructure:"message,omitempty"`
 }
 
 // The type of the pending safety check.
-type ComputerCallSafetyCheckParamCode_0 *string
+type ComputerCallSafetyCheckParamCode *string
 
 // Details about the pending safety check.
-type ComputerCallSafetyCheckParamMessage_0 *string
+type ComputerCallSafetyCheckParamMessage *string
 
 // A computer screenshot image used with the computer use tool.
 type ComputerScreenshotImage struct {
@@ -623,14 +622,16 @@ type FunctionCallOutputItemParam struct {
 	// The unique ID of the function tool call generated by the model.
 	CallID string `json:"call_id" yaml:"call_id" mapstructure:"call_id"`
 
-	// ID corresponds to the JSON schema field "id".
-	ID interface{} `json:"id,omitempty,omitzero" yaml:"id,omitempty" mapstructure:"id,omitempty"`
+	// The unique ID of the function tool call output. Populated when this item is
+	// returned via API.
+	ID FunctionCallOutputItemParamID `json:"id,omitempty,omitzero" yaml:"id,omitempty" mapstructure:"id,omitempty"`
 
 	// A JSON string of the output of the function tool call.
 	Output string `json:"output" yaml:"output" mapstructure:"output"`
 
-	// Status corresponds to the JSON schema field "status".
-	Status interface{} `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+	// The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+	// Populated when items are returned via API.
+	Status *FunctionCallOutputItemParamStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
 
 	// The type of the function tool call output. Always `function_call_output`.
 	Type FunctionCallOutputItemParamType `json:"type" yaml:"type" mapstructure:"type"`
@@ -638,13 +639,13 @@ type FunctionCallOutputItemParam struct {
 
 // The unique ID of the function tool call output. Populated when this item is
 // returned via API.
-type FunctionCallOutputItemParamID_0 *string
+type FunctionCallOutputItemParamID *string
 
-type FunctionCallOutputItemParamStatus_0 string
+type FunctionCallOutputItemParamStatus string
 
-const FunctionCallOutputItemParamStatus_0_Completed FunctionCallOutputItemParamStatus_0 = "completed"
-const FunctionCallOutputItemParamStatus_0_InProgress FunctionCallOutputItemParamStatus_0 = "in_progress"
-const FunctionCallOutputItemParamStatus_0_Incomplete FunctionCallOutputItemParamStatus_0 = "incomplete"
+const FunctionCallOutputItemParamStatusCompleted FunctionCallOutputItemParamStatus = "completed"
+const FunctionCallOutputItemParamStatusInProgress FunctionCallOutputItemParamStatus = "in_progress"
+const FunctionCallOutputItemParamStatusIncomplete FunctionCallOutputItemParamStatus = "incomplete"
 
 type FunctionCallOutputItemParamType string
 
@@ -654,17 +655,18 @@ const FunctionCallOutputItemParamTypeFunctionCallOutput FunctionCallOutputItemPa
 // about [function
 // calling](https://platform.openai.com/docs/guides/function-calling).
 type FunctionTool struct {
-	// Description corresponds to the JSON schema field "description".
-	Description interface{} `json:"description,omitempty,omitzero" yaml:"description,omitempty" mapstructure:"description,omitempty"`
+	// A description of the function. Used by the model to determine whether or not to
+	// call the function.
+	Description FunctionToolDescription `json:"description,omitempty,omitzero" yaml:"description,omitempty" mapstructure:"description,omitempty"`
 
 	// The name of the function to call.
 	Name string `json:"name" yaml:"name" mapstructure:"name"`
 
-	// Parameters corresponds to the JSON schema field "parameters".
+	// A JSON schema object describing the parameters of the function.
 	Parameters *FunctionToolParameters `json:"parameters" yaml:"parameters" mapstructure:"parameters"`
 
-	// Strict corresponds to the JSON schema field "strict".
-	Strict interface{} `json:"strict" yaml:"strict" mapstructure:"strict"`
+	// Whether to enforce strict parameter validation. Default `true`.
+	Strict FunctionToolStrict `json:"strict" yaml:"strict" mapstructure:"strict"`
 
 	// The type of the function tool. Always `function`.
 	Type FunctionToolType `json:"type" yaml:"type" mapstructure:"type"`
@@ -750,16 +752,13 @@ const FunctionToolCallTypeFunctionCall FunctionToolCallType = "function_call"
 
 // A description of the function. Used by the model to determine whether or not to
 // call the function.
-type FunctionToolDescription_0 *string
+type FunctionToolDescription *string
 
 // A JSON schema object describing the parameters of the function.
 type FunctionToolParameters map[string]interface{}
 
-// A JSON schema object describing the parameters of the function.
-type FunctionToolParameters_0 map[string]interface{}
-
 // Whether to enforce strict parameter validation. Default `true`.
-type FunctionToolStrict_0 *bool
+type FunctionToolStrict *bool
 
 type FunctionToolType string
 
@@ -779,8 +778,8 @@ type InputFileContent struct {
 	//
 	FileData *string `json:"file_data,omitempty,omitzero" yaml:"file_data,omitempty" mapstructure:"file_data,omitempty"`
 
-	// FileID corresponds to the JSON schema field "file_id".
-	FileID interface{} `json:"file_id,omitempty,omitzero" yaml:"file_id,omitempty" mapstructure:"file_id,omitempty"`
+	// The ID of the file to be sent to the model.
+	FileID InputFileContentFileID `json:"file_id,omitempty,omitzero" yaml:"file_id,omitempty" mapstructure:"file_id,omitempty"`
 
 	// The name of the file to be sent to the model.
 	Filename *string `json:"filename,omitempty,omitzero" yaml:"filename,omitempty" mapstructure:"filename,omitempty"`
@@ -790,7 +789,7 @@ type InputFileContent struct {
 }
 
 // The ID of the file to be sent to the model.
-type InputFileContentFileID_0 *string
+type InputFileContentFileID *string
 
 type InputFileContentType string
 
@@ -802,11 +801,12 @@ type InputImageContent struct {
 	// `auto`. Defaults to `auto`.
 	Detail InputImageContentDetail `json:"detail" yaml:"detail" mapstructure:"detail"`
 
-	// FileID corresponds to the JSON schema field "file_id".
-	FileID interface{} `json:"file_id,omitempty,omitzero" yaml:"file_id,omitempty" mapstructure:"file_id,omitempty"`
+	// The ID of the file to be sent to the model.
+	FileID InputImageContentFileID `json:"file_id,omitempty,omitzero" yaml:"file_id,omitempty" mapstructure:"file_id,omitempty"`
 
-	// ImageURL corresponds to the JSON schema field "image_url".
-	ImageURL interface{} `json:"image_url,omitempty,omitzero" yaml:"image_url,omitempty" mapstructure:"image_url,omitempty"`
+	// The URL of the image to be sent to the model. A fully qualified URL or base64
+	// encoded image in a data URL.
+	ImageURL InputImageContentImageURL `json:"image_url,omitempty,omitzero" yaml:"image_url,omitempty" mapstructure:"image_url,omitempty"`
 
 	// The type of the input item. Always `input_image`.
 	Type InputImageContentType `json:"type" yaml:"type" mapstructure:"type"`
@@ -819,11 +819,11 @@ const InputImageContentDetailHigh InputImageContentDetail = "high"
 const InputImageContentDetailLow InputImageContentDetail = "low"
 
 // The ID of the file to be sent to the model.
-type InputImageContentFileID_0 *string
+type InputImageContentFileID *string
 
 // The URL of the image to be sent to the model. A fully qualified URL or base64
 // encoded image in a data URL.
-type InputImageContentImageURL_0 *string
+type InputImageContentImageURL *string
 
 type InputImageContentType string
 
@@ -895,13 +895,13 @@ type ItemReferenceParam struct {
 	// The ID of the item to reference.
 	ID string `json:"id" yaml:"id" mapstructure:"id"`
 
-	// Type corresponds to the JSON schema field "type".
-	Type interface{} `json:"type,omitempty,omitzero" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+	// The type of item to reference. Always `item_reference`.
+	Type *ItemReferenceParamType `json:"type,omitempty,omitzero" yaml:"type,omitempty" mapstructure:"type,omitempty"`
 }
 
-type ItemReferenceParamType_0 string
+type ItemReferenceParamType string
 
-const ItemReferenceParamType_0_ItemReference ItemReferenceParamType_0 = "item_reference"
+const ItemReferenceParamTypeItemReference ItemReferenceParamType = "item_reference"
 
 // Content item used to generate a response.
 type ItemResource interface{}
@@ -2346,7 +2346,43 @@ type Wait struct {
 
 type WaitType string
 
+type WebSearchPreviewToolUserLocation_0 = ApproximateLocation
+
 const WaitTypeWait WaitType = "wait"
+
+type FileSearchToolFilters_0_0 = ComparisonFilter
+
+type WebSearchPreviewToolSearchContextSize string
+
+const WebSearchPreviewToolSearchContextSizeLow WebSearchPreviewToolSearchContextSize = "low"
+const WebSearchPreviewToolSearchContextSizeMedium WebSearchPreviewToolSearchContextSize = "medium"
+const WebSearchPreviewToolSearchContextSizeHigh WebSearchPreviewToolSearchContextSize = "high"
+
+type WebSearchPreviewToolType string
+
+const WebSearchPreviewToolTypeWebSearchPreview WebSearchPreviewToolType = "web_search_preview"
+const WebSearchPreviewToolTypeWebSearchPreview20250311 WebSearchPreviewToolType = "web_search_preview_2025_03_11"
+
+type FileSearchToolFilters_0_1 = CompoundFilter
+
+type WebSearchPreviewToolUserLocation struct {
+	// Free text input for the city of the user, e.g. `San Francisco`.
+	City ApproximateLocationCity `json:"city,omitempty,omitzero" yaml:"city,omitempty" mapstructure:"city,omitempty"`
+
+	// The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+	// the user, e.g. `US`.
+	Country ApproximateLocationCountry `json:"country,omitempty,omitzero" yaml:"country,omitempty" mapstructure:"country,omitempty"`
+
+	// Free text input for the region of the user, e.g. `California`.
+	Region ApproximateLocationRegion `json:"region,omitempty,omitzero" yaml:"region,omitempty" mapstructure:"region,omitempty"`
+
+	// The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+	// user, e.g. `America/Los_Angeles`.
+	Timezone ApproximateLocationTimezone `json:"timezone,omitempty,omitzero" yaml:"timezone,omitempty" mapstructure:"timezone,omitempty"`
+
+	// The type of location approximation. Always `approximate`.
+	Type ApproximateLocationType `json:"type" yaml:"type" mapstructure:"type"`
+}
 
 // This tool searches the web for relevant results to use in a response. Learn more
 // about the [web search
@@ -2364,39 +2400,16 @@ type WebSearchPreviewTool struct {
 	UserLocation *WebSearchPreviewToolUserLocation `json:"user_location,omitempty,omitzero" yaml:"user_location,omitempty" mapstructure:"user_location,omitempty"`
 }
 
-type WebSearchPreviewToolSearchContextSize string
+type WebSearchToolCallStatus string
 
-const WebSearchPreviewToolSearchContextSizeHigh WebSearchPreviewToolSearchContextSize = "high"
-const WebSearchPreviewToolSearchContextSizeLow WebSearchPreviewToolSearchContextSize = "low"
-const WebSearchPreviewToolSearchContextSizeMedium WebSearchPreviewToolSearchContextSize = "medium"
+const WebSearchToolCallStatusInProgress WebSearchToolCallStatus = "in_progress"
+const WebSearchToolCallStatusSearching WebSearchToolCallStatus = "searching"
+const WebSearchToolCallStatusCompleted WebSearchToolCallStatus = "completed"
+const WebSearchToolCallStatusFailed WebSearchToolCallStatus = "failed"
 
-type WebSearchPreviewToolType string
+type WebSearchToolCallType string
 
-const WebSearchPreviewToolTypeWebSearchPreview WebSearchPreviewToolType = "web_search_preview"
-const WebSearchPreviewToolTypeWebSearchPreview20250311 WebSearchPreviewToolType = "web_search_preview_2025_03_11"
-
-type WebSearchPreviewToolUserLocation struct {
-	// City corresponds to the JSON schema field "city".
-	City interface{} `json:"city,omitempty,omitzero" yaml:"city,omitempty" mapstructure:"city,omitempty"`
-
-	// Country corresponds to the JSON schema field "country".
-	Country interface{} `json:"country,omitempty,omitzero" yaml:"country,omitempty" mapstructure:"country,omitempty"`
-
-	// Region corresponds to the JSON schema field "region".
-	Region interface{} `json:"region,omitempty,omitzero" yaml:"region,omitempty" mapstructure:"region,omitempty"`
-
-	// Timezone corresponds to the JSON schema field "timezone".
-	Timezone interface{} `json:"timezone,omitempty,omitzero" yaml:"timezone,omitempty" mapstructure:"timezone,omitempty"`
-
-	// The type of location approximation. Always `approximate`.
-	Type ApproximateLocationType `json:"type" yaml:"type" mapstructure:"type"`
-}
-
-type WebSearchPreviewToolUserLocation_0 = ApproximateLocation
-
-type FileSearchToolFilters_0_1 = CompoundFilter
-
-type FileSearchToolFilters_0_0 = ComparisonFilter
+const WebSearchToolCallTypeWebSearchCall WebSearchToolCallType = "web_search_call"
 
 // The results of a web search tool call. See the
 // [web search guide](/docs/guides/tools-web-search) for more information.
@@ -2413,14 +2426,3 @@ type WebSearchToolCall struct {
 	//
 	Type WebSearchToolCallType `json:"type" yaml:"type" mapstructure:"type"`
 }
-
-type WebSearchToolCallStatus string
-
-const WebSearchToolCallStatusCompleted WebSearchToolCallStatus = "completed"
-const WebSearchToolCallStatusFailed WebSearchToolCallStatus = "failed"
-const WebSearchToolCallStatusInProgress WebSearchToolCallStatus = "in_progress"
-const WebSearchToolCallStatusSearching WebSearchToolCallStatus = "searching"
-
-type WebSearchToolCallType string
-
-const WebSearchToolCallTypeWebSearchCall WebSearchToolCallType = "web_search_call"
