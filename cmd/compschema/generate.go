@@ -18,12 +18,13 @@ import (
 
 func newGenerateCmd() *cobra.Command {
 	var (
-		outDir   string
-		validate bool
-		allTypes bool
-		runTests bool
-		emitIR   bool
-		noCache  bool
+		outDir      string
+		validate    bool
+		allTypes    bool
+		runTests    bool
+		emitIR      bool
+		noCache     bool
+		addExamples bool
 	)
 
 	cmd := &cobra.Command{
@@ -101,7 +102,9 @@ types annotated with //compschema:generate, and emit:
 				generatedTypes += len(pkg.Types)
 
 				// 1. JSON Schema
-				schemaJSON, inlined, err := emitter.JSONSchema(pkg)
+				schemaJSON, inlined, err := emitter.JSONSchemaWithOptions(pkg, emitter.EmitOptions{
+					Examples: addExamples,
+				})
 				if err != nil {
 					return fmt.Errorf("emit schema: %w", err)
 				}
@@ -231,6 +234,7 @@ types annotated with //compschema:generate, and emit:
 	cmd.Flags().BoolVar(&runTests, "test", false, "run generated tests after writing files")
 	cmd.Flags().BoolVar(&emitIR, "emit-ir", false, "write IR YAML alongside generated output")
 	cmd.Flags().BoolVar(&noCache, "no-cache", false, "skip cache, force regeneration")
+	cmd.Flags().BoolVar(&addExamples, "examples", false, "add generated examples to JSON Schema output")
 
 	return cmd
 }

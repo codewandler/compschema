@@ -59,12 +59,14 @@ type Action struct {
 	Package string            `json:"package,omitempty" jsonschema:"description=Go package name for generated code"`
 	Rename  map[string]string `json:"rename,omitempty" jsonschema:"description=Type rename map: SchemaName → GoName"`
 	Exclude []string          `json:"exclude,omitempty" jsonschema:"description=Glob patterns for type names to skip"`
+	Tags    []string          `json:"tags,omitempty" jsonschema:"description=Additional struct tags to emit (e.g. yaml)"`
 
 	// generate flags
 	All      bool     `json:"all,omitempty" jsonschema:"description=Analyze all exported types (not just annotated)"`
 	Packages []string `json:"packages,omitempty" jsonschema:"description=Go package patterns to analyze"`
 	Test     bool     `json:"test,omitempty" jsonschema:"description=Run generated tests after code generation"`
 	EmitIR   bool     `json:"emit_ir,omitempty" jsonschema:"description=Write IR YAML alongside generated output"`
+	Examples bool     `json:"examples,omitempty" jsonschema:"description=Add generated examples to JSON Schema output"`
 
 	// shared flags
 	ValidateSchema bool `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`

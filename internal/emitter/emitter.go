@@ -26,14 +26,29 @@ func isWrapperType(t *ir.Type) bool {
 	return t.Fields[0].JSONName == "Value" || t.Fields[0].JSONName == "value"
 }
 
+// EmitOptions controls optional features of the JSON Schema emitter.
+type EmitOptions struct {
+	Examples bool // add "examples" arrays to $defs
+}
+
 // JSONSchema emits a JSON Schema draft 2020-12 document from an IR Package.
 // Single-use enum and scalar $defs are inlined at their reference site.
 func JSONSchema(pkg *ir.Package) ([]byte, map[string]bool, error) {
+	return JSONSchemaWithOptions(pkg, EmitOptions{})
+}
+
+// JSONSchemaWithOptions emits a JSON Schema with configurable options.
+func JSONSchemaWithOptions(pkg *ir.Package, opts EmitOptions) ([]byte, map[string]bool, error) {
 	defs := make(map[string]any)
 
 	for _, name := range pkg.Order {
 		t := pkg.Types[name]
 		defs[name] = typeToSchema(t, true)
+	}
+
+	// Add examples before inlining so inlined types carry their examples.
+	if opts.Examples {
+		AddExamples(defs, pkg)
 	}
 
 	// Inline single-use trivial $defs.

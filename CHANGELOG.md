@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-04-23
+
+### Added
+- **`--examples` flag on `generate`** — adds generated `examples` arrays to JSON Schema `$defs`. The example generator produces realistic values based on type names, constraints (format, minimum, pattern, minLength, minItems), and enum values.
+- **`--tags` flag on `import`** — emits additional struct tags on generated Go structs (e.g. `--tags yaml` adds `yaml:"field_name"` alongside `json:"field_name"`). Supports multiple tags: `--tags yaml,db`.
+- `Examples` field on config Action for pipeline usage
+- `Tags` field on config Action / importer Config for pipeline usage
+- `emitter.EmitOptions` struct with `Examples` flag
+- `emitter.JSONSchemaWithOptions()` — `JSONSchema()` with configurable options
+- `emitter.GenerateExample()` — produces realistic JSON example values from IR types
+- `emitter.AddExamples()` — enriches `$defs` map with generated examples
+- `importer.GenerateGoWithConfig()` — `GenerateGo()` with Config (tags, etc.)
+- 7 new example generator tests + 1 AddExamples test
+
 ## [2.1.1] - 2026-04-23
 
 ### Changed
@@ -280,7 +294,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/codewandler/compschema/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/codewandler/compschema/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/codewandler/compschema/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/codewandler/compschema/compare/v2.0.0...v2.0.1

@@ -32,7 +32,7 @@ func ImportWithConfig(schemaPath string, cfg Config) (string, error) {
 		return "", fmt.Errorf("parse schema: %w", err)
 	}
 	ApplyConfig(irPkg, cfg)
-	return GenerateGo(irPkg), nil
+	return GenerateGoWithConfig(irPkg, cfg), nil
 }
 
 // ImportBytes reads JSON Schema bytes and generates Go source code.
@@ -48,6 +48,11 @@ func ImportBytes(data []byte, pkg string) (string, error) {
 
 // GenerateGo produces Go source code from an IR package.
 func GenerateGo(pkg *ir.Package) string {
+	return GenerateGoWithConfig(pkg, Config{})
+}
+
+// GenerateGoWithConfig produces Go source code from an IR package with config.
+func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 	// Post-process: extract inline enums/unions/objects into named types.
 	extractInlineEnums(pkg)
 
@@ -128,7 +133,7 @@ func GenerateGo(pkg *ir.Package) string {
 			unionTypes[goName] = true
 		}
 		b.WriteString("\n")
-		emitType(&b, name, t, pkg)
+		emitType(&b, name, t, pkg, cfg.Tags)
 	}
 
 	// Fourth pass: emit UnmarshalJSON for structs with interface fields.
@@ -149,12 +154,12 @@ func GenerateGo(pkg *ir.Package) string {
 	return b.String()
 }
 
-func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package) {
+func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, extraTags []string) {
 	goName := toGoName(name)
 
 	switch t.Kind {
 	case ir.KindStruct:
-		emitStruct(b, goName, t, pkg)
+		emitStruct(b, goName, t, pkg, extraTags)
 
 	case ir.KindEnum:
 		emitEnum(b, goName, t)
@@ -196,7 +201,7 @@ func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package) {
 	}
 }
 
-func emitStruct(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
+func emitStruct(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, extraTags []string) {
 	if t.Description != "" {
 		b.WriteString(fmt.Sprintf("// %s %s\n", goName, cleanComment(t.Description)))
 	}
@@ -235,6 +240,11 @@ func emitStruct(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) 
 		}
 
 		tags := fmt.Sprintf("`json:%q", jsonTag)
+
+		// Extra tags (yaml, etc.) use the same name/omitempty as json.
+		for _, tagName := range extraTags {
+			tags += fmt.Sprintf(" %s:%q", tagName, jsonTag)
+		}
 
 		// Build jsonschema tag from constraints + description.
 		jsTagParts := buildJSONSchemaTag(f.Constraints, f.Description)

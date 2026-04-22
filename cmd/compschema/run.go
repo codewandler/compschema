@@ -225,6 +225,7 @@ func runImportAction(a config.Action, sr *report.StepReport) error {
 		Package: a.Package,
 		Rename:  a.Rename,
 		Exclude: a.Exclude,
+		Tags:    a.Tags,
 	}
 
 	if err := importer.ImportFromFileWithConfig(schemaPath, a.Out, cfg); err != nil {
@@ -336,7 +337,9 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 			continue
 		}
 
-		schemaJSON, inlined, err := emitter.JSONSchema(pkg)
+		schemaJSON, inlined, err := emitter.JSONSchemaWithOptions(pkg, emitter.EmitOptions{
+			Examples: a.Examples,
+		})
 		if err != nil {
 			return fmt.Errorf("emit schema: %w", err)
 		}
