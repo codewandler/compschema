@@ -25,9 +25,10 @@ import (
 
 // Converter holds the parsed OpenAPI model and extracted $defs.
 type Converter struct {
-	doc  *v3high.Document
-	defs *orderedmap.Map[string, any] // collected $defs
-	seen map[string]bool              // cycle detection
+	doc       *v3high.Document
+	defs      *orderedmap.Map[string, any] // collected $defs
+	seen      map[string]bool              // cycle detection
+	nameStack []string                     // tracks current named schema for recursive $ref resolution
 }
 
 // New parses an OpenAPI spec from a file and returns a Converter.
@@ -45,9 +46,10 @@ func New(path string) (*Converter, error) {
 		return nil, fmt.Errorf("build v3 model: %w", err)
 	}
 	return &Converter{
-		doc:  &model.Model,
-		defs: orderedmap.New[string, any](),
-		seen: make(map[string]bool),
+		doc:       &model.Model,
+		defs:      orderedmap.New[string, any](),
+		seen:      make(map[string]bool),
+		nameStack: nil,
 	}, nil
 }
 
@@ -91,6 +93,12 @@ func (c *Converter) ExtractSchema(name string) ([]byte, error) {
 func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedmap.Map[string, any] {
 	if schema == nil {
 		return orderedmap.New[string, any]()
+	}
+
+	// Track named schema context for recursive $ref resolution.
+	if name != "" {
+		c.nameStack = append(c.nameStack, name)
+		defer func() { c.nameStack = c.nameStack[:len(c.nameStack)-1] }()
 	}
 
 	out := orderedmap.New[string, any]()
@@ -513,6 +521,17 @@ func (c *Converter) convertProxy(proxy *v3base.SchemaProxy) any {
 	if err != nil {
 		return orderedmap.New[string, any]()
 	}
+
+	// Detect empty schemas — these are typically $recursiveRef: "#" that
+	// libopenapi can't resolve. Replace with a $ref to the nearest named
+	// parent schema (self-reference).
+	if c.isEmptySchema(s) && len(c.nameStack) > 0 {
+		parentName := c.nameStack[len(c.nameStack)-1]
+		refMap := orderedmap.New[string, any]()
+		refMap.Set("$ref", "#/$defs/"+parentName)
+		return refMap
+	}
+
 	return c.convertSchema("", s)
 }
 
@@ -537,6 +556,27 @@ func (c *Converter) ensureDef(name string) {
 		return
 	}
 	c.convertSchema(name, schema)
+}
+// isEmptySchema returns true if a schema has no meaningful content — typically
+// the result of an unresolved $recursiveRef in OpenAPI 3.0 specs.
+func (c *Converter) isEmptySchema(s *v3base.Schema) bool {
+	if s == nil {
+		return true
+	}
+	return len(s.Type) == 0 &&
+		len(s.AllOf) == 0 &&
+		len(s.OneOf) == 0 &&
+		len(s.AnyOf) == 0 &&
+		s.Not == nil &&
+		(s.Properties == nil || s.Properties.Len() == 0) &&
+		s.Items == nil &&
+		s.AdditionalProperties == nil &&
+		len(s.Enum) == 0 &&
+		s.Const == nil &&
+		s.If == nil &&
+		s.Title == "" &&
+		s.Description == "" &&
+		s.Format == ""
 }
 
 // flattenAllOf merges allOf variants into a single object schema when all

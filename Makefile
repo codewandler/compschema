@@ -16,13 +16,14 @@ SPEC_FILE   := testdata/openai/openapi.yaml
 SCHEMA_OUT  := testdata/openai/responses.schema.json
 TYPES_OUT   := testdata/openai/generated/types.go
 TYPES_PKG   := openairesponses
+UNIONS_OUT  := testdata/openai/generated/unions.gen.go
 PATH_PREFIX := /responses
 
 COMPSCHEMA  := go run ./cmd/compschema
 
 .PHONY: pipeline fetch jsonschema gotypes stats clean
 
-pipeline: fetch jsonschema gotypes stats
+pipeline: fetch jsonschema gotypes unions stats
 
 # Step 0: Download the OpenAI OpenAPI spec
 fetch: $(SPEC_FILE)
@@ -50,6 +51,16 @@ $(TYPES_OUT): $(SCHEMA_OUT)
 		--capitalization API \
 		$<
 
+# Step 2b: Generate sealed interfaces for unions + patch types
+unions: $(UNIONS_OUT)
+$(UNIONS_OUT): $(SCHEMA_OUT) $(TYPES_OUT)
+	$(COMPSCHEMA) uniongen \
+		--schema $(SCHEMA_OUT) \
+		--package $(TYPES_PKG) \
+		--out $@ \
+		--patch $(TYPES_OUT) \
+		--capitalization ID,URL,API
+
 # Step 3: Go structs → JSON Schema (compschema core — TODO)
 # compschema-roundtrip: $(TYPES_OUT)
 # 	$(COMPSCHEMA) generate ./testdata/openai/generated/...
@@ -72,5 +83,5 @@ stats:
 	@echo ""
 
 clean:
-	rm -f $(SCHEMA_OUT) $(TYPES_OUT)
+	rm -f $(SCHEMA_OUT) $(TYPES_OUT) $(UNIONS_OUT)
 	@echo "✓ cleaned generated artifacts"

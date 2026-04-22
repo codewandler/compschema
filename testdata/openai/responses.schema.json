@@ -446,7 +446,9 @@
               {
                 "$ref": "#/$defs/ComparisonFilter"
               },
-              {}
+              {
+                "$ref": "#/$defs/CompoundFilter"
+              }
             ]
           }
         }
@@ -543,7 +545,9 @@
             "null"
           ],
           "description": "A JSON schema object describing the parameters of the function.",
-          "additionalProperties": {}
+          "additionalProperties": {
+            "$ref": "#/$defs/FunctionTool"
+          }
         },
         "strict": {
           "type": [
