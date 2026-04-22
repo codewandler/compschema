@@ -308,7 +308,7 @@ func buildJSONSchemaTag(constraints []ir.Constraint, description string) string 
 
 	for _, c := range constraints {
 		switch c.Keyword {
-		case "title", "format":
+		case "title", "format", "default":
 			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, sanitizeTagValue(fmt.Sprintf("%v", c.Value))))
 		case "minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "multipleOf":
 			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, c.Value))
@@ -316,12 +316,21 @@ func buildJSONSchemaTag(constraints []ir.Constraint, description string) string 
 			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, c.Value))
 		case "minItems", "maxItems":
 			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, c.Value))
+		case "minProperties", "maxProperties":
+			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, c.Value))
 		case "const":
 			parts = append(parts, fmt.Sprintf("const=%v", sanitizeTagValue(fmt.Sprintf("%v", c.Value))))
 		case "uniqueItems", "readOnly", "writeOnly", "deprecated":
 			if v, ok := c.Value.(bool); ok && v {
 				parts = append(parts, c.Keyword)
 			}
+		case "examples":
+			// Skip — examples are schema-level, not struct tag material.
+		case "description":
+			// Handled separately below.
+		default:
+			// Preserve unknown/custom keywords.
+			parts = append(parts, fmt.Sprintf("%s=%v", c.Keyword, c.Value))
 		}
 	}
 

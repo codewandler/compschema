@@ -1,0 +1,5541 @@
+package: openairesponses
+types:
+    - _hash: 4b65d1033edbd657
+      enum_type: string
+      kind: enum
+      name: FileCitationBodyType
+      values:
+        - file_citation
+    - _hash: 0dfe2d1773440686
+      description: A citation to a file.
+      fields:
+        - description: The ID of the file.
+          json_name: file_id
+          name: FileID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the file in the list of files.
+          json_name: index
+          name: Index
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the file citation. Always `file_citation`.
+          json_name: type
+          name: Type
+          required: true
+          type: FileCitationBodyType
+      kind: struct
+      name: FileCitationBody
+    - _hash: bcfb0bab30161d57
+      enum_type: string
+      kind: enum
+      name: FilePathType
+      values:
+        - file_path
+    - _hash: 7666b231519e3e44
+      description: A path to a file.
+      fields:
+        - description: The ID of the file.
+          json_name: file_id
+          name: FileID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the file in the list of files.
+          json_name: index
+          name: Index
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the file path. Always `file_path`.
+          json_name: type
+          name: Type
+          required: true
+          type: FilePathType
+      kind: struct
+      name: FilePath
+    - _hash: 8a5e2c361f474997
+      enum_type: string
+      kind: enum
+      name: URLCitationBodyType
+      values:
+        - url_citation
+    - _hash: 1c5a95f833fe210b
+      description: A citation for a web resource used to generate a model response.
+      fields:
+        - description: The index of the last character of the URL citation in the message.
+          json_name: end_index
+          name: EndIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The index of the first character of the URL citation in the message.
+          json_name: start_index
+          name: StartIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The title of the web resource.
+          json_name: title
+          name: Title
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the URL citation. Always `url_citation`.
+          json_name: type
+          name: Type
+          required: true
+          type: URLCitationBodyType
+        - description: The URL of the web resource.
+          json_name: url
+          name: URL
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+      kind: struct
+      name: URLCitationBody
+    - _hash: 86ad7aca0b327e9a
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: Annotation
+      variants:
+        - name: FileCitationBody
+          type: FileCitationBody
+        - name: FilePath
+          type: FilePath
+        - name: URLCitationBody
+          type: URLCitationBody
+    - _hash: 065b3b96bb87214f
+      description: Free text input for the city of the user, e.g. `San Francisco`.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ApproximateLocationCity
+    - _hash: ccf1fe9664cea46e
+      description: |-
+        The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+        the user, e.g. `US`.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ApproximateLocationCountry
+    - _hash: 532802d8beefa49b
+      description: Free text input for the region of the user, e.g. `California`.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ApproximateLocationRegion
+    - _hash: d8760b9f1c117ae0
+      description: |-
+        The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+        user, e.g. `America/Los_Angeles`.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ApproximateLocationTimezone
+    - _hash: d9c77f2d06bc3ea3
+      enum_type: string
+      kind: enum
+      name: ApproximateLocationType
+      values:
+        - approximate
+    - _hash: 71f34d0debcec8e7
+      fields:
+        - description: Free text input for the city of the user, e.g. `San Francisco`.
+          json_name: city
+          name: City
+          type: ApproximateLocationCity
+        - description: |-
+            The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+            the user, e.g. `US`.
+          json_name: country
+          name: Country
+          type: ApproximateLocationCountry
+        - description: Free text input for the region of the user, e.g. `California`.
+          json_name: region
+          name: Region
+          type: ApproximateLocationRegion
+        - description: |-
+            The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+            user, e.g. `America/Los_Angeles`.
+          json_name: timezone
+          name: Timezone
+          type: ApproximateLocationTimezone
+        - description: The type of location approximation. Always `approximate`.
+          json_name: type
+          name: Type
+          required: true
+          type: ApproximateLocationType
+      kind: struct
+      name: ApproximateLocation
+    - _hash: 9ab04b20a2069ad5
+      enum_type: string
+      kind: enum
+      name: ClickButton
+      values:
+        - back
+        - forward
+        - left
+        - right
+        - wheel
+    - _hash: 0d5f76b2aa8d8796
+      enum_type: string
+      kind: enum
+      name: ClickType
+      values:
+        - click
+    - _hash: f068898211ef4384
+      description: A click action.
+      fields:
+        - description: |-
+            Indicates which mouse button was pressed during the click. One of `left`,
+            `right`, `wheel`, `back`, or `forward`.
+          json_name: button
+          name: Button
+          required: true
+          type: ClickButton
+        - description: |-
+            Specifies the event type. For a click action, this property is
+            always set to `click`.
+          json_name: type
+          name: Type
+          required: true
+          type: ClickType
+        - description: The x-coordinate where the click occurred.
+          json_name: x
+          name: X
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The y-coordinate where the click occurred.
+          json_name: "y"
+          name: "Y"
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: Click
+    - _hash: 80272a6a8f302b0c
+      fields:
+        - description: The ID of the file.
+          json_name: file_id
+          name: FileID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The MIME type of the file.
+          json_name: mime_type
+          name: MimeType
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+      kind: struct
+      name: CodeInterpreterFileOutputFilesElem
+    - _hash: 0e4117f6e3b6d7b8
+      enum_type: string
+      kind: enum
+      name: CodeInterpreterFileOutputType
+      values:
+        - files
+    - _hash: 53192cdf40a2fc14
+      description: The output of a code interpreter tool call that is a file.
+      fields:
+        - json_name: files
+          name: Files
+          required: true
+          type:
+            _hash: 72ac9a619d8c7aa5
+            items: CodeInterpreterFileOutputFilesElem
+            kind: list
+            name: ""
+        - description: The type of the code interpreter file output. Always `files`.
+          json_name: type
+          name: Type
+          required: true
+          type: CodeInterpreterFileOutputType
+      kind: struct
+      name: CodeInterpreterFileOutput
+    - _hash: ddb78b0016a40c46
+      enum_type: string
+      kind: enum
+      name: CodeInterpreterTextOutputType
+      values:
+        - logs
+    - _hash: 87c33ddf92578193
+      description: The output of a code interpreter tool call that is text.
+      fields:
+        - description: The logs of the code interpreter tool call.
+          json_name: logs
+          name: Logs
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the code interpreter text output. Always `logs`.
+          json_name: type
+          name: Type
+          required: true
+          type: CodeInterpreterTextOutputType
+      kind: struct
+      name: CodeInterpreterTextOutput
+    - _hash: 5070f045dfffafe4
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: CodeInterpreterToolOutput
+      variants:
+        - name: CodeInterpreterFileOutput
+          type: CodeInterpreterFileOutput
+        - name: CodeInterpreterTextOutput
+          type: CodeInterpreterTextOutput
+    - _hash: a3f69aa09dde1af7
+      enum_type: string
+      kind: enum
+      name: CodeInterpreterToolCallStatus
+      values:
+        - completed
+        - in_progress
+        - interpreting
+    - _hash: 97f5af33a34585bf
+      enum_type: string
+      kind: enum
+      name: CodeInterpreterToolCallType
+      values:
+        - code_interpreter_call
+    - _hash: bdfab6e28955d4b3
+      description: A tool call to run code.
+      fields:
+        - description: The code to run.
+          json_name: code
+          name: Code
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the code interpreter tool call.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The results of the code interpreter tool call.
+          json_name: results
+          name: Results
+          required: true
+          type:
+            _hash: 9916a151e00fe92a
+            items: CodeInterpreterToolOutput
+            kind: list
+            name: ""
+        - description: The status of the code interpreter tool call.
+          json_name: status
+          name: Status
+          required: true
+          type: CodeInterpreterToolCallStatus
+        - description: The type of the code interpreter tool call. Always `code_interpreter_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: CodeInterpreterToolCallType
+      kind: struct
+      name: CodeInterpreterToolCall
+    - _hash: adeba37f9bf77852
+      enum_type: string
+      kind: enum
+      name: ComparisonFilterType
+      values:
+        - eq
+        - gt
+        - gte
+        - lt
+        - lte
+        - ne
+    - _hash: d076afb98b88e2de
+      description: |-
+        A filter used to compare a specified attribute key to a given value using a
+        defined comparison operation.
+      fields:
+        - description: The key to compare against the value.
+          json_name: key
+          name: Key
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+            - `eq`: equals
+            - `ne`: not equal
+            - `gt`: greater than
+            - `gte`: greater than or equal
+            - `lt`: less than
+            - `lte`: less than or equal
+          json_name: type
+          name: Type
+          required: true
+          type: ComparisonFilterType
+        - description: |-
+            The value to compare against the attribute key; supports string, number, or
+            boolean types.
+          json_name: value
+          name: Value
+          required: true
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+      kind: struct
+      name: ComparisonFilter
+    - _hash: 1c19b91d17f245a7
+      enum_type: string
+      kind: enum
+      name: CompoundFilterType
+      values:
+        - and
+        - or
+    - _hash: e0df464f9c840390
+      description: Combine multiple filters using `and` or `or`.
+      fields:
+        - description: |-
+            Array of filters to combine. Items can be `ComparisonFilter` or
+            `CompoundFilter`.
+          json_name: filters
+          name: Filters
+          required: true
+          type:
+            _hash: b9b1c4872c81fa5e
+            items:
+                _hash: d26c699d7e72c073
+                kind: scalar
+                name: ""
+                scalar_type: any
+            kind: list
+            name: ""
+        - description: 'Type of operation: `and` or `or`.'
+          json_name: type
+          name: Type
+          required: true
+          type: CompoundFilterType
+      kind: struct
+      name: CompoundFilter
+    - _hash: b23145b150f64db2
+      enum_type: string
+      kind: enum
+      name: DoubleClickType
+      values:
+        - double_click
+    - _hash: 3f6795bce854beea
+      description: A double click action.
+      fields:
+        - description: |-
+            Specifies the event type. For a double click action, this property is
+            always set to `double_click`.
+          json_name: type
+          name: Type
+          required: true
+          type: DoubleClickType
+        - description: The x-coordinate where the double click occurred.
+          json_name: x
+          name: X
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The y-coordinate where the double click occurred.
+          json_name: "y"
+          name: "Y"
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: DoubleClick
+    - _hash: 0120ad56fd9426b3
+      description: 'An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.'
+      fields:
+        - description: The x-coordinate.
+          json_name: x
+          name: X
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The y-coordinate.
+          json_name: "y"
+          name: "Y"
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: Coordinate
+    - _hash: 0d1ebfaec2bc4051
+      enum_type: string
+      kind: enum
+      name: DragType
+      values:
+        - drag
+    - _hash: 76ed85ca0e24f879
+      description: A drag action.
+      fields:
+        - description: |-
+            An array of coordinates representing the path of the drag action. Coordinates
+            will appear as an array
+            of objects, eg
+            ```
+            [
+              { x: 100, y: 200 },
+              { x: 200, y: 300 }
+            ]
+            ```
+          json_name: path
+          name: Path
+          required: true
+          type:
+            _hash: 9dbc12c66bc9dd8b
+            items: Coordinate
+            kind: list
+            name: ""
+        - description: |-
+            Specifies the event type. For a drag action, this property is
+            always set to `drag`.
+          json_name: type
+          name: Type
+          required: true
+          type: DragType
+      kind: struct
+      name: Drag
+    - _hash: baa4b3d815f1d83c
+      enum_type: string
+      kind: enum
+      name: KeyPressType
+      values:
+        - keypress
+    - _hash: e79173832219273e
+      description: |-
+        Content item used to generate a response.
+        A collection of keypresses the model would like to perform.
+      fields:
+        - description: |-
+            The combination of keys the model is requesting to be pressed. This is an
+            array of strings, each representing a key.
+          json_name: keys
+          name: Keys
+          required: true
+          type:
+            _hash: 25d0c6e076899b05
+            items:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: list
+            name: ""
+        - description: |-
+            Specifies the event type. For a keypress action, this property is
+            always set to `keypress`.
+          json_name: type
+          name: Type
+          required: true
+          type: KeyPressType
+      kind: struct
+      name: KeyPress
+    - _hash: a799f15029adfa1f
+      enum_type: string
+      kind: enum
+      name: MoveType
+      values:
+        - move
+    - _hash: 9e62d7e0728114dc
+      description: A mouse move action.
+      fields:
+        - description: |-
+            Specifies the event type. For a move action, this property is
+            always set to `move`.
+          json_name: type
+          name: Type
+          required: true
+          type: MoveType
+        - description: The x-coordinate to move to.
+          json_name: x
+          name: X
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The y-coordinate to move to.
+          json_name: "y"
+          name: "Y"
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: Move
+    - _hash: c01a775d23c9ff5c
+      enum_type: string
+      kind: enum
+      name: ScreenshotType
+      values:
+        - screenshot
+    - _hash: f1d8e7f1ce508f77
+      description: A screenshot action.
+      fields:
+        - description: |-
+            Specifies the event type. For a screenshot action, this property is
+            always set to `screenshot`.
+          json_name: type
+          name: Type
+          required: true
+          type: ScreenshotType
+      kind: struct
+      name: Screenshot
+    - _hash: 33b46c830da1529a
+      enum_type: string
+      kind: enum
+      name: ScrollType
+      values:
+        - scroll
+    - _hash: 4d78d6af6c94d829
+      description: A scroll action.
+      fields:
+        - description: The horizontal scroll distance.
+          json_name: scroll_x
+          name: ScrollX
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The vertical scroll distance.
+          json_name: scroll_y
+          name: ScrollY
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: |-
+            Specifies the event type. For a scroll action, this property is
+            always set to `scroll`.
+          json_name: type
+          name: Type
+          required: true
+          type: ScrollType
+        - description: The x-coordinate where the scroll occurred.
+          json_name: x
+          name: X
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The y-coordinate where the scroll occurred.
+          json_name: "y"
+          name: "Y"
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: Scroll
+    - _hash: 1f6ac836ddfe4df2
+      enum_type: string
+      kind: enum
+      name: TypeType
+      values:
+        - type
+    - _hash: 0526762ede58074a
+      description: An action to type in text.
+      fields:
+        - description: The text to type.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            Specifies the event type. For a type action, this property is
+            always set to `type`.
+          json_name: type
+          name: Type
+          required: true
+          type: TypeType
+      kind: struct
+      name: Type
+    - _hash: ad076d5049e74397
+      enum_type: string
+      kind: enum
+      name: WaitType
+      values:
+        - wait
+    - _hash: 42cd6396843ceb00
+      description: A wait action.
+      fields:
+        - description: |-
+            Specifies the event type. For a wait action, this property is
+            always set to `wait`.
+          json_name: type
+          name: Type
+          required: true
+          type: WaitType
+      kind: struct
+      name: Wait
+    - _hash: b9e6ccb304f7f123
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: ComputerAction
+      variants:
+        - name: Click
+          type: Click
+        - name: DoubleClick
+          type: DoubleClick
+        - name: Drag
+          type: Drag
+        - name: KeyPress
+          type: KeyPress
+        - name: Move
+          type: Move
+        - name: Screenshot
+          type: Screenshot
+        - name: Scroll
+          type: Scroll
+        - name: Type
+          type: Type
+        - name: Wait
+          type: Wait
+    - _hash: d61ab5abb49bb8e9
+      description: The type of the pending safety check.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ComputerCallSafetyCheckParamCode
+    - _hash: 2c8487dc2a1a484c
+      description: Details about the pending safety check.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ComputerCallSafetyCheckParamMessage
+    - _hash: 761624c6483cfd70
+      description: A pending safety check for the computer call.
+      fields:
+        - description: The type of the pending safety check.
+          json_name: code
+          name: Code
+          type: ComputerCallSafetyCheckParamCode
+        - description: The ID of the pending safety check.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: Details about the pending safety check.
+          json_name: message
+          name: Message
+          type: ComputerCallSafetyCheckParamMessage
+      kind: struct
+      name: ComputerCallSafetyCheckParam
+    - _hash: add081406fe9a2d8
+      description: |-
+        The safety checks reported by the API that have been acknowledged by the
+        developer.
+      items: ComputerCallSafetyCheckParam
+      kind: list
+      name: ComputerCallOutputItemParamAcknowledgedSafetyChecks
+    - _hash: 794b4b378cfff70b
+      description: The ID of the computer tool call output.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ComputerCallOutputItemParamID
+    - _hash: 2fee0f33683015af
+      enum_type: string
+      kind: enum
+      name: ComputerScreenshotImageType
+      values:
+        - computer_screenshot
+    - _hash: e6b336e709b14a16
+      description: A computer screenshot image used with the computer use tool.
+      fields:
+        - description: The identifier of an uploaded file that contains the screenshot.
+          json_name: file_id
+          name: FileID
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: The URL of the screenshot image.
+          json_name: image_url
+          name: ImageURL
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: |-
+            Specifies the event type. For a computer screenshot, this property is
+            always set to `computer_screenshot`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerScreenshotImageType
+      kind: struct
+      name: ComputerScreenshotImage
+    - _hash: 53b65ee141e631e2
+      enum_type: string
+      kind: enum
+      name: ComputerCallOutputItemParamStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 408a14fe2924ce3d
+      enum_type: string
+      kind: enum
+      name: ComputerCallOutputItemParamType
+      values:
+        - computer_call_output
+    - _hash: d4e651bee22d9e9a
+      description: The output of a computer tool call.
+      fields:
+        - description: |-
+            The safety checks reported by the API that have been acknowledged by the
+            developer.
+          json_name: acknowledged_safety_checks
+          name: AcknowledgedSafetyChecks
+          type:
+            _hash: 7754b89ad10fa57a
+            inner: ComputerCallOutputItemParamAcknowledgedSafetyChecks
+            kind: nullable
+            name: ""
+        - description: The ID of the computer tool call that produced the output.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the computer tool call output.
+          json_name: id
+          name: ID
+          type: ComputerCallOutputItemParamID
+        - json_name: output
+          name: Output
+          required: true
+          type: ComputerScreenshotImage
+        - description: |-
+            The status of the message input. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when input items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 9818da9931971452
+            inner: ComputerCallOutputItemParamStatus
+            kind: nullable
+            name: ""
+        - description: The type of the computer tool call output. Always `computer_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerCallOutputItemParamType
+      kind: struct
+      name: ComputerCallOutputItemParam
+    - _hash: 208f9e7856997c87
+      description: A pending safety check for the computer call.
+      fields:
+        - description: The type of the pending safety check.
+          json_name: code
+          name: Code
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the pending safety check.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: Details about the pending safety check.
+          json_name: message
+          name: Message
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+      kind: struct
+      name: ComputerToolCallSafetyCheck
+    - _hash: 07bc3b402d4f0ca2
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 44a986f4b5b6e39c
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallType
+      values:
+        - computer_call
+    - _hash: 45e86350278ddcd6
+      description: |-
+        A tool call to a computer use tool. See the
+        [computer use guide](/docs/guides/tools-computer-use) for more information.
+      fields:
+        - json_name: action
+          name: Action
+          required: true
+          type: ComputerAction
+        - description: An identifier used when responding to the tool call with output.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the computer call.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The pending safety checks for the computer call.
+          json_name: pending_safety_checks
+          name: PendingSafetyChecks
+          required: true
+          type:
+            _hash: 50e0f65d02f75004
+            items: ComputerToolCallSafetyCheck
+            kind: list
+            name: ""
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          required: true
+          type: ComputerToolCallStatus
+        - description: The type of the computer call. Always `computer_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerToolCallType
+      kind: struct
+      name: ComputerToolCall
+    - _hash: a3d4f671be610bdf
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallOutputStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 09f289b30352fcf0
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallOutputType
+      values:
+        - computer_call_output
+    - _hash: 3b3561afff2a634a
+      description: The output of a computer tool call.
+      fields:
+        - description: |-
+            The safety checks reported by the API that have been acknowledged by the
+            developer.
+          json_name: acknowledged_safety_checks
+          name: AcknowledgedSafetyChecks
+          type:
+            _hash: 50e0f65d02f75004
+            items: ComputerToolCallSafetyCheck
+            kind: list
+            name: ""
+        - description: The ID of the computer tool call that produced the output.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the computer tool call output.
+          json_name: id
+          name: ID
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - json_name: output
+          name: Output
+          required: true
+          type: ComputerScreenshotImage
+        - description: |-
+            The status of the message input. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when input items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 540b376f2e7a5d7d
+            inner: ComputerToolCallOutputStatus
+            kind: nullable
+            name: ""
+        - description: The type of the computer tool call output. Always `computer_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerToolCallOutputType
+      kind: struct
+      name: ComputerToolCallOutput
+    - _hash: 6d517a89ee471ba0
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallOutputResourceStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 3763e64afcdc28eb
+      enum_type: string
+      kind: enum
+      name: ComputerToolCallOutputResourceType
+      values:
+        - computer_call_output
+    - _hash: d0a226f8db7da64e
+      description: The output of a computer tool call.
+      fields:
+        - description: |-
+            The safety checks reported by the API that have been acknowledged by the
+            developer.
+          json_name: acknowledged_safety_checks
+          name: AcknowledgedSafetyChecks
+          type:
+            _hash: 50e0f65d02f75004
+            items: ComputerToolCallSafetyCheck
+            kind: list
+            name: ""
+        - description: The ID of the computer tool call that produced the output.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the computer tool call output.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - json_name: output
+          name: Output
+          required: true
+          type: ComputerScreenshotImage
+        - description: |-
+            The status of the message input. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when input items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 1b548155af783a47
+            inner: ComputerToolCallOutputResourceStatus
+            kind: nullable
+            name: ""
+        - description: The type of the computer tool call output. Always `computer_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerToolCallOutputResourceType
+      kind: struct
+      name: ComputerToolCallOutputResource
+    - _hash: 69ebfe11ba834dbb
+      enum_type: string
+      kind: enum
+      name: ComputerUsePreviewToolEnvironment
+      values:
+        - browser
+        - linux
+        - mac
+        - ubuntu
+        - windows
+    - _hash: e5ab289cb23ff738
+      enum_type: string
+      kind: enum
+      name: ComputerUsePreviewToolType
+      values:
+        - computer_use_preview
+    - _hash: bea3e94e2480b509
+      description: |-
+        A tool that controls a virtual computer. Learn more about the [computer
+        tool](https://platform.openai.com/docs/guides/tools-computer-use).
+      fields:
+        - description: The height of the computer display.
+          json_name: display_height
+          name: DisplayHeight
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The width of the computer display.
+          json_name: display_width
+          name: DisplayWidth
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of computer environment to control.
+          json_name: environment
+          name: Environment
+          required: true
+          type: ComputerUsePreviewToolEnvironment
+        - description: The type of the computer use tool. Always `computer_use_preview`.
+          json_name: type
+          name: Type
+          required: true
+          type: ComputerUsePreviewToolType
+      kind: struct
+      name: ComputerUsePreviewTool
+    - _hash: 3a412e7a190f5e72
+      description: |-
+        Set of 16 key-value pairs that can be attached to an object. This can be
+        useful for storing additional information about the object in a structured
+        format, and querying for objects via API or the dashboard.
+
+        Keys are strings with a maximum length of 64 characters. Values are strings
+        with a maximum length of 512 characters.
+      kind: map
+      map_value:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      name: Metadata
+    - _hash: 00c5cc1eff352f69
+      enum_type: string
+      kind: enum
+      name: ServiceTier
+      values:
+        - auto
+        - default
+        - flex
+    - _hash: e31749bc157afda6
+      description: |-
+        What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        make the output more random, while lower values like 0.2 will make it more
+        focused and deterministic.
+        We generally recommend altering this or `top_p` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: CreateModelResponsePropertiesTemperature
+    - _hash: c4cb24f3e207c367
+      description: |-
+        An alternative to sampling with temperature, called nucleus sampling,
+        where the model considers the results of the tokens with top_p probability
+        mass. So 0.1 means only the tokens comprising the top 10% probability mass
+        are considered.
+
+        We generally recommend altering this or `temperature` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: CreateModelResponsePropertiesTopP
+    - _hash: c6e58ea911f636a1
+      fields:
+        - json_name: metadata
+          name: Metadata
+          type: Metadata
+        - json_name: service_tier
+          name: ServiceTier
+          type:
+            _hash: d7cd120582e579ab
+            inner: ServiceTier
+            kind: nullable
+            name: ""
+        - description: |-
+            What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+            make the output more random, while lower values like 0.2 will make it more
+            focused and deterministic.
+            We generally recommend altering this or `top_p` but not both.
+          json_name: temperature
+          name: Temperature
+          type: CreateModelResponsePropertiesTemperature
+        - description: |-
+            An alternative to sampling with temperature, called nucleus sampling,
+            where the model considers the results of the tokens with top_p probability
+            mass. So 0.1 means only the tokens comprising the top 10% probability mass
+            are considered.
+
+            We generally recommend altering this or `temperature` but not both.
+          json_name: top_p
+          name: TopP
+          type: CreateModelResponsePropertiesTopP
+        - description: |-
+            A unique identifier representing your end-user, which can help OpenAI to
+            monitor and detect abuse. [Learn
+            more](/docs/guides/safety-best-practices#end-user-ids).
+          json_name: user
+          name: User
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+      kind: struct
+      name: CreateModelResponseProperties
+    - _hash: 8c78edc93eefca84
+      enum_type: string
+      kind: enum
+      name: Includable
+      values:
+        - computer_call_output.output.image_url
+        - file_search_call.results
+        - message.input_image.image_url
+    - _hash: 77a4894230df6658
+      description: |-
+        Specify additional output data to include in the model response. Currently
+        supported values are:
+          - `file_search_call.results`: Include the search results of
+            the file search tool call.
+          - `message.input_image.image_url`: Include image urls from the input message.
+          - `computer_call_output.output.image_url`: Include image urls from the computer
+
+        call output.
+      items: Includable
+      kind: list
+      name: CreateResponseInclude
+    - _hash: 4ce6a578adb7212f
+      description: |-
+        Inserts a system (or developer) message as the first item in the model's
+        context.
+
+        When using along with `previous_response_id`, the instructions from a previous
+        response will not be carried over to the next response. This makes it simple
+        to swap out system (or developer) messages in new responses.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: CreateResponseInstructions
+    - _hash: 99ef2a6bbdbe51c3
+      description: |-
+        An upper bound for the number of tokens that can be generated for a response,
+        including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+      inner:
+        _hash: 9b0c629ab1f0853b
+        kind: scalar
+        name: ""
+        scalar_type: integer
+      kind: nullable
+      name: CreateResponseMaxOutputTokens
+    - _hash: 2ae48c6a6bcfb66d
+      kind: scalar
+      name: ModelIdsResponses
+      scalar_type: any
+    - _hash: 5faf3db3a5d29337
+      description: Whether to allow the model to run tool calls in parallel.
+      inner:
+        _hash: 3456feb562ffa1b1
+        kind: scalar
+        name: ""
+        scalar_type: boolean
+      kind: nullable
+      name: CreateResponseParallelToolCalls
+    - _hash: 62543cfc8bf4589f
+      description: |-
+        The unique ID of the previous response to the model. Use this to
+        create multi-turn conversations. Learn more about
+        [conversation state](/docs/guides/conversation-state).
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: CreateResponsePreviousResponseID
+    - _hash: 3983781c9cbe4c8f
+      enum_type: string
+      kind: enum
+      name: ReasoningEffort
+      values:
+        - high
+        - low
+        - medium
+    - _hash: 9db492c53c62e057
+      enum_type: string
+      kind: enum
+      name: ReasoningGenerateSummary
+      values:
+        - auto
+        - concise
+        - detailed
+    - _hash: 4ca255cd23bc8048
+      enum_type: string
+      kind: enum
+      name: ReasoningSummary
+      values:
+        - auto
+        - concise
+        - detailed
+    - _hash: 5591a908e71d0e77
+      description: |-
+        **o-series models only**
+
+        Configuration options for
+        [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+      fields:
+        - json_name: effort
+          name: Effort
+          type:
+            _hash: 520a0930840d7c39
+            inner: ReasoningEffort
+            kind: nullable
+            name: ""
+        - description: |-
+            **Deprecated:** use `summary` instead.
+
+            A summary of the reasoning performed by the model. This can be
+            useful for debugging and understanding the model's reasoning process.
+            One of `auto`, `concise`, or `detailed`.
+          json_name: generate_summary
+          name: GenerateSummary
+          type:
+            _hash: 673e0b28bb4108e5
+            inner: ReasoningGenerateSummary
+            kind: nullable
+            name: ""
+        - description: |-
+            A summary of the reasoning performed by the model. This can be
+            useful for debugging and understanding the model's reasoning process.
+            One of `auto`, `concise`, or `detailed`.
+          json_name: summary
+          name: Summary
+          type:
+            _hash: 5262864466d05d6b
+            inner: ReasoningSummary
+            kind: nullable
+            name: ""
+      kind: struct
+      name: Reasoning
+    - _hash: bc73adda7796de77
+      description: |-
+        Whether to store the generated model response for later retrieval via
+        API.
+      inner:
+        _hash: 3456feb562ffa1b1
+        kind: scalar
+        name: ""
+        scalar_type: boolean
+      kind: nullable
+      name: CreateResponseStore
+    - _hash: 8f73b71d14c83059
+      description: |-
+        If set to true, the model response data will be streamed to the client
+        as it is generated using [server-sent
+        events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+        See the [Streaming section below](/docs/api-reference/responses-streaming)
+        for more information.
+      inner:
+        _hash: 3456feb562ffa1b1
+        kind: scalar
+        name: ""
+        scalar_type: boolean
+      kind: nullable
+      name: CreateResponseStream
+    - _hash: af6bb3a1d0a32ee0
+      description: |-
+        What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        make the output more random, while lower values like 0.2 will make it more
+        focused and deterministic.
+        We generally recommend altering this or `top_p` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: CreateResponseTemperature
+    - _hash: 678f93952f8f3fca
+      enum_type: string
+      kind: enum
+      name: ResponseFormatJsonObjectType
+      values:
+        - json_object
+    - _hash: 7e137d401504e1b1
+      description: |-
+        JSON object response format. An older method of generating JSON responses.
+        Using `json_schema` is recommended for models that support it. Note that the
+        model will not generate JSON without a system or user message instructing it
+        to do so.
+      fields:
+        - description: The type of response format being defined. Always `json_object`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFormatJsonObjectType
+      kind: struct
+      name: ResponseFormatJsonObject
+    - _hash: 68ff1d24b90f69d5
+      enum_type: string
+      kind: enum
+      name: ResponseFormatTextType
+      values:
+        - text
+    - _hash: 078788e3ce65148c
+      description: Default response format. Used to generate text responses.
+      fields:
+        - description: The type of response format being defined. Always `text`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFormatTextType
+      kind: struct
+      name: ResponseFormatText
+    - _hash: 419c52d5348dbd8e
+      description: |-
+        The schema for the response format, described as a JSON Schema object.
+        Learn how to build JSON schemas [here](https://json-schema.org/).
+      kind: map
+      map_value:
+        _hash: d26c699d7e72c073
+        kind: scalar
+        name: ""
+        scalar_type: any
+      name: ResponseFormatJsonSchemaSchema
+    - _hash: 7f10b9ae066e19fa
+      description: |-
+        Whether to enable strict schema adherence when generating the output.
+        If set to true, the model will always follow the exact schema defined
+        in the `schema` field. Only a subset of JSON Schema is supported when
+        `strict` is `true`. To learn more, read the [Structured Outputs
+        guide](/docs/guides/structured-outputs).
+      inner:
+        _hash: 3456feb562ffa1b1
+        kind: scalar
+        name: ""
+        scalar_type: boolean
+      kind: nullable
+      name: TextResponseFormatJsonSchemaStrict
+    - _hash: a6b46d0330e1a5b5
+      enum_type: string
+      kind: enum
+      name: TextResponseFormatJsonSchemaType
+      values:
+        - json_schema
+    - _hash: 62b08e81d2d84e6b
+      description: |-
+        An object specifying the format that the model must output.
+
+        Configuring `{ "type": "json_schema" }` enables Structured Outputs,
+        which ensures the model will match your supplied JSON schema. Learn more in the
+        [Structured Outputs guide](/docs/guides/structured-outputs).
+
+        The default format is `{ "type": "text" }` with no additional options.
+
+        **Not recommended for gpt-4o and newer models:**
+
+        Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        ensures the message the model generates is valid JSON. Using `json_schema`
+        is preferred for models that support it.
+        JSON Schema response format. Used to generate structured JSON responses.
+        Learn more about [Structured Outputs](/docs/guides/structured-outputs).
+      fields:
+        - description: |-
+            A description of what the response format is for, used by the model to
+            determine how to respond in the format.
+          json_name: description
+          name: Description
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: |-
+            The name of the response format. Must be a-z, A-Z, 0-9, or contain
+            underscores and dashes, with a maximum length of 64.
+          json_name: name
+          name: Name
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - json_name: schema
+          name: Schema
+          required: true
+          type: ResponseFormatJsonSchemaSchema
+        - description: |-
+            Whether to enable strict schema adherence when generating the output.
+            If set to true, the model will always follow the exact schema defined
+            in the `schema` field. Only a subset of JSON Schema is supported when
+            `strict` is `true`. To learn more, read the [Structured Outputs
+            guide](/docs/guides/structured-outputs).
+          json_name: strict
+          name: Strict
+          type: TextResponseFormatJsonSchemaStrict
+        - description: The type of response format being defined. Always `json_schema`.
+          json_name: type
+          name: Type
+          required: true
+          type: TextResponseFormatJsonSchemaType
+      kind: struct
+      name: TextResponseFormatJsonSchema
+    - _hash: 834c554114f61c1d
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: TextResponseFormatConfiguration
+      variants:
+        - name: ResponseFormatJsonObject
+          type: ResponseFormatJsonObject
+        - name: ResponseFormatText
+          type: ResponseFormatText
+        - name: TextResponseFormatJsonSchema
+          type: TextResponseFormatJsonSchema
+    - _hash: 87e9325127c1b091
+      description: |-
+        Configuration options for a text response from the model. Can be plain
+        text or structured JSON data. Learn more:
+        - [Text inputs and outputs](/docs/guides/text)
+        - [Structured Outputs](/docs/guides/structured-outputs)
+      fields:
+        - json_name: format
+          name: Format
+          type: TextResponseFormatConfiguration
+      kind: struct
+      name: CreateResponseText
+    - _hash: a5218a38c0c550fb
+      enum_type: string
+      kind: enum
+      name: RankingOptionsRanker
+      values:
+        - auto
+        - default-2024-11-15
+    - _hash: e3a113b4b7a8efd5
+      fields:
+        - description: The ranker to use for the file search.
+          json_name: ranker
+          name: Ranker
+          type:
+            _hash: 1e4a17739be23452
+            inner: RankingOptionsRanker
+            kind: nullable
+            name: ""
+        - description: |-
+            The score threshold for the file search, a number between 0 and 1. Numbers
+            closer to 1 will attempt to return only the most relevant results, but may
+            return fewer results.
+          json_name: score_threshold
+          name: ScoreThreshold
+          type:
+            _hash: 5d007b656c5b4f98
+            inner:
+                _hash: d34806169c6029ac
+                kind: scalar
+                name: ""
+                scalar_type: number
+            kind: nullable
+            name: ""
+      kind: struct
+      name: RankingOptions
+    - _hash: 5c1434573a647be2
+      enum_type: string
+      kind: enum
+      name: FileSearchToolType
+      values:
+        - file_search
+    - _hash: b5a20ce84a802546
+      description: |-
+        A tool that searches for relevant content from uploaded files. Learn more about
+        the [file search
+        tool](https://platform.openai.com/docs/guides/tools-file-search).
+      fields:
+        - json_name: filters
+          name: Filters
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            The maximum number of results to return. This number should be between 1 and 50
+            inclusive.
+          json_name: max_num_results
+          name: MaxNumResults
+          type:
+            _hash: ccc4fea34153894b
+            inner:
+                _hash: 9b0c629ab1f0853b
+                kind: scalar
+                name: ""
+                scalar_type: integer
+            kind: nullable
+            name: ""
+        - json_name: ranking_options
+          name: RankingOptions
+          type:
+            _hash: 3cb65d515b8351bc
+            inner: RankingOptions
+            kind: nullable
+            name: ""
+        - description: The type of the file search tool. Always `file_search`.
+          json_name: type
+          name: Type
+          required: true
+          type: FileSearchToolType
+        - description: The IDs of the vector stores to search.
+          json_name: vector_store_ids
+          name: VectorStoreIds
+          required: true
+          type:
+            _hash: 25d0c6e076899b05
+            items:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: list
+            name: ""
+      kind: struct
+      name: FileSearchTool
+    - _hash: 294155bdd18153de
+      description: |-
+        A description of the function. Used by the model to determine whether or not to
+        call the function.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: FunctionToolDescription
+    - _hash: 2a9bd5f6ef541e61
+      description: A JSON schema object describing the parameters of the function.
+      kind: map
+      map_value: FunctionTool
+      name: FunctionToolParameters
+    - _hash: 9b8cd45b594e1caf
+      description: Whether to enforce strict parameter validation. Default `true`.
+      inner:
+        _hash: 3456feb562ffa1b1
+        kind: scalar
+        name: ""
+        scalar_type: boolean
+      kind: nullable
+      name: FunctionToolStrict
+    - _hash: 9f5839a4359a8e85
+      enum_type: string
+      kind: enum
+      name: FunctionToolType
+      values:
+        - function
+    - _hash: bfc73d2632d45975
+      description: |-
+        Defines a function in your own code the model can choose to call. Learn more
+        about [function
+        calling](https://platform.openai.com/docs/guides/function-calling).
+      fields:
+        - description: |-
+            A description of the function. Used by the model to determine whether or not to
+            call the function.
+          json_name: description
+          name: Description
+          type: FunctionToolDescription
+        - description: The name of the function to call.
+          json_name: name
+          name: Name
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: A JSON schema object describing the parameters of the function.
+          json_name: parameters
+          name: Parameters
+          required: true
+          type:
+            _hash: 6ba84619375b0ce8
+            inner: FunctionToolParameters
+            kind: nullable
+            name: ""
+        - description: Whether to enforce strict parameter validation. Default `true`.
+          json_name: strict
+          name: Strict
+          required: true
+          type: FunctionToolStrict
+        - description: The type of the function tool. Always `function`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionToolType
+      kind: struct
+      name: FunctionTool
+    - _hash: 43b237165f85eeb0
+      enum_type: string
+      kind: enum
+      name: WebSearchPreviewToolSearchContextSize
+      values:
+        - low
+        - medium
+        - high
+    - _hash: b8afd86815c2b951
+      enum_type: string
+      kind: enum
+      name: WebSearchPreviewToolType
+      values:
+        - web_search_preview
+        - web_search_preview_2025_03_11
+    - _hash: 3a685c3a5a905642
+      fields:
+        - description: Free text input for the city of the user, e.g. `San Francisco`.
+          json_name: city
+          name: City
+          type: ApproximateLocationCity
+        - description: |-
+            The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+            the user, e.g. `US`.
+          json_name: country
+          name: Country
+          type: ApproximateLocationCountry
+        - description: Free text input for the region of the user, e.g. `California`.
+          json_name: region
+          name: Region
+          type: ApproximateLocationRegion
+        - description: |-
+            The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+            user, e.g. `America/Los_Angeles`.
+          json_name: timezone
+          name: Timezone
+          type: ApproximateLocationTimezone
+        - description: The type of location approximation. Always `approximate`.
+          json_name: type
+          name: Type
+          required: true
+          type: ApproximateLocationType
+      kind: struct
+      name: WebSearchPreviewToolUserLocation
+    - _hash: 967cb756ced1a8a2
+      description: |-
+        This tool searches the web for relevant results to use in a response. Learn more
+        about the [web search
+        tool](https://platform.openai.com/docs/guides/tools-web-search).
+      fields:
+        - description: |-
+            High level guidance for the amount of context window space to use for the
+            search. One of `low`, `medium`, or `high`. `medium` is the default.
+          json_name: search_context_size
+          name: SearchContextSize
+          type:
+            _hash: ec9bc1b3fc95c85e
+            inner: WebSearchPreviewToolSearchContextSize
+            kind: nullable
+            name: ""
+        - description: |-
+            The type of the web search tool. One of `web_search_preview` or
+            `web_search_preview_2025_03_11`.
+          json_name: type
+          name: Type
+          required: true
+          type: WebSearchPreviewToolType
+        - json_name: user_location
+          name: UserLocation
+          type:
+            _hash: 00697595249970f5
+            inner: WebSearchPreviewToolUserLocation
+            kind: nullable
+            name: ""
+      kind: struct
+      name: WebSearchPreviewTool
+    - _hash: f53a72ed8ad2577c
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: Tool
+      variants:
+        - name: ComputerUsePreviewTool
+          type: ComputerUsePreviewTool
+        - name: FileSearchTool
+          type: FileSearchTool
+        - name: FunctionTool
+          type: FunctionTool
+        - name: WebSearchPreviewTool
+          type: WebSearchPreviewTool
+    - _hash: e68c47e73037391f
+      description: |-
+        An alternative to sampling with temperature, called nucleus sampling,
+        where the model considers the results of the tokens with top_p probability
+        mass. So 0.1 means only the tokens comprising the top 10% probability mass
+        are considered.
+
+        We generally recommend altering this or `temperature` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: CreateResponseTopP
+    - _hash: 7e96a6ae65ce325d
+      enum_type: string
+      kind: enum
+      name: CreateResponseTruncation
+      values:
+        - auto
+        - disabled
+    - _hash: 21bec4da580cbc11
+      fields:
+        - description: |-
+            Specify additional output data to include in the model response. Currently
+            supported values are:
+            - `file_search_call.results`: Include the search results of
+              the file search tool call.
+            - `message.input_image.image_url`: Include image urls from the input message.
+            - `computer_call_output.output.image_url`: Include image urls from the computer
+            call output.
+          json_name: include
+          name: Include
+          type:
+            _hash: a9f53154e9c190b4
+            inner: CreateResponseInclude
+            kind: nullable
+            name: ""
+        - description: |-
+            Text, image, or file inputs to the model, used to generate a response.
+
+            Learn more:
+            - [Text inputs and outputs](/docs/guides/text)
+            - [Image inputs](/docs/guides/images)
+            - [File inputs](/docs/guides/pdf-files)
+            - [Conversation state](/docs/guides/conversation-state)
+            - [Function calling](/docs/guides/function-calling)
+          json_name: input
+          name: Input
+          required: true
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            Inserts a system (or developer) message as the first item in the model's
+            context.
+
+            When using along with `previous_response_id`, the instructions from a previous
+            response will not be carried over to the next response. This makes it simple
+            to swap out system (or developer) messages in new responses.
+          json_name: instructions
+          name: Instructions
+          type: CreateResponseInstructions
+        - description: |-
+            An upper bound for the number of tokens that can be generated for a response,
+            including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+          json_name: max_output_tokens
+          name: MaxOutputTokens
+          type: CreateResponseMaxOutputTokens
+        - json_name: metadata
+          name: Metadata
+          type: Metadata
+        - json_name: model
+          name: Model
+          required: true
+          type: ModelIdsResponses
+        - description: Whether to allow the model to run tool calls in parallel.
+          json_name: parallel_tool_calls
+          name: ParallelToolCalls
+          type: CreateResponseParallelToolCalls
+        - description: |-
+            The unique ID of the previous response to the model. Use this to
+            create multi-turn conversations. Learn more about
+            [conversation state](/docs/guides/conversation-state).
+          json_name: previous_response_id
+          name: PreviousResponseID
+          type: CreateResponsePreviousResponseID
+        - json_name: reasoning
+          name: Reasoning
+          type:
+            _hash: cc27fcbddd8ecce8
+            inner: Reasoning
+            kind: nullable
+            name: ""
+        - json_name: service_tier
+          name: ServiceTier
+          type:
+            _hash: d7cd120582e579ab
+            inner: ServiceTier
+            kind: nullable
+            name: ""
+        - description: |-
+            Whether to store the generated model response for later retrieval via
+            API.
+          json_name: store
+          name: Store
+          type: CreateResponseStore
+        - description: |-
+            If set to true, the model response data will be streamed to the client
+            as it is generated using [server-sent
+            events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+            See the [Streaming section below](/docs/api-reference/responses-streaming)
+            for more information.
+          json_name: stream
+          name: Stream
+          type: CreateResponseStream
+        - description: |-
+            What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+            make the output more random, while lower values like 0.2 will make it more
+            focused and deterministic.
+            We generally recommend altering this or `top_p` but not both.
+          json_name: temperature
+          name: Temperature
+          type: CreateResponseTemperature
+        - description: |-
+            Configuration options for a text response from the model. Can be plain
+            text or structured JSON data. Learn more:
+            - [Text inputs and outputs](/docs/guides/text)
+            - [Structured Outputs](/docs/guides/structured-outputs)
+          json_name: text
+          name: Text
+          type:
+            _hash: 068999af41e8db2e
+            inner: CreateResponseText
+            kind: nullable
+            name: ""
+        - description: |-
+            How the model should select which tool (or tools) to use when generating
+            a response. See the `tools` parameter to see how to specify which tools
+            the model can call.
+          json_name: tool_choice
+          name: ToolChoice
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            An array of tools the model may call while generating a response. You
+            can specify which tool to use by setting the `tool_choice` parameter.
+
+            The two categories of tools you can provide the model are:
+
+            - **Built-in tools**: Tools that are provided by OpenAI that extend the
+              model's capabilities, like [web search](/docs/guides/tools-web-search)
+              or [file search](/docs/guides/tools-file-search). Learn more about
+              [built-in tools](/docs/guides/tools).
+            - **Function calls (custom tools)**: Functions that are defined by you,
+              enabling the model to call your own code. Learn more about
+              [function calling](/docs/guides/function-calling).
+          json_name: tools
+          name: Tools
+          type:
+            _hash: 3f13ba0f571c18fb
+            items: Tool
+            kind: list
+            name: ""
+        - description: |-
+            An alternative to sampling with temperature, called nucleus sampling,
+            where the model considers the results of the tokens with top_p probability
+            mass. So 0.1 means only the tokens comprising the top 10% probability mass
+            are considered.
+
+            We generally recommend altering this or `temperature` but not both.
+          json_name: top_p
+          name: TopP
+          type: CreateResponseTopP
+        - description: |-
+            The truncation strategy to use for the model response.
+            - `auto`: If the context of this response and previous ones exceeds
+              the model's context window size, the model will truncate the
+              response to fit the context window by dropping input items in the
+              middle of the conversation.
+            - `disabled` (default): If a model response will exceed the context window
+              size for a model, the request will fail with a 400 error.
+          json_name: truncation
+          name: Truncation
+          type:
+            _hash: 5a550533d3d5b908
+            inner: CreateResponseTruncation
+            kind: nullable
+            name: ""
+        - description: |-
+            A unique identifier representing your end-user, which can help OpenAI to
+            monitor and detect abuse. [Learn
+            more](/docs/guides/safety-best-practices#end-user-ids).
+          json_name: user
+          name: User
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+      kind: struct
+      name: CreateResponse
+    - _hash: c3f77c1401c1f775
+      enum_type: string
+      kind: enum
+      name: EasyInputMessageRole
+      values:
+        - assistant
+        - developer
+        - system
+        - user
+    - _hash: a010cb95cd5b6b71
+      enum_type: string
+      kind: enum
+      name: EasyInputMessageType
+      values:
+        - message
+    - _hash: 25657f667e394717
+      description: |-
+        A message input to the model with a role indicating instruction following
+        hierarchy. Instructions given with the `developer` or `system` role take
+        precedence over instructions given with the `user` role. Messages with the
+        `assistant` role are presumed to have been generated by the model in previous
+        interactions.
+      fields:
+        - description: |-
+            Text, image, or audio input to the model, used to generate a response.
+            Can also contain previous assistant responses.
+          json_name: content
+          name: Content
+          required: true
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            The role of the message input. One of `user`, `assistant`, `system`, or
+            `developer`.
+          json_name: role
+          name: Role
+          required: true
+          type: EasyInputMessageRole
+        - description: The type of the message input. Always `message`.
+          json_name: type
+          name: Type
+          type:
+            _hash: f96a2ed091443443
+            inner: EasyInputMessageType
+            kind: nullable
+            name: ""
+      kind: struct
+      name: EasyInputMessage
+    - _hash: 7b1149c068dfb42f
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ErrorCode
+    - _hash: 439741a010a0b651
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ErrorParam
+    - _hash: ee587403b1a6f0ba
+      fields:
+        - json_name: code
+          name: Code
+          required: true
+          type: ErrorCode
+        - json_name: message
+          name: Message
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - json_name: param
+          name: Param
+          required: true
+          type: ErrorParam
+        - json_name: type
+          name: Type
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+      kind: struct
+      name: Error
+    - _hash: be061e318ca675ad
+      description: The results of the file search tool call.
+      items:
+        _hash: d26c699d7e72c073
+        kind: scalar
+        name: ""
+        scalar_type: any
+      kind: list
+      name: FileSearchToolCallResults
+    - _hash: 6249795adfd323ed
+      enum_type: string
+      kind: enum
+      name: FileSearchToolCallStatus
+      values:
+        - completed
+        - failed
+        - in_progress
+        - incomplete
+        - searching
+    - _hash: e5cb053717fa8995
+      enum_type: string
+      kind: enum
+      name: FileSearchToolCallType
+      values:
+        - file_search_call
+    - _hash: 02357c50639e88b0
+      description: |-
+        The results of a file search tool call. See the
+        [file search guide](/docs/guides/tools-file-search) for more information.
+      fields:
+        - description: The unique ID of the file search tool call.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The queries used to search for files.
+          json_name: queries
+          name: Queries
+          required: true
+          type:
+            _hash: 25d0c6e076899b05
+            items:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: list
+            name: ""
+        - description: The results of the file search tool call.
+          json_name: results
+          name: Results
+          type:
+            _hash: 909f2541a024e381
+            inner: FileSearchToolCallResults
+            kind: nullable
+            name: ""
+        - description: |-
+            The status of the file search tool call. One of `in_progress`,
+            `searching`, `incomplete` or `failed`,
+          json_name: status
+          name: Status
+          required: true
+          type: FileSearchToolCallStatus
+        - description: The type of the file search tool call. Always `file_search_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: FileSearchToolCallType
+      kind: struct
+      name: FileSearchToolCall
+    - _hash: 077330627d3b8439
+      description: |-
+        is a sealed interface for anyOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: Filters
+      variants:
+        - name: ComparisonFilter
+          type: ComparisonFilter
+        - name: CompoundFilter
+          type: CompoundFilter
+    - _hash: 6838c23c1518ebcf
+      description: |-
+        The unique ID of the function tool call output. Populated when this item is
+        returned via API.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: FunctionCallOutputItemParamID
+    - _hash: 31a2354ad09a6e63
+      enum_type: string
+      kind: enum
+      name: FunctionCallOutputItemParamStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 0a9b126e964e8c22
+      enum_type: string
+      kind: enum
+      name: FunctionCallOutputItemParamType
+      values:
+        - function_call_output
+    - _hash: fbd946fa32a4c347
+      description: The output of a function tool call.
+      fields:
+        - description: The unique ID of the function tool call generated by the model.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The unique ID of the function tool call output. Populated when this item is
+            returned via API.
+          json_name: id
+          name: ID
+          type: FunctionCallOutputItemParamID
+        - description: A JSON string of the output of the function tool call.
+          json_name: output
+          name: Output
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+            Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 06515b3ede7b4b50
+            inner: FunctionCallOutputItemParamStatus
+            kind: nullable
+            name: ""
+        - description: The type of the function tool call output. Always `function_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionCallOutputItemParamType
+      kind: struct
+      name: FunctionCallOutputItemParam
+    - _hash: d09859f09cf7f0b2
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 67f3fa8ed3129fb2
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallType
+      values:
+        - function_call
+    - _hash: 178483f900471258
+      description: |-
+        A tool call to run a function. See the
+        [function calling guide](/docs/guides/function-calling) for more information.
+      fields:
+        - description: A JSON string of the arguments to pass to the function.
+          json_name: arguments
+          name: Arguments
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the function tool call generated by the model.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the function tool call.
+          json_name: id
+          name: ID
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: The name of the function to run.
+          json_name: name
+          name: Name
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 180052455b107e50
+            inner: FunctionToolCallStatus
+            kind: nullable
+            name: ""
+        - description: The type of the function tool call. Always `function_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionToolCallType
+      kind: struct
+      name: FunctionToolCall
+    - _hash: 6b44dc7327fd9ac4
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallOutputStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 2954c72b74532633
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallOutputType
+      values:
+        - function_call_output
+    - _hash: e4c32d0553995012
+      description: The output of a function tool call.
+      fields:
+        - description: The unique ID of the function tool call generated by the model.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The unique ID of the function tool call output. Populated when this item
+            is returned via API.
+          json_name: id
+          name: ID
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: A JSON string of the output of the function tool call.
+          json_name: output
+          name: Output
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 6c6490992cacbe71
+            inner: FunctionToolCallOutputStatus
+            kind: nullable
+            name: ""
+        - description: The type of the function tool call output. Always `function_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionToolCallOutputType
+      kind: struct
+      name: FunctionToolCallOutput
+    - _hash: 101facf595328b0e
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallOutputResourceStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 5c3644c756015e3c
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallOutputResourceType
+      values:
+        - function_call_output
+    - _hash: edaf5697133954ed
+      description: The output of a function tool call.
+      fields:
+        - description: The unique ID of the function tool call generated by the model.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The unique ID of the function tool call output. Populated when this item
+            is returned via API.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: A JSON string of the output of the function tool call.
+          json_name: output
+          name: Output
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 2efc563ad85bd649
+            inner: FunctionToolCallOutputResourceStatus
+            kind: nullable
+            name: ""
+        - description: The type of the function tool call output. Always `function_call_output`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionToolCallOutputResourceType
+      kind: struct
+      name: FunctionToolCallOutputResource
+    - _hash: 9bfd070e648ba992
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallResourceStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: a032fd467a7fd331
+      enum_type: string
+      kind: enum
+      name: FunctionToolCallResourceType
+      values:
+        - function_call
+    - _hash: ff8f87400fd34502
+      description: |-
+        A tool call to run a function. See the
+        [function calling guide](/docs/guides/function-calling) for more information.
+      fields:
+        - description: A JSON string of the arguments to pass to the function.
+          json_name: arguments
+          name: Arguments
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the function tool call generated by the model.
+          json_name: call_id
+          name: CallID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The unique ID of the function tool call.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The name of the function to run.
+          json_name: name
+          name: Name
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: edf5d149a09bd671
+            inner: FunctionToolCallResourceStatus
+            kind: nullable
+            name: ""
+        - description: The type of the function tool call. Always `function_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: FunctionToolCallResourceType
+      kind: struct
+      name: FunctionToolCallResource
+    - _hash: 8981218db0bc01fb
+      description: The ID of the file to be sent to the model.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: InputFileContentFileID
+    - _hash: 49aeeceaf9b06160
+      enum_type: string
+      kind: enum
+      name: InputFileContentType
+      values:
+        - input_file
+    - _hash: 0db82cb7af1db1f9
+      description: A file input to the model.
+      fields:
+        - description: The content of the file to be sent to the model.
+          json_name: file_data
+          name: FileData
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: The ID of the file to be sent to the model.
+          json_name: file_id
+          name: FileID
+          type: InputFileContentFileID
+        - description: The name of the file to be sent to the model.
+          json_name: filename
+          name: Filename
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+        - description: The type of the input item. Always `input_file`.
+          json_name: type
+          name: Type
+          required: true
+          type: InputFileContentType
+      kind: struct
+      name: InputFileContent
+    - _hash: 05bc33f6eccffb7e
+      enum_type: string
+      kind: enum
+      name: InputImageContentDetail
+      values:
+        - auto
+        - high
+        - low
+    - _hash: 78b14a9d065bf661
+      description: The ID of the file to be sent to the model.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: InputImageContentFileID
+    - _hash: 92c040ad448e09d7
+      description: |-
+        The URL of the image to be sent to the model. A fully qualified URL or base64
+        encoded image in a data URL.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: InputImageContentImageURL
+    - _hash: caebc60ec0461f46
+      enum_type: string
+      kind: enum
+      name: InputImageContentType
+      values:
+        - input_image
+    - _hash: a9b3cd5627ae95a7
+      description: An image input to the model. Learn about [image inputs](/docs/guides/vision).
+      fields:
+        - description: |-
+            The detail level of the image to be sent to the model. One of `high`, `low`, or
+            `auto`. Defaults to `auto`.
+          json_name: detail
+          name: Detail
+          required: true
+          type: InputImageContentDetail
+        - description: The ID of the file to be sent to the model.
+          json_name: file_id
+          name: FileID
+          type: InputImageContentFileID
+        - description: |-
+            The URL of the image to be sent to the model. A fully qualified URL or base64
+            encoded image in a data URL.
+          json_name: image_url
+          name: ImageURL
+          type: InputImageContentImageURL
+        - description: The type of the input item. Always `input_image`.
+          json_name: type
+          name: Type
+          required: true
+          type: InputImageContentType
+      kind: struct
+      name: InputImageContent
+    - _hash: cc8a00931cbc2d2e
+      enum_type: string
+      kind: enum
+      name: InputTextContentType
+      values:
+        - input_text
+    - _hash: 6bbe00338874091a
+      description: A text input to the model.
+      fields:
+        - description: The text input to the model.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the input item. Always `input_text`.
+          json_name: type
+          name: Type
+          required: true
+          type: InputTextContentType
+      kind: struct
+      name: InputTextContent
+    - _hash: a9eb1ac5d9806b00
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: InputContent
+      variants:
+        - name: InputFileContent
+          type: InputFileContent
+        - name: InputImageContent
+          type: InputImageContent
+        - name: InputTextContent
+          type: InputTextContent
+    - _hash: 979b1721625a4384
+      description: Content item used to generate a response.
+      kind: map
+      map_value:
+        _hash: d26c699d7e72c073
+        kind: scalar
+        name: ""
+        scalar_type: any
+      name: Item
+    - _hash: d09a11e61a07f27c
+      enum_type: string
+      kind: enum
+      name: ItemReferenceParamType
+      values:
+        - item_reference
+    - _hash: eb2702052166df28
+      description: An internal identifier for an item to reference.
+      fields:
+        - description: The ID of the item to reference.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of item to reference. Always `item_reference`.
+          json_name: type
+          name: Type
+          type:
+            _hash: 7bdef97de44ad1cd
+            inner: ItemReferenceParamType
+            kind: nullable
+            name: ""
+      kind: struct
+      name: ItemReferenceParam
+    - _hash: 2ca7c26023ee328a
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: InputItem
+      variants:
+        - name: EasyInputMessage
+          type: EasyInputMessage
+        - name: Item
+          type: Item
+        - name: ItemReferenceParam
+          type: ItemReferenceParam
+    - _hash: dc5edf74378de0af
+      description: |-
+        A list of one or many input items to the model, containing different content
+        types.
+      items: InputContent
+      kind: list
+      name: InputMessageContentList
+    - _hash: 2ef5097ea5036846
+      enum_type: string
+      kind: enum
+      name: InputMessageRole
+      values:
+        - developer
+        - system
+        - user
+    - _hash: c0c9f5c48bcfd1cc
+      enum_type: string
+      kind: enum
+      name: InputMessageStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 3beac0be511567f1
+      enum_type: string
+      kind: enum
+      name: InputMessageType
+      values:
+        - message
+    - _hash: 47fd416bae62d6c4
+      description: |-
+        A message input to the model with a role indicating instruction following
+        hierarchy. Instructions given with the `developer` or `system` role take
+        precedence over instructions given with the `user` role.
+      fields:
+        - json_name: content
+          name: Content
+          required: true
+          type: InputMessageContentList
+        - description: The role of the message input. One of `user`, `system`, or `developer`.
+          json_name: role
+          name: Role
+          required: true
+          type: InputMessageRole
+        - description: |-
+            The status of item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: 181aaca461d7608d
+            inner: InputMessageStatus
+            kind: nullable
+            name: ""
+        - description: The type of the message input. Always set to `message`.
+          json_name: type
+          name: Type
+          type:
+            _hash: 9fdfe47a9cd92d28
+            inner: InputMessageType
+            kind: nullable
+            name: ""
+      kind: struct
+      name: InputMessage
+    - _hash: ca68034708ac1c68
+      enum_type: string
+      kind: enum
+      name: InputMessageResourceRole
+      values:
+        - developer
+        - system
+        - user
+    - _hash: ba8be4851a716c33
+      enum_type: string
+      kind: enum
+      name: InputMessageResourceStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: 97cfdf2c2bbbe898
+      enum_type: string
+      kind: enum
+      name: InputMessageResourceType
+      values:
+        - message
+    - _hash: 87a7719a5ab22321
+      description: |-
+        A message input to the model with a role indicating instruction following
+        hierarchy. Instructions given with the `developer` or `system` role take
+        precedence over instructions given with the `user` role.
+      fields:
+        - json_name: content
+          name: Content
+          required: true
+          type: InputMessageContentList
+        - description: The unique ID of the message input.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The role of the message input. One of `user`, `system`, or `developer`.
+          json_name: role
+          name: Role
+          required: true
+          type: InputMessageResourceRole
+        - description: |-
+            The status of item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: b0e8250bb027e91d
+            inner: InputMessageResourceStatus
+            kind: nullable
+            name: ""
+        - description: The type of the message input. Always set to `message`.
+          json_name: type
+          name: Type
+          type:
+            _hash: 9bc0f14b62e75388
+            inner: InputMessageResourceType
+            kind: nullable
+            name: ""
+      kind: struct
+      name: InputMessageResource
+    - _hash: 60f40489dd5f07aa
+      enum_type: string
+      kind: enum
+      name: OutputTextContentType
+      values:
+        - output_text
+    - _hash: 11b9f30d62c44850
+      description: A text output from the model.
+      fields:
+        - description: The annotations of the text output.
+          json_name: annotations
+          name: Annotations
+          required: true
+          type:
+            _hash: ba182187394b2259
+            items: Annotation
+            kind: list
+            name: ""
+        - description: The text output from the model.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the output text. Always `output_text`.
+          json_name: type
+          name: Type
+          required: true
+          type: OutputTextContentType
+      kind: struct
+      name: OutputTextContent
+    - _hash: bac1b87a868b39fb
+      enum_type: string
+      kind: enum
+      name: RefusalContentType
+      values:
+        - refusal
+    - _hash: a82a0421e9ac43e4
+      description: A refusal from the model.
+      fields:
+        - description: The refusal explanationfrom the model.
+          json_name: refusal
+          name: Refusal
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the refusal. Always `refusal`.
+          json_name: type
+          name: Type
+          required: true
+          type: RefusalContentType
+      kind: struct
+      name: RefusalContent
+    - _hash: 5ce03e4211cf5df9
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: OutputContent
+      variants:
+        - name: OutputTextContent
+          type: OutputTextContent
+        - name: RefusalContent
+          type: RefusalContent
+    - _hash: 57179257d8e78978
+      enum_type: string
+      kind: enum
+      name: OutputMessageRole
+      values:
+        - assistant
+    - _hash: b60fe31cffd0219d
+      enum_type: string
+      kind: enum
+      name: OutputMessageStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: ba30888fec9d3c2b
+      enum_type: string
+      kind: enum
+      name: OutputMessageType
+      values:
+        - message
+    - _hash: 7ee6048cd7cd2acf
+      description: An output message from the model.
+      fields:
+        - description: The content of the output message.
+          json_name: content
+          name: Content
+          required: true
+          type:
+            _hash: 2a148aac8135d2a8
+            items: OutputContent
+            kind: list
+            name: ""
+        - description: The unique ID of the output message.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The role of the output message. Always `assistant`.
+          json_name: role
+          name: Role
+          required: true
+          type: OutputMessageRole
+        - description: |-
+            The status of the message input. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when input items are returned via API.
+          json_name: status
+          name: Status
+          required: true
+          type: OutputMessageStatus
+        - description: The type of the output message. Always `message`.
+          json_name: type
+          name: Type
+          required: true
+          type: OutputMessageType
+      kind: struct
+      name: OutputMessage
+    - _hash: 0315073223cf3473
+      enum_type: string
+      kind: enum
+      name: WebSearchToolCallStatus
+      values:
+        - in_progress
+        - searching
+        - completed
+        - failed
+    - _hash: 94954b57aed173bb
+      enum_type: string
+      kind: enum
+      name: WebSearchToolCallType
+      values:
+        - web_search_call
+    - _hash: e2084dfc62e69f4e
+      description: |-
+        The results of a web search tool call. See the
+        [web search guide](/docs/guides/tools-web-search) for more information.
+      fields:
+        - description: The unique ID of the web search tool call.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The status of the web search tool call.
+          json_name: status
+          name: Status
+          required: true
+          type: WebSearchToolCallStatus
+        - description: The type of the web search tool call. Always `web_search_call`.
+          json_name: type
+          name: Type
+          required: true
+          type: WebSearchToolCallType
+      kind: struct
+      name: WebSearchToolCall
+    - _hash: f9bd357e75d8e2d9
+      description: |-
+        is a sealed interface for oneOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: ItemResource
+      variants:
+        - name: ComputerToolCall
+          type: ComputerToolCall
+        - name: ComputerToolCallOutputResource
+          type: ComputerToolCallOutputResource
+        - name: FileSearchToolCall
+          type: FileSearchToolCall
+        - name: FunctionToolCallOutputResource
+          type: FunctionToolCallOutputResource
+        - name: FunctionToolCallResource
+          type: FunctionToolCallResource
+        - name: InputMessageResource
+          type: InputMessageResource
+        - name: OutputMessage
+          type: OutputMessage
+        - name: WebSearchToolCall
+          type: WebSearchToolCall
+    - _hash: f20bc34ebc839cea
+      kind: scalar
+      name: ModelIdsShared
+      scalar_type: string
+    - _hash: 0825d2571f845376
+      description: |-
+        What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        make the output more random, while lower values like 0.2 will make it more
+        focused and deterministic.
+        We generally recommend altering this or `top_p` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: ModelResponsePropertiesTemperature
+    - _hash: 351a4a3ece3d61d5
+      description: |-
+        An alternative to sampling with temperature, called nucleus sampling,
+        where the model considers the results of the tokens with top_p probability
+        mass. So 0.1 means only the tokens comprising the top 10% probability mass
+        are considered.
+
+        We generally recommend altering this or `temperature` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: ModelResponsePropertiesTopP
+    - _hash: f85f0884b36f947e
+      fields:
+        - json_name: metadata
+          name: Metadata
+          type: Metadata
+        - json_name: service_tier
+          name: ServiceTier
+          type:
+            _hash: d7cd120582e579ab
+            inner: ServiceTier
+            kind: nullable
+            name: ""
+        - description: |-
+            What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+            make the output more random, while lower values like 0.2 will make it more
+            focused and deterministic.
+            We generally recommend altering this or `top_p` but not both.
+          json_name: temperature
+          name: Temperature
+          type: ModelResponsePropertiesTemperature
+        - description: |-
+            An alternative to sampling with temperature, called nucleus sampling,
+            where the model considers the results of the tokens with top_p probability
+            mass. So 0.1 means only the tokens comprising the top 10% probability mass
+            are considered.
+
+            We generally recommend altering this or `temperature` but not both.
+          json_name: top_p
+          name: TopP
+          type: ModelResponsePropertiesTopP
+        - description: |-
+            A unique identifier representing your end-user, which can help OpenAI to
+            monitor and detect abuse. [Learn
+            more](/docs/guides/safety-best-practices#end-user-ids).
+          json_name: user
+          name: User
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+      kind: struct
+      name: ModelResponseProperties
+    - _hash: 26799c15280836c5
+      enum_type: string
+      kind: enum
+      name: ReasoningItemStatus
+      values:
+        - completed
+        - in_progress
+        - incomplete
+    - _hash: fb9c99dc03e0296f
+      enum_type: string
+      kind: enum
+      name: ReasoningItemSummaryElemType
+      values:
+        - summary_text
+    - _hash: 13302c19d91454f0
+      fields:
+        - description: |-
+            A short summary of the reasoning used by the model when generating
+            the response.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the object. Always `summary_text`.
+          json_name: type
+          name: Type
+          required: true
+          type: ReasoningItemSummaryElemType
+      kind: struct
+      name: ReasoningItemSummaryElem
+    - _hash: 7f7facab6208f7f8
+      enum_type: string
+      kind: enum
+      name: ReasoningItemType
+      values:
+        - reasoning
+    - _hash: c49c7c1308b639d5
+      description: |-
+        A description of the chain of thought used by a reasoning model while generating
+        a response.
+      fields:
+        - description: The unique identifier of the reasoning content.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The status of the item. One of `in_progress`, `completed`, or
+            `incomplete`. Populated when items are returned via API.
+          json_name: status
+          name: Status
+          type:
+            _hash: cb3db5f0715f84d9
+            inner: ReasoningItemStatus
+            kind: nullable
+            name: ""
+        - description: Reasoning text contents.
+          json_name: summary
+          name: Summary
+          required: true
+          type:
+            _hash: 9d331f555f9c23e3
+            items: ReasoningItemSummaryElem
+            kind: list
+            name: ""
+        - description: The type of the object. Always `reasoning`.
+          json_name: type
+          name: Type
+          required: true
+          type: ReasoningItemType
+      kind: struct
+      name: ReasoningItem
+    - _hash: bf2f6148bdaae0ac
+      description: |-
+        is a sealed interface for anyOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: OutputItem
+      variants:
+        - name: ComputerToolCall
+          type: ComputerToolCall
+        - name: FileSearchToolCall
+          type: FileSearchToolCall
+        - name: FunctionToolCall
+          type: FunctionToolCall
+        - name: OutputMessage
+          type: OutputMessage
+        - name: ReasoningItem
+          type: ReasoningItem
+        - name: WebSearchToolCall
+          type: WebSearchToolCall
+    - _hash: 2d723f7011e01f95
+      enum_type: string
+      kind: enum
+      name: ResponseErrorCode
+      values:
+        - empty_image_file
+        - failed_to_download_image
+        - image_content_policy_violation
+        - image_file_not_found
+        - image_file_too_large
+        - image_parse_error
+        - image_too_large
+        - image_too_small
+        - invalid_base64_image
+        - invalid_image
+        - invalid_image_format
+        - invalid_image_mode
+        - invalid_image_url
+        - invalid_prompt
+        - rate_limit_exceeded
+        - server_error
+        - unsupported_image_media_type
+        - vector_store_timeout
+    - _hash: 4be6d79194a91f80
+      description: An error object returned when the model fails to generate a Response.
+      fields:
+        - json_name: code
+          name: Code
+          required: true
+          type: ResponseErrorCode
+        - description: A human-readable description of the error.
+          json_name: message
+          name: Message
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+      kind: struct
+      name: ResponseError
+    - _hash: 3c1fce3261feaec0
+      enum_type: string
+      kind: enum
+      name: ResponseIncompleteDetailsReason
+      values:
+        - content_filter
+        - max_output_tokens
+    - _hash: 7009e97acf98f172
+      description: Details about why the response is incomplete.
+      fields:
+        - description: The reason why the response is incomplete.
+          json_name: reason
+          name: Reason
+          type:
+            _hash: 576e9de66d7d952d
+            inner: ResponseIncompleteDetailsReason
+            kind: nullable
+            name: ""
+      kind: struct
+      name: ResponseIncompleteDetails
+    - _hash: c4a99f5c85ad913a
+      description: |-
+        Inserts a system (or developer) message as the first item in the model's
+        context.
+
+        When using along with `previous_response_id`, the instructions from a previous
+        response will not be carried over to the next response. This makes it simple
+        to swap out system (or developer) messages in new responses.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponseInstructions
+    - _hash: 17af92535960313d
+      description: |-
+        An upper bound for the number of tokens that can be generated for a response,
+        including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+      inner:
+        _hash: 9b0c629ab1f0853b
+        kind: scalar
+        name: ""
+        scalar_type: integer
+      kind: nullable
+      name: ResponseMaxOutputTokens
+    - _hash: 391ab80d4b3b493a
+      enum_type: string
+      kind: enum
+      name: ResponseObject
+      values:
+        - response
+    - _hash: 44a93b9f638c8c3b
+      description: |-
+        SDK-only convenience property that contains the aggregated text output
+        from all `output_text` items in the `output` array, if any are present.
+        Supported in the Python and JavaScript SDKs.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponseOutputText
+    - _hash: eced201e457f6a6a
+      description: |-
+        The unique ID of the previous response to the model. Use this to
+        create multi-turn conversations. Learn more about
+        [conversation state](/docs/guides/conversation-state).
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponsePreviousResponseID
+    - _hash: 5bce1ce7ef333652
+      enum_type: string
+      kind: enum
+      name: ResponseStatus
+      values:
+        - completed
+        - failed
+        - in_progress
+        - incomplete
+    - _hash: 58e844f799288cc2
+      description: |-
+        What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        make the output more random, while lower values like 0.2 will make it more
+        focused and deterministic.
+        We generally recommend altering this or `top_p` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: ResponseTemperature
+    - _hash: a44efee788d4578d
+      description: |-
+        Configuration options for a text response from the model. Can be plain
+        text or structured JSON data. Learn more:
+        - [Text inputs and outputs](/docs/guides/text)
+        - [Structured Outputs](/docs/guides/structured-outputs)
+      fields:
+        - json_name: format
+          name: Format
+          type: TextResponseFormatConfiguration
+      kind: struct
+      name: ResponseText
+    - _hash: ff3f046da885aaf4
+      description: |-
+        An alternative to sampling with temperature, called nucleus sampling,
+        where the model considers the results of the tokens with top_p probability
+        mass. So 0.1 means only the tokens comprising the top 10% probability mass
+        are considered.
+
+        We generally recommend altering this or `temperature` but not both.
+      inner:
+        _hash: d34806169c6029ac
+        kind: scalar
+        name: ""
+        scalar_type: number
+      kind: nullable
+      name: ResponseTopP
+    - _hash: de94c90b5597c026
+      enum_type: string
+      kind: enum
+      name: ResponseTruncation
+      values:
+        - auto
+        - disabled
+    - _hash: ce3f6a2a243fce2a
+      description: A detailed breakdown of the input tokens.
+      fields:
+        - description: |-
+            The number of tokens that were retrieved from the cache.
+            [More on prompt caching](/docs/guides/prompt-caching).
+          json_name: cached_tokens
+          name: CachedTokens
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: ResponseUsageInputTokensDetails
+    - _hash: 7b23f3028a8c3faa
+      description: A detailed breakdown of the output tokens.
+      fields:
+        - description: The number of reasoning tokens.
+          json_name: reasoning_tokens
+          name: ReasoningTokens
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: ResponseUsageOutputTokensDetails
+    - _hash: 834cfd5878794f9e
+      description: |-
+        Represents token usage details including input tokens, output tokens,
+        a breakdown of output tokens, and the total tokens used.
+      fields:
+        - description: The number of input tokens.
+          json_name: input_tokens
+          name: InputTokens
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: A detailed breakdown of the input tokens.
+          json_name: input_tokens_details
+          name: InputTokensDetails
+          required: true
+          type: ResponseUsageInputTokensDetails
+        - description: The number of output tokens.
+          json_name: output_tokens
+          name: OutputTokens
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: A detailed breakdown of the output tokens.
+          json_name: output_tokens_details
+          name: OutputTokensDetails
+          required: true
+          type: ResponseUsageOutputTokensDetails
+        - description: The total number of tokens used.
+          json_name: total_tokens
+          name: TotalTokens
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+      kind: struct
+      name: ResponseUsage
+    - _hash: 9d3cf38428b259bd
+      fields:
+        - description: Unix timestamp (in seconds) of when this Response was created.
+          json_name: created_at
+          name: CreatedAt
+          required: true
+          type:
+            _hash: d34806169c6029ac
+            kind: scalar
+            name: ""
+            scalar_type: number
+        - json_name: error
+          name: Error
+          required: true
+          type: ResponseError
+        - description: Unique identifier for this Response.
+          json_name: id
+          name: ID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: Details about why the response is incomplete.
+          json_name: incomplete_details
+          name: IncompleteDetails
+          required: true
+          type:
+            _hash: ba3308d167950b40
+            inner: ResponseIncompleteDetails
+            kind: nullable
+            name: ""
+        - description: |-
+            Inserts a system (or developer) message as the first item in the model's
+            context.
+
+            When using along with `previous_response_id`, the instructions from a previous
+            response will not be carried over to the next response. This makes it simple
+            to swap out system (or developer) messages in new responses.
+          json_name: instructions
+          name: Instructions
+          required: true
+          type: ResponseInstructions
+        - description: |-
+            An upper bound for the number of tokens that can be generated for a response,
+            including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+          json_name: max_output_tokens
+          name: MaxOutputTokens
+          type: ResponseMaxOutputTokens
+        - json_name: metadata
+          name: Metadata
+          required: true
+          type: Metadata
+        - json_name: model
+          name: Model
+          required: true
+          type: ModelIdsResponses
+        - description: The object type of this resource - always set to `response`.
+          json_name: object
+          name: Object
+          required: true
+          type: ResponseObject
+        - description: |-
+            An array of content items generated by the model.
+
+            - The length and order of items in the `output` array is dependent
+              on the model's response.
+            - Rather than accessing the first item in the `output` array and
+              assuming it's an `assistant` message with the content generated by
+              the model, you might consider using the `output_text` property where
+              supported in SDKs.
+          json_name: output
+          name: Output
+          required: true
+          type:
+            _hash: af1b436d0f917fd4
+            items: OutputItem
+            kind: list
+            name: ""
+        - description: |-
+            SDK-only convenience property that contains the aggregated text output
+            from all `output_text` items in the `output` array, if any are present.
+            Supported in the Python and JavaScript SDKs.
+          json_name: output_text
+          name: OutputText
+          type: ResponseOutputText
+        - description: Whether to allow the model to run tool calls in parallel.
+          json_name: parallel_tool_calls
+          name: ParallelToolCalls
+          required: true
+          type:
+            _hash: 3456feb562ffa1b1
+            kind: scalar
+            name: ""
+            scalar_type: boolean
+        - description: |-
+            The unique ID of the previous response to the model. Use this to
+            create multi-turn conversations. Learn more about
+            [conversation state](/docs/guides/conversation-state).
+          json_name: previous_response_id
+          name: PreviousResponseID
+          type: ResponsePreviousResponseID
+        - json_name: reasoning
+          name: Reasoning
+          type:
+            _hash: cc27fcbddd8ecce8
+            inner: Reasoning
+            kind: nullable
+            name: ""
+        - json_name: service_tier
+          name: ServiceTier
+          type:
+            _hash: d7cd120582e579ab
+            inner: ServiceTier
+            kind: nullable
+            name: ""
+        - description: |-
+            The status of the response generation. One of `completed`, `failed`,
+            `in_progress`, or `incomplete`.
+          json_name: status
+          name: Status
+          type:
+            _hash: e6da31f0a7443f32
+            inner: ResponseStatus
+            kind: nullable
+            name: ""
+        - description: |-
+            What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+            make the output more random, while lower values like 0.2 will make it more
+            focused and deterministic.
+            We generally recommend altering this or `top_p` but not both.
+          json_name: temperature
+          name: Temperature
+          required: true
+          type: ResponseTemperature
+        - description: |-
+            Configuration options for a text response from the model. Can be plain
+            text or structured JSON data. Learn more:
+            - [Text inputs and outputs](/docs/guides/text)
+            - [Structured Outputs](/docs/guides/structured-outputs)
+          json_name: text
+          name: Text
+          type:
+            _hash: d32527fcb867c5ec
+            inner: ResponseText
+            kind: nullable
+            name: ""
+        - description: |-
+            How the model should select which tool (or tools) to use when generating
+            a response. See the `tools` parameter to see how to specify which tools
+            the model can call.
+          json_name: tool_choice
+          name: ToolChoice
+          required: true
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            An array of tools the model may call while generating a response. You
+            can specify which tool to use by setting the `tool_choice` parameter.
+
+            The two categories of tools you can provide the model are:
+
+            - **Built-in tools**: Tools that are provided by OpenAI that extend the
+              model's capabilities, like [web search](/docs/guides/tools-web-search)
+              or [file search](/docs/guides/tools-file-search). Learn more about
+              [built-in tools](/docs/guides/tools).
+            - **Function calls (custom tools)**: Functions that are defined by you,
+              enabling the model to call your own code. Learn more about
+              [function calling](/docs/guides/function-calling).
+          json_name: tools
+          name: Tools
+          required: true
+          type:
+            _hash: 3f13ba0f571c18fb
+            items: Tool
+            kind: list
+            name: ""
+        - description: |-
+            An alternative to sampling with temperature, called nucleus sampling,
+            where the model considers the results of the tokens with top_p probability
+            mass. So 0.1 means only the tokens comprising the top 10% probability mass
+            are considered.
+
+            We generally recommend altering this or `temperature` but not both.
+          json_name: top_p
+          name: TopP
+          required: true
+          type: ResponseTopP
+        - description: |-
+            The truncation strategy to use for the model response.
+            - `auto`: If the context of this response and previous ones exceeds
+              the model's context window size, the model will truncate the
+              response to fit the context window by dropping input items in the
+              middle of the conversation.
+            - `disabled` (default): If a model response will exceed the context window
+              size for a model, the request will fail with a 400 error.
+          json_name: truncation
+          name: Truncation
+          type:
+            _hash: 6f2c776a8cac4268
+            inner: ResponseTruncation
+            kind: nullable
+            name: ""
+        - json_name: usage
+          name: Usage
+          type:
+            _hash: ad3c780e1dae7f4e
+            inner: ResponseUsage
+            kind: nullable
+            name: ""
+        - description: |-
+            A unique identifier representing your end-user, which can help OpenAI to
+            monitor and detect abuse. [Learn
+            more](/docs/guides/safety-best-practices#end-user-ids).
+          json_name: user
+          name: User
+          type:
+            _hash: d7b1967f614ad2b0
+            inner:
+                _hash: 12238535e4ecd9a7
+                kind: scalar
+                name: ""
+                scalar_type: string
+            kind: nullable
+            name: ""
+      kind: struct
+      name: Response
+    - _hash: 0e2b63a20b5927be
+      enum_type: string
+      kind: enum
+      name: ResponseAudioDeltaEventType
+      values:
+        - response.audio.delta
+    - _hash: 248d8dcc421ec63b
+      description: Emitted when there is a partial audio response.
+      fields:
+        - description: A chunk of Base64 encoded response audio bytes.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the event. Always `response.audio.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseAudioDeltaEventType
+      kind: struct
+      name: ResponseAudioDeltaEvent
+    - _hash: d0526910db9ba228
+      enum_type: string
+      kind: enum
+      name: ResponseAudioDoneEventType
+      values:
+        - response.audio.done
+    - _hash: c65726b049c1eb68
+      description: Emitted when the audio response is complete.
+      fields:
+        - description: The type of the event. Always `response.audio.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseAudioDoneEventType
+      kind: struct
+      name: ResponseAudioDoneEvent
+    - _hash: ab40f31b21747d6c
+      enum_type: string
+      kind: enum
+      name: ResponseAudioTranscriptDeltaEventType
+      values:
+        - response.audio.transcript.delta
+    - _hash: 32f5f89fdbdef7e6
+      description: Emitted when there is a partial transcript of audio.
+      fields:
+        - description: The partial transcript of the audio response.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the event. Always `response.audio.transcript.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseAudioTranscriptDeltaEventType
+      kind: struct
+      name: ResponseAudioTranscriptDeltaEvent
+    - _hash: deb3c00d74baaa8f
+      enum_type: string
+      kind: enum
+      name: ResponseAudioTranscriptDoneEventType
+      values:
+        - response.audio.transcript.done
+    - _hash: e9def8639fe893a9
+      description: Emitted when the full audio transcript is completed.
+      fields:
+        - description: The type of the event. Always `response.audio.transcript.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseAudioTranscriptDoneEventType
+      kind: struct
+      name: ResponseAudioTranscriptDoneEvent
+    - _hash: 0f25752ea1de33b2
+      enum_type: string
+      kind: enum
+      name: ResponseCodeInterpreterCallCodeDeltaEventType
+      values:
+        - response.code_interpreter_call.code.delta
+    - _hash: 15658b58a7c89b12
+      description: Emitted when a partial code snippet is added by the code interpreter.
+      fields:
+        - description: The partial code snippet added by the code interpreter.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the code interpreter call is in progress.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.code_interpreter_call.code.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCodeInterpreterCallCodeDeltaEventType
+      kind: struct
+      name: ResponseCodeInterpreterCallCodeDeltaEvent
+    - _hash: e26625bce03cb355
+      enum_type: string
+      kind: enum
+      name: ResponseCodeInterpreterCallCodeDoneEventType
+      values:
+        - response.code_interpreter_call.code.done
+    - _hash: b858b3c31a6a8507
+      description: Emitted when code snippet output is finalized by the code interpreter.
+      fields:
+        - description: The final code snippet output by the code interpreter.
+          json_name: code
+          name: Code
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the code interpreter call is in progress.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.code_interpreter_call.code.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCodeInterpreterCallCodeDoneEventType
+      kind: struct
+      name: ResponseCodeInterpreterCallCodeDoneEvent
+    - _hash: 1a0d0fb513fc766b
+      enum_type: string
+      kind: enum
+      name: ResponseCodeInterpreterCallCompletedEventType
+      values:
+        - response.code_interpreter_call.completed
+    - _hash: 38c1cfdb8b924543
+      description: Emitted when the code interpreter call is completed.
+      fields:
+        - json_name: code_interpreter_call
+          name: CodeInterpreterCall
+          required: true
+          type: CodeInterpreterToolCall
+        - description: The index of the output item that the code interpreter call is in progress.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.code_interpreter_call.completed`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCodeInterpreterCallCompletedEventType
+      kind: struct
+      name: ResponseCodeInterpreterCallCompletedEvent
+    - _hash: b22e954ff10a85c4
+      enum_type: string
+      kind: enum
+      name: ResponseCodeInterpreterCallInProgressEventType
+      values:
+        - response.code_interpreter_call.in_progress
+    - _hash: e84d14eca4d13c5c
+      description: Emitted when a code interpreter call is in progress.
+      fields:
+        - json_name: code_interpreter_call
+          name: CodeInterpreterCall
+          required: true
+          type: CodeInterpreterToolCall
+        - description: The index of the output item that the code interpreter call is in progress.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.code_interpreter_call.in_progress`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCodeInterpreterCallInProgressEventType
+      kind: struct
+      name: ResponseCodeInterpreterCallInProgressEvent
+    - _hash: 49b728440bdfc9b5
+      enum_type: string
+      kind: enum
+      name: ResponseCodeInterpreterCallInterpretingEventType
+      values:
+        - response.code_interpreter_call.interpreting
+    - _hash: 26d1f801919c1786
+      description: Emitted when the code interpreter is actively interpreting the code snippet.
+      fields:
+        - json_name: code_interpreter_call
+          name: CodeInterpreterCall
+          required: true
+          type: CodeInterpreterToolCall
+        - description: The index of the output item that the code interpreter call is in progress.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.code_interpreter_call.interpreting`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCodeInterpreterCallInterpretingEventType
+      kind: struct
+      name: ResponseCodeInterpreterCallInterpretingEvent
+    - _hash: fbc9972427ee806c
+      enum_type: string
+      kind: enum
+      name: ResponseCompletedEventType
+      values:
+        - response.completed
+    - _hash: 17327ab788e9070c
+      description: Emitted when the model response is complete.
+      fields:
+        - json_name: response
+          name: Response
+          required: true
+          type: Response
+        - description: The type of the event. Always `response.completed`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCompletedEventType
+      kind: struct
+      name: ResponseCompletedEvent
+    - _hash: 60deac69f2a11f64
+      enum_type: string
+      kind: enum
+      name: ResponseContentPartAddedEventType
+      values:
+        - response.content_part.added
+    - _hash: 15566385f3df499d
+      description: Emitted when a new content part is added.
+      fields:
+        - description: The index of the content part that was added.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The ID of the output item that the content part was added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the content part was added to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - json_name: part
+          name: Part
+          required: true
+          type: OutputContent
+        - description: The type of the event. Always `response.content_part.added`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseContentPartAddedEventType
+      kind: struct
+      name: ResponseContentPartAddedEvent
+    - _hash: 71b9c1fd64096f3a
+      enum_type: string
+      kind: enum
+      name: ResponseContentPartDoneEventType
+      values:
+        - response.content_part.done
+    - _hash: 57e814da59d7c3e6
+      description: Emitted when a content part is done.
+      fields:
+        - description: The index of the content part that is done.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The ID of the output item that the content part was added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the content part was added to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - json_name: part
+          name: Part
+          required: true
+          type: OutputContent
+        - description: The type of the event. Always `response.content_part.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseContentPartDoneEventType
+      kind: struct
+      name: ResponseContentPartDoneEvent
+    - _hash: 04b775ef91af9d15
+      enum_type: string
+      kind: enum
+      name: ResponseCreatedEventType
+      values:
+        - response.created
+    - _hash: 1465e7b2228f32aa
+      description: An event that is emitted when a response is created.
+      fields:
+        - json_name: response
+          name: Response
+          required: true
+          type: Response
+        - description: The type of the event. Always `response.created`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseCreatedEventType
+      kind: struct
+      name: ResponseCreatedEvent
+    - _hash: caf999d436d50cd8
+      description: The error code.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponseErrorEventCode
+    - _hash: 6f9419165932b8c9
+      description: The error parameter.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponseErrorEventParam
+    - _hash: 20a3e86746f91d32
+      enum_type: string
+      kind: enum
+      name: ResponseErrorEventType
+      values:
+        - error
+    - _hash: 7326addf523f030e
+      description: Emitted when an error occurs.
+      fields:
+        - description: The error code.
+          json_name: code
+          name: Code
+          required: true
+          type: ResponseErrorEventCode
+        - description: The error message.
+          json_name: message
+          name: Message
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The error parameter.
+          json_name: param
+          name: Param
+          required: true
+          type: ResponseErrorEventParam
+        - description: The type of the event. Always `error`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseErrorEventType
+      kind: struct
+      name: ResponseErrorEvent
+    - _hash: c81388d3cf8036ec
+      enum_type: string
+      kind: enum
+      name: ResponseFailedEventType
+      values:
+        - response.failed
+    - _hash: 2eaec8125ac42fae
+      description: An event that is emitted when a response fails.
+      fields:
+        - json_name: response
+          name: Response
+          required: true
+          type: Response
+        - description: The type of the event. Always `response.failed`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFailedEventType
+      kind: struct
+      name: ResponseFailedEvent
+    - _hash: 6bcd48a8bc09dc00
+      enum_type: string
+      kind: enum
+      name: ResponseFileSearchCallCompletedEventType
+      values:
+        - response.file_search_call.completed
+    - _hash: b42105926e1ae5f5
+      description: Emitted when a file search call is completed (results found).
+      fields:
+        - description: The ID of the output item that the file search call is initiated.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the file search call is initiated.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.file_search_call.completed`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFileSearchCallCompletedEventType
+      kind: struct
+      name: ResponseFileSearchCallCompletedEvent
+    - _hash: 5f9ac4c0cd001a60
+      enum_type: string
+      kind: enum
+      name: ResponseFileSearchCallInProgressEventType
+      values:
+        - response.file_search_call.in_progress
+    - _hash: 6c25f834ef5fdbe2
+      description: Emitted when a file search call is initiated.
+      fields:
+        - description: The ID of the output item that the file search call is initiated.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the file search call is initiated.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.file_search_call.in_progress`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFileSearchCallInProgressEventType
+      kind: struct
+      name: ResponseFileSearchCallInProgressEvent
+    - _hash: 11bc6f1b77493ed0
+      enum_type: string
+      kind: enum
+      name: ResponseFileSearchCallSearchingEventType
+      values:
+        - response.file_search_call.searching
+    - _hash: 5c580ad831ed3e70
+      description: Emitted when a file search is currently searching.
+      fields:
+        - description: The ID of the output item that the file search call is initiated.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the file search call is searching.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.file_search_call.searching`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFileSearchCallSearchingEventType
+      kind: struct
+      name: ResponseFileSearchCallSearchingEvent
+    - _hash: f6d48e90354905d2
+      enum_type: string
+      kind: enum
+      name: ResponseFunctionCallArgumentsDeltaEventType
+      values:
+        - response.function_call_arguments.delta
+    - _hash: a20ca71402091ce2
+      description: Emitted when there is a partial function-call arguments delta.
+      fields:
+        - description: The function-call arguments delta that is added.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the output item that the function-call arguments delta is added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: |-
+            The index of the output item that the function-call arguments delta is added
+            to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.function_call_arguments.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseFunctionCallArgumentsDeltaEventType
+      kind: struct
+      name: ResponseFunctionCallArgumentsDeltaEvent
+    - _hash: 9b1cf081070d83bb
+      enum_type: string
+      kind: enum
+      name: ResponseFunctionCallArgumentsDoneEventType
+      values:
+        - response.function_call_arguments.done
+    - _hash: adb81611f3b223ea
+      description: Emitted when function-call arguments are finalized.
+      fields:
+        - description: The function-call arguments.
+          json_name: arguments
+          name: Arguments
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the item.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - json_name: type
+          name: Type
+          required: true
+          type: ResponseFunctionCallArgumentsDoneEventType
+      kind: struct
+      name: ResponseFunctionCallArgumentsDoneEvent
+    - _hash: ca6fd63c2f1aff7a
+      enum_type: string
+      kind: enum
+      name: ResponseInProgressEventType
+      values:
+        - response.in_progress
+    - _hash: 3e124cba3a493a75
+      description: Emitted when the response is in progress.
+      fields:
+        - json_name: response
+          name: Response
+          required: true
+          type: Response
+        - description: The type of the event. Always `response.in_progress`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseInProgressEventType
+      kind: struct
+      name: ResponseInProgressEvent
+    - _hash: d207985f7b268cfc
+      enum_type: string
+      kind: enum
+      name: ResponseIncompleteEventType
+      values:
+        - response.incomplete
+    - _hash: a7bb5af48ac3e932
+      description: An event that is emitted when a response finishes as incomplete.
+      fields:
+        - json_name: response
+          name: Response
+          required: true
+          type: Response
+        - description: The type of the event. Always `response.incomplete`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseIncompleteEventType
+      kind: struct
+      name: ResponseIncompleteEvent
+    - _hash: a58114de7c6148ad
+      enum_type: string
+      kind: enum
+      name: ResponseItemListObject
+      values:
+        - list
+    - _hash: cf58cdcdcfe8767e
+      description: A list of Response items.
+      fields:
+        - description: A list of items used to generate this response.
+          json_name: data
+          name: Data
+          required: true
+          type:
+            _hash: 8279db022f76cbc4
+            items: ItemResource
+            kind: list
+            name: ""
+        - description: The ID of the first item in the list.
+          json_name: first_id
+          name: FirstID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: Whether there are more items available.
+          json_name: has_more
+          name: HasMore
+          required: true
+          type:
+            _hash: 3456feb562ffa1b1
+            kind: scalar
+            name: ""
+            scalar_type: boolean
+        - description: The ID of the last item in the list.
+          json_name: last_id
+          name: LastID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of object returned, must be `list`.
+          json_name: object
+          name: Object
+          required: true
+          type: ResponseItemListObject
+      kind: struct
+      name: ResponseItemList
+    - _hash: e43a5fd030e6b3e2
+      enum_type: string
+      kind: enum
+      name: ResponseOutputItemAddedEventType
+      values:
+        - response.output_item.added
+    - _hash: e82e062b8d685b34
+      description: Emitted when a new output item is added.
+      fields:
+        - json_name: item
+          name: Item
+          required: true
+          type: OutputItem
+        - description: The index of the output item that was added.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.output_item.added`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseOutputItemAddedEventType
+      kind: struct
+      name: ResponseOutputItemAddedEvent
+    - _hash: 9659a8417ad7a89e
+      enum_type: string
+      kind: enum
+      name: ResponseOutputItemDoneEventType
+      values:
+        - response.output_item.done
+    - _hash: 8c3abb176add37fc
+      description: Emitted when an output item is marked done.
+      fields:
+        - json_name: item
+          name: Item
+          required: true
+          type: OutputItem
+        - description: The index of the output item that was marked done.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.output_item.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseOutputItemDoneEventType
+      kind: struct
+      name: ResponseOutputItemDoneEvent
+    - _hash: dd6c5189554c0d10
+      description: |-
+        Inserts a system (or developer) message as the first item in the model's
+        context.
+
+        When using along with `previous_response_id`, the instructions from a previous
+        response will not be carried over to the next response. This makes it simple
+        to swap out system (or developer) messages in new responses.
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponsePropertiesInstructions
+    - _hash: 7f586de5347fb7ce
+      description: |-
+        An upper bound for the number of tokens that can be generated for a response,
+        including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+      inner:
+        _hash: 9b0c629ab1f0853b
+        kind: scalar
+        name: ""
+        scalar_type: integer
+      kind: nullable
+      name: ResponsePropertiesMaxOutputTokens
+    - _hash: d0673ef0537d756a
+      description: |-
+        The unique ID of the previous response to the model. Use this to
+        create multi-turn conversations. Learn more about
+        [conversation state](/docs/guides/conversation-state).
+      inner:
+        _hash: 12238535e4ecd9a7
+        kind: scalar
+        name: ""
+        scalar_type: string
+      kind: nullable
+      name: ResponsePropertiesPreviousResponseID
+    - _hash: 0c0aa22113ed0178
+      description: |-
+        Configuration options for a text response from the model. Can be plain
+        text or structured JSON data. Learn more:
+        - [Text inputs and outputs](/docs/guides/text)
+        - [Structured Outputs](/docs/guides/structured-outputs)
+      fields:
+        - json_name: format
+          name: Format
+          type: TextResponseFormatConfiguration
+      kind: struct
+      name: ResponsePropertiesText
+    - _hash: 27b112b5bed661d7
+      enum_type: string
+      kind: enum
+      name: ResponsePropertiesTruncation
+      values:
+        - auto
+        - disabled
+    - _hash: f0eb5895e1130ab5
+      fields:
+        - description: |-
+            Inserts a system (or developer) message as the first item in the model's
+            context.
+
+            When using along with `previous_response_id`, the instructions from a previous
+            response will not be carried over to the next response. This makes it simple
+            to swap out system (or developer) messages in new responses.
+          json_name: instructions
+          name: Instructions
+          type: ResponsePropertiesInstructions
+        - description: |-
+            An upper bound for the number of tokens that can be generated for a response,
+            including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+          json_name: max_output_tokens
+          name: MaxOutputTokens
+          type: ResponsePropertiesMaxOutputTokens
+        - json_name: model
+          name: Model
+          type: ModelIdsResponses
+        - description: |-
+            The unique ID of the previous response to the model. Use this to
+            create multi-turn conversations. Learn more about
+            [conversation state](/docs/guides/conversation-state).
+          json_name: previous_response_id
+          name: PreviousResponseID
+          type: ResponsePropertiesPreviousResponseID
+        - json_name: reasoning
+          name: Reasoning
+          type:
+            _hash: cc27fcbddd8ecce8
+            inner: Reasoning
+            kind: nullable
+            name: ""
+        - description: |-
+            Configuration options for a text response from the model. Can be plain
+            text or structured JSON data. Learn more:
+            - [Text inputs and outputs](/docs/guides/text)
+            - [Structured Outputs](/docs/guides/structured-outputs)
+          json_name: text
+          name: Text
+          type:
+            _hash: 49251f278fc5e135
+            inner: ResponsePropertiesText
+            kind: nullable
+            name: ""
+        - description: |-
+            How the model should select which tool (or tools) to use when generating
+            a response. See the `tools` parameter to see how to specify which tools
+            the model can call.
+          json_name: tool_choice
+          name: ToolChoice
+          type:
+            _hash: d26c699d7e72c073
+            kind: scalar
+            name: ""
+            scalar_type: any
+        - description: |-
+            An array of tools the model may call while generating a response. You
+            can specify which tool to use by setting the `tool_choice` parameter.
+
+            The two categories of tools you can provide the model are:
+
+            - **Built-in tools**: Tools that are provided by OpenAI that extend the
+              model's capabilities, like [web search](/docs/guides/tools-web-search)
+              or [file search](/docs/guides/tools-file-search). Learn more about
+              [built-in tools](/docs/guides/tools).
+            - **Function calls (custom tools)**: Functions that are defined by you,
+              enabling the model to call your own code. Learn more about
+              [function calling](/docs/guides/function-calling).
+          json_name: tools
+          name: Tools
+          type:
+            _hash: 3f13ba0f571c18fb
+            items: Tool
+            kind: list
+            name: ""
+        - description: |-
+            The truncation strategy to use for the model response.
+            - `auto`: If the context of this response and previous ones exceeds
+              the model's context window size, the model will truncate the
+              response to fit the context window by dropping input items in the
+              middle of the conversation.
+            - `disabled` (default): If a model response will exceed the context window
+              size for a model, the request will fail with a 400 error.
+          json_name: truncation
+          name: Truncation
+          type:
+            _hash: e8e3abf9b44b35e7
+            inner: ResponsePropertiesTruncation
+            kind: nullable
+            name: ""
+      kind: struct
+      name: ResponseProperties
+    - _hash: d217017b31c34bb8
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryPartAddedEventPartType
+      values:
+        - summary_text
+    - _hash: 5e74d67f1f259e6b
+      description: The summary part that was added.
+      fields:
+        - description: The text of the summary part.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the summary part. Always `summary_text`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryPartAddedEventPartType
+      kind: struct
+      name: ResponseReasoningSummaryPartAddedEventPart
+    - _hash: 9aefb7ed6a85787e
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryPartAddedEventType
+      values:
+        - response.reasoning_summary_part.added
+    - _hash: b8a802bd4c9196e5
+      description: Emitted when a new reasoning summary part is added.
+      fields:
+        - description: The ID of the item this summary part is associated with.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item this summary part is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The summary part that was added.
+          json_name: part
+          name: Part
+          required: true
+          type: ResponseReasoningSummaryPartAddedEventPart
+        - description: The index of the summary part within the reasoning summary.
+          json_name: summary_index
+          name: SummaryIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.reasoning_summary_part.added`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryPartAddedEventType
+      kind: struct
+      name: ResponseReasoningSummaryPartAddedEvent
+    - _hash: 86d679e320166a8d
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryPartDoneEventPartType
+      values:
+        - summary_text
+    - _hash: 8afbcf296c0e99a3
+      description: The completed summary part.
+      fields:
+        - description: The text of the summary part.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the summary part. Always `summary_text`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryPartDoneEventPartType
+      kind: struct
+      name: ResponseReasoningSummaryPartDoneEventPart
+    - _hash: 7f0ec9dd1d0ff8e9
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryPartDoneEventType
+      values:
+        - response.reasoning_summary_part.done
+    - _hash: 35a5346eaddb6109
+      description: Emitted when a reasoning summary part is completed.
+      fields:
+        - description: The ID of the item this summary part is associated with.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item this summary part is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The completed summary part.
+          json_name: part
+          name: Part
+          required: true
+          type: ResponseReasoningSummaryPartDoneEventPart
+        - description: The index of the summary part within the reasoning summary.
+          json_name: summary_index
+          name: SummaryIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.reasoning_summary_part.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryPartDoneEventType
+      kind: struct
+      name: ResponseReasoningSummaryPartDoneEvent
+    - _hash: 885d8e9dfe8e5111
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryTextDeltaEventType
+      values:
+        - response.reasoning_summary_text.delta
+    - _hash: 28b9c3455aa69155
+      description: Emitted when a delta is added to a reasoning summary text.
+      fields:
+        - description: The text delta that was added to the summary.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the item this summary text delta is associated with.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item this summary text delta is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The index of the summary part within the reasoning summary.
+          json_name: summary_index
+          name: SummaryIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.reasoning_summary_text.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryTextDeltaEventType
+      kind: struct
+      name: ResponseReasoningSummaryTextDeltaEvent
+    - _hash: 9f46370cf605c4b3
+      enum_type: string
+      kind: enum
+      name: ResponseReasoningSummaryTextDoneEventType
+      values:
+        - response.reasoning_summary_text.done
+    - _hash: d2eb706b37187374
+      description: Emitted when a reasoning summary text is completed.
+      fields:
+        - description: The ID of the item this summary text is associated with.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item this summary text is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The index of the summary part within the reasoning summary.
+          json_name: summary_index
+          name: SummaryIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The full text of the completed reasoning summary.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the event. Always `response.reasoning_summary_text.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseReasoningSummaryTextDoneEventType
+      kind: struct
+      name: ResponseReasoningSummaryTextDoneEvent
+    - _hash: 59e145f083172436
+      enum_type: string
+      kind: enum
+      name: ResponseRefusalDeltaEventType
+      values:
+        - response.refusal.delta
+    - _hash: 0e9412856a2df5c5
+      description: Emitted when there is a partial refusal text.
+      fields:
+        - description: The index of the content part that the refusal text is added to.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The refusal text that is added.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the output item that the refusal text is added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the refusal text is added to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.refusal.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseRefusalDeltaEventType
+      kind: struct
+      name: ResponseRefusalDeltaEvent
+    - _hash: bc408a96dd3ef1d3
+      enum_type: string
+      kind: enum
+      name: ResponseRefusalDoneEventType
+      values:
+        - response.refusal.done
+    - _hash: f8af44760f715559
+      description: Emitted when refusal text is finalized.
+      fields:
+        - description: The index of the content part that the refusal text is finalized.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The ID of the output item that the refusal text is finalized.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the refusal text is finalized.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The refusal text that is finalized.
+          json_name: refusal
+          name: Refusal
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the event. Always `response.refusal.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseRefusalDoneEventType
+      kind: struct
+      name: ResponseRefusalDoneEvent
+    - _hash: 0b95663b8fe30f5c
+      enum_type: string
+      kind: enum
+      name: ResponseTextAnnotationDeltaEventType
+      values:
+        - response.output_text.annotation.added
+    - _hash: 56f16bf47d148d93
+      description: Emitted when a text annotation is added.
+      fields:
+        - json_name: annotation
+          name: Annotation
+          required: true
+          type: Annotation
+        - description: The index of the annotation that was added.
+          json_name: annotation_index
+          name: AnnotationIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The index of the content part that the text annotation was added to.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The ID of the output item that the text annotation was added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the text annotation was added to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.output_text.annotation.added`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseTextAnnotationDeltaEventType
+      kind: struct
+      name: ResponseTextAnnotationDeltaEvent
+    - _hash: 4c95f5653e2b26ca
+      enum_type: string
+      kind: enum
+      name: ResponseTextDeltaEventType
+      values:
+        - response.output_text.delta
+    - _hash: f9ae50fd9966daef
+      description: Emitted when there is an additional text delta.
+      fields:
+        - description: The index of the content part that the text delta was added to.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The text delta that was added.
+          json_name: delta
+          name: Delta
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The ID of the output item that the text delta was added to.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the text delta was added to.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.output_text.delta`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseTextDeltaEventType
+      kind: struct
+      name: ResponseTextDeltaEvent
+    - _hash: fe97fe167c533958
+      enum_type: string
+      kind: enum
+      name: ResponseTextDoneEventType
+      values:
+        - response.output_text.done
+    - _hash: 29923419782b74f7
+      description: Emitted when text content is finalized.
+      fields:
+        - description: The index of the content part that the text content is finalized.
+          json_name: content_index
+          name: ContentIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The ID of the output item that the text content is finalized.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the text content is finalized.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The text content that is finalized.
+          json_name: text
+          name: Text
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The type of the event. Always `response.output_text.done`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseTextDoneEventType
+      kind: struct
+      name: ResponseTextDoneEvent
+    - _hash: da5665b143449478
+      enum_type: string
+      kind: enum
+      name: ResponseWebSearchCallCompletedEventType
+      values:
+        - response.web_search_call.completed
+    - _hash: 206a51b3b3c8fb9b
+      description: Emitted when a web search call is completed.
+      fields:
+        - description: Unique ID for the output item associated with the web search call.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the web search call is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.web_search_call.completed`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseWebSearchCallCompletedEventType
+      kind: struct
+      name: ResponseWebSearchCallCompletedEvent
+    - _hash: bc2afbd0e8e312ad
+      enum_type: string
+      kind: enum
+      name: ResponseWebSearchCallInProgressEventType
+      values:
+        - response.web_search_call.in_progress
+    - _hash: 6eba4219a9e0f849
+      description: Emitted when a web search call is initiated.
+      fields:
+        - description: Unique ID for the output item associated with the web search call.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the web search call is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.web_search_call.in_progress`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseWebSearchCallInProgressEventType
+      kind: struct
+      name: ResponseWebSearchCallInProgressEvent
+    - _hash: ee9b3c29942fbe5a
+      enum_type: string
+      kind: enum
+      name: ResponseWebSearchCallSearchingEventType
+      values:
+        - response.web_search_call.searching
+    - _hash: e1d62f83f1c38368
+      description: Emitted when a web search call is executing.
+      fields:
+        - description: Unique ID for the output item associated with the web search call.
+          json_name: item_id
+          name: ItemID
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: The index of the output item that the web search call is associated with.
+          json_name: output_index
+          name: OutputIndex
+          required: true
+          type:
+            _hash: 9b0c629ab1f0853b
+            kind: scalar
+            name: ""
+            scalar_type: integer
+        - description: The type of the event. Always `response.web_search_call.searching`.
+          json_name: type
+          name: Type
+          required: true
+          type: ResponseWebSearchCallSearchingEventType
+      kind: struct
+      name: ResponseWebSearchCallSearchingEvent
+    - _hash: 276588775a6553f9
+      description: |-
+        is a sealed interface for anyOf union.
+        Discriminated by "type" field.
+      kind: union
+      name: ResponseStreamEvent
+      variants:
+        - name: ResponseAudioDeltaEvent
+          type: ResponseAudioDeltaEvent
+        - name: ResponseAudioDoneEvent
+          type: ResponseAudioDoneEvent
+        - name: ResponseAudioTranscriptDeltaEvent
+          type: ResponseAudioTranscriptDeltaEvent
+        - name: ResponseAudioTranscriptDoneEvent
+          type: ResponseAudioTranscriptDoneEvent
+        - name: ResponseCodeInterpreterCallCodeDeltaEvent
+          type: ResponseCodeInterpreterCallCodeDeltaEvent
+        - name: ResponseCodeInterpreterCallCodeDoneEvent
+          type: ResponseCodeInterpreterCallCodeDoneEvent
+        - name: ResponseCodeInterpreterCallCompletedEvent
+          type: ResponseCodeInterpreterCallCompletedEvent
+        - name: ResponseCodeInterpreterCallInProgressEvent
+          type: ResponseCodeInterpreterCallInProgressEvent
+        - name: ResponseCodeInterpreterCallInterpretingEvent
+          type: ResponseCodeInterpreterCallInterpretingEvent
+        - name: ResponseCompletedEvent
+          type: ResponseCompletedEvent
+        - name: ResponseContentPartAddedEvent
+          type: ResponseContentPartAddedEvent
+        - name: ResponseContentPartDoneEvent
+          type: ResponseContentPartDoneEvent
+        - name: ResponseCreatedEvent
+          type: ResponseCreatedEvent
+        - name: ResponseErrorEvent
+          type: ResponseErrorEvent
+        - name: ResponseFailedEvent
+          type: ResponseFailedEvent
+        - name: ResponseFileSearchCallCompletedEvent
+          type: ResponseFileSearchCallCompletedEvent
+        - name: ResponseFileSearchCallInProgressEvent
+          type: ResponseFileSearchCallInProgressEvent
+        - name: ResponseFileSearchCallSearchingEvent
+          type: ResponseFileSearchCallSearchingEvent
+        - name: ResponseFunctionCallArgumentsDeltaEvent
+          type: ResponseFunctionCallArgumentsDeltaEvent
+        - name: ResponseFunctionCallArgumentsDoneEvent
+          type: ResponseFunctionCallArgumentsDoneEvent
+        - name: ResponseInProgressEvent
+          type: ResponseInProgressEvent
+        - name: ResponseIncompleteEvent
+          type: ResponseIncompleteEvent
+        - name: ResponseOutputItemAddedEvent
+          type: ResponseOutputItemAddedEvent
+        - name: ResponseOutputItemDoneEvent
+          type: ResponseOutputItemDoneEvent
+        - name: ResponseReasoningSummaryPartAddedEvent
+          type: ResponseReasoningSummaryPartAddedEvent
+        - name: ResponseReasoningSummaryPartDoneEvent
+          type: ResponseReasoningSummaryPartDoneEvent
+        - name: ResponseReasoningSummaryTextDeltaEvent
+          type: ResponseReasoningSummaryTextDeltaEvent
+        - name: ResponseReasoningSummaryTextDoneEvent
+          type: ResponseReasoningSummaryTextDoneEvent
+        - name: ResponseRefusalDeltaEvent
+          type: ResponseRefusalDeltaEvent
+        - name: ResponseRefusalDoneEvent
+          type: ResponseRefusalDoneEvent
+        - name: ResponseTextAnnotationDeltaEvent
+          type: ResponseTextAnnotationDeltaEvent
+        - name: ResponseTextDeltaEvent
+          type: ResponseTextDeltaEvent
+        - name: ResponseTextDoneEvent
+          type: ResponseTextDoneEvent
+        - name: ResponseWebSearchCallCompletedEvent
+          type: ResponseWebSearchCallCompletedEvent
+        - name: ResponseWebSearchCallInProgressEvent
+          type: ResponseWebSearchCallInProgressEvent
+        - name: ResponseWebSearchCallSearchingEvent
+          type: ResponseWebSearchCallSearchingEvent
+    - _hash: e454a3f8f0062fe8
+      enum_type: string
+      kind: enum
+      name: ToolChoiceFunctionType
+      values:
+        - function
+    - _hash: cbcdbc14f5597c29
+      description: Use this option to force the model to call a specific function.
+      fields:
+        - description: The name of the function to call.
+          json_name: name
+          name: Name
+          required: true
+          type:
+            _hash: 12238535e4ecd9a7
+            kind: scalar
+            name: ""
+            scalar_type: string
+        - description: For function calling, the type is always `function`.
+          json_name: type
+          name: Type
+          required: true
+          type: ToolChoiceFunctionType
+      kind: struct
+      name: ToolChoiceFunction
+    - _hash: 6eeece59db31efff
+      enum_type: string
+      kind: enum
+      name: ToolChoiceOptions
+      values:
+        - auto
+        - none
+        - required
+    - _hash: 31c6fd11ef8450a9
+      enum_type: string
+      kind: enum
+      name: ToolChoiceTypesType
+      values:
+        - computer_use_preview
+        - file_search
+        - web_search_preview
+        - web_search_preview_2025_03_11
+    - _hash: e52cbce61049b127
+      description: |-
+        Indicates that the model should use a built-in tool to generate a response.
+        [Learn more about built-in tools](/docs/guides/tools).
+      fields:
+        - description: |-
+            The type of hosted tool the model should to use. Learn more about
+            [built-in tools](/docs/guides/tools).
+
+            Allowed values are:
+            - `file_search`
+            - `web_search_preview`
+            - `computer_use_preview`
+          json_name: type
+          name: Type
+          required: true
+          type: ToolChoiceTypesType
+      kind: struct
+      name: ToolChoiceTypes
+    - _hash: 3672315a988abbbc
+      description: |-
+        Set of 16 key-value pairs that can be attached to an object. This can be
+        useful for storing additional information about the object in a structured
+        format, and querying for objects via API or the dashboard. Keys are strings
+        with a maximum length of 64 characters. Values are strings with a maximum
+        length of 512 characters, booleans, or numbers.
+      kind: map
+      map_value:
+        _hash: d26c699d7e72c073
+        kind: scalar
+        name: ""
+        scalar_type: any
+      name: VectorStoreFileAttributes
