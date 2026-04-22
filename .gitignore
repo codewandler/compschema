@@ -1,0 +1,16 @@
+# Binaries
+/compschema
+/pipeline
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Test artifacts (large, reproducible via make pipeline)
+testdata/openai/openapi.yaml
+testdata/openai/responses.schema.json
+testdata/openai/generated/
