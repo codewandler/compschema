@@ -145,7 +145,9 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "  ✓ %s\n", goPath)
 
 				// 3. Tests
-				testCode := emitter.GoTests(pkg, inlined)
+				testCode := emitter.GoTestsWithOptions(pkg, inlined, emitter.EmitOptions{
+					Examples: addExamples,
+				})
 				testPath := filepath.Join(dir, "compschema.gen_test.go")
 				if err := os.WriteFile(testPath, []byte(testCode), 0644); err != nil {
 					return fmt.Errorf("write tests: %w", err)

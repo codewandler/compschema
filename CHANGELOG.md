@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-04-23
+
+### Added
+- **Example validation tests** — `--examples` now generates a table-driven `TestCompschema_ExamplesValidate` test that validates every generated example against its JSON Schema. Proves all examples are schema-compliant.
+- **Auto-detect discriminator from const fields** — when all `oneOf` variants share a field with different `const` values, the discriminator is automatically detected. Works in both the analyzer (Go → IR) and the JSON Schema parser (import path). Previously only `json:"type"` was checked.
+
+### Fixed
+- Example generator now passes field-level constraints (pattern, format, minimum) to the scalar example generator. Previously constraints on struct fields were ignored, producing values like `"example"` that didn't match the field's `pattern` constraint.
+- Discriminator detection in the analyzer no longer hardcodes `"type"` as the only discriminator field name — any field with `const` values across variants is detected.
+
 ## [2.2.0] - 2026-04-23
 
 ### Added
@@ -294,7 +304,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v2.3.0...HEAD
+[2.3.0]: https://github.com/codewandler/compschema/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/codewandler/compschema/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/codewandler/compschema/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/codewandler/compschema/compare/v2.0.1...v2.1.0

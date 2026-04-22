@@ -361,19 +361,27 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 			TypeRef: ir.TypeRef{Name: scopeName},
 		}
 
-		// Try to find discriminator const value from the variant's "type" field.
+		// Try to find discriminator const value from any field with a const constraint.
 		if st, ok := tn.Type().Underlying().(*types.Struct); ok {
 			for i := 0; i < st.NumFields(); i++ {
 				f := st.Field(i)
 				tag := reflect.StructTag(st.Tag(i))
 				jsonName, _ := parseJSONTag(tag.Get("json"))
-				if jsonName == "type" {
-					if jsTag := tag.Get("jsonschema"); jsTag != "" {
-						for _, c := range parseConstraints(jsTag) {
-							if c.Keyword == "const" {
-								v.Discriminator = fmt.Sprintf("%v", c.Value)
-								irType.Discriminator = "type"
+				if jsonName == "" || jsonName == "-" {
+					continue
+				}
+				if jsTag := tag.Get("jsonschema"); jsTag != "" {
+					for _, c := range parseConstraints(jsTag) {
+						if c.Keyword == "const" {
+							v.Discriminator = fmt.Sprintf("%v", c.Value)
+							// Track the field name as candidate discriminator.
+							if irType.Discriminator == "" {
+								irType.Discriminator = jsonName
+							} else if irType.Discriminator != jsonName {
+								// Multiple const fields across variants — can't auto-detect.
+								irType.Discriminator = ""
 							}
+							break
 						}
 					}
 				}

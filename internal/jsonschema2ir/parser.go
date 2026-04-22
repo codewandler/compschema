@@ -211,7 +211,33 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 				if vt.Kind == ir.KindRef {
 					v.Name = vt.RefName
 				}
+				// Check for const/enum field to set variant discriminator value.
+				if vt.Kind == ir.KindStruct || (vt.Kind == ir.KindRef && ctx.defs != nil) {
+					resolved := vt
+					if vt.Kind == ir.KindRef {
+						if sn, ok := ctx.defs[vt.RefName]; ok {
+							resolved = ctx.convertNode("", sn)
+						}
+					}
+					if resolved != nil {
+						for _, f := range resolved.Fields {
+							if dv := extractDiscriminatorValue(f); dv != "" {
+								v.Discriminator = dv
+								break
+							}
+						}
+					}
+				}
 				t.Variants = append(t.Variants, v)
+			}
+		}
+
+		// Auto-detect discriminator if not explicitly set.
+		// If all variants share a field where each variant has a different const value,
+		// use that field as the discriminator.
+		if t.Discriminator == "" && len(t.Variants) > 1 {
+			if disc := detectDiscriminator(t, ctx); disc != "" {
+				t.Discriminator = disc
 			}
 		}
 		_ = keyword
@@ -468,4 +494,82 @@ func (ctx *parseContext) resolveStringEnums(name string) ([]any, bool) {
 		return combined, true
 	}
 	return nil, true // all string, no enums
+}
+
+// detectDiscriminator checks if all variants of a union share a field
+// where each variant has a distinct const or single-value enum. Returns the
+// field name if found, or "" if no discriminator can be detected.
+func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
+	if len(t.Variants) < 2 {
+		return ""
+	}
+
+	// For each variant, find fields with const or single-value enum constraints.
+	// Map: fieldName → set of discriminator values across variants.
+	discFields := make(map[string][]string)
+	variantCount := 0
+
+	for _, v := range t.Variants {
+		// Resolve the variant's type to get its fields.
+		var fields []ir.Field
+		if v.TypeRef.Inline != nil && v.TypeRef.Inline.Kind == ir.KindStruct {
+			fields = v.TypeRef.Inline.Fields
+		} else if v.TypeRef.Name != "" {
+			if sn, ok := ctx.defs[v.TypeRef.Name]; ok {
+				resolved := ctx.convertNode("", sn)
+				if resolved != nil && resolved.Kind == ir.KindStruct {
+					fields = resolved.Fields
+				}
+			}
+		}
+
+		if len(fields) == 0 {
+			continue
+		}
+		variantCount++
+
+		for _, f := range fields {
+			val := extractDiscriminatorValue(f)
+			if val != "" {
+				discFields[f.JSONName] = append(discFields[f.JSONName], val)
+			}
+		}
+	}
+
+	// Find a field where every variant has a unique discriminator value.
+	for fieldName, values := range discFields {
+		if len(values) == variantCount {
+			unique := make(map[string]bool, len(values))
+			for _, v := range values {
+				unique[v] = true
+			}
+			if len(unique) == variantCount {
+				return fieldName
+			}
+		}
+	}
+
+	return ""
+}
+
+// extractDiscriminatorValue gets a discriminator value from a field.
+// Checks for: const constraint, single-value enum type ref, single-value enum inline.
+func extractDiscriminatorValue(f ir.Field) string {
+	// Check const constraint on the field.
+	for _, c := range f.Constraints {
+		if c.Keyword == "const" {
+			return fmt.Sprintf("%v", c.Value)
+		}
+	}
+
+	// Check if the field type is a single-value enum.
+	var t *ir.Type
+	if f.Type.Inline != nil {
+		t = f.Type.Inline
+	}
+	if t != nil && t.Kind == ir.KindEnum && len(t.EnumValues) == 1 {
+		return fmt.Sprintf("%v", t.EnumValues[0])
+	}
+
+	return ""
 }

@@ -138,11 +138,15 @@ func exampleField(f ir.Field, pkg *ir.Package, visiting map[string]bool) (any, b
 		}
 	}
 
-	// Check for format constraint on the field (e.g. format=email on a string field).
-	for _, c := range f.Constraints {
-		if c.Keyword == "format" {
-			val := exampleScalar("string", f.Name, f.Constraints)
-			return val, true
+	// If the field has constraints that affect the value (format, pattern),
+	// generate from those constraints directly for inline scalar types.
+	if len(f.Constraints) > 0 {
+		if isInlineScalar(f.Type) {
+			scalarType := "string"
+			if f.Type.Inline != nil {
+				scalarType = f.Type.Inline.ScalarType
+			}
+			return exampleScalar(scalarType, f.Name, f.Constraints), true
 		}
 	}
 
@@ -154,6 +158,11 @@ func exampleField(f ir.Field, pkg *ir.Package, visiting map[string]bool) (any, b
 	// Adjust value to satisfy constraints.
 	val = applyConstraints(val, f.Constraints, f.Name)
 	return val, true
+}
+
+// isInlineScalar returns true if the TypeRef points to an inline scalar type.
+func isInlineScalar(ref ir.TypeRef) bool {
+	return ref.Inline != nil && ref.Inline.Kind == ir.KindScalar
 }
 
 func exampleTypeRef(ref ir.TypeRef, pkg *ir.Package, visiting map[string]bool) (any, bool) {
