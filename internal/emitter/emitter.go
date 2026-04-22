@@ -293,16 +293,16 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 
 	// Def cache.
 	b.WriteString("var compschemaDefCache sync.Map\n\n")
-	b.WriteString("func compschemaDefBytes(name string) []byte {\n")
+	b.WriteString("func compschemaDefBytes(name string) json.RawMessage {\n")
 	b.WriteString("\tif v, ok := compschemaDefCache.Load(name); ok {\n")
-	b.WriteString("\t\treturn v.([]byte)\n")
+	b.WriteString("\t\treturn v.(json.RawMessage)\n")
 	b.WriteString("\t}\n")
 	b.WriteString("\tvar full struct {\n")
 	b.WriteString("\t\tDefs map[string]json.RawMessage `json:\"$defs\"`\n")
 	b.WriteString("\t}\n")
 	b.WriteString("\tjson.Unmarshal(compschemaJSON, &full)\n")
 	b.WriteString("\tb := full.Defs[name]\n")
-	b.WriteString("\tcompschemaDefCache.Store(name, []byte(b))\n")
+	b.WriteString("\tcompschemaDefCache.Store(name, b)\n")
 	b.WriteString("\treturn b\n")
 	b.WriteString("}\n\n")
 
@@ -337,12 +337,12 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 		if t.Kind == ir.KindUnion || isAnyType(t) {
 			// Unions and any-aliases are interfaces — use a free function, not a method.
 			b.WriteString(fmt.Sprintf("// %sJSONSchemaBytes returns the JSON Schema for the %s union.\n", name, name))
-			b.WriteString(fmt.Sprintf("func %sJSONSchemaBytes() []byte { return compschemaDefBytes(%q) }\n\n", name, name))
+			b.WriteString(fmt.Sprintf("func %sJSONSchemaBytes() json.RawMessage { return compschemaDefBytes(%q) }\n\n", name, name))
 			continue
 		}
 		if t.Kind == ir.KindEnum || t.Kind == ir.KindScalar || t.Kind == ir.KindList || t.Kind == ir.KindMap {
 			b.WriteString(fmt.Sprintf("// JSONSchemaBytes returns the JSON Schema for %s.\n", name))
-			b.WriteString(fmt.Sprintf("func (%s) JSONSchemaBytes() []byte { return compschemaDefBytes(%q) }\n\n", name, name))
+			b.WriteString(fmt.Sprintf("func (%s) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes(%q) }\n\n", name, name))
 			continue
 		}
 		if t.Kind != ir.KindStruct {
@@ -351,7 +351,7 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 
 		// JSONSchemaBytes
 		b.WriteString(fmt.Sprintf("// JSONSchemaBytes returns the JSON Schema definition for %s.\n", name))
-		b.WriteString(fmt.Sprintf("func (%s) JSONSchemaBytes() []byte { return compschemaDefBytes(%q) }\n\n", name, name))
+		b.WriteString(fmt.Sprintf("func (%s) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes(%q) }\n\n", name, name))
 
 		// Validate
 		b.WriteString(fmt.Sprintf("// Validate checks whether raw JSON conforms to the %s schema.\n", name))

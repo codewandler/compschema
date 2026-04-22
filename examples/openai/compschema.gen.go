@@ -15,16 +15,16 @@ var compschemaJSON []byte
 
 var compschemaDefCache sync.Map
 
-func compschemaDefBytes(name string) []byte {
+func compschemaDefBytes(name string) json.RawMessage {
 	if v, ok := compschemaDefCache.Load(name); ok {
-		return v.([]byte)
+		return v.(json.RawMessage)
 	}
 	var full struct {
 		Defs map[string]json.RawMessage `json:"$defs"`
 	}
 	json.Unmarshal(compschemaJSON, &full)
 	b := full.Defs[name]
-	compschemaDefCache.Store(name, []byte(b))
+	compschemaDefCache.Store(name, b)
 	return b
 }
 
@@ -51,7 +51,7 @@ func compschemaValidator(name string) *jsonschema.Schema {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FileCitationBody.
-func (FileCitationBody) JSONSchemaBytes() []byte { return compschemaDefBytes("FileCitationBody") }
+func (FileCitationBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileCitationBody") }
 
 // Validate checks whether raw JSON conforms to the FileCitationBody schema.
 func (FileCitationBody) Validate(data []byte) error {
@@ -77,7 +77,7 @@ func DecodeFileCitationBody(data []byte) (FileCitationBody, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FilePath.
-func (FilePath) JSONSchemaBytes() []byte { return compschemaDefBytes("FilePath") }
+func (FilePath) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FilePath") }
 
 // Validate checks whether raw JSON conforms to the FilePath schema.
 func (FilePath) Validate(data []byte) error {
@@ -103,7 +103,7 @@ func DecodeFilePath(data []byte) (FilePath, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for URLCitationBody.
-func (URLCitationBody) JSONSchemaBytes() []byte { return compschemaDefBytes("URLCitationBody") }
+func (URLCitationBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("URLCitationBody") }
 
 // Validate checks whether raw JSON conforms to the URLCitationBody schema.
 func (URLCitationBody) Validate(data []byte) error {
@@ -129,15 +129,15 @@ func DecodeURLCitationBody(data []byte) (URLCitationBody, error) {
 }
 
 // AnnotationJSONSchemaBytes returns the JSON Schema for the Annotation union.
-func AnnotationJSONSchemaBytes() []byte { return compschemaDefBytes("Annotation") }
+func AnnotationJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Annotation") }
 
 // JSONSchemaBytes returns the JSON Schema for ApproximateLocationType.
-func (ApproximateLocationType) JSONSchemaBytes() []byte {
+func (ApproximateLocationType) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ApproximateLocationType")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ApproximateLocation.
-func (ApproximateLocation) JSONSchemaBytes() []byte { return compschemaDefBytes("ApproximateLocation") }
+func (ApproximateLocation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApproximateLocation") }
 
 // Validate checks whether raw JSON conforms to the ApproximateLocation schema.
 func (ApproximateLocation) Validate(data []byte) error {
@@ -163,7 +163,7 @@ func DecodeApproximateLocation(data []byte) (ApproximateLocation, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Click.
-func (Click) JSONSchemaBytes() []byte { return compschemaDefBytes("Click") }
+func (Click) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Click") }
 
 // Validate checks whether raw JSON conforms to the Click schema.
 func (Click) Validate(data []byte) error {
@@ -189,7 +189,7 @@ func DecodeClick(data []byte) (Click, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterFileOutputFilesElem.
-func (CodeInterpreterFileOutputFilesElem) JSONSchemaBytes() []byte {
+func (CodeInterpreterFileOutputFilesElem) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CodeInterpreterFileOutputFilesElem")
 }
 
@@ -217,7 +217,7 @@ func DecodeCodeInterpreterFileOutputFilesElem(data []byte) (CodeInterpreterFileO
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterFileOutput.
-func (CodeInterpreterFileOutput) JSONSchemaBytes() []byte {
+func (CodeInterpreterFileOutput) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CodeInterpreterFileOutput")
 }
 
@@ -245,7 +245,7 @@ func DecodeCodeInterpreterFileOutput(data []byte) (CodeInterpreterFileOutput, er
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterTextOutput.
-func (CodeInterpreterTextOutput) JSONSchemaBytes() []byte {
+func (CodeInterpreterTextOutput) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CodeInterpreterTextOutput")
 }
 
@@ -273,12 +273,12 @@ func DecodeCodeInterpreterTextOutput(data []byte) (CodeInterpreterTextOutput, er
 }
 
 // CodeInterpreterToolOutputJSONSchemaBytes returns the JSON Schema for the CodeInterpreterToolOutput union.
-func CodeInterpreterToolOutputJSONSchemaBytes() []byte {
+func CodeInterpreterToolOutputJSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CodeInterpreterToolOutput")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolCall.
-func (CodeInterpreterToolCall) JSONSchemaBytes() []byte {
+func (CodeInterpreterToolCall) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CodeInterpreterToolCall")
 }
 
@@ -306,7 +306,7 @@ func DecodeCodeInterpreterToolCall(data []byte) (CodeInterpreterToolCall, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComparisonFilter.
-func (ComparisonFilter) JSONSchemaBytes() []byte { return compschemaDefBytes("ComparisonFilter") }
+func (ComparisonFilter) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilter") }
 
 // Validate checks whether raw JSON conforms to the ComparisonFilter schema.
 func (ComparisonFilter) Validate(data []byte) error {
@@ -332,7 +332,7 @@ func DecodeComparisonFilter(data []byte) (ComparisonFilter, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CompoundFilter.
-func (CompoundFilter) JSONSchemaBytes() []byte { return compschemaDefBytes("CompoundFilter") }
+func (CompoundFilter) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilter") }
 
 // Validate checks whether raw JSON conforms to the CompoundFilter schema.
 func (CompoundFilter) Validate(data []byte) error {
@@ -358,7 +358,7 @@ func DecodeCompoundFilter(data []byte) (CompoundFilter, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for DoubleClick.
-func (DoubleClick) JSONSchemaBytes() []byte { return compschemaDefBytes("DoubleClick") }
+func (DoubleClick) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DoubleClick") }
 
 // Validate checks whether raw JSON conforms to the DoubleClick schema.
 func (DoubleClick) Validate(data []byte) error {
@@ -384,7 +384,7 @@ func DecodeDoubleClick(data []byte) (DoubleClick, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Coordinate.
-func (Coordinate) JSONSchemaBytes() []byte { return compschemaDefBytes("Coordinate") }
+func (Coordinate) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Coordinate") }
 
 // Validate checks whether raw JSON conforms to the Coordinate schema.
 func (Coordinate) Validate(data []byte) error {
@@ -410,7 +410,7 @@ func DecodeCoordinate(data []byte) (Coordinate, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Drag.
-func (Drag) JSONSchemaBytes() []byte { return compschemaDefBytes("Drag") }
+func (Drag) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Drag") }
 
 // Validate checks whether raw JSON conforms to the Drag schema.
 func (Drag) Validate(data []byte) error {
@@ -436,7 +436,7 @@ func DecodeDrag(data []byte) (Drag, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for KeyPress.
-func (KeyPress) JSONSchemaBytes() []byte { return compschemaDefBytes("KeyPress") }
+func (KeyPress) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("KeyPress") }
 
 // Validate checks whether raw JSON conforms to the KeyPress schema.
 func (KeyPress) Validate(data []byte) error {
@@ -462,7 +462,7 @@ func DecodeKeyPress(data []byte) (KeyPress, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Move.
-func (Move) JSONSchemaBytes() []byte { return compschemaDefBytes("Move") }
+func (Move) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Move") }
 
 // Validate checks whether raw JSON conforms to the Move schema.
 func (Move) Validate(data []byte) error {
@@ -488,7 +488,7 @@ func DecodeMove(data []byte) (Move, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Screenshot.
-func (Screenshot) JSONSchemaBytes() []byte { return compschemaDefBytes("Screenshot") }
+func (Screenshot) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Screenshot") }
 
 // Validate checks whether raw JSON conforms to the Screenshot schema.
 func (Screenshot) Validate(data []byte) error {
@@ -514,7 +514,7 @@ func DecodeScreenshot(data []byte) (Screenshot, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Scroll.
-func (Scroll) JSONSchemaBytes() []byte { return compschemaDefBytes("Scroll") }
+func (Scroll) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Scroll") }
 
 // Validate checks whether raw JSON conforms to the Scroll schema.
 func (Scroll) Validate(data []byte) error {
@@ -540,7 +540,7 @@ func DecodeScroll(data []byte) (Scroll, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Type.
-func (Type) JSONSchemaBytes() []byte { return compschemaDefBytes("Type") }
+func (Type) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Type") }
 
 // Validate checks whether raw JSON conforms to the Type schema.
 func (Type) Validate(data []byte) error {
@@ -566,7 +566,7 @@ func DecodeType(data []byte) (Type, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Wait.
-func (Wait) JSONSchemaBytes() []byte { return compschemaDefBytes("Wait") }
+func (Wait) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Wait") }
 
 // Validate checks whether raw JSON conforms to the Wait schema.
 func (Wait) Validate(data []byte) error {
@@ -592,10 +592,10 @@ func DecodeWait(data []byte) (Wait, error) {
 }
 
 // ComputerActionJSONSchemaBytes returns the JSON Schema for the ComputerAction union.
-func ComputerActionJSONSchemaBytes() []byte { return compschemaDefBytes("ComputerAction") }
+func ComputerActionJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerAction") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallSafetyCheckParam.
-func (ComputerCallSafetyCheckParam) JSONSchemaBytes() []byte {
+func (ComputerCallSafetyCheckParam) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerCallSafetyCheckParam")
 }
 
@@ -623,12 +623,12 @@ func DecodeComputerCallSafetyCheckParam(data []byte) (ComputerCallSafetyCheckPar
 }
 
 // JSONSchemaBytes returns the JSON Schema for ComputerCallOutputItemParamAcknowledgedSafetyChecks.
-func (ComputerCallOutputItemParamAcknowledgedSafetyChecks) JSONSchemaBytes() []byte {
+func (ComputerCallOutputItemParamAcknowledgedSafetyChecks) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerCallOutputItemParamAcknowledgedSafetyChecks")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerScreenshotImage.
-func (ComputerScreenshotImage) JSONSchemaBytes() []byte {
+func (ComputerScreenshotImage) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerScreenshotImage")
 }
 
@@ -656,7 +656,7 @@ func DecodeComputerScreenshotImage(data []byte) (ComputerScreenshotImage, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutputItemParam.
-func (ComputerCallOutputItemParam) JSONSchemaBytes() []byte {
+func (ComputerCallOutputItemParam) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerCallOutputItemParam")
 }
 
@@ -684,7 +684,7 @@ func DecodeComputerCallOutputItemParam(data []byte) (ComputerCallOutputItemParam
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallSafetyCheck.
-func (ComputerToolCallSafetyCheck) JSONSchemaBytes() []byte {
+func (ComputerToolCallSafetyCheck) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerToolCallSafetyCheck")
 }
 
@@ -712,7 +712,7 @@ func DecodeComputerToolCallSafetyCheck(data []byte) (ComputerToolCallSafetyCheck
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCall.
-func (ComputerToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("ComputerToolCall") }
+func (ComputerToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCall") }
 
 // Validate checks whether raw JSON conforms to the ComputerToolCall schema.
 func (ComputerToolCall) Validate(data []byte) error {
@@ -738,7 +738,7 @@ func DecodeComputerToolCall(data []byte) (ComputerToolCall, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutput.
-func (ComputerToolCallOutput) JSONSchemaBytes() []byte {
+func (ComputerToolCallOutput) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerToolCallOutput")
 }
 
@@ -766,7 +766,7 @@ func DecodeComputerToolCallOutput(data []byte) (ComputerToolCallOutput, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutputResource.
-func (ComputerToolCallOutputResource) JSONSchemaBytes() []byte {
+func (ComputerToolCallOutputResource) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerToolCallOutputResource")
 }
 
@@ -794,7 +794,7 @@ func DecodeComputerToolCallOutputResource(data []byte) (ComputerToolCallOutputRe
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewTool.
-func (ComputerUsePreviewTool) JSONSchemaBytes() []byte {
+func (ComputerUsePreviewTool) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ComputerUsePreviewTool")
 }
 
@@ -822,13 +822,13 @@ func DecodeComputerUsePreviewTool(data []byte) (ComputerUsePreviewTool, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for Metadata.
-func (Metadata) JSONSchemaBytes() []byte { return compschemaDefBytes("Metadata") }
+func (Metadata) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Metadata") }
 
 // JSONSchemaBytes returns the JSON Schema for ServiceTier.
-func (ServiceTier) JSONSchemaBytes() []byte { return compschemaDefBytes("ServiceTier") }
+func (ServiceTier) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ServiceTier") }
 
 // JSONSchemaBytes returns the JSON Schema definition for CreateModelResponseProperties.
-func (CreateModelResponseProperties) JSONSchemaBytes() []byte {
+func (CreateModelResponseProperties) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CreateModelResponseProperties")
 }
 
@@ -856,12 +856,12 @@ func DecodeCreateModelResponseProperties(data []byte) (CreateModelResponseProper
 }
 
 // JSONSchemaBytes returns the JSON Schema for CreateResponseInclude.
-func (CreateResponseInclude) JSONSchemaBytes() []byte {
+func (CreateResponseInclude) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("CreateResponseInclude")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Reasoning.
-func (Reasoning) JSONSchemaBytes() []byte { return compschemaDefBytes("Reasoning") }
+func (Reasoning) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Reasoning") }
 
 // Validate checks whether raw JSON conforms to the Reasoning schema.
 func (Reasoning) Validate(data []byte) error {
@@ -887,7 +887,7 @@ func DecodeReasoning(data []byte) (Reasoning, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFormatJsonObject.
-func (ResponseFormatJsonObject) JSONSchemaBytes() []byte {
+func (ResponseFormatJsonObject) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFormatJsonObject")
 }
 
@@ -915,7 +915,7 @@ func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, erro
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
-func (ResponseFormatText) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFormatText") }
+func (ResponseFormatText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatText") }
 
 // Validate checks whether raw JSON conforms to the ResponseFormatText schema.
 func (ResponseFormatText) Validate(data []byte) error {
@@ -941,12 +941,12 @@ func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
-func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() []byte {
+func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFormatJsonSchemaSchema")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for TextResponseFormatJsonSchema.
-func (TextResponseFormatJsonSchema) JSONSchemaBytes() []byte {
+func (TextResponseFormatJsonSchema) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("TextResponseFormatJsonSchema")
 }
 
@@ -974,12 +974,12 @@ func DecodeTextResponseFormatJsonSchema(data []byte) (TextResponseFormatJsonSche
 }
 
 // TextResponseFormatConfigurationJSONSchemaBytes returns the JSON Schema for the TextResponseFormatConfiguration union.
-func TextResponseFormatConfigurationJSONSchemaBytes() []byte {
+func TextResponseFormatConfigurationJSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("TextResponseFormatConfiguration")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CreateResponseText.
-func (CreateResponseText) JSONSchemaBytes() []byte { return compschemaDefBytes("CreateResponseText") }
+func (CreateResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseText") }
 
 // Validate checks whether raw JSON conforms to the CreateResponseText schema.
 func (CreateResponseText) Validate(data []byte) error {
@@ -1005,7 +1005,7 @@ func DecodeCreateResponseText(data []byte) (CreateResponseText, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for RankingOptions.
-func (RankingOptions) JSONSchemaBytes() []byte { return compschemaDefBytes("RankingOptions") }
+func (RankingOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RankingOptions") }
 
 // Validate checks whether raw JSON conforms to the RankingOptions schema.
 func (RankingOptions) Validate(data []byte) error {
@@ -1031,7 +1031,7 @@ func DecodeRankingOptions(data []byte) (RankingOptions, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FileSearchTool.
-func (FileSearchTool) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchTool") }
+func (FileSearchTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchTool") }
 
 // Validate checks whether raw JSON conforms to the FileSearchTool schema.
 func (FileSearchTool) Validate(data []byte) error {
@@ -1057,12 +1057,12 @@ func DecodeFileSearchTool(data []byte) (FileSearchTool, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for FunctionToolParameters.
-func (FunctionToolParameters) JSONSchemaBytes() []byte {
+func (FunctionToolParameters) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FunctionToolParameters")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionTool.
-func (FunctionTool) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionTool") }
+func (FunctionTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionTool") }
 
 // Validate checks whether raw JSON conforms to the FunctionTool schema.
 func (FunctionTool) Validate(data []byte) error {
@@ -1088,7 +1088,7 @@ func DecodeFunctionTool(data []byte) (FunctionTool, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewToolUserLocation.
-func (WebSearchPreviewToolUserLocation) JSONSchemaBytes() []byte {
+func (WebSearchPreviewToolUserLocation) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("WebSearchPreviewToolUserLocation")
 }
 
@@ -1116,7 +1116,7 @@ func DecodeWebSearchPreviewToolUserLocation(data []byte) (WebSearchPreviewToolUs
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewTool.
-func (WebSearchPreviewTool) JSONSchemaBytes() []byte {
+func (WebSearchPreviewTool) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("WebSearchPreviewTool")
 }
 
@@ -1144,10 +1144,10 @@ func DecodeWebSearchPreviewTool(data []byte) (WebSearchPreviewTool, error) {
 }
 
 // ToolJSONSchemaBytes returns the JSON Schema for the Tool union.
-func ToolJSONSchemaBytes() []byte { return compschemaDefBytes("Tool") }
+func ToolJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Tool") }
 
 // JSONSchemaBytes returns the JSON Schema definition for CreateResponse.
-func (CreateResponse) JSONSchemaBytes() []byte { return compschemaDefBytes("CreateResponse") }
+func (CreateResponse) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponse") }
 
 // Validate checks whether raw JSON conforms to the CreateResponse schema.
 func (CreateResponse) Validate(data []byte) error {
@@ -1173,7 +1173,7 @@ func DecodeCreateResponse(data []byte) (CreateResponse, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for EasyInputMessage.
-func (EasyInputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("EasyInputMessage") }
+func (EasyInputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessage") }
 
 // Validate checks whether raw JSON conforms to the EasyInputMessage schema.
 func (EasyInputMessage) Validate(data []byte) error {
@@ -1199,7 +1199,7 @@ func DecodeEasyInputMessage(data []byte) (EasyInputMessage, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Error.
-func (Error) JSONSchemaBytes() []byte { return compschemaDefBytes("Error") }
+func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
 
 // Validate checks whether raw JSON conforms to the Error schema.
 func (Error) Validate(data []byte) error {
@@ -1225,12 +1225,12 @@ func DecodeError(data []byte) (Error, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for FileSearchToolCallResults.
-func (FileSearchToolCallResults) JSONSchemaBytes() []byte {
+func (FileSearchToolCallResults) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FileSearchToolCallResults")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FileSearchToolCall.
-func (FileSearchToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("FileSearchToolCall") }
+func (FileSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolCall") }
 
 // Validate checks whether raw JSON conforms to the FileSearchToolCall schema.
 func (FileSearchToolCall) Validate(data []byte) error {
@@ -1256,10 +1256,10 @@ func DecodeFileSearchToolCall(data []byte) (FileSearchToolCall, error) {
 }
 
 // FiltersJSONSchemaBytes returns the JSON Schema for the Filters union.
-func FiltersJSONSchemaBytes() []byte { return compschemaDefBytes("Filters") }
+func FiltersJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Filters") }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParam.
-func (FunctionCallOutputItemParam) JSONSchemaBytes() []byte {
+func (FunctionCallOutputItemParam) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FunctionCallOutputItemParam")
 }
 
@@ -1287,7 +1287,7 @@ func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCall.
-func (FunctionToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("FunctionToolCall") }
+func (FunctionToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCall") }
 
 // Validate checks whether raw JSON conforms to the FunctionToolCall schema.
 func (FunctionToolCall) Validate(data []byte) error {
@@ -1313,7 +1313,7 @@ func DecodeFunctionToolCall(data []byte) (FunctionToolCall, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
-func (FunctionToolCallOutput) JSONSchemaBytes() []byte {
+func (FunctionToolCallOutput) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FunctionToolCallOutput")
 }
 
@@ -1341,7 +1341,7 @@ func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
-func (FunctionToolCallOutputResource) JSONSchemaBytes() []byte {
+func (FunctionToolCallOutputResource) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FunctionToolCallOutputResource")
 }
 
@@ -1369,7 +1369,7 @@ func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputRe
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
-func (FunctionToolCallResource) JSONSchemaBytes() []byte {
+func (FunctionToolCallResource) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("FunctionToolCallResource")
 }
 
@@ -1397,7 +1397,7 @@ func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, erro
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputFileContent.
-func (InputFileContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputFileContent") }
+func (InputFileContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputFileContent") }
 
 // Validate checks whether raw JSON conforms to the InputFileContent schema.
 func (InputFileContent) Validate(data []byte) error {
@@ -1423,7 +1423,7 @@ func DecodeInputFileContent(data []byte) (InputFileContent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputImageContent.
-func (InputImageContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputImageContent") }
+func (InputImageContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageContent") }
 
 // Validate checks whether raw JSON conforms to the InputImageContent schema.
 func (InputImageContent) Validate(data []byte) error {
@@ -1449,7 +1449,7 @@ func DecodeInputImageContent(data []byte) (InputImageContent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputTextContent.
-func (InputTextContent) JSONSchemaBytes() []byte { return compschemaDefBytes("InputTextContent") }
+func (InputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTextContent") }
 
 // Validate checks whether raw JSON conforms to the InputTextContent schema.
 func (InputTextContent) Validate(data []byte) error {
@@ -1475,13 +1475,13 @@ func DecodeInputTextContent(data []byte) (InputTextContent, error) {
 }
 
 // InputContentJSONSchemaBytes returns the JSON Schema for the InputContent union.
-func InputContentJSONSchemaBytes() []byte { return compschemaDefBytes("InputContent") }
+func InputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputContent") }
 
 // JSONSchemaBytes returns the JSON Schema for Item.
-func (Item) JSONSchemaBytes() []byte { return compschemaDefBytes("Item") }
+func (Item) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Item") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ItemReferenceParam.
-func (ItemReferenceParam) JSONSchemaBytes() []byte { return compschemaDefBytes("ItemReferenceParam") }
+func (ItemReferenceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemReferenceParam") }
 
 // Validate checks whether raw JSON conforms to the ItemReferenceParam schema.
 func (ItemReferenceParam) Validate(data []byte) error {
@@ -1507,15 +1507,15 @@ func DecodeItemReferenceParam(data []byte) (ItemReferenceParam, error) {
 }
 
 // InputItemJSONSchemaBytes returns the JSON Schema for the InputItem union.
-func InputItemJSONSchemaBytes() []byte { return compschemaDefBytes("InputItem") }
+func InputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItem") }
 
 // JSONSchemaBytes returns the JSON Schema for InputMessageContentList.
-func (InputMessageContentList) JSONSchemaBytes() []byte {
+func (InputMessageContentList) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("InputMessageContentList")
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputMessage.
-func (InputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("InputMessage") }
+func (InputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessage") }
 
 // Validate checks whether raw JSON conforms to the InputMessage schema.
 func (InputMessage) Validate(data []byte) error {
@@ -1541,7 +1541,7 @@ func DecodeInputMessage(data []byte) (InputMessage, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputMessageResource.
-func (InputMessageResource) JSONSchemaBytes() []byte {
+func (InputMessageResource) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("InputMessageResource")
 }
 
@@ -1569,7 +1569,7 @@ func DecodeInputMessageResource(data []byte) (InputMessageResource, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for OutputTextContent.
-func (OutputTextContent) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputTextContent") }
+func (OutputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContent") }
 
 // Validate checks whether raw JSON conforms to the OutputTextContent schema.
 func (OutputTextContent) Validate(data []byte) error {
@@ -1595,7 +1595,7 @@ func DecodeOutputTextContent(data []byte) (OutputTextContent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for RefusalContent.
-func (RefusalContent) JSONSchemaBytes() []byte { return compschemaDefBytes("RefusalContent") }
+func (RefusalContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RefusalContent") }
 
 // Validate checks whether raw JSON conforms to the RefusalContent schema.
 func (RefusalContent) Validate(data []byte) error {
@@ -1621,10 +1621,10 @@ func DecodeRefusalContent(data []byte) (RefusalContent, error) {
 }
 
 // OutputContentJSONSchemaBytes returns the JSON Schema for the OutputContent union.
-func OutputContentJSONSchemaBytes() []byte { return compschemaDefBytes("OutputContent") }
+func OutputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputContent") }
 
 // JSONSchemaBytes returns the JSON Schema definition for OutputMessage.
-func (OutputMessage) JSONSchemaBytes() []byte { return compschemaDefBytes("OutputMessage") }
+func (OutputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputMessage") }
 
 // Validate checks whether raw JSON conforms to the OutputMessage schema.
 func (OutputMessage) Validate(data []byte) error {
@@ -1650,7 +1650,7 @@ func DecodeOutputMessage(data []byte) (OutputMessage, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchToolCall.
-func (WebSearchToolCall) JSONSchemaBytes() []byte { return compschemaDefBytes("WebSearchToolCall") }
+func (WebSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolCall") }
 
 // Validate checks whether raw JSON conforms to the WebSearchToolCall schema.
 func (WebSearchToolCall) Validate(data []byte) error {
@@ -1676,13 +1676,13 @@ func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
 }
 
 // ItemResourceJSONSchemaBytes returns the JSON Schema for the ItemResource union.
-func ItemResourceJSONSchemaBytes() []byte { return compschemaDefBytes("ItemResource") }
+func ItemResourceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemResource") }
 
 // JSONSchemaBytes returns the JSON Schema for ModelIdsShared.
-func (ModelIdsShared) JSONSchemaBytes() []byte { return compschemaDefBytes("ModelIdsShared") }
+func (ModelIdsShared) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ModelIdsShared") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ModelResponseProperties.
-func (ModelResponseProperties) JSONSchemaBytes() []byte {
+func (ModelResponseProperties) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ModelResponseProperties")
 }
 
@@ -1710,7 +1710,7 @@ func DecodeModelResponseProperties(data []byte) (ModelResponseProperties, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ReasoningItemSummaryElem.
-func (ReasoningItemSummaryElem) JSONSchemaBytes() []byte {
+func (ReasoningItemSummaryElem) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ReasoningItemSummaryElem")
 }
 
@@ -1738,7 +1738,7 @@ func DecodeReasoningItemSummaryElem(data []byte) (ReasoningItemSummaryElem, erro
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ReasoningItem.
-func (ReasoningItem) JSONSchemaBytes() []byte { return compschemaDefBytes("ReasoningItem") }
+func (ReasoningItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningItem") }
 
 // Validate checks whether raw JSON conforms to the ReasoningItem schema.
 func (ReasoningItem) Validate(data []byte) error {
@@ -1764,10 +1764,10 @@ func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
 }
 
 // OutputItemJSONSchemaBytes returns the JSON Schema for the OutputItem union.
-func OutputItemJSONSchemaBytes() []byte { return compschemaDefBytes("OutputItem") }
+func OutputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputItem") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseError.
-func (ResponseError) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseError") }
+func (ResponseError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseError") }
 
 // Validate checks whether raw JSON conforms to the ResponseError schema.
 func (ResponseError) Validate(data []byte) error {
@@ -1793,7 +1793,7 @@ func DecodeResponseError(data []byte) (ResponseError, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteDetails.
-func (ResponseIncompleteDetails) JSONSchemaBytes() []byte {
+func (ResponseIncompleteDetails) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseIncompleteDetails")
 }
 
@@ -1821,7 +1821,7 @@ func DecodeResponseIncompleteDetails(data []byte) (ResponseIncompleteDetails, er
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseText.
-func (ResponseText) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseText") }
+func (ResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseText") }
 
 // Validate checks whether raw JSON conforms to the ResponseText schema.
 func (ResponseText) Validate(data []byte) error {
@@ -1847,7 +1847,7 @@ func DecodeResponseText(data []byte) (ResponseText, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
-func (ResponseUsageInputTokensDetails) JSONSchemaBytes() []byte {
+func (ResponseUsageInputTokensDetails) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseUsageInputTokensDetails")
 }
 
@@ -1875,7 +1875,7 @@ func DecodeResponseUsageInputTokensDetails(data []byte) (ResponseUsageInputToken
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsageOutputTokensDetails.
-func (ResponseUsageOutputTokensDetails) JSONSchemaBytes() []byte {
+func (ResponseUsageOutputTokensDetails) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseUsageOutputTokensDetails")
 }
 
@@ -1903,7 +1903,7 @@ func DecodeResponseUsageOutputTokensDetails(data []byte) (ResponseUsageOutputTok
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsage.
-func (ResponseUsage) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseUsage") }
+func (ResponseUsage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsage") }
 
 // Validate checks whether raw JSON conforms to the ResponseUsage schema.
 func (ResponseUsage) Validate(data []byte) error {
@@ -1929,7 +1929,7 @@ func DecodeResponseUsage(data []byte) (ResponseUsage, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Response.
-func (Response) JSONSchemaBytes() []byte { return compschemaDefBytes("Response") }
+func (Response) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Response") }
 
 // Validate checks whether raw JSON conforms to the Response schema.
 func (Response) Validate(data []byte) error {
@@ -1955,7 +1955,7 @@ func DecodeResponse(data []byte) (Response, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDeltaEvent.
-func (ResponseAudioDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseAudioDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseAudioDeltaEvent")
 }
 
@@ -1983,7 +1983,7 @@ func DecodeResponseAudioDeltaEvent(data []byte) (ResponseAudioDeltaEvent, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDoneEvent.
-func (ResponseAudioDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseAudioDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseAudioDoneEvent")
 }
 
@@ -2011,7 +2011,7 @@ func DecodeResponseAudioDoneEvent(data []byte) (ResponseAudioDoneEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDeltaEvent.
-func (ResponseAudioTranscriptDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseAudioTranscriptDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseAudioTranscriptDeltaEvent")
 }
 
@@ -2039,7 +2039,7 @@ func DecodeResponseAudioTranscriptDeltaEvent(data []byte) (ResponseAudioTranscri
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDoneEvent.
-func (ResponseAudioTranscriptDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseAudioTranscriptDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseAudioTranscriptDoneEvent")
 }
 
@@ -2067,7 +2067,7 @@ func DecodeResponseAudioTranscriptDoneEvent(data []byte) (ResponseAudioTranscrip
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDeltaEvent.
-func (ResponseCodeInterpreterCallCodeDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseCodeInterpreterCallCodeDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCodeInterpreterCallCodeDeltaEvent")
 }
 
@@ -2095,7 +2095,7 @@ func DecodeResponseCodeInterpreterCallCodeDeltaEvent(data []byte) (ResponseCodeI
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDoneEvent.
-func (ResponseCodeInterpreterCallCodeDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseCodeInterpreterCallCodeDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCodeInterpreterCallCodeDoneEvent")
 }
 
@@ -2123,7 +2123,7 @@ func DecodeResponseCodeInterpreterCallCodeDoneEvent(data []byte) (ResponseCodeIn
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCompletedEvent.
-func (ResponseCodeInterpreterCallCompletedEvent) JSONSchemaBytes() []byte {
+func (ResponseCodeInterpreterCallCompletedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCodeInterpreterCallCompletedEvent")
 }
 
@@ -2151,7 +2151,7 @@ func DecodeResponseCodeInterpreterCallCompletedEvent(data []byte) (ResponseCodeI
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInProgressEvent.
-func (ResponseCodeInterpreterCallInProgressEvent) JSONSchemaBytes() []byte {
+func (ResponseCodeInterpreterCallInProgressEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCodeInterpreterCallInProgressEvent")
 }
 
@@ -2179,7 +2179,7 @@ func DecodeResponseCodeInterpreterCallInProgressEvent(data []byte) (ResponseCode
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInterpretingEvent.
-func (ResponseCodeInterpreterCallInterpretingEvent) JSONSchemaBytes() []byte {
+func (ResponseCodeInterpreterCallInterpretingEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCodeInterpreterCallInterpretingEvent")
 }
 
@@ -2207,7 +2207,7 @@ func DecodeResponseCodeInterpreterCallInterpretingEvent(data []byte) (ResponseCo
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCompletedEvent.
-func (ResponseCompletedEvent) JSONSchemaBytes() []byte {
+func (ResponseCompletedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCompletedEvent")
 }
 
@@ -2235,7 +2235,7 @@ func DecodeResponseCompletedEvent(data []byte) (ResponseCompletedEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartAddedEvent.
-func (ResponseContentPartAddedEvent) JSONSchemaBytes() []byte {
+func (ResponseContentPartAddedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseContentPartAddedEvent")
 }
 
@@ -2263,7 +2263,7 @@ func DecodeResponseContentPartAddedEvent(data []byte) (ResponseContentPartAddedE
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartDoneEvent.
-func (ResponseContentPartDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseContentPartDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseContentPartDoneEvent")
 }
 
@@ -2291,7 +2291,7 @@ func DecodeResponseContentPartDoneEvent(data []byte) (ResponseContentPartDoneEve
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCreatedEvent.
-func (ResponseCreatedEvent) JSONSchemaBytes() []byte {
+func (ResponseCreatedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseCreatedEvent")
 }
 
@@ -2319,7 +2319,7 @@ func DecodeResponseCreatedEvent(data []byte) (ResponseCreatedEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseErrorEvent.
-func (ResponseErrorEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseErrorEvent") }
+func (ResponseErrorEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseErrorEvent") }
 
 // Validate checks whether raw JSON conforms to the ResponseErrorEvent schema.
 func (ResponseErrorEvent) Validate(data []byte) error {
@@ -2345,7 +2345,7 @@ func DecodeResponseErrorEvent(data []byte) (ResponseErrorEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFailedEvent.
-func (ResponseFailedEvent) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseFailedEvent") }
+func (ResponseFailedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFailedEvent") }
 
 // Validate checks whether raw JSON conforms to the ResponseFailedEvent schema.
 func (ResponseFailedEvent) Validate(data []byte) error {
@@ -2371,7 +2371,7 @@ func DecodeResponseFailedEvent(data []byte) (ResponseFailedEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallCompletedEvent.
-func (ResponseFileSearchCallCompletedEvent) JSONSchemaBytes() []byte {
+func (ResponseFileSearchCallCompletedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFileSearchCallCompletedEvent")
 }
 
@@ -2399,7 +2399,7 @@ func DecodeResponseFileSearchCallCompletedEvent(data []byte) (ResponseFileSearch
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallInProgressEvent.
-func (ResponseFileSearchCallInProgressEvent) JSONSchemaBytes() []byte {
+func (ResponseFileSearchCallInProgressEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFileSearchCallInProgressEvent")
 }
 
@@ -2427,7 +2427,7 @@ func DecodeResponseFileSearchCallInProgressEvent(data []byte) (ResponseFileSearc
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallSearchingEvent.
-func (ResponseFileSearchCallSearchingEvent) JSONSchemaBytes() []byte {
+func (ResponseFileSearchCallSearchingEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFileSearchCallSearchingEvent")
 }
 
@@ -2455,7 +2455,7 @@ func DecodeResponseFileSearchCallSearchingEvent(data []byte) (ResponseFileSearch
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDeltaEvent.
-func (ResponseFunctionCallArgumentsDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseFunctionCallArgumentsDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFunctionCallArgumentsDeltaEvent")
 }
 
@@ -2483,7 +2483,7 @@ func DecodeResponseFunctionCallArgumentsDeltaEvent(data []byte) (ResponseFunctio
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDoneEvent.
-func (ResponseFunctionCallArgumentsDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseFunctionCallArgumentsDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseFunctionCallArgumentsDoneEvent")
 }
 
@@ -2511,7 +2511,7 @@ func DecodeResponseFunctionCallArgumentsDoneEvent(data []byte) (ResponseFunction
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseInProgressEvent.
-func (ResponseInProgressEvent) JSONSchemaBytes() []byte {
+func (ResponseInProgressEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseInProgressEvent")
 }
 
@@ -2539,7 +2539,7 @@ func DecodeResponseInProgressEvent(data []byte) (ResponseInProgressEvent, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteEvent.
-func (ResponseIncompleteEvent) JSONSchemaBytes() []byte {
+func (ResponseIncompleteEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseIncompleteEvent")
 }
 
@@ -2567,7 +2567,7 @@ func DecodeResponseIncompleteEvent(data []byte) (ResponseIncompleteEvent, error)
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseItemList.
-func (ResponseItemList) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseItemList") }
+func (ResponseItemList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseItemList") }
 
 // Validate checks whether raw JSON conforms to the ResponseItemList schema.
 func (ResponseItemList) Validate(data []byte) error {
@@ -2593,7 +2593,7 @@ func DecodeResponseItemList(data []byte) (ResponseItemList, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemAddedEvent.
-func (ResponseOutputItemAddedEvent) JSONSchemaBytes() []byte {
+func (ResponseOutputItemAddedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseOutputItemAddedEvent")
 }
 
@@ -2621,7 +2621,7 @@ func DecodeResponseOutputItemAddedEvent(data []byte) (ResponseOutputItemAddedEve
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemDoneEvent.
-func (ResponseOutputItemDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseOutputItemDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseOutputItemDoneEvent")
 }
 
@@ -2649,7 +2649,7 @@ func DecodeResponseOutputItemDoneEvent(data []byte) (ResponseOutputItemDoneEvent
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesText.
-func (ResponsePropertiesText) JSONSchemaBytes() []byte {
+func (ResponsePropertiesText) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponsePropertiesText")
 }
 
@@ -2677,7 +2677,7 @@ func DecodeResponsePropertiesText(data []byte) (ResponsePropertiesText, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseProperties.
-func (ResponseProperties) JSONSchemaBytes() []byte { return compschemaDefBytes("ResponseProperties") }
+func (ResponseProperties) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseProperties") }
 
 // Validate checks whether raw JSON conforms to the ResponseProperties schema.
 func (ResponseProperties) Validate(data []byte) error {
@@ -2703,7 +2703,7 @@ func DecodeResponseProperties(data []byte) (ResponseProperties, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEventPart.
-func (ResponseReasoningSummaryPartAddedEventPart) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryPartAddedEventPart) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryPartAddedEventPart")
 }
 
@@ -2731,7 +2731,7 @@ func DecodeResponseReasoningSummaryPartAddedEventPart(data []byte) (ResponseReas
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEvent.
-func (ResponseReasoningSummaryPartAddedEvent) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryPartAddedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryPartAddedEvent")
 }
 
@@ -2759,7 +2759,7 @@ func DecodeResponseReasoningSummaryPartAddedEvent(data []byte) (ResponseReasonin
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEventPart.
-func (ResponseReasoningSummaryPartDoneEventPart) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryPartDoneEventPart) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryPartDoneEventPart")
 }
 
@@ -2787,7 +2787,7 @@ func DecodeResponseReasoningSummaryPartDoneEventPart(data []byte) (ResponseReaso
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEvent.
-func (ResponseReasoningSummaryPartDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryPartDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryPartDoneEvent")
 }
 
@@ -2815,7 +2815,7 @@ func DecodeResponseReasoningSummaryPartDoneEvent(data []byte) (ResponseReasoning
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDeltaEvent.
-func (ResponseReasoningSummaryTextDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryTextDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryTextDeltaEvent")
 }
 
@@ -2843,7 +2843,7 @@ func DecodeResponseReasoningSummaryTextDeltaEvent(data []byte) (ResponseReasonin
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDoneEvent.
-func (ResponseReasoningSummaryTextDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseReasoningSummaryTextDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseReasoningSummaryTextDoneEvent")
 }
 
@@ -2871,7 +2871,7 @@ func DecodeResponseReasoningSummaryTextDoneEvent(data []byte) (ResponseReasoning
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDeltaEvent.
-func (ResponseRefusalDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseRefusalDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseRefusalDeltaEvent")
 }
 
@@ -2899,7 +2899,7 @@ func DecodeResponseRefusalDeltaEvent(data []byte) (ResponseRefusalDeltaEvent, er
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDoneEvent.
-func (ResponseRefusalDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseRefusalDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseRefusalDoneEvent")
 }
 
@@ -2927,7 +2927,7 @@ func DecodeResponseRefusalDoneEvent(data []byte) (ResponseRefusalDoneEvent, erro
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextAnnotationDeltaEvent.
-func (ResponseTextAnnotationDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseTextAnnotationDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseTextAnnotationDeltaEvent")
 }
 
@@ -2955,7 +2955,7 @@ func DecodeResponseTextAnnotationDeltaEvent(data []byte) (ResponseTextAnnotation
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDeltaEvent.
-func (ResponseTextDeltaEvent) JSONSchemaBytes() []byte {
+func (ResponseTextDeltaEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseTextDeltaEvent")
 }
 
@@ -2983,7 +2983,7 @@ func DecodeResponseTextDeltaEvent(data []byte) (ResponseTextDeltaEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDoneEvent.
-func (ResponseTextDoneEvent) JSONSchemaBytes() []byte {
+func (ResponseTextDoneEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseTextDoneEvent")
 }
 
@@ -3011,7 +3011,7 @@ func DecodeResponseTextDoneEvent(data []byte) (ResponseTextDoneEvent, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallCompletedEvent.
-func (ResponseWebSearchCallCompletedEvent) JSONSchemaBytes() []byte {
+func (ResponseWebSearchCallCompletedEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseWebSearchCallCompletedEvent")
 }
 
@@ -3039,7 +3039,7 @@ func DecodeResponseWebSearchCallCompletedEvent(data []byte) (ResponseWebSearchCa
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallInProgressEvent.
-func (ResponseWebSearchCallInProgressEvent) JSONSchemaBytes() []byte {
+func (ResponseWebSearchCallInProgressEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseWebSearchCallInProgressEvent")
 }
 
@@ -3067,7 +3067,7 @@ func DecodeResponseWebSearchCallInProgressEvent(data []byte) (ResponseWebSearchC
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallSearchingEvent.
-func (ResponseWebSearchCallSearchingEvent) JSONSchemaBytes() []byte {
+func (ResponseWebSearchCallSearchingEvent) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("ResponseWebSearchCallSearchingEvent")
 }
 
@@ -3095,10 +3095,10 @@ func DecodeResponseWebSearchCallSearchingEvent(data []byte) (ResponseWebSearchCa
 }
 
 // ResponseStreamEventJSONSchemaBytes returns the JSON Schema for the ResponseStreamEvent union.
-func ResponseStreamEventJSONSchemaBytes() []byte { return compschemaDefBytes("ResponseStreamEvent") }
+func ResponseStreamEventJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseStreamEvent") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ToolChoiceFunction.
-func (ToolChoiceFunction) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceFunction") }
+func (ToolChoiceFunction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceFunction") }
 
 // Validate checks whether raw JSON conforms to the ToolChoiceFunction schema.
 func (ToolChoiceFunction) Validate(data []byte) error {
@@ -3124,10 +3124,10 @@ func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for ToolChoiceOptions.
-func (ToolChoiceOptions) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceOptions") }
+func (ToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceOptions") }
 
 // JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
-func (ToolChoiceTypes) JSONSchemaBytes() []byte { return compschemaDefBytes("ToolChoiceTypes") }
+func (ToolChoiceTypes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceTypes") }
 
 // Validate checks whether raw JSON conforms to the ToolChoiceTypes schema.
 func (ToolChoiceTypes) Validate(data []byte) error {
@@ -3153,6 +3153,6 @@ func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema for VectorStoreFileAttributes.
-func (VectorStoreFileAttributes) JSONSchemaBytes() []byte {
+func (VectorStoreFileAttributes) JSONSchemaBytes() json.RawMessage {
 	return compschemaDefBytes("VectorStoreFileAttributes")
 }

@@ -2,6 +2,8 @@
 // types with generated JSON Schema support.
 package compschema
 
+import "encoding/json"
+
 // Schema is satisfied by types that have compschema-generated
 // JSON Schema, Validate, and Decode support.
 //
@@ -19,7 +21,11 @@ package compschema
 type Schema interface {
 	// JSONSchemaBytes returns the JSON Schema definition for this type
 	// as raw JSON (the $defs entry, not the full document).
-	JSONSchemaBytes() []byte
+	//
+	// The return type is json.RawMessage so it embeds correctly when
+	// marshalled inside another JSON structure (instead of being
+	// base64-encoded as a plain []byte would be).
+	JSONSchemaBytes() json.RawMessage
 
 	// Validate checks whether raw JSON conforms to this type's schema
 	// without unmarshalling into a Go struct.

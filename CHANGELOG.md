@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.1] - 2026-04-23
+
+### Changed
+- `Schema.JSONSchemaBytes()` return type changed from `[]byte` to `json.RawMessage` — embeds correctly in JSON marshaling instead of being base64-encoded
+- All generated `JSONSchemaBytes()` methods and `compschemaDefBytes()` helper updated to match
+
+### Breaking Changes
+- `compschema.Schema` interface: `JSONSchemaBytes()` returns `json.RawMessage` instead of `[]byte`. Since `json.RawMessage` is `[]byte` underneath, most code works unchanged — only explicit `[]byte` type assertions on the return value need updating.
 ## [2.1.0] - 2026-04-23
 
 ### Added
@@ -271,7 +280,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/codewandler/compschema/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/codewandler/compschema/compare/v2.0.1...v2.1.0
 [2.0.1]: https://github.com/codewandler/compschema/compare/v2.0.0...v2.0.1
 [1.1.0]: https://github.com/codewandler/compschema/compare/v1.0.0...v1.1.0

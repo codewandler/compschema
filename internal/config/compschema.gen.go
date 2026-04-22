@@ -15,16 +15,16 @@ var compschemaJSON []byte
 
 var compschemaDefCache sync.Map
 
-func compschemaDefBytes(name string) []byte {
+func compschemaDefBytes(name string) json.RawMessage {
 	if v, ok := compschemaDefCache.Load(name); ok {
-		return v.([]byte)
+		return v.(json.RawMessage)
 	}
 	var full struct {
 		Defs map[string]json.RawMessage `json:"$defs"`
 	}
 	json.Unmarshal(compschemaJSON, &full)
 	b := full.Defs[name]
-	compschemaDefCache.Store(name, []byte(b))
+	compschemaDefCache.Store(name, b)
 	return b
 }
 
@@ -51,7 +51,7 @@ func compschemaValidator(name string) *jsonschema.Schema {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Action.
-func (Action) JSONSchemaBytes() []byte { return compschemaDefBytes("Action") }
+func (Action) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Action") }
 
 // Validate checks whether raw JSON conforms to the Action schema.
 func (Action) Validate(data []byte) error {
@@ -77,7 +77,7 @@ func DecodeAction(data []byte) (Action, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for File.
-func (File) JSONSchemaBytes() []byte { return compschemaDefBytes("File") }
+func (File) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("File") }
 
 // Validate checks whether raw JSON conforms to the File schema.
 func (File) Validate(data []byte) error {

@@ -15,16 +15,16 @@ var compschemaJSON []byte
 
 var compschemaDefCache sync.Map
 
-func compschemaDefBytes(name string) []byte {
+func compschemaDefBytes(name string) json.RawMessage {
 	if v, ok := compschemaDefCache.Load(name); ok {
-		return v.([]byte)
+		return v.(json.RawMessage)
 	}
 	var full struct {
 		Defs map[string]json.RawMessage `json:"$defs"`
 	}
 	json.Unmarshal(compschemaJSON, &full)
 	b := full.Defs[name]
-	compschemaDefCache.Store(name, []byte(b))
+	compschemaDefCache.Store(name, b)
 	return b
 }
 
@@ -51,7 +51,7 @@ func compschemaValidator(name string) *jsonschema.Schema {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for LineItem.
-func (LineItem) JSONSchemaBytes() []byte { return compschemaDefBytes("LineItem") }
+func (LineItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LineItem") }
 
 // Validate checks whether raw JSON conforms to the LineItem schema.
 func (LineItem) Validate(data []byte) error {
@@ -77,7 +77,7 @@ func DecodeLineItem(data []byte) (LineItem, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Order.
-func (Order) JSONSchemaBytes() []byte { return compschemaDefBytes("Order") }
+func (Order) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Order") }
 
 // Validate checks whether raw JSON conforms to the Order schema.
 func (Order) Validate(data []byte) error {
@@ -103,7 +103,7 @@ func DecodeOrder(data []byte) (Order, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Circle.
-func (Circle) JSONSchemaBytes() []byte { return compschemaDefBytes("Circle") }
+func (Circle) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Circle") }
 
 // Validate checks whether raw JSON conforms to the Circle schema.
 func (Circle) Validate(data []byte) error {
@@ -129,7 +129,7 @@ func DecodeCircle(data []byte) (Circle, error) {
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Rectangle.
-func (Rectangle) JSONSchemaBytes() []byte { return compschemaDefBytes("Rectangle") }
+func (Rectangle) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Rectangle") }
 
 // Validate checks whether raw JSON conforms to the Rectangle schema.
 func (Rectangle) Validate(data []byte) error {
@@ -155,4 +155,5 @@ func DecodeRectangle(data []byte) (Rectangle, error) {
 }
 
 // ShapeJSONSchemaBytes returns the JSON Schema for the Shape union.
-func ShapeJSONSchemaBytes() []byte { return compschemaDefBytes("Shape") }
+func ShapeJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Shape") }
+

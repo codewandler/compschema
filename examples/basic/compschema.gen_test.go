@@ -204,3 +204,4 @@ func TestCompschema_Shape_JSONSchemaBytes(t *testing.T) {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
 }
+
