@@ -172,28 +172,31 @@ Lists all component schema names in an OpenAPI spec.
 compschema schemas --spec openapi.yaml
 ```
 
-## Round-trip pipeline
+## Multi-API round-trip results
 
-compschema achieves **100% structural field match** on the OpenAI Responses API:
+compschema is tested against 13 real-world OpenAPI specs. The full pipeline runs:
+`extract → import → compile → generate → diff --ir`
 
-```
-OpenAI OpenAPI spec (39,848 lines)
-  → compschema extract       → JSON Schema (136KB, 124 $defs)
-  → compschema import        → Go structs (160KB, sealed interfaces, constraints)
-  → compschema generate      → JSON Schema (152KB, 141 $defs)
-  → compschema diff --ir     → 100.0% match (600 fields, 0 diffs)
-```
+| API | Schemas | Go types | IR match | Fields |
+|-----|:-------:|:--------:|:--------:|:------:|
+| **Petstore** | 6 | 8 | **100.0%** | 27 |
+| **Twilio** | 97 | 135 | **100.0%** | 649 |
+| **Spotify** | 86 | 214 | **100.0%** | 669 |
+| **Asana** | 3 | 4 | **100.0%** | 10 |
+| **OpenAI** | 124 | 263 | **100.0%** | 600 |
+| **Kubernetes** | 251 | 475 | **99.8%** | 1,133 |
+| **GitHub** | 447 | 902 | **98.7%** | 3,635 |
+| **Discord** | 402 | 588 | **96.9%** | 2,077 |
+| **Plaid** | 2,019 | 2,058 | **96.2%** | 7,394 |
+| Stripe | 1,382 | 3,339 | — | compile: 2 errors |
+| Box | 286 | 570 | — | compile errors |
+| Cloudflare | 4,309 | 5,982 | — | compile errors |
+| DigitalOcean | — | — | — | Swagger v2 |
 
-```bash
-# Run the full pipeline
-make pipeline
+**8 of 13 APIs pass the full pipeline.** 5 achieve 100% structural field match.
+**Total fields validated: 16,194** across 8 APIs.
 
-=== compschema round-trip pipeline ===
-
-  OpenAPI spec:  39,848 lines
-  JSON Schema:   136,083 bytes (124 $defs, meta-schema valid ✅)
-  compschema:    100.0% IR field match (600 fields, 0 diffs)
-```
+Run the full suite: `bash testdata/specs/run_all.sh`
 
 ## `jsonschema` struct tag
 
@@ -282,8 +285,42 @@ internal/uniongen/             Union sealed interface generator
 internal/schemadiff/           JSON Schema + IR structural diff
 examples/basic/                Basic example (Order, LineItem, Shape union — 23 tests)
 examples/openai/               OpenAI Responses API (261 types — 587 tests)
-testdata/openai/               Round-trip pipeline fixtures
+testdata/specs/               Multi-API test suite (13 OpenAPI specs)
 ```
+
+## Limitations
+
+### Nullable union-as-variant pattern
+
+When a JSON Schema type is defined as a nullable union (`anyOf` / `oneOf` wrapping other unions), and that type is used as a variant of another union, Go cannot express this. Go interfaces cannot implement other interfaces' marker methods via pointer receivers.
+
+```
+// JSON Schema:
+// ParentUnion: oneOf(ChildUnion, OtherType)
+// ChildUnion: anyOf(StructA, StructB)
+//
+// Go cannot do:
+// type ChildUnion interface { isChildUnion() }
+// func (*ChildUnion) isParentUnion() {}  ← invalid: pointer to interface
+```
+
+This affects Stripe (2 of 1,382 schemas), Box, and Cloudflare. The workaround is to manually flatten the union hierarchy or use a wrapper struct.
+
+### OpenAPI v2 (Swagger)
+
+Only OpenAPI 3.x is supported. Swagger 2.0 specs (DigitalOcean, some older APIs) need to be converted to OpenAPI 3.x first using tools like [swagger2openapi](https://github.com/Mermade/oas-kit).
+
+### Circular references in OpenAPI
+
+Deeply circular `$ref` chains in OpenAPI specs may cause warnings from the underlying parser (`libopenapi`). The converter handles these gracefully—the model is still usable—but some schemas may be incomplete.
+
+### Enum const name collisions
+
+When a schema name produces the same Go identifier as an enum constant (e.g. `source_type_ach_credit_transfer` collides with `SourceType` enum value `ach_credit_transfer`), the struct type is skipped and fields referencing it fall back to `any`. This primarily affects large specs like Stripe where naming conventions create ambiguity.
+
+### Type name normalization
+
+Schemas with dotted names (`io.k8s.api.core.v1.Pod`) are normalized to Go identifiers (`IoK8sAPICoreV1Pod`). The IR diff uses fuzzy name matching to handle this, but ~1-3% of schemas may not match across the round-trip due to naming differences.
 
 ## Roadmap
 
@@ -294,12 +331,13 @@ testdata/openai/               Round-trip pipeline fixtures
 - [ ] **Real-world integration test** — use compschema as the schema layer in an actual API project to validate the developer experience end-to-end.
 - [ ] **OpenAPI output** — emit OpenAPI 3.1 components from the IR (the reverse of `extract`). The IR is already language-agnostic; this is a new emitter.
 - [ ] **TypeScript output** — emit TypeScript type definitions from the same IR.
+- [ ] **Stripe full support** — resolve the nullable-union-as-variant pattern, possibly via union flattening or wrapper struct generation for interface variants.
 
 ### Non-goals (v1)
 
 - Non-JSON encodings (YAML, CBOR, etc.)
 - Runtime schema manipulation API
-- Full JSON Schema test suite compliance (we validate against real-world APIs instead)
+- Full JSON Schema test suite compliance (we validate against 13 real-world APIs instead)
 
 ## License
 
