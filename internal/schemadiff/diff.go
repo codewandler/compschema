@@ -151,7 +151,16 @@ func compareDef(name string, gt, gen map[string]any) DefReport {
 			dr.Extra = append(dr.Extra, k)
 		} else {
 			// Both present — compare values.
-			if valuesEqual(gtVal, genVal) {
+			match := valuesEqual(gtVal, genVal)
+			// For annotation strings, use whitespace-normalized comparison.
+			if !match && annotationKeywords[k] {
+				if gs, ok1 := gtVal.(string); ok1 {
+					if os, ok2 := genVal.(string); ok2 {
+						match = normalizeWS(gs) == normalizeWS(os)
+					}
+				}
+			}
+			if match {
 				dr.Matches = append(dr.Matches, k)
 			} else {
 				cat := "structural"
@@ -353,4 +362,9 @@ func toSet(s []string) map[string]bool {
 		m[v] = true
 	}
 	return m
+}
+
+func normalizeWS(s string) string {
+	fields := strings.Fields(s)
+	return strings.Join(fields, " ")
 }

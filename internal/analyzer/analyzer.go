@@ -210,6 +210,43 @@ func (a *pkgAnalyzer) convertStruct(name string, named types.Type, st *types.Str
 
 	for i := 0; i < st.NumFields(); i++ {
 		field := st.Field(i)
+
+		// Handle embedded structs — flatten their fields into this struct.
+		if field.Embedded() {
+			embType := field.Type()
+			if ptr, ok := embType.(*types.Pointer); ok {
+				embType = ptr.Elem()
+			}
+			if embSt, ok := embType.Underlying().(*types.Struct); ok {
+				for j := 0; j < embSt.NumFields(); j++ {
+					ef := embSt.Field(j)
+					if !ef.Exported() {
+						continue
+					}
+					etag := reflect.StructTag(embSt.Tag(j))
+					ejsonTag := etag.Get("json")
+					if ejsonTag == "-" {
+						continue
+					}
+					ejsonName, eopts := parseJSONTag(ejsonTag)
+					if ejsonName == "" {
+						ejsonName = ef.Name()
+					}
+					ff := ir.Field{
+						Name:     ef.Name(),
+						JSONName: ejsonName,
+						Required: !eopts.contains("omitempty") && !eopts.contains("omitzero"),
+						Type:     a.resolveTypeRef(ef.Type()),
+					}
+					if jsTag := etag.Get("jsonschema"); jsTag != "" {
+						ff.Constraints, ff.Description = parseConstraintsAndMeta(jsTag)
+					}
+					irType.Fields = append(irType.Fields, ff)
+				}
+			}
+			continue
+		}
+
 		if !field.Exported() {
 			continue
 		}
@@ -232,9 +269,9 @@ func (a *pkgAnalyzer) convertStruct(name string, named types.Type, st *types.Str
 			Type:     a.resolveTypeRef(field.Type()),
 		}
 
-		// Parse jsonschema tag constraints.
+		// Parse jsonschema tag for constraints and metadata.
 		if jsTag := tag.Get("jsonschema"); jsTag != "" {
-			f.Constraints = parseConstraints(jsTag)
+			f.Constraints, f.Description = parseConstraintsAndMeta(jsTag)
 		}
 
 		irType.Fields = append(irType.Fields, f)
@@ -500,9 +537,28 @@ func (o tagOptions) contains(name string) bool {
 	return false
 }
 
-// parseConstraints parses a jsonschema:"..." tag value into Constraints.
-func parseConstraints(tag string) []ir.Constraint {
+// Metadata keywords that go to Field.Description / Type properties, not JSON Schema constraints.
+var metaKeywords = map[string]bool{
+	"title": true, "description": true, "format": true,
+	"default": true, "examples": true,
+	"required": true, // invopop compat: boolean flag
+}
+
+// parseConstraintsAndMeta parses a jsonschema:"..." tag into constraints and
+// a description string. Compatible with invopop/jsonschema tag format.
+//
+// Supported keywords:
+//   - Numeric: minimum, maximum, exclusiveMinimum, exclusiveMaximum, multipleOf
+//   - String: minLength, maxLength, pattern, format
+//   - Array: minItems, maxItems, uniqueItems
+//   - Object: minProperties, maxProperties
+//   - Composition: const, enum (comma-separated in value)
+//   - Metadata: title, description, default, examples
+//   - Boolean flags: required, readOnly, writeOnly, deprecated
+func parseConstraintsAndMeta(tag string) ([]ir.Constraint, string) {
 	var constraints []ir.Constraint
+	var description string
+
 	for _, part := range strings.Split(tag, ",") {
 		part = strings.TrimSpace(part)
 		if part == "" {
@@ -510,31 +566,68 @@ func parseConstraints(tag string) []ir.Constraint {
 		}
 		eq := strings.IndexByte(part, '=')
 		if eq < 0 {
-			// Boolean keywords like "required"
-			constraints = append(constraints, ir.Constraint{Keyword: part, Value: true})
+			// Boolean keywords.
+			switch part {
+			case "required":
+				// invopop compat: marks field as required (we already handle via omitempty)
+				continue
+			case "readOnly", "writeOnly", "deprecated", "uniqueItems":
+				constraints = append(constraints, ir.Constraint{Keyword: part, Value: true})
+			default:
+				constraints = append(constraints, ir.Constraint{Keyword: part, Value: true})
+			}
 			continue
 		}
+
 		keyword := part[:eq]
 		valueStr := part[eq+1:]
 
-		var value any
-		// Try numeric first.
-		if f, err := strconv.ParseFloat(valueStr, 64); err == nil {
-			// Use int if it's a whole number.
-			if f == float64(int64(f)) {
-				value = int64(f)
-			} else {
-				value = f
-			}
-		} else if b, err := strconv.ParseBool(valueStr); err == nil {
-			value = b
-		} else {
-			value = valueStr
+		// Handle metadata keywords separately.
+		switch keyword {
+		case "description":
+			description = valueStr
+			continue
+		case "title":
+			constraints = append(constraints, ir.Constraint{Keyword: "title", Value: valueStr})
+			continue
+		case "format":
+			constraints = append(constraints, ir.Constraint{Keyword: "format", Value: valueStr})
+			continue
+		case "default":
+			constraints = append(constraints, ir.Constraint{Keyword: "default", Value: parseTagValue(valueStr)})
+			continue
+		case "examples":
+			// examples can be a single value; invopop uses multiple examples tags
+			constraints = append(constraints, ir.Constraint{Keyword: "examples", Value: []any{parseTagValue(valueStr)}})
+			continue
 		}
 
-		constraints = append(constraints, ir.Constraint{Keyword: keyword, Value: value})
+		constraints = append(constraints, ir.Constraint{Keyword: keyword, Value: parseTagValue(valueStr)})
 	}
+
+	return constraints, description
+}
+
+// parseConstraints is a backward-compatible wrapper that ignores metadata.
+func parseConstraints(tag string) []ir.Constraint {
+	constraints, _ := parseConstraintsAndMeta(tag)
 	return constraints
+}
+
+// parseTagValue converts a string value from a struct tag into the appropriate Go type.
+func parseTagValue(s string) any {
+	// Try numeric.
+	if f, err := strconv.ParseFloat(s, 64); err == nil {
+		if f == float64(int64(f)) {
+			return int64(f)
+		}
+		return f
+	}
+	// Try boolean.
+	if b, err := strconv.ParseBool(s); err == nil {
+		return b
+	}
+	return s
 }
 
 func basicToScalar(b *types.Basic) string {

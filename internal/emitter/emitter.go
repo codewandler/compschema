@@ -42,6 +42,9 @@ func typeToSchema(t *ir.Type, topLevel bool) map[string]any {
 	switch t.Kind {
 	case ir.KindStruct:
 		s["type"] = "object"
+		if topLevel && t.Name != "" {
+			s["title"] = t.Name
+		}
 		props := make(map[string]any)
 		var required []string
 		for _, f := range t.Fields {
@@ -68,6 +71,9 @@ func typeToSchema(t *ir.Type, topLevel bool) map[string]any {
 	case ir.KindEnum:
 		s["type"] = t.EnumType
 		s["enum"] = t.EnumValues
+		if topLevel && t.Name != "" {
+			s["title"] = t.Name
+		}
 
 	case ir.KindUnion:
 		variants := make([]any, 0, len(t.Variants))

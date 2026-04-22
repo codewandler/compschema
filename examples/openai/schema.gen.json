@@ -48,12 +48,14 @@
       "required": [
         "type"
       ],
+      "title": "ApproximateLocation",
       "type": "object"
     },
     "ApproximateLocationType": {
       "enum": [
         "approximate"
       ],
+      "title": "ApproximateLocationType",
       "type": "string"
     },
     "Click": {
@@ -79,6 +81,7 @@
         "x",
         "y"
       ],
+      "title": "Click",
       "type": "object"
     },
     "ClickButton": {
@@ -89,12 +92,14 @@
         "right",
         "wheel"
       ],
+      "title": "ClickButton",
       "type": "string"
     },
     "ClickType": {
       "enum": [
         "click"
       ],
+      "title": "ClickType",
       "type": "string"
     },
     "CodeInterpreterFileOutput": {
@@ -115,6 +120,7 @@
         "files",
         "type"
       ],
+      "title": "CodeInterpreterFileOutput",
       "type": "object"
     },
     "CodeInterpreterFileOutputFilesElem": {
@@ -131,12 +137,14 @@
         "file_id",
         "mime_type"
       ],
+      "title": "CodeInterpreterFileOutputFilesElem",
       "type": "object"
     },
     "CodeInterpreterFileOutputType": {
       "enum": [
         "files"
       ],
+      "title": "CodeInterpreterFileOutputType",
       "type": "string"
     },
     "CodeInterpreterTextOutput": {
@@ -154,12 +162,14 @@
         "logs",
         "type"
       ],
+      "title": "CodeInterpreterTextOutput",
       "type": "object"
     },
     "CodeInterpreterTextOutputType": {
       "enum": [
         "logs"
       ],
+      "title": "CodeInterpreterTextOutputType",
       "type": "string"
     },
     "CodeInterpreterToolCall": {
@@ -192,6 +202,7 @@
         "status",
         "type"
       ],
+      "title": "CodeInterpreterToolCall",
       "type": "object"
     },
     "CodeInterpreterToolCallStatus": {
@@ -200,12 +211,14 @@
         "in_progress",
         "interpreting"
       ],
+      "title": "CodeInterpreterToolCallStatus",
       "type": "string"
     },
     "CodeInterpreterToolCallType": {
       "enum": [
         "code_interpreter_call"
       ],
+      "title": "CodeInterpreterToolCallType",
       "type": "string"
     },
     "CodeInterpreterToolOutput": {
@@ -236,6 +249,7 @@
         "type",
         "value"
       ],
+      "title": "ComparisonFilter",
       "type": "object"
     },
     "ComparisonFilterType": {
@@ -247,6 +261,7 @@
         "lte",
         "ne"
       ],
+      "title": "ComparisonFilterType",
       "type": "string"
     },
     "CompoundFilter": {
@@ -265,6 +280,7 @@
         "filters",
         "type"
       ],
+      "title": "CompoundFilter",
       "type": "object"
     },
     "CompoundFilterType": {
@@ -272,6 +288,7 @@
         "and",
         "or"
       ],
+      "title": "CompoundFilterType",
       "type": "string"
     },
     "ComputerAction": {
@@ -351,6 +368,7 @@
         "output",
         "type"
       ],
+      "title": "ComputerCallOutputItemParam",
       "type": "object"
     },
     "ComputerCallOutputItemParamAcknowledgedSafetyChecks": {
@@ -365,12 +383,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ComputerCallOutputItemParamStatus",
       "type": "string"
     },
     "ComputerCallOutputItemParamType": {
       "enum": [
         "computer_call_output"
       ],
+      "title": "ComputerCallOutputItemParamType",
       "type": "string"
     },
     "ComputerCallSafetyCheckParam": {
@@ -396,6 +416,7 @@
       "required": [
         "id"
       ],
+      "title": "ComputerCallSafetyCheckParam",
       "type": "object"
     },
     "ComputerScreenshotImage": {
@@ -421,12 +442,14 @@
       "required": [
         "type"
       ],
+      "title": "ComputerScreenshotImage",
       "type": "object"
     },
     "ComputerScreenshotImageType": {
       "enum": [
         "computer_screenshot"
       ],
+      "title": "ComputerScreenshotImageType",
       "type": "string"
     },
     "ComputerToolCall": {
@@ -463,6 +486,7 @@
         "status",
         "type"
       ],
+      "title": "ComputerToolCall",
       "type": "object"
     },
     "ComputerToolCallOutput": {
@@ -506,6 +530,7 @@
         "output",
         "type"
       ],
+      "title": "ComputerToolCallOutput",
       "type": "object"
     },
     "ComputerToolCallOutputResource": {
@@ -547,6 +572,7 @@
         "output",
         "type"
       ],
+      "title": "ComputerToolCallOutputResource",
       "type": "object"
     },
     "ComputerToolCallOutputResourceStatus": {
@@ -555,12 +581,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ComputerToolCallOutputResourceStatus",
       "type": "string"
     },
     "ComputerToolCallOutputResourceType": {
       "enum": [
         "computer_call_output"
       ],
+      "title": "ComputerToolCallOutputResourceType",
       "type": "string"
     },
     "ComputerToolCallOutputStatus": {
@@ -569,12 +597,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ComputerToolCallOutputStatus",
       "type": "string"
     },
     "ComputerToolCallOutputType": {
       "enum": [
         "computer_call_output"
       ],
+      "title": "ComputerToolCallOutputType",
       "type": "string"
     },
     "ComputerToolCallSafetyCheck": {
@@ -596,6 +626,7 @@
         "id",
         "message"
       ],
+      "title": "ComputerToolCallSafetyCheck",
       "type": "object"
     },
     "ComputerToolCallStatus": {
@@ -604,12 +635,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ComputerToolCallStatus",
       "type": "string"
     },
     "ComputerToolCallType": {
       "enum": [
         "computer_call"
       ],
+      "title": "ComputerToolCallType",
       "type": "string"
     },
     "ComputerUsePreviewTool": {
@@ -635,6 +668,7 @@
         "environment",
         "type"
       ],
+      "title": "ComputerUsePreviewTool",
       "type": "object"
     },
     "ComputerUsePreviewToolEnvironment": {
@@ -645,12 +679,14 @@
         "ubuntu",
         "windows"
       ],
+      "title": "ComputerUsePreviewToolEnvironment",
       "type": "string"
     },
     "ComputerUsePreviewToolType": {
       "enum": [
         "computer_use_preview"
       ],
+      "title": "ComputerUsePreviewToolType",
       "type": "string"
     },
     "Coordinate": {
@@ -668,6 +704,7 @@
         "x",
         "y"
       ],
+      "title": "Coordinate",
       "type": "object"
     },
     "CreateModelResponseProperties": {
@@ -705,6 +742,7 @@
           ]
         }
       },
+      "title": "CreateModelResponseProperties",
       "type": "object"
     },
     "CreateResponse": {
@@ -831,6 +869,7 @@
         "input",
         "model"
       ],
+      "title": "CreateResponse",
       "type": "object"
     },
     "CreateResponseInclude": {
@@ -847,6 +886,7 @@
           "$ref": "#/$defs/TextResponseFormatConfiguration"
         }
       },
+      "title": "CreateResponseText",
       "type": "object"
     },
     "CreateResponseTruncation": {
@@ -854,6 +894,7 @@
         "auto",
         "disabled"
       ],
+      "title": "CreateResponseTruncation",
       "type": "string"
     },
     "DoubleClick": {
@@ -875,12 +916,14 @@
         "x",
         "y"
       ],
+      "title": "DoubleClick",
       "type": "object"
     },
     "DoubleClickType": {
       "enum": [
         "double_click"
       ],
+      "title": "DoubleClickType",
       "type": "string"
     },
     "Drag": {
@@ -901,12 +944,14 @@
         "path",
         "type"
       ],
+      "title": "Drag",
       "type": "object"
     },
     "DragType": {
       "enum": [
         "drag"
       ],
+      "title": "DragType",
       "type": "string"
     },
     "EasyInputMessage": {
@@ -932,6 +977,7 @@
         "content",
         "role"
       ],
+      "title": "EasyInputMessage",
       "type": "object"
     },
     "EasyInputMessageRole": {
@@ -941,12 +987,14 @@
         "system",
         "user"
       ],
+      "title": "EasyInputMessageRole",
       "type": "string"
     },
     "EasyInputMessageType": {
       "enum": [
         "message"
       ],
+      "title": "EasyInputMessageType",
       "type": "string"
     },
     "Error": {
@@ -977,6 +1025,7 @@
         "param",
         "type"
       ],
+      "title": "Error",
       "type": "object"
     },
     "FileCitationBody": {
@@ -998,12 +1047,14 @@
         "index",
         "type"
       ],
+      "title": "FileCitationBody",
       "type": "object"
     },
     "FileCitationBodyType": {
       "enum": [
         "file_citation"
       ],
+      "title": "FileCitationBodyType",
       "type": "string"
     },
     "FilePath": {
@@ -1025,12 +1076,14 @@
         "index",
         "type"
       ],
+      "title": "FilePath",
       "type": "object"
     },
     "FilePathType": {
       "enum": [
         "file_path"
       ],
+      "title": "FilePathType",
       "type": "string"
     },
     "FileSearchTool": {
@@ -1068,6 +1121,7 @@
         "type",
         "vector_store_ids"
       ],
+      "title": "FileSearchTool",
       "type": "object"
     },
     "FileSearchToolCall": {
@@ -1106,6 +1160,7 @@
         "status",
         "type"
       ],
+      "title": "FileSearchToolCall",
       "type": "object"
     },
     "FileSearchToolCallResults": {
@@ -1120,18 +1175,21 @@
         "incomplete",
         "searching"
       ],
+      "title": "FileSearchToolCallStatus",
       "type": "string"
     },
     "FileSearchToolCallType": {
       "enum": [
         "file_search_call"
       ],
+      "title": "FileSearchToolCallType",
       "type": "string"
     },
     "FileSearchToolType": {
       "enum": [
         "file_search"
       ],
+      "title": "FileSearchToolType",
       "type": "string"
     },
     "Filters": {
@@ -1180,6 +1238,7 @@
         "output",
         "type"
       ],
+      "title": "FunctionCallOutputItemParam",
       "type": "object"
     },
     "FunctionCallOutputItemParamStatus": {
@@ -1188,12 +1247,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "FunctionCallOutputItemParamStatus",
       "type": "string"
     },
     "FunctionCallOutputItemParamType": {
       "enum": [
         "function_call_output"
       ],
+      "title": "FunctionCallOutputItemParamType",
       "type": "string"
     },
     "FunctionTool": {
@@ -1235,6 +1296,7 @@
         "strict",
         "type"
       ],
+      "title": "FunctionTool",
       "type": "object"
     },
     "FunctionToolCall": {
@@ -1276,6 +1338,7 @@
         "name",
         "type"
       ],
+      "title": "FunctionToolCall",
       "type": "object"
     },
     "FunctionToolCallOutput": {
@@ -1313,6 +1376,7 @@
         "output",
         "type"
       ],
+      "title": "FunctionToolCallOutput",
       "type": "object"
     },
     "FunctionToolCallOutputResource": {
@@ -1348,6 +1412,7 @@
         "output",
         "type"
       ],
+      "title": "FunctionToolCallOutputResource",
       "type": "object"
     },
     "FunctionToolCallOutputResourceStatus": {
@@ -1356,12 +1421,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "FunctionToolCallOutputResourceStatus",
       "type": "string"
     },
     "FunctionToolCallOutputResourceType": {
       "enum": [
         "function_call_output"
       ],
+      "title": "FunctionToolCallOutputResourceType",
       "type": "string"
     },
     "FunctionToolCallOutputStatus": {
@@ -1370,12 +1437,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "FunctionToolCallOutputStatus",
       "type": "string"
     },
     "FunctionToolCallOutputType": {
       "enum": [
         "function_call_output"
       ],
+      "title": "FunctionToolCallOutputType",
       "type": "string"
     },
     "FunctionToolCallResource": {
@@ -1415,6 +1484,7 @@
         "name",
         "type"
       ],
+      "title": "FunctionToolCallResource",
       "type": "object"
     },
     "FunctionToolCallResourceStatus": {
@@ -1423,12 +1493,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "FunctionToolCallResourceStatus",
       "type": "string"
     },
     "FunctionToolCallResourceType": {
       "enum": [
         "function_call"
       ],
+      "title": "FunctionToolCallResourceType",
       "type": "string"
     },
     "FunctionToolCallStatus": {
@@ -1437,12 +1509,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "FunctionToolCallStatus",
       "type": "string"
     },
     "FunctionToolCallType": {
       "enum": [
         "function_call"
       ],
+      "title": "FunctionToolCallType",
       "type": "string"
     },
     "FunctionToolParameters": {
@@ -1453,6 +1527,7 @@
       "enum": [
         "function"
       ],
+      "title": "FunctionToolType",
       "type": "string"
     },
     "Includable": {
@@ -1461,6 +1536,7 @@
         "file_search_call.results",
         "message.input_image.image_url"
       ],
+      "title": "Includable",
       "type": "string"
     },
     "InputContent": {
@@ -1506,12 +1582,14 @@
       "required": [
         "type"
       ],
+      "title": "InputFileContent",
       "type": "object"
     },
     "InputFileContentType": {
       "enum": [
         "input_file"
       ],
+      "title": "InputFileContentType",
       "type": "string"
     },
     "InputImageContent": {
@@ -1541,6 +1619,7 @@
         "detail",
         "type"
       ],
+      "title": "InputImageContent",
       "type": "object"
     },
     "InputImageContentDetail": {
@@ -1549,12 +1628,14 @@
         "high",
         "low"
       ],
+      "title": "InputImageContentDetail",
       "type": "string"
     },
     "InputImageContentType": {
       "enum": [
         "input_image"
       ],
+      "title": "InputImageContentType",
       "type": "string"
     },
     "InputItem": {
@@ -1606,6 +1687,7 @@
         "content",
         "role"
       ],
+      "title": "InputMessage",
       "type": "object"
     },
     "InputMessageContentList": {
@@ -1653,6 +1735,7 @@
         "id",
         "role"
       ],
+      "title": "InputMessageResource",
       "type": "object"
     },
     "InputMessageResourceRole": {
@@ -1661,6 +1744,7 @@
         "system",
         "user"
       ],
+      "title": "InputMessageResourceRole",
       "type": "string"
     },
     "InputMessageResourceStatus": {
@@ -1669,12 +1753,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "InputMessageResourceStatus",
       "type": "string"
     },
     "InputMessageResourceType": {
       "enum": [
         "message"
       ],
+      "title": "InputMessageResourceType",
       "type": "string"
     },
     "InputMessageRole": {
@@ -1683,6 +1769,7 @@
         "system",
         "user"
       ],
+      "title": "InputMessageRole",
       "type": "string"
     },
     "InputMessageStatus": {
@@ -1691,12 +1778,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "InputMessageStatus",
       "type": "string"
     },
     "InputMessageType": {
       "enum": [
         "message"
       ],
+      "title": "InputMessageType",
       "type": "string"
     },
     "InputTextContent": {
@@ -1714,12 +1803,14 @@
         "text",
         "type"
       ],
+      "title": "InputTextContent",
       "type": "object"
     },
     "InputTextContentType": {
       "enum": [
         "input_text"
       ],
+      "title": "InputTextContentType",
       "type": "string"
     },
     "Item": {
@@ -1747,12 +1838,14 @@
       "required": [
         "id"
       ],
+      "title": "ItemReferenceParam",
       "type": "object"
     },
     "ItemReferenceParamType": {
       "enum": [
         "item_reference"
       ],
+      "title": "ItemReferenceParamType",
       "type": "string"
     },
     "ItemResource": {
@@ -1802,12 +1895,14 @@
         "keys",
         "type"
       ],
+      "title": "KeyPress",
       "type": "object"
     },
     "KeyPressType": {
       "enum": [
         "keypress"
       ],
+      "title": "KeyPressType",
       "type": "string"
     },
     "Metadata": {
@@ -1854,6 +1949,7 @@
           ]
         }
       },
+      "title": "ModelResponseProperties",
       "type": "object"
     },
     "Move": {
@@ -1875,12 +1971,14 @@
         "x",
         "y"
       ],
+      "title": "Move",
       "type": "object"
     },
     "MoveType": {
       "enum": [
         "move"
       ],
+      "title": "MoveType",
       "type": "string"
     },
     "OutputContent": {
@@ -1947,12 +2045,14 @@
         "status",
         "type"
       ],
+      "title": "OutputMessage",
       "type": "object"
     },
     "OutputMessageRole": {
       "enum": [
         "assistant"
       ],
+      "title": "OutputMessageRole",
       "type": "string"
     },
     "OutputMessageStatus": {
@@ -1961,12 +2061,14 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "OutputMessageStatus",
       "type": "string"
     },
     "OutputMessageType": {
       "enum": [
         "message"
       ],
+      "title": "OutputMessageType",
       "type": "string"
     },
     "OutputTextContent": {
@@ -1991,12 +2093,14 @@
         "text",
         "type"
       ],
+      "title": "OutputTextContent",
       "type": "object"
     },
     "OutputTextContentType": {
       "enum": [
         "output_text"
       ],
+      "title": "OutputTextContentType",
       "type": "string"
     },
     "RankingOptions": {
@@ -2019,6 +2123,7 @@
           ]
         }
       },
+      "title": "RankingOptions",
       "type": "object"
     },
     "RankingOptionsRanker": {
@@ -2026,6 +2131,7 @@
         "auto",
         "default-2024-11-15"
       ],
+      "title": "RankingOptionsRanker",
       "type": "string"
     },
     "Reasoning": {
@@ -2063,6 +2169,7 @@
           ]
         }
       },
+      "title": "Reasoning",
       "type": "object"
     },
     "ReasoningEffort": {
@@ -2071,6 +2178,7 @@
         "low",
         "medium"
       ],
+      "title": "ReasoningEffort",
       "type": "string"
     },
     "ReasoningGenerateSummary": {
@@ -2079,6 +2187,7 @@
         "concise",
         "detailed"
       ],
+      "title": "ReasoningGenerateSummary",
       "type": "string"
     },
     "ReasoningItem": {
@@ -2113,6 +2222,7 @@
         "summary",
         "type"
       ],
+      "title": "ReasoningItem",
       "type": "object"
     },
     "ReasoningItemStatus": {
@@ -2121,6 +2231,7 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ReasoningItemStatus",
       "type": "string"
     },
     "ReasoningItemSummaryElem": {
@@ -2137,18 +2248,21 @@
         "text",
         "type"
       ],
+      "title": "ReasoningItemSummaryElem",
       "type": "object"
     },
     "ReasoningItemSummaryElemType": {
       "enum": [
         "summary_text"
       ],
+      "title": "ReasoningItemSummaryElemType",
       "type": "string"
     },
     "ReasoningItemType": {
       "enum": [
         "reasoning"
       ],
+      "title": "ReasoningItemType",
       "type": "string"
     },
     "ReasoningSummary": {
@@ -2157,6 +2271,7 @@
         "concise",
         "detailed"
       ],
+      "title": "ReasoningSummary",
       "type": "string"
     },
     "RefusalContent": {
@@ -2174,12 +2289,14 @@
         "refusal",
         "type"
       ],
+      "title": "RefusalContent",
       "type": "object"
     },
     "RefusalContentType": {
       "enum": [
         "refusal"
       ],
+      "title": "RefusalContentType",
       "type": "string"
     },
     "Response": {
@@ -2346,6 +2463,7 @@
         "tools",
         "top_p"
       ],
+      "title": "Response",
       "type": "object"
     },
     "ResponseAudioDeltaEvent": {
@@ -2363,12 +2481,14 @@
         "delta",
         "type"
       ],
+      "title": "ResponseAudioDeltaEvent",
       "type": "object"
     },
     "ResponseAudioDeltaEventType": {
       "enum": [
         "response.audio.delta"
       ],
+      "title": "ResponseAudioDeltaEventType",
       "type": "string"
     },
     "ResponseAudioDoneEvent": {
@@ -2382,12 +2502,14 @@
       "required": [
         "type"
       ],
+      "title": "ResponseAudioDoneEvent",
       "type": "object"
     },
     "ResponseAudioDoneEventType": {
       "enum": [
         "response.audio.done"
       ],
+      "title": "ResponseAudioDoneEventType",
       "type": "string"
     },
     "ResponseAudioTranscriptDeltaEvent": {
@@ -2405,12 +2527,14 @@
         "delta",
         "type"
       ],
+      "title": "ResponseAudioTranscriptDeltaEvent",
       "type": "object"
     },
     "ResponseAudioTranscriptDeltaEventType": {
       "enum": [
         "response.audio.transcript.delta"
       ],
+      "title": "ResponseAudioTranscriptDeltaEventType",
       "type": "string"
     },
     "ResponseAudioTranscriptDoneEvent": {
@@ -2424,12 +2548,14 @@
       "required": [
         "type"
       ],
+      "title": "ResponseAudioTranscriptDoneEvent",
       "type": "object"
     },
     "ResponseAudioTranscriptDoneEventType": {
       "enum": [
         "response.audio.transcript.done"
       ],
+      "title": "ResponseAudioTranscriptDoneEventType",
       "type": "string"
     },
     "ResponseCodeInterpreterCallCodeDeltaEvent": {
@@ -2451,12 +2577,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseCodeInterpreterCallCodeDeltaEvent",
       "type": "object"
     },
     "ResponseCodeInterpreterCallCodeDeltaEventType": {
       "enum": [
         "response.code_interpreter_call.code.delta"
       ],
+      "title": "ResponseCodeInterpreterCallCodeDeltaEventType",
       "type": "string"
     },
     "ResponseCodeInterpreterCallCodeDoneEvent": {
@@ -2478,12 +2606,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseCodeInterpreterCallCodeDoneEvent",
       "type": "object"
     },
     "ResponseCodeInterpreterCallCodeDoneEventType": {
       "enum": [
         "response.code_interpreter_call.code.done"
       ],
+      "title": "ResponseCodeInterpreterCallCodeDoneEventType",
       "type": "string"
     },
     "ResponseCodeInterpreterCallCompletedEvent": {
@@ -2505,12 +2635,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseCodeInterpreterCallCompletedEvent",
       "type": "object"
     },
     "ResponseCodeInterpreterCallCompletedEventType": {
       "enum": [
         "response.code_interpreter_call.completed"
       ],
+      "title": "ResponseCodeInterpreterCallCompletedEventType",
       "type": "string"
     },
     "ResponseCodeInterpreterCallInProgressEvent": {
@@ -2532,12 +2664,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseCodeInterpreterCallInProgressEvent",
       "type": "object"
     },
     "ResponseCodeInterpreterCallInProgressEventType": {
       "enum": [
         "response.code_interpreter_call.in_progress"
       ],
+      "title": "ResponseCodeInterpreterCallInProgressEventType",
       "type": "string"
     },
     "ResponseCodeInterpreterCallInterpretingEvent": {
@@ -2559,12 +2693,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseCodeInterpreterCallInterpretingEvent",
       "type": "object"
     },
     "ResponseCodeInterpreterCallInterpretingEventType": {
       "enum": [
         "response.code_interpreter_call.interpreting"
       ],
+      "title": "ResponseCodeInterpreterCallInterpretingEventType",
       "type": "string"
     },
     "ResponseCompletedEvent": {
@@ -2582,12 +2718,14 @@
         "response",
         "type"
       ],
+      "title": "ResponseCompletedEvent",
       "type": "object"
     },
     "ResponseCompletedEventType": {
       "enum": [
         "response.completed"
       ],
+      "title": "ResponseCompletedEventType",
       "type": "string"
     },
     "ResponseContentPartAddedEvent": {
@@ -2617,12 +2755,14 @@
         "part",
         "type"
       ],
+      "title": "ResponseContentPartAddedEvent",
       "type": "object"
     },
     "ResponseContentPartAddedEventType": {
       "enum": [
         "response.content_part.added"
       ],
+      "title": "ResponseContentPartAddedEventType",
       "type": "string"
     },
     "ResponseContentPartDoneEvent": {
@@ -2652,12 +2792,14 @@
         "part",
         "type"
       ],
+      "title": "ResponseContentPartDoneEvent",
       "type": "object"
     },
     "ResponseContentPartDoneEventType": {
       "enum": [
         "response.content_part.done"
       ],
+      "title": "ResponseContentPartDoneEventType",
       "type": "string"
     },
     "ResponseCreatedEvent": {
@@ -2675,12 +2817,14 @@
         "response",
         "type"
       ],
+      "title": "ResponseCreatedEvent",
       "type": "object"
     },
     "ResponseCreatedEventType": {
       "enum": [
         "response.created"
       ],
+      "title": "ResponseCreatedEventType",
       "type": "string"
     },
     "ResponseError": {
@@ -2698,6 +2842,7 @@
         "code",
         "message"
       ],
+      "title": "ResponseError",
       "type": "object"
     },
     "ResponseErrorCode": {
@@ -2721,6 +2866,7 @@
         "unsupported_image_media_type",
         "vector_store_timeout"
       ],
+      "title": "ResponseErrorCode",
       "type": "string"
     },
     "ResponseErrorEvent": {
@@ -2752,12 +2898,14 @@
         "param",
         "type"
       ],
+      "title": "ResponseErrorEvent",
       "type": "object"
     },
     "ResponseErrorEventType": {
       "enum": [
         "error"
       ],
+      "title": "ResponseErrorEventType",
       "type": "string"
     },
     "ResponseFailedEvent": {
@@ -2775,12 +2923,14 @@
         "response",
         "type"
       ],
+      "title": "ResponseFailedEvent",
       "type": "object"
     },
     "ResponseFailedEventType": {
       "enum": [
         "response.failed"
       ],
+      "title": "ResponseFailedEventType",
       "type": "string"
     },
     "ResponseFileSearchCallCompletedEvent": {
@@ -2802,12 +2952,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseFileSearchCallCompletedEvent",
       "type": "object"
     },
     "ResponseFileSearchCallCompletedEventType": {
       "enum": [
         "response.file_search_call.completed"
       ],
+      "title": "ResponseFileSearchCallCompletedEventType",
       "type": "string"
     },
     "ResponseFileSearchCallInProgressEvent": {
@@ -2829,12 +2981,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseFileSearchCallInProgressEvent",
       "type": "object"
     },
     "ResponseFileSearchCallInProgressEventType": {
       "enum": [
         "response.file_search_call.in_progress"
       ],
+      "title": "ResponseFileSearchCallInProgressEventType",
       "type": "string"
     },
     "ResponseFileSearchCallSearchingEvent": {
@@ -2856,12 +3010,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseFileSearchCallSearchingEvent",
       "type": "object"
     },
     "ResponseFileSearchCallSearchingEventType": {
       "enum": [
         "response.file_search_call.searching"
       ],
+      "title": "ResponseFileSearchCallSearchingEventType",
       "type": "string"
     },
     "ResponseFormatJsonObject": {
@@ -2875,12 +3031,14 @@
       "required": [
         "type"
       ],
+      "title": "ResponseFormatJsonObject",
       "type": "object"
     },
     "ResponseFormatJsonObjectType": {
       "enum": [
         "json_object"
       ],
+      "title": "ResponseFormatJsonObjectType",
       "type": "string"
     },
     "ResponseFormatJsonSchemaSchema": {
@@ -2898,12 +3056,14 @@
       "required": [
         "type"
       ],
+      "title": "ResponseFormatText",
       "type": "object"
     },
     "ResponseFormatTextType": {
       "enum": [
         "text"
       ],
+      "title": "ResponseFormatTextType",
       "type": "string"
     },
     "ResponseFunctionCallArgumentsDeltaEvent": {
@@ -2929,12 +3089,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseFunctionCallArgumentsDeltaEvent",
       "type": "object"
     },
     "ResponseFunctionCallArgumentsDeltaEventType": {
       "enum": [
         "response.function_call_arguments.delta"
       ],
+      "title": "ResponseFunctionCallArgumentsDeltaEventType",
       "type": "string"
     },
     "ResponseFunctionCallArgumentsDoneEvent": {
@@ -2960,12 +3122,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseFunctionCallArgumentsDoneEvent",
       "type": "object"
     },
     "ResponseFunctionCallArgumentsDoneEventType": {
       "enum": [
         "response.function_call_arguments.done"
       ],
+      "title": "ResponseFunctionCallArgumentsDoneEventType",
       "type": "string"
     },
     "ResponseInProgressEvent": {
@@ -2983,12 +3147,14 @@
         "response",
         "type"
       ],
+      "title": "ResponseInProgressEvent",
       "type": "object"
     },
     "ResponseInProgressEventType": {
       "enum": [
         "response.in_progress"
       ],
+      "title": "ResponseInProgressEventType",
       "type": "string"
     },
     "ResponseIncompleteDetails": {
@@ -3006,6 +3172,7 @@
           ]
         }
       },
+      "title": "ResponseIncompleteDetails",
       "type": "object"
     },
     "ResponseIncompleteDetailsReason": {
@@ -3013,6 +3180,7 @@
         "content_filter",
         "max_output_tokens"
       ],
+      "title": "ResponseIncompleteDetailsReason",
       "type": "string"
     },
     "ResponseIncompleteEvent": {
@@ -3030,12 +3198,14 @@
         "response",
         "type"
       ],
+      "title": "ResponseIncompleteEvent",
       "type": "object"
     },
     "ResponseIncompleteEventType": {
       "enum": [
         "response.incomplete"
       ],
+      "title": "ResponseIncompleteEventType",
       "type": "string"
     },
     "ResponseItemList": {
@@ -3068,18 +3238,21 @@
         "last_id",
         "object"
       ],
+      "title": "ResponseItemList",
       "type": "object"
     },
     "ResponseItemListObject": {
       "enum": [
         "list"
       ],
+      "title": "ResponseItemListObject",
       "type": "string"
     },
     "ResponseObject": {
       "enum": [
         "response"
       ],
+      "title": "ResponseObject",
       "type": "string"
     },
     "ResponseOutputItemAddedEvent": {
@@ -3101,12 +3274,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseOutputItemAddedEvent",
       "type": "object"
     },
     "ResponseOutputItemAddedEventType": {
       "enum": [
         "response.output_item.added"
       ],
+      "title": "ResponseOutputItemAddedEventType",
       "type": "string"
     },
     "ResponseOutputItemDoneEvent": {
@@ -3128,12 +3303,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseOutputItemDoneEvent",
       "type": "object"
     },
     "ResponseOutputItemDoneEventType": {
       "enum": [
         "response.output_item.done"
       ],
+      "title": "ResponseOutputItemDoneEventType",
       "type": "string"
     },
     "ResponseProperties": {
@@ -3196,6 +3373,7 @@
           ]
         }
       },
+      "title": "ResponseProperties",
       "type": "object"
     },
     "ResponsePropertiesText": {
@@ -3206,6 +3384,7 @@
           "$ref": "#/$defs/TextResponseFormatConfiguration"
         }
       },
+      "title": "ResponsePropertiesText",
       "type": "object"
     },
     "ResponsePropertiesTruncation": {
@@ -3213,6 +3392,7 @@
         "auto",
         "disabled"
       ],
+      "title": "ResponsePropertiesTruncation",
       "type": "string"
     },
     "ResponseReasoningSummaryPartAddedEvent": {
@@ -3242,6 +3422,7 @@
         "summary_index",
         "type"
       ],
+      "title": "ResponseReasoningSummaryPartAddedEvent",
       "type": "object"
     },
     "ResponseReasoningSummaryPartAddedEventPart": {
@@ -3259,18 +3440,21 @@
         "text",
         "type"
       ],
+      "title": "ResponseReasoningSummaryPartAddedEventPart",
       "type": "object"
     },
     "ResponseReasoningSummaryPartAddedEventPartType": {
       "enum": [
         "summary_text"
       ],
+      "title": "ResponseReasoningSummaryPartAddedEventPartType",
       "type": "string"
     },
     "ResponseReasoningSummaryPartAddedEventType": {
       "enum": [
         "response.reasoning_summary_part.added"
       ],
+      "title": "ResponseReasoningSummaryPartAddedEventType",
       "type": "string"
     },
     "ResponseReasoningSummaryPartDoneEvent": {
@@ -3300,6 +3484,7 @@
         "summary_index",
         "type"
       ],
+      "title": "ResponseReasoningSummaryPartDoneEvent",
       "type": "object"
     },
     "ResponseReasoningSummaryPartDoneEventPart": {
@@ -3317,18 +3502,21 @@
         "text",
         "type"
       ],
+      "title": "ResponseReasoningSummaryPartDoneEventPart",
       "type": "object"
     },
     "ResponseReasoningSummaryPartDoneEventPartType": {
       "enum": [
         "summary_text"
       ],
+      "title": "ResponseReasoningSummaryPartDoneEventPartType",
       "type": "string"
     },
     "ResponseReasoningSummaryPartDoneEventType": {
       "enum": [
         "response.reasoning_summary_part.done"
       ],
+      "title": "ResponseReasoningSummaryPartDoneEventType",
       "type": "string"
     },
     "ResponseReasoningSummaryTextDeltaEvent": {
@@ -3358,12 +3546,14 @@
         "summary_index",
         "type"
       ],
+      "title": "ResponseReasoningSummaryTextDeltaEvent",
       "type": "object"
     },
     "ResponseReasoningSummaryTextDeltaEventType": {
       "enum": [
         "response.reasoning_summary_text.delta"
       ],
+      "title": "ResponseReasoningSummaryTextDeltaEventType",
       "type": "string"
     },
     "ResponseReasoningSummaryTextDoneEvent": {
@@ -3393,12 +3583,14 @@
         "text",
         "type"
       ],
+      "title": "ResponseReasoningSummaryTextDoneEvent",
       "type": "object"
     },
     "ResponseReasoningSummaryTextDoneEventType": {
       "enum": [
         "response.reasoning_summary_text.done"
       ],
+      "title": "ResponseReasoningSummaryTextDoneEventType",
       "type": "string"
     },
     "ResponseRefusalDeltaEvent": {
@@ -3428,12 +3620,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseRefusalDeltaEvent",
       "type": "object"
     },
     "ResponseRefusalDeltaEventType": {
       "enum": [
         "response.refusal.delta"
       ],
+      "title": "ResponseRefusalDeltaEventType",
       "type": "string"
     },
     "ResponseRefusalDoneEvent": {
@@ -3463,12 +3657,14 @@
         "refusal",
         "type"
       ],
+      "title": "ResponseRefusalDoneEvent",
       "type": "object"
     },
     "ResponseRefusalDoneEventType": {
       "enum": [
         "response.refusal.done"
       ],
+      "title": "ResponseRefusalDoneEventType",
       "type": "string"
     },
     "ResponseStatus": {
@@ -3478,6 +3674,7 @@
         "in_progress",
         "incomplete"
       ],
+      "title": "ResponseStatus",
       "type": "string"
     },
     "ResponseStreamEvent": {
@@ -3601,6 +3798,7 @@
           "$ref": "#/$defs/TextResponseFormatConfiguration"
         }
       },
+      "title": "ResponseText",
       "type": "object"
     },
     "ResponseTextAnnotationDeltaEvent": {
@@ -3634,12 +3832,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseTextAnnotationDeltaEvent",
       "type": "object"
     },
     "ResponseTextAnnotationDeltaEventType": {
       "enum": [
         "response.output_text.annotation.added"
       ],
+      "title": "ResponseTextAnnotationDeltaEventType",
       "type": "string"
     },
     "ResponseTextDeltaEvent": {
@@ -3669,12 +3869,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseTextDeltaEvent",
       "type": "object"
     },
     "ResponseTextDeltaEventType": {
       "enum": [
         "response.output_text.delta"
       ],
+      "title": "ResponseTextDeltaEventType",
       "type": "string"
     },
     "ResponseTextDoneEvent": {
@@ -3704,12 +3906,14 @@
         "text",
         "type"
       ],
+      "title": "ResponseTextDoneEvent",
       "type": "object"
     },
     "ResponseTextDoneEventType": {
       "enum": [
         "response.output_text.done"
       ],
+      "title": "ResponseTextDoneEventType",
       "type": "string"
     },
     "ResponseTruncation": {
@@ -3717,6 +3921,7 @@
         "auto",
         "disabled"
       ],
+      "title": "ResponseTruncation",
       "type": "string"
     },
     "ResponseUsage": {
@@ -3746,6 +3951,7 @@
         "output_tokens_details",
         "total_tokens"
       ],
+      "title": "ResponseUsage",
       "type": "object"
     },
     "ResponseUsageInputTokensDetails": {
@@ -3759,6 +3965,7 @@
       "required": [
         "cached_tokens"
       ],
+      "title": "ResponseUsageInputTokensDetails",
       "type": "object"
     },
     "ResponseUsageOutputTokensDetails": {
@@ -3772,6 +3979,7 @@
       "required": [
         "reasoning_tokens"
       ],
+      "title": "ResponseUsageOutputTokensDetails",
       "type": "object"
     },
     "ResponseWebSearchCallCompletedEvent": {
@@ -3793,12 +4001,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseWebSearchCallCompletedEvent",
       "type": "object"
     },
     "ResponseWebSearchCallCompletedEventType": {
       "enum": [
         "response.web_search_call.completed"
       ],
+      "title": "ResponseWebSearchCallCompletedEventType",
       "type": "string"
     },
     "ResponseWebSearchCallInProgressEvent": {
@@ -3820,12 +4030,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseWebSearchCallInProgressEvent",
       "type": "object"
     },
     "ResponseWebSearchCallInProgressEventType": {
       "enum": [
         "response.web_search_call.in_progress"
       ],
+      "title": "ResponseWebSearchCallInProgressEventType",
       "type": "string"
     },
     "ResponseWebSearchCallSearchingEvent": {
@@ -3847,12 +4059,14 @@
         "output_index",
         "type"
       ],
+      "title": "ResponseWebSearchCallSearchingEvent",
       "type": "object"
     },
     "ResponseWebSearchCallSearchingEventType": {
       "enum": [
         "response.web_search_call.searching"
       ],
+      "title": "ResponseWebSearchCallSearchingEventType",
       "type": "string"
     },
     "Screenshot": {
@@ -3866,12 +4080,14 @@
       "required": [
         "type"
       ],
+      "title": "Screenshot",
       "type": "object"
     },
     "ScreenshotType": {
       "enum": [
         "screenshot"
       ],
+      "title": "ScreenshotType",
       "type": "string"
     },
     "Scroll": {
@@ -3901,12 +4117,14 @@
         "x",
         "y"
       ],
+      "title": "Scroll",
       "type": "object"
     },
     "ScrollType": {
       "enum": [
         "scroll"
       ],
+      "title": "ScrollType",
       "type": "string"
     },
     "ServiceTier": {
@@ -3915,6 +4133,7 @@
         "default",
         "flex"
       ],
+      "title": "ServiceTier",
       "type": "string"
     },
     "TextResponseFormatConfiguration": {
@@ -3962,12 +4181,14 @@
         "schema",
         "type"
       ],
+      "title": "TextResponseFormatJsonSchema",
       "type": "object"
     },
     "TextResponseFormatJsonSchemaType": {
       "enum": [
         "json_schema"
       ],
+      "title": "TextResponseFormatJsonSchemaType",
       "type": "string"
     },
     "Tool": {
@@ -4002,12 +4223,14 @@
         "name",
         "type"
       ],
+      "title": "ToolChoiceFunction",
       "type": "object"
     },
     "ToolChoiceFunctionType": {
       "enum": [
         "function"
       ],
+      "title": "ToolChoiceFunctionType",
       "type": "string"
     },
     "ToolChoiceOptions": {
@@ -4016,6 +4239,7 @@
         "none",
         "required"
       ],
+      "title": "ToolChoiceOptions",
       "type": "string"
     },
     "ToolChoiceTypes": {
@@ -4029,6 +4253,7 @@
       "required": [
         "type"
       ],
+      "title": "ToolChoiceTypes",
       "type": "object"
     },
     "ToolChoiceTypesType": {
@@ -4038,6 +4263,7 @@
         "web_search_preview",
         "web_search_preview_2025_03_11"
       ],
+      "title": "ToolChoiceTypesType",
       "type": "string"
     },
     "Type": {
@@ -4055,12 +4281,14 @@
         "text",
         "type"
       ],
+      "title": "Type",
       "type": "object"
     },
     "TypeType": {
       "enum": [
         "type"
       ],
+      "title": "TypeType",
       "type": "string"
     },
     "URLCitationBody": {
@@ -4090,12 +4318,14 @@
         "type",
         "url"
       ],
+      "title": "URLCitationBody",
       "type": "object"
     },
     "URLCitationBodyType": {
       "enum": [
         "url_citation"
       ],
+      "title": "URLCitationBodyType",
       "type": "string"
     },
     "VectorStoreFileAttributes": {
@@ -4113,12 +4343,14 @@
       "required": [
         "type"
       ],
+      "title": "Wait",
       "type": "object"
     },
     "WaitType": {
       "enum": [
         "wait"
       ],
+      "title": "WaitType",
       "type": "string"
     },
     "WebSearchPreviewTool": {
@@ -4152,6 +4384,7 @@
       "required": [
         "type"
       ],
+      "title": "WebSearchPreviewTool",
       "type": "object"
     },
     "WebSearchPreviewToolSearchContextSize": {
@@ -4160,6 +4393,7 @@
         "medium",
         "high"
       ],
+      "title": "WebSearchPreviewToolSearchContextSize",
       "type": "string"
     },
     "WebSearchPreviewToolType": {
@@ -4167,6 +4401,7 @@
         "web_search_preview",
         "web_search_preview_2025_03_11"
       ],
+      "title": "WebSearchPreviewToolType",
       "type": "string"
     },
     "WebSearchPreviewToolUserLocation": {
@@ -4203,6 +4438,7 @@
       "required": [
         "type"
       ],
+      "title": "WebSearchPreviewToolUserLocation",
       "type": "object"
     },
     "WebSearchToolCall": {
@@ -4224,6 +4460,7 @@
         "status",
         "type"
       ],
+      "title": "WebSearchToolCall",
       "type": "object"
     },
     "WebSearchToolCallStatus": {
@@ -4233,12 +4470,14 @@
         "completed",
         "failed"
       ],
+      "title": "WebSearchToolCallStatus",
       "type": "string"
     },
     "WebSearchToolCallType": {
       "enum": [
         "web_search_call"
       ],
+      "title": "WebSearchToolCallType",
       "type": "string"
     }
   },

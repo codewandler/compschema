@@ -17,6 +17,7 @@
         "type",
         "radius"
       ],
+      "title": "Circle",
       "type": "object"
     },
     "LineItem": {
@@ -36,6 +37,7 @@
         "sku",
         "qty"
       ],
+      "title": "LineItem",
       "type": "object"
     },
     "Order": {
@@ -67,6 +69,7 @@
         "items",
         "status"
       ],
+      "title": "Order",
       "type": "object"
     },
     "OrderStatus": {
@@ -76,6 +79,7 @@
         "confirmed",
         "shipped"
       ],
+      "title": "OrderStatus",
       "type": "string"
     },
     "Rectangle": {
@@ -100,6 +104,7 @@
         "width",
         "height"
       ],
+      "title": "Rectangle",
       "type": "object"
     },
     "Shape": {

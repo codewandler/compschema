@@ -4,7 +4,7 @@
 
 compschema generates JSON Schema documents, `Decode`, and `Validate` functions from Go types using static analysis (`go/ast` + `go/types`) — zero reflection at runtime.
 
-> **Status**: Early development. The OpenAPI → JSON Schema extraction pipeline and union code generation are functional. The core Go → JSON Schema generator is in design (see [PRD.md](PRD.md)).
+> **Status**: Working. `compschema generate` produces JSON Schema, `Validate`, `Decode`, and smoke tests from Go types. Validated against the OpenAI Responses API (261 types, 702 tests, 0 failures).
 
 ## Quick start
 
@@ -21,8 +21,14 @@ compschema schemas --spec openapi.yaml
 # Generate sealed interfaces for unions
 compschema uniongen --schema responses.schema.json --package myapi --out unions.gen.go --patch types.go
 
-# Generate from Go types (not yet implemented)
+# Generate JSON Schema + Validate + Decode + tests from Go types
 compschema generate ./...
+
+# Generate for all exported types (no annotation needed)
+compschema generate --all ./...
+
+# Compare two JSON Schemas
+compschema diff ground-truth.json generated.json
 ```
 
 ## CLI commands
@@ -105,7 +111,81 @@ Discriminators are detected from:
 
 ### `compschema generate`
 
-*Not yet implemented.* Will analyze Go packages via `go/ast` + `go/types` and emit JSON Schema + `Decode`/`Validate` functions.
+The core command. Analyzes Go packages via `go/ast` + `go/types`, builds a Schema IR, and emits three files:
+
+```bash
+# Generate for annotated types (//compschema:generate)
+compschema generate ./models/
+
+# Generate for all exported types
+compschema generate --all --validate --out ./models/ ./models/
+```
+
+| Flag | Description |
+|------|-------------|
+| `--all` | Analyze all exported types, not just `//compschema:generate` annotated |
+| `--validate` | Validate generated schema against JSON Schema meta-schema |
+| `--out` | Output directory (default: package source dir) |
+
+Generated files:
+
+| File | Contents |
+|------|----------|
+| `schema.gen.json` | JSON Schema (draft 2020-12) with all types as `$defs` |
+| `compschema.gen.go` | `JSONSchemaBytes()`, `Validate()`, `DecodeT()` per type |
+| `compschema.gen_test.go` | Smoke tests (schema validity, validation, round-trip) |
+
+Generated API per struct type:
+
+```go
+// Returns the $defs entry for this type (from go:embed, lazily cached)
+func (Order) JSONSchemaBytes() []byte
+
+// Validates raw JSON against the compiled schema (lazy sync.Once per type)
+func (Order) Validate(data []byte) error
+
+// Validate-then-unmarshal
+func DecodeOrder(data []byte) (Order, error)
+```
+
+All generated types implement the `compschema.Schema` interface:
+
+```go
+import "github.com/codewandler/compschema"
+
+func Handle[T compschema.Schema](data []byte) (T, error) {
+    var zero T
+    if err := zero.Validate(data); err != nil {
+        return zero, err
+    }
+    var result T
+    json.Unmarshal(data, &result)
+    return result, nil
+}
+```
+
+### `compschema diff`
+
+Structurally compares two JSON Schema documents and reports gaps.
+
+```bash
+compschema diff ground-truth.json generated.json
+```
+
+Output:
+```
+╔══════════════════════════════════════════════════╗
+║           JSON Schema Diff Report                ║
+╠══════════════════════════════════════════════════╣
+║  Keyword match rate:  69.4%                      ║
+║    Matched:           308                        ║
+║    Structural gaps:   121                        ║
+║    Annotation gaps:   58                         ║
+╚══════════════════════════════════════════════════╝
+```
+
+Classifies gaps as **structural** (affects validation) or **annotation** (metadata only).
+Uses order-insensitive comparison for `required`, `enum`, `oneOf` arrays.
 
 ## Pipeline
 
@@ -136,8 +216,8 @@ make pipeline
   JSON Schema:   136,083 bytes (124 $defs, meta-schema valid ✅)
   Go types:      292 declarations (112 structs, 153 enums)
   Unions:        12 sealed interfaces, 12 unmarshal functions
-  interface{}:   12 remaining (from 50 original — 76% reduction)
-  compschema:    not yet implemented
+  compschema:    261 types → 107KB schema → 702 tests (0 failures)
+  Diff:          69.4% keyword match rate
 ```
 
 ### Pipeline steps
@@ -148,8 +228,8 @@ make pipeline
 | Extract | `compschema extract --validate` | `responses.schema.json` (136KB, 124 `$defs`) |
 | Go structs | `go-jsonschema --only-models` | `types.go` (304 types, 112 structs) |
 | Unions | `compschema uniongen --patch` | `unions.gen.go` (12 sealed interfaces) + patched `types.go` |
-| Generate | `compschema generate` (TODO) | JSON Schema from Go types |
-| Diff | (TODO) | Completeness report |
+| Generate | `compschema generate --all` | `schema.gen.json` (107KB) + `compschema.gen.go` + tests |
+| Diff | `compschema diff` | 69.4% keyword match rate |
 
 ## Limitations
 
@@ -176,6 +256,55 @@ make pipeline
 - Go has no algebraic types / sum types — unions are represented as interfaces with marker methods.
 - `go-jsonschema` is a third-party tool with its own limitations — compschema's `generate` command will eventually replace this step entirely.
 - OpenAPI Schema Objects are a superset of JSON Schema — some information is lost or transformed during conversion.
+
+## `jsonschema` struct tag
+
+compschema reads the `jsonschema:"..."` struct tag (compatible with `invopop/jsonschema`) for validation constraints and metadata:
+
+```go
+type User struct {
+    Name  string `json:"name"  jsonschema:"minLength=1,description=The user's full name"`
+    Email string `json:"email" jsonschema:"format=email"`
+    Age   int    `json:"age"   jsonschema:"minimum=0,maximum=150"`
+}
+```
+
+### Supported keywords
+
+| Keyword | Example | JSON Schema output |
+|---------|---------|-------------------|
+| `minimum` | `minimum=0` | `"minimum": 0` |
+| `maximum` | `maximum=100` | `"maximum": 100` |
+| `exclusiveMinimum` | `exclusiveMinimum=0` | `"exclusiveMinimum": 0` |
+| `exclusiveMaximum` | `exclusiveMaximum=100` | `"exclusiveMaximum": 100` |
+| `multipleOf` | `multipleOf=5` | `"multipleOf": 5` |
+| `minLength` | `minLength=1` | `"minLength": 1` |
+| `maxLength` | `maxLength=255` | `"maxLength": 255` |
+| `pattern` | `pattern=^[a-z]+$` | `"pattern": "^[a-z]+$"` |
+| `format` | `format=email` | `"format": "email"` |
+| `minItems` | `minItems=1` | `"minItems": 1` |
+| `maxItems` | `maxItems=10` | `"maxItems": 10` |
+| `uniqueItems` | `uniqueItems` | `"uniqueItems": true` |
+| `minProperties` | `minProperties=1` | `"minProperties": 1` |
+| `maxProperties` | `maxProperties=10` | `"maxProperties": 10` |
+| `const` | `const=circle` | `"const": "circle"` |
+| `title` | `title=User Name` | `"title": "User Name"` |
+| `description` | `description=Full name` | `"description": "Full name"` |
+| `default` | `default=active` | `"default": "active"` |
+| `readOnly` | `readOnly` | `"readOnly": true` |
+| `writeOnly` | `writeOnly` | `"writeOnly": true` |
+| `deprecated` | `deprecated` | `"deprecated": true` |
+
+Enum types are detected automatically from `const` blocks — no tag needed:
+
+```go
+type Status string
+const (
+    StatusActive  Status = "active"
+    StatusPending Status = "pending"
+)
+// → {"type": "string", "enum": ["active", "pending"]}
+```
 
 ## OpenAPI → JSON Schema converter
 
@@ -300,27 +429,22 @@ Every field on the OpenAPI 3.x Schema Object is explicitly handled — either co
 ## Project layout
 
 ```
+schema.go                      compschema.Schema interface (importable)
 cmd/compschema/                CLI (cobra)
   main.go                      Root command
   extract.go                   extract + schemas subcommands
-  generate.go                  generate subcommand (stub)
+  generate.go                  generate subcommand
   uniongen.go                  uniongen subcommand
-internal/openapi2jsonschema/   OpenAPI → JSON Schema converter
-  converter.go                 Schema conversion (exhaustive field coverage)
-  validate.go                  Meta-schema validation (draft 2020-12)
-  validate_test.go             Validation tests
-internal/uniongen/             Union sealed interface generator
-  uniongen.go                  Schema analysis + Go code generation
-  patch.go                     Source patching (strip interface{} decls)
-  uniongen_test.go             Tests
-testdata/openai/               Round-trip pipeline test fixtures
-  openapi.yaml                 OpenAI OpenAPI spec (39,848 lines)
-  responses.schema.json        Extracted JSON Schema (136KB, 124 $defs)
-  generated/types.go           Generated Go structs (292 types)
-  generated/unions.gen.go      Generated sealed interfaces (12 unions)
-CHANGELOG.md                   Version history
-Makefile                       Pipeline orchestration
-PRD.md                         Project design document
+  diff.go                      diff subcommand
+internal/ir/                   Schema IR types
+internal/analyzer/              Go types → IR (go/packages + go/types)
+internal/emitter/               IR → JSON Schema + Go codegen + tests
+internal/openapi2jsonschema/    OpenAPI → JSON Schema converter
+internal/uniongen/              Union sealed interface generator
+internal/schemadiff/            JSON Schema structural diff
+examples/basic/                Basic example (Order, LineItem, Shape union)
+examples/openai/               OpenAI Responses API (261 types, 702 tests)
+testdata/openai/               Round-trip pipeline fixtures
 ```
 
 ## License
