@@ -472,13 +472,14 @@ func generateFixture(t *ir.Type, pkg *ir.Package) (string, bool) {
 		return "", false
 	}
 
+	visiting := make(map[string]bool)
 	feasible := true
 	fields := make(map[string]any)
 	for _, f := range t.Fields {
 		if !f.Required {
 			continue
 		}
-		val, ok := fieldZeroValue(f, pkg)
+		val, ok := fieldZeroValue(f, pkg, visiting)
 		if !ok {
 			feasible = false
 		}
@@ -493,7 +494,7 @@ func generateFixture(t *ir.Type, pkg *ir.Package) (string, bool) {
 }
 
 // fieldZeroValue produces a minimal valid value for a field.
-func fieldZeroValue(f ir.Field, pkg *ir.Package) (any, bool) {
+func fieldZeroValue(f ir.Field, pkg *ir.Package, visiting map[string]bool) (any, bool) {
 	// Check for const constraint.
 	for _, c := range f.Constraints {
 		if c.Keyword == "const" {
@@ -501,7 +502,7 @@ func fieldZeroValue(f ir.Field, pkg *ir.Package) (any, bool) {
 		}
 	}
 
-	val, feasible := typeRefZeroValue(f.Type, pkg)
+	val, feasible := typeRefZeroValue(f.Type, pkg, visiting)
 
 	// Apply constraints to adjust the zero value.
 	for _, c := range f.Constraints {
@@ -565,8 +566,14 @@ func toFloat(v any) (float64, bool) {
 	return 0, false
 }
 
-func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package) (any, bool) {
+func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package, visiting map[string]bool) (any, bool) {
 	if ref.Name != "" {
+		if visiting[ref.Name] {
+			return nil, false // cycle detected
+		}
+		visiting[ref.Name] = true
+		defer func() { delete(visiting, ref.Name) }()
+
 		if t, ok := pkg.Types[ref.Name]; ok {
 			switch t.Kind {
 			case ir.KindEnum:
@@ -579,7 +586,7 @@ func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package) (any, bool) {
 				feasible := true
 				for _, f := range t.Fields {
 					if f.Required {
-						v, ok := fieldZeroValue(f, pkg)
+						v, ok := fieldZeroValue(f, pkg, visiting)
 						if !ok {
 							feasible = false
 						}
@@ -616,13 +623,13 @@ func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package) (any, bool) {
 		return scalarZero(ref.Inline.ScalarType), true
 	case ir.KindList:
 		if ref.Inline.Items != nil {
-			item, ok := typeRefZeroValue(*ref.Inline.Items, pkg)
+			item, ok := typeRefZeroValue(*ref.Inline.Items, pkg, visiting)
 			return []any{item}, ok
 		}
 		return []any{}, true
 	case ir.KindNullable:
 		if ref.Inline.Inner != nil {
-			return typeRefZeroValue(*ref.Inline.Inner, pkg)
+			return typeRefZeroValue(*ref.Inline.Inner, pkg, visiting)
 		}
 		return nil, true
 	default:

@@ -52,6 +52,7 @@ func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 		pkg:       pkg,
 		irPkg:     ir.NewPackage(pkg.Name, pkg.PkgPath),
 		seen:      make(map[string]bool),
+		resolving: make(map[string]bool),
 		enumMap:   buildEnumMap(pkg),
 		fieldDocs: buildFieldDocMap(pkg),
 	}
@@ -78,9 +79,10 @@ func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 type pkgAnalyzer struct {
 	pkg       *packages.Package
 	irPkg     *ir.Package
-	seen      map[string]bool
-	enumMap   map[string][]any     // type name → const values
-	fieldDocs map[string]string    // "TypeName.FieldName" → doc comment
+	seen      map[string]bool    // for ensureType
+	resolving map[string]bool    // for resolveTypeRef cycle detection
+	enumMap   map[string][]any
+	fieldDocs map[string]string
 }
 
 // findAnnotatedTypes scans comments for //compschema:generate directives.
@@ -378,6 +380,13 @@ func (a *pkgAnalyzer) resolveTypeRef(typ types.Type) ir.TypeRef {
 	switch t := typ.(type) {
 	case *types.Named:
 		name := t.Obj().Name()
+		// Cycle detection: if we're already resolving this type, emit a ref.
+		if a.resolving[name] {
+			return ir.TypeRef{Name: name}
+		}
+		a.resolving[name] = true
+		defer func() { delete(a.resolving, name) }()
+
 		tn := t.Obj()
 		if tn.IsAlias() {
 			// Type alias (type X = Y) — resolve to the alias target.
@@ -394,12 +403,10 @@ func (a *pkgAnalyzer) resolveTypeRef(typ types.Type) ir.TypeRef {
 		}
 		// Ensure transitively referenced types are analyzed.
 		a.ensureType(name)
-		// Only use $ref if the type was actually added to the IR.
-		if _, exists := a.irPkg.Types[name]; exists {
-			return ir.TypeRef{Name: name}
-		}
-		// Couldn't add it — inline the underlying type.
-		return a.resolveTypeRef(t.Underlying())
+		// Use $ref regardless of whether the type was added.
+		// (Even if it wasn't added, e.g. interface{}, this prevents
+		// infinite recursion from self-referencing types.)
+		return ir.TypeRef{Name: name}
 
 	case *types.Pointer:
 		inner := a.resolveTypeRef(t.Elem())
