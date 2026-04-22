@@ -142,6 +142,35 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 			}
 		}
 
+		// Check if all variants are string-typed (enums/scalars) → collapse to single enum.
+		allString := true
+		var combinedEnums []any
+		for _, raw := range variants {
+			var vs schemaNode
+			json.Unmarshal(raw, &vs)
+			if vs.Ref != "" {
+				allString = false
+				break
+			}
+			vType := resolveType(vs.Type)
+			if vType != "string" {
+				allString = false
+				break
+			}
+			if len(vs.Enum) > 0 {
+				combinedEnums = append(combinedEnums, vs.Enum...)
+			}
+		}
+		if allString && len(combinedEnums) > 0 {
+			return &ir.Type{
+				Name:        name,
+				Kind:        ir.KindEnum,
+				EnumType:    "string",
+				EnumValues:  combinedEnums,
+				Description: s.Description,
+			}
+		}
+
 		t := &ir.Type{
 			Name:        name,
 			Kind:        ir.KindUnion,

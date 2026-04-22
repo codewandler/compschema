@@ -180,14 +180,14 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 	// Interface.
 	b.WriteString(fmt.Sprintf("//\n//compschema:generate\ntype %s interface {\n\t%s()\n}\n\n", goName, marker))
 
-	// Marker methods.
+	// Marker methods + wrapper types for primitives.
 	for _, v := range t.Variants {
 		vName := toGoName(v.Name)
-		if vName == "" {
-			continue
-		}
-		// Check if the variant type can have methods.
+
+		// Check if the variant can have methods directly.
 		canHaveMethods := true
+		primType := ""
+
 		if v.TypeRef.Name != "" {
 			if vt, ok := pkg.Types[v.TypeRef.Name]; ok {
 				if vt.Kind == ir.KindMap || vt.Kind == ir.KindList ||
@@ -197,16 +197,33 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 				}
 			}
 		} else if v.TypeRef.Inline != nil {
-			if v.TypeRef.Inline.Kind == ir.KindMap || v.TypeRef.Inline.Kind == ir.KindScalar {
+			switch v.TypeRef.Inline.Kind {
+			case ir.KindScalar:
+				canHaveMethods = false
+				primType = scalarGoType(v.TypeRef.Inline.ScalarType)
+			case ir.KindList:
+				canHaveMethods = false
+				primType = "[]" + typeRefGoType(v.TypeRef.Inline.Items, pkg)
+			case ir.KindMap:
 				canHaveMethods = false
 			}
 		}
-		if !canHaveMethods {
-			b.WriteString(fmt.Sprintf("// Note: %s cannot implement %s\n", vName, goName))
-			continue
+
+		if canHaveMethods && vName != "" {
+			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", vName, marker))
+		} else if primType != "" {
+			// Generate a wrapper struct for this primitive variant.
+			wrapperSuffix := toGoName(primType)
+			if vName != "" {
+				wrapperSuffix = vName
+			}
+			wrapperName := goName + wrapperSuffix
+			b.WriteString(fmt.Sprintf("\n// %s wraps a %s value as a %s variant.\n", wrapperName, primType, goName))
+			b.WriteString(fmt.Sprintf("type %s struct { Value %s }\n", wrapperName, primType))
+			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", wrapperName, marker))
 		}
-		b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", vName, marker))
 	}
+	b.WriteString("\n")
 }
 
 func buildJSONSchemaTag(constraints []ir.Constraint, description string) string {
@@ -314,9 +331,13 @@ func toGoName(s string) string {
 		return ""
 	}
 
+	// Clean characters that aren't valid in Go identifiers.
+	s = strings.ReplaceAll(s, "[]", "Slice")
+	s = strings.ReplaceAll(s, "*", "Ptr")
+
 	// Handle JSON names like "file_id" → "FileID"
 	parts := strings.FieldsFunc(s, func(r rune) bool {
-		return r == '_' || r == '-' || r == '.'
+		return r == '_' || r == '-' || r == '.' || r == '[' || r == ']'
 	})
 
 	var result strings.Builder
