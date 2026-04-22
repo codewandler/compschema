@@ -205,3 +205,91 @@ func TestCompschema_Shape_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
+func TestCompschema_ExamplesValidate(t *testing.T) {
+	tests := []struct {
+		name    string
+		example string
+	}{
+		{"LineItem", `{"qty":1,"sku":"ABC-123"}`},
+		{"Order", `{"id":"example","items":[{"qty":1,"sku":"ABC-123"}],"notes":"example","status":"pending"}`},
+		{"Circle", `{"radius":1,"type":"circle"}`},
+		{"Rectangle", `{"height":1,"type":"rectangle","width":1}`},
+		{"Shape", `{"radius":1,"type":"circle"}`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Verify example is valid JSON.
+			var v any
+			if err := json.Unmarshal([]byte(tt.example), &v); err != nil {
+				t.Fatalf("example is not valid JSON: %v", err)
+			}
+			// Validate against schema.
+			sch := compschemaValidator(tt.name)
+			if err := sch.Validate(v); err != nil {
+				t.Errorf("example failed validation: %v", err)
+			}
+		})
+	}
+}
+
+func TestCompschema_ExamplesDecode(t *testing.T) {
+	t.Run("LineItem", func(t *testing.T) {
+		data := []byte(`{"qty":1,"sku":"ABC-123"}`)
+		result, err := DecodeLineItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Order", func(t *testing.T) {
+		data := []byte(`{"id":"example","items":[{"qty":1,"sku":"ABC-123"}],"notes":"example","status":"pending"}`)
+		result, err := DecodeOrder(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Circle", func(t *testing.T) {
+		data := []byte(`{"radius":1,"type":"circle"}`)
+		result, err := DecodeCircle(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Rectangle", func(t *testing.T) {
+		data := []byte(`{"height":1,"type":"rectangle","width":1}`)
+		result, err := DecodeRectangle(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Shape", func(t *testing.T) {
+		data := []byte(`{"radius":1,"type":"circle"}`)
+		result, err := DecodeShape(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+}
+

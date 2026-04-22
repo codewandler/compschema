@@ -641,13 +641,21 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 		b.WriteString("}\n\n")
 	}
 
-	// Example validation tests — one table-driven test covering all types.
+	// Example validation + decode tests — table-driven, covering all types.
 	if opts.Examples {
 		b.WriteString("func TestCompschema_ExamplesValidate(t *testing.T) {\n")
 		b.WriteString("\ttests := []struct {\n")
 		b.WriteString("\t\tname    string\n")
 		b.WriteString("\t\texample string\n")
 		b.WriteString("\t}{\n")
+
+		// Collect types that have examples.
+		type exEntry struct {
+			name  string
+			json  string
+			t     *ir.Type
+		}
+		var entries []exEntry
 
 		for _, name := range pkg.Order {
 			if inlinedTypes[name] {
@@ -666,9 +674,9 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 			if err != nil {
 				continue
 			}
-			// Escape backticks in the JSON for raw string literals.
 			exStr := strings.ReplaceAll(string(exJSON), "`", "`+\"`\"+`")
 			b.WriteString(fmt.Sprintf("\t\t{%q, `%s`},\n", name, exStr))
+			entries = append(entries, exEntry{name, string(exJSON), t})
 		}
 
 		b.WriteString("\t}\n")
@@ -686,6 +694,45 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 		b.WriteString("\t\t\t}\n")
 		b.WriteString("\t\t})\n")
 		b.WriteString("\t}\n")
+		b.WriteString("}\n\n")
+
+		// Decode tests — one sub-test per type calling DecodeX.
+		b.WriteString("func TestCompschema_ExamplesDecode(t *testing.T) {\n")
+		for _, e := range entries {
+			exStr := strings.ReplaceAll(e.json, "`", "`+\"`\"+`")
+			b.WriteString(fmt.Sprintf("\tt.Run(%q, func(t *testing.T) {\n", e.name))
+			b.WriteString(fmt.Sprintf("\t\tdata := []byte(`%s`)\n", exStr))
+
+			switch e.t.Kind {
+			case ir.KindStruct:
+				if isWrapperType(e.t) {
+					b.WriteString("\t\t_ = data // wrapper type, skip decode\n")
+				} else {
+					b.WriteString(fmt.Sprintf("\t\tresult, err := Decode%s(data)\n", e.name))
+					b.WriteString("\t\tif err != nil {\n")
+					b.WriteString("\t\t\tt.Fatalf(\"Decode: %v\", err)\n")
+					b.WriteString("\t\t}\n")
+					b.WriteString("\t\treencoded, err := json.Marshal(result)\n")
+					b.WriteString("\t\tif err != nil {\n")
+					b.WriteString("\t\t\tt.Fatalf(\"re-marshal: %v\", err)\n")
+					b.WriteString("\t\t}\n")
+					b.WriteString("\t\t_ = reencoded\n")
+				}
+			case ir.KindUnion:
+				b.WriteString(fmt.Sprintf("\t\tresult, err := Decode%s(data)\n", e.name))
+				b.WriteString("\t\tif err != nil {\n")
+				b.WriteString("\t\t\tt.Fatalf(\"Decode: %v\", err)\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString("\t\tif result == nil {\n")
+				b.WriteString("\t\t\tt.Fatal(\"Decode returned nil\")\n")
+				b.WriteString("\t\t}\n")
+			default:
+				// Enum, scalar, etc. — no Decode function.
+				b.WriteString("\t\t_ = data\n")
+			}
+
+			b.WriteString("\t})\n")
+		}
 		b.WriteString("}\n\n")
 	}
 
