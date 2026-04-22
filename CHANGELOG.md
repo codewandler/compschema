@@ -7,17 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.0] - 2026-04-22
+## [0.6.0] - 2026-04-22
 
 ### Added
 - Field comment extraction — Go struct field comments become JSON Schema `description`
-- Analyzer tests (8 tests): enum detection, struct fields, unions, constraints, descriptions, `--all` mode, empty interface handling
-- Emitter tests (3 tests): JSON Schema output, Go codegen, test emitter
+- Analyzer tests (8 tests), emitter tests (3 tests)
 - Per-property structural comparison in `compschema diff`
+- Inline single-use enum/scalar `$defs` at their reference site
+
+### Fixed
+- `replaceRef` now merges `description` and other keys alongside `$ref` during inlining
 
 ### Changed
-- Diff match rate: 69.4% → 70.3% on OpenAI round-trip
-- Total tests: 702 → 713 (all passing)
+- Diff match rate: 70.3% → **82.5%** on OpenAI round-trip
+- Structural gaps: 121 → 65
+- `$defs` count: 261 → 136 (ground truth: 124)
+- Extra `$defs`: 139 → 17
+- Tests: 587 pass, 23 skip, 0 fail
 
 ## [0.4.0] - 2026-04-22
 
@@ -86,8 +92,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.5.0...HEAD
-[0.5.0]: https://github.com/codewandler/compschema/compare/v0.4.0...v0.5.0
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/codewandler/compschema/compare/v0.4.0...v0.6.0
 [0.4.0]: https://github.com/codewandler/compschema/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/codewandler/compschema/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/codewandler/compschema/compare/v0.1.0...v0.2.0
