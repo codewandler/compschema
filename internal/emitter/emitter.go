@@ -608,7 +608,7 @@ func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package, visiting map[string]bool)
 				return []any{}, true
 			}
 		}
-		return "", true
+		return nil, false // type not in IR, can't generate fixture
 	}
 
 	if ref.Inline == nil {
@@ -632,6 +632,8 @@ func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package, visiting map[string]bool)
 			return typeRefZeroValue(*ref.Inline.Inner, pkg, visiting)
 		}
 		return nil, true
+	case ir.KindMap:
+		return map[string]any{}, true
 	default:
 		return "", true
 	}
