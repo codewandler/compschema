@@ -30,20 +30,31 @@ func ParseBytes(data []byte) (*ir.Package, error) {
 		return nil, fmt.Errorf("parse schema: %w", err)
 	}
 
-	pkg := ir.NewPackage("schema", "")
-
+	// Pre-parse all defs for cross-reference resolution.
+	parsedDefs := make(map[string]*schemaNode)
 	for name, raw := range doc.Defs {
 		var s schemaNode
-		if err := json.Unmarshal(raw, &s); err != nil {
-			continue
+		if json.Unmarshal(raw, &s) == nil {
+			parsedDefs[name] = &s
 		}
-		t := convertNode(name, &s)
+	}
+
+	ctx := &parseContext{defs: parsedDefs}
+	pkg := ir.NewPackage("schema", "")
+
+	for name, s := range parsedDefs {
+		t := ctx.convertNode(name, s)
 		if t != nil {
 			pkg.Add(t)
 		}
 	}
 
 	return pkg, nil
+}
+
+// parseContext holds the full $defs for cross-reference resolution.
+type parseContext struct {
+	defs map[string]*schemaNode
 }
 
 // schemaNode is a minimal JSON Schema representation for parsing.
@@ -98,7 +109,7 @@ type discNode struct {
 	PropertyName string `json:"propertyName"`
 }
 
-func convertNode(name string, s *schemaNode) *ir.Type {
+func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 	if s == nil {
 		return nil
 	}
@@ -129,7 +140,7 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 				}
 				var inner schemaNode
 				json.Unmarshal(variants[nonNullIdx], &inner)
-				innerType := convertNode("", &inner)
+				innerType := ctx.convertNode("", &inner)
 				if innerType != nil {
 					ref := typeToRef(innerType)
 					return &ir.Type{
@@ -149,6 +160,20 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 			var vs schemaNode
 			json.Unmarshal(raw, &vs)
 			if vs.Ref != "" {
+				// Follow $ref to check if it's also a string enum.
+				refName := vs.Ref
+				if strings.HasPrefix(refName, "#/$defs/") {
+					refName = strings.TrimPrefix(refName, "#/$defs/")
+				}
+				if refDef, ok := ctx.defs[refName]; ok {
+					refType := resolveType(refDef.Type)
+					if refType == "string" || (len(refDef.Enum) > 0 && refType == "") {
+						if len(refDef.Enum) > 0 {
+							combinedEnums = append(combinedEnums, refDef.Enum...)
+						}
+						continue
+					}
+				}
 				allString = false
 				break
 			}
@@ -186,7 +211,7 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 		for _, raw := range variants {
 			var vs schemaNode
 			json.Unmarshal(raw, &vs)
-			vt := convertNode("", &vs)
+			vt := ctx.convertNode("", &vs)
 			if vt != nil {
 				v := ir.Variant{TypeRef: typeToRef(vt)}
 				if vt.Kind == ir.KindRef {
@@ -228,7 +253,7 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 		for propName, raw := range s.Properties {
 			var ps schemaNode
 			json.Unmarshal(raw, &ps)
-			propType := convertNode("", &ps)
+			propType := ctx.convertNode("", &ps)
 			ref := typeToRef(propType)
 
 			f := ir.Field{
@@ -251,7 +276,7 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 		if raw, err := json.Marshal(s.AdditionalProperties); err == nil {
 			var vs schemaNode
 			if json.Unmarshal(raw, &vs) == nil {
-				vt := convertNode("", &vs)
+				vt := ctx.convertNode("", &vs)
 				if vt != nil {
 					ref := typeToRef(vt)
 					t.MapValue = &ref
@@ -267,7 +292,7 @@ func convertNode(name string, s *schemaNode) *ir.Type {
 		if s.Items != nil {
 			var is schemaNode
 			json.Unmarshal(s.Items, &is)
-			it := convertNode("", &is)
+			it := ctx.convertNode("", &is)
 			if it != nil {
 				ref := typeToRef(it)
 				t.Items = &ref
