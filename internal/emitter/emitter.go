@@ -379,6 +379,9 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 
 			// Decode function with discriminator-based switch (if discriminated).
 			emitUnionDecode(&b, name, t, pkg)
+
+			// As function — type-safe variant extraction like errors.As.
+			emitUnionAs(&b, name)
 			continue
 		}
 		if t.Kind == ir.KindEnum || t.Kind == ir.KindScalar || t.Kind == ir.KindList || t.Kind == ir.KindMap {
@@ -421,6 +424,32 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 	}
 
 	return b.String()
+}
+
+// emitUnionAs generates a generic As function for type-safe variant extraction.
+// Works like errors.As: returns true and populates target if the union value
+// matches the target type.
+//
+// Generated:
+//
+//	func ShapeAs[T any](v Shape, target *T) bool
+func emitUnionAs(b *strings.Builder, name string) {
+	b.WriteString(fmt.Sprintf("// %sAs extracts a variant from a %s union value, like errors.As.\n", name, name))
+	b.WriteString(fmt.Sprintf("// Returns true and populates *target if v is of type *T.\n"))
+	b.WriteString(fmt.Sprintf("//\n"))
+	b.WriteString(fmt.Sprintf("// Usage:\n"))
+	b.WriteString(fmt.Sprintf("//\n"))
+	b.WriteString(fmt.Sprintf("//\tvar circle Circle\n"))
+	b.WriteString(fmt.Sprintf("//\tif %sAs(shape, &circle) {\n", name))
+	b.WriteString(fmt.Sprintf("//\t\t// circle is populated\n"))
+	b.WriteString(fmt.Sprintf("//\t}\n"))
+	b.WriteString(fmt.Sprintf("func %sAs[T any](v %s, target *T) bool {\n", name, name))
+	b.WriteString("\tt, ok := any(v).(*T)\n")
+	b.WriteString("\tif ok {\n")
+	b.WriteString("\t\t*target = *t\n")
+	b.WriteString("\t}\n")
+	b.WriteString("\treturn ok\n")
+	b.WriteString("}\n\n")
 }
 
 // emitUnionDecode generates a Decode function for a union type.
