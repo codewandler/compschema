@@ -15,6 +15,7 @@ func newGenerateCmd() *cobra.Command {
 	var (
 		outDir   string
 		validate bool
+		allTypes bool
 	)
 
 	cmd := &cobra.Command{
@@ -33,7 +34,7 @@ types annotated with //compschema:generate, and emit:
   compschema generate --out ./generated ./models/`,
 		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			pkgs, err := analyzer.Analyze(args...)
+			pkgs, err := analyzer.Analyze(allTypes, args...)
 			if err != nil {
 				return fmt.Errorf("analyze: %w", err)
 			}
@@ -98,6 +99,7 @@ types annotated with //compschema:generate, and emit:
 
 	cmd.Flags().StringVar(&outDir, "out", "", "output directory (default: package source dir)")
 	cmd.Flags().BoolVar(&validate, "validate", false, "validate generated schema against meta-schema")
+	cmd.Flags().BoolVar(&allTypes, "all", false, "analyze all exported types (not just annotated)")
 
 	return cmd
 }

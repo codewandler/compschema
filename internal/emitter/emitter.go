@@ -200,7 +200,7 @@ func GoCodegen(pkg *ir.Package) string {
 			b.WriteString(fmt.Sprintf("func %sJSONSchemaBytes() []byte { return compschemaDefBytes(%q) }\n\n", name, name))
 			continue
 		}
-		if t.Kind == ir.KindEnum {
+		if t.Kind == ir.KindEnum || t.Kind == ir.KindScalar || t.Kind == ir.KindList || t.Kind == ir.KindMap {
 			b.WriteString(fmt.Sprintf("// JSONSchemaBytes returns the JSON Schema for %s.\n", name))
 			b.WriteString(fmt.Sprintf("func (%s) JSONSchemaBytes() []byte { return compschemaDefBytes(%q) }\n\n", name, name))
 			continue

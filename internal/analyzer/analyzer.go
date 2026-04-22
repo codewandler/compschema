@@ -20,8 +20,8 @@ import (
 
 // Analyze loads and analyzes the given Go package patterns,
 // returning an IR Package for each Go package that contains
-// annotated types.
-func Analyze(patterns ...string) ([]*ir.Package, error) {
+// annotated types (or all exported types if allTypes is true).
+func Analyze(allTypes bool, patterns ...string) ([]*ir.Package, error) {
 	cfg := &packages.Config{
 		Mode: packages.NeedName |
 			packages.NeedTypes |
@@ -39,7 +39,7 @@ func Analyze(patterns ...string) ([]*ir.Package, error) {
 		if len(pkg.Errors) > 0 {
 			return nil, fmt.Errorf("package %s: %v", pkg.PkgPath, pkg.Errors[0])
 		}
-		irPkg := analyzePackage(pkg)
+		irPkg := analyzePackage(pkg, allTypes)
 		if irPkg != nil && len(irPkg.Types) > 0 {
 			result = append(result, irPkg)
 		}
@@ -47,7 +47,7 @@ func Analyze(patterns ...string) ([]*ir.Package, error) {
 	return result, nil
 }
 
-func analyzePackage(pkg *packages.Package) *ir.Package {
+func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 	a := &pkgAnalyzer{
 		pkg:     pkg,
 		irPkg:   ir.NewPackage(pkg.Name, pkg.PkgPath),
@@ -55,8 +55,13 @@ func analyzePackage(pkg *packages.Package) *ir.Package {
 		enumMap: buildEnumMap(pkg),
 	}
 
-	// Find annotated types.
-	roots := a.findAnnotatedTypes()
+	// Find root types.
+	var roots []string
+	if allTypes {
+		roots = a.findAllExportedTypes()
+	} else {
+		roots = a.findAnnotatedTypes()
+	}
 	if len(roots) == 0 {
 		return nil
 	}
@@ -100,6 +105,19 @@ func (a *pkgAnalyzer) findAnnotatedTypes() []string {
 	return names
 }
 
+// findAllExportedTypes returns all exported type names in the package.
+func (a *pkgAnalyzer) findAllExportedTypes() []string {
+	var names []string
+	scope := a.pkg.Types.Scope()
+	for _, name := range scope.Names() {
+		obj := scope.Lookup(name)
+		if _, ok := obj.(*types.TypeName); ok && obj.Exported() {
+			names = append(names, name)
+		}
+	}
+	return names
+}
+
 func hasAnnotation(cg *ast.CommentGroup) bool {
 	if cg == nil {
 		return false
@@ -128,6 +146,11 @@ func (a *pkgAnalyzer) ensureType(name string) {
 		return
 	}
 
+	// Skip type aliases (type X = Y) — methods would conflict.
+	if tn.IsAlias() {
+		return
+	}
+
 	t := a.convertType(name, tn.Type())
 	if t != nil {
 		a.irPkg.Add(t)
@@ -140,18 +163,36 @@ func (a *pkgAnalyzer) convertType(name string, typ types.Type) *ir.Type {
 	case *types.Struct:
 		return a.convertStruct(name, typ, t)
 	case *types.Interface:
+		if t.NumMethods() == 0 {
+			// Empty interface (interface{}/any) — treat as opaque.
+			return nil
+		}
 		return a.convertUnion(name, t)
 	case *types.Basic:
 		// Check if it's an enum.
 		if vals, ok := a.enumMap[name]; ok {
 			return a.convertEnum(name, t, vals)
 		}
-		// Named scalar type (type alias).
+		// Named scalar type.
 		return &ir.Type{
 			Name:       name,
 			Kind:       ir.KindScalar,
 			ScalarType: basicToScalar(t),
 		}
+	case *types.Map:
+		ref := a.resolveTypeRef(typ)
+		if ref.Inline != nil {
+			ref.Inline.Name = name
+			return ref.Inline
+		}
+		return nil
+	case *types.Slice:
+		ref := a.resolveTypeRef(typ)
+		if ref.Inline != nil {
+			ref.Inline.Name = name
+			return ref.Inline
+		}
+		return nil
 	default:
 		return nil
 	}
@@ -229,7 +270,7 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 	for _, scopeName := range scope.Names() {
 		obj := scope.Lookup(scopeName)
 		tn, ok := obj.(*types.TypeName)
-		if !ok || scopeName == name {
+		if !ok || scopeName == name || tn.IsAlias() {
 			continue
 		}
 
@@ -289,9 +330,28 @@ func (a *pkgAnalyzer) resolveTypeRef(typ types.Type) ir.TypeRef {
 	switch t := typ.(type) {
 	case *types.Named:
 		name := t.Obj().Name()
+		tn := t.Obj()
+		if tn.IsAlias() {
+			// Type alias (type X = Y) — resolve to the alias target.
+			// If the target is also a Named type, use its name as $ref.
+			if target, ok := types.Unalias(t).(*types.Named); ok {
+				targetName := target.Obj().Name()
+				a.ensureType(targetName)
+				if _, exists := a.irPkg.Types[targetName]; exists {
+					return ir.TypeRef{Name: targetName}
+				}
+			}
+			// Fallback: inline the underlying type.
+			return a.resolveTypeRef(t.Underlying())
+		}
 		// Ensure transitively referenced types are analyzed.
 		a.ensureType(name)
-		return ir.TypeRef{Name: name}
+		// Only use $ref if the type was actually added to the IR.
+		if _, exists := a.irPkg.Types[name]; exists {
+			return ir.TypeRef{Name: name}
+		}
+		// Couldn't add it — inline the underlying type.
+		return a.resolveTypeRef(t.Underlying())
 
 	case *types.Pointer:
 		inner := a.resolveTypeRef(t.Elem())

@@ -1,0 +1,4278 @@
+{
+  "$defs": {
+    "Annotation": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/FileCitationBody"
+        },
+        {
+          "$ref": "#/$defs/FilePath"
+        },
+        {
+          "$ref": "#/$defs/URLCitationBody"
+        }
+      ]
+    },
+    "ApproximateLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "city": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timezone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ApproximateLocationType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ApproximateLocationType": {
+      "enum": [
+        "approximate"
+      ],
+      "type": "string"
+    },
+    "Click": {
+      "additionalProperties": false,
+      "description": "A click action.",
+      "properties": {
+        "button": {
+          "$ref": "#/$defs/ClickButton"
+        },
+        "type": {
+          "$ref": "#/$defs/ClickType"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "button",
+        "type",
+        "x",
+        "y"
+      ],
+      "type": "object"
+    },
+    "ClickButton": {
+      "enum": [
+        "back",
+        "forward",
+        "left",
+        "right",
+        "wheel"
+      ],
+      "type": "string"
+    },
+    "ClickType": {
+      "enum": [
+        "click"
+      ],
+      "type": "string"
+    },
+    "CodeInterpreterFileOutput": {
+      "additionalProperties": false,
+      "description": "The output of a code interpreter tool call that is a file.",
+      "properties": {
+        "files": {
+          "items": {
+            "$ref": "#/$defs/CodeInterpreterFileOutputFilesElem"
+          },
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/CodeInterpreterFileOutputType"
+        }
+      },
+      "required": [
+        "files",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CodeInterpreterFileOutputFilesElem": {
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "type": "string"
+        },
+        "mime_type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "file_id",
+        "mime_type"
+      ],
+      "type": "object"
+    },
+    "CodeInterpreterFileOutputType": {
+      "enum": [
+        "files"
+      ],
+      "type": "string"
+    },
+    "CodeInterpreterTextOutput": {
+      "additionalProperties": false,
+      "description": "The output of a code interpreter tool call that is text.",
+      "properties": {
+        "logs": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/CodeInterpreterTextOutputType"
+        }
+      },
+      "required": [
+        "logs",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CodeInterpreterTextOutputType": {
+      "enum": [
+        "logs"
+      ],
+      "type": "string"
+    },
+    "CodeInterpreterToolCall": {
+      "additionalProperties": false,
+      "description": "A tool call to run code.",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "results": {
+          "items": {
+            "$ref": "#/$defs/CodeInterpreterToolOutput"
+          },
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/CodeInterpreterToolCallStatus"
+        },
+        "type": {
+          "$ref": "#/$defs/CodeInterpreterToolCallType"
+        }
+      },
+      "required": [
+        "code",
+        "id",
+        "results",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CodeInterpreterToolCallStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "interpreting"
+      ],
+      "type": "string"
+    },
+    "CodeInterpreterToolCallType": {
+      "enum": [
+        "code_interpreter_call"
+      ],
+      "type": "string"
+    },
+    "CodeInterpreterToolOutput": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/CodeInterpreterFileOutput"
+        },
+        {
+          "$ref": "#/$defs/CodeInterpreterTextOutput"
+        }
+      ]
+    },
+    "ComparisonFilter": {
+      "additionalProperties": false,
+      "description": "A filter used to compare a specified attribute key to a given value using a\ndefined comparison operation.",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ComparisonFilterType"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "type",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ComparisonFilterType": {
+      "enum": [
+        "eq",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "ne"
+      ],
+      "type": "string"
+    },
+    "CompoundFilter": {
+      "additionalProperties": false,
+      "description": "Combine multiple filters using `and` or `or`.",
+      "properties": {
+        "filters": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/CompoundFilterType"
+        }
+      },
+      "required": [
+        "filters",
+        "type"
+      ],
+      "type": "object"
+    },
+    "CompoundFilterType": {
+      "enum": [
+        "and",
+        "or"
+      ],
+      "type": "string"
+    },
+    "ComputerAction": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Click"
+        },
+        {
+          "$ref": "#/$defs/DoubleClick"
+        },
+        {
+          "$ref": "#/$defs/Drag"
+        },
+        {
+          "$ref": "#/$defs/KeyPress"
+        },
+        {
+          "$ref": "#/$defs/Move"
+        },
+        {
+          "$ref": "#/$defs/Screenshot"
+        },
+        {
+          "$ref": "#/$defs/Scroll"
+        },
+        {
+          "$ref": "#/$defs/Type"
+        },
+        {
+          "$ref": "#/$defs/Wait"
+        }
+      ]
+    },
+    "ComputerCallOutputItemParam": {
+      "additionalProperties": false,
+      "description": "The output of a computer tool call.",
+      "properties": {
+        "acknowledged_safety_checks": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ComputerCallOutputItemParamAcknowledgedSafetyChecks"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "output": {
+          "$ref": "#/$defs/ComputerScreenshotImage"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ComputerCallOutputItemParamStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerCallOutputItemParamType"
+        }
+      },
+      "required": [
+        "call_id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerCallOutputItemParamAcknowledgedSafetyChecks": {
+      "items": {
+        "$ref": "#/$defs/ComputerCallSafetyCheckParam"
+      },
+      "type": "array"
+    },
+    "ComputerCallOutputItemParamStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ComputerCallOutputItemParamType": {
+      "enum": [
+        "computer_call_output"
+      ],
+      "type": "string"
+    },
+    "ComputerCallSafetyCheckParam": {
+      "additionalProperties": false,
+      "description": "A pending safety check for the computer call.",
+      "properties": {
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "ComputerScreenshotImage": {
+      "additionalProperties": false,
+      "description": "A computer screenshot image used with the computer use tool.",
+      "properties": {
+        "file_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerScreenshotImageType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerScreenshotImageType": {
+      "enum": [
+        "computer_screenshot"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCall": {
+      "additionalProperties": false,
+      "description": "A tool call to a computer use tool. See the\n[computer use guide](/docs/guides/tools-computer-use) for more information.",
+      "properties": {
+        "action": {
+          "$ref": "#/$defs/ComputerAction"
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "pending_safety_checks": {
+          "items": {
+            "$ref": "#/$defs/ComputerToolCallSafetyCheck"
+          },
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/ComputerToolCallStatus"
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerToolCallType"
+        }
+      },
+      "required": [
+        "action",
+        "call_id",
+        "id",
+        "pending_safety_checks",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerToolCallOutput": {
+      "additionalProperties": false,
+      "description": "The output of a computer tool call.",
+      "properties": {
+        "acknowledged_safety_checks": {
+          "items": {
+            "$ref": "#/$defs/ComputerToolCallSafetyCheck"
+          },
+          "type": "array"
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "output": {
+          "$ref": "#/$defs/ComputerScreenshotImage"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ComputerToolCallOutputStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerToolCallOutputType"
+        }
+      },
+      "required": [
+        "call_id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerToolCallOutputResource": {
+      "additionalProperties": false,
+      "description": "The output of a computer tool call.",
+      "properties": {
+        "acknowledged_safety_checks": {
+          "items": {
+            "$ref": "#/$defs/ComputerToolCallSafetyCheck"
+          },
+          "type": "array"
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "output": {
+          "$ref": "#/$defs/ComputerScreenshotImage"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ComputerToolCallOutputResourceStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerToolCallOutputResourceType"
+        }
+      },
+      "required": [
+        "call_id",
+        "id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerToolCallOutputResourceStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCallOutputResourceType": {
+      "enum": [
+        "computer_call_output"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCallOutputStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCallOutputType": {
+      "enum": [
+        "computer_call_output"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCallSafetyCheck": {
+      "additionalProperties": false,
+      "description": "A pending safety check for the computer call.",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "id",
+        "message"
+      ],
+      "type": "object"
+    },
+    "ComputerToolCallStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ComputerToolCallType": {
+      "enum": [
+        "computer_call"
+      ],
+      "type": "string"
+    },
+    "ComputerUsePreviewTool": {
+      "additionalProperties": false,
+      "description": "A tool that controls a virtual computer. Learn more about the [computer\ntool](https://platform.openai.com/docs/guides/tools-computer-use).",
+      "properties": {
+        "display_height": {
+          "type": "integer"
+        },
+        "display_width": {
+          "type": "integer"
+        },
+        "environment": {
+          "$ref": "#/$defs/ComputerUsePreviewToolEnvironment"
+        },
+        "type": {
+          "$ref": "#/$defs/ComputerUsePreviewToolType"
+        }
+      },
+      "required": [
+        "display_height",
+        "display_width",
+        "environment",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ComputerUsePreviewToolEnvironment": {
+      "enum": [
+        "browser",
+        "linux",
+        "mac",
+        "ubuntu",
+        "windows"
+      ],
+      "type": "string"
+    },
+    "ComputerUsePreviewToolType": {
+      "enum": [
+        "computer_use_preview"
+      ],
+      "type": "string"
+    },
+    "Coordinate": {
+      "additionalProperties": false,
+      "description": "An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.",
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "type": "object"
+    },
+    "CreateModelResponseProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "service_tier": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceTier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "top_p": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "user": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "CreateResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "include": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CreateResponseInclude"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "input": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "model": {
+          "type": "string"
+        },
+        "parallel_tool_calls": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "previous_response_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reasoning": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Reasoning"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "service_tier": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceTier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "store": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "stream": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "text": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CreateResponseText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/Tool"
+          },
+          "type": "array"
+        },
+        "top_p": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "truncation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CreateResponseTruncation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "input",
+        "model"
+      ],
+      "type": "object"
+    },
+    "CreateResponseInclude": {
+      "items": {
+        "$ref": "#/$defs/Includable"
+      },
+      "type": "array"
+    },
+    "CreateResponseText": {
+      "additionalProperties": false,
+      "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "properties": {
+        "format": {
+          "$ref": "#/$defs/TextResponseFormatConfiguration"
+        }
+      },
+      "type": "object"
+    },
+    "CreateResponseTruncation": {
+      "enum": [
+        "auto",
+        "disabled"
+      ],
+      "type": "string"
+    },
+    "DoubleClick": {
+      "additionalProperties": false,
+      "description": "A double click action.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/DoubleClickType"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type",
+        "x",
+        "y"
+      ],
+      "type": "object"
+    },
+    "DoubleClickType": {
+      "enum": [
+        "double_click"
+      ],
+      "type": "string"
+    },
+    "Drag": {
+      "additionalProperties": false,
+      "description": "A drag action.",
+      "properties": {
+        "path": {
+          "items": {
+            "$ref": "#/$defs/Coordinate"
+          },
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/DragType"
+        }
+      },
+      "required": [
+        "path",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DragType": {
+      "enum": [
+        "drag"
+      ],
+      "type": "string"
+    },
+    "EasyInputMessage": {
+      "additionalProperties": false,
+      "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the `developer` or `system` role take\nprecedence over instructions given with the `user` role. Messages with the\n`assistant` role are presumed to have been generated by the model in previous\ninteractions.",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/EasyInputMessageRole"
+        },
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EasyInputMessageType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "content",
+        "role"
+      ],
+      "type": "object"
+    },
+    "EasyInputMessageRole": {
+      "enum": [
+        "assistant",
+        "developer",
+        "system",
+        "user"
+      ],
+      "type": "string"
+    },
+    "EasyInputMessageType": {
+      "enum": [
+        "message"
+      ],
+      "type": "string"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "param": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "param",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FileCitationBody": {
+      "additionalProperties": false,
+      "description": "A citation to a file.",
+      "properties": {
+        "file_id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/FileCitationBodyType"
+        }
+      },
+      "required": [
+        "file_id",
+        "index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FileCitationBodyType": {
+      "enum": [
+        "file_citation"
+      ],
+      "type": "string"
+    },
+    "FilePath": {
+      "additionalProperties": false,
+      "description": "A path to a file.",
+      "properties": {
+        "file_id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/FilePathType"
+        }
+      },
+      "required": [
+        "file_id",
+        "index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FilePathType": {
+      "enum": [
+        "file_path"
+      ],
+      "type": "string"
+    },
+    "FileSearchTool": {
+      "additionalProperties": false,
+      "description": "A tool that searches for relevant content from uploaded files. Learn more about\nthe [file search\ntool](https://platform.openai.com/docs/guides/tools-file-search).",
+      "properties": {
+        "filters": {
+          "type": "string"
+        },
+        "max_num_results": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "ranking_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/RankingOptions"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FileSearchToolType"
+        },
+        "vector_store_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "vector_store_ids"
+      ],
+      "type": "object"
+    },
+    "FileSearchToolCall": {
+      "additionalProperties": false,
+      "description": "The results of a file search tool call. See the\n[file search guide](/docs/guides/tools-file-search) for more information.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "queries": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "results": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FileSearchToolCallResults"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/FileSearchToolCallStatus"
+        },
+        "type": {
+          "$ref": "#/$defs/FileSearchToolCallType"
+        }
+      },
+      "required": [
+        "id",
+        "queries",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FileSearchToolCallResults": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "FileSearchToolCallStatus": {
+      "enum": [
+        "completed",
+        "failed",
+        "in_progress",
+        "incomplete",
+        "searching"
+      ],
+      "type": "string"
+    },
+    "FileSearchToolCallType": {
+      "enum": [
+        "file_search_call"
+      ],
+      "type": "string"
+    },
+    "FileSearchToolType": {
+      "enum": [
+        "file_search"
+      ],
+      "type": "string"
+    },
+    "Filters": {
+      "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ComparisonFilter"
+        },
+        {
+          "$ref": "#/$defs/CompoundFilter"
+        }
+      ]
+    },
+    "FunctionCallOutputItemParam": {
+      "additionalProperties": false,
+      "description": "The output of a function tool call.",
+      "properties": {
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "output": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionCallOutputItemParamStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionCallOutputItemParamType"
+        }
+      },
+      "required": [
+        "call_id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionCallOutputItemParamStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "FunctionCallOutputItemParamType": {
+      "enum": [
+        "function_call_output"
+      ],
+      "type": "string"
+    },
+    "FunctionTool": {
+      "additionalProperties": false,
+      "description": "Defines a function in your own code the model can choose to call. Learn more\nabout [function\ncalling](https://platform.openai.com/docs/guides/function-calling).",
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "parameters": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionToolParameters"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "strict": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionToolType"
+        }
+      },
+      "required": [
+        "name",
+        "parameters",
+        "strict",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionToolCall": {
+      "additionalProperties": false,
+      "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
+      "properties": {
+        "arguments": {
+          "type": "string"
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionToolCallStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionToolCallType"
+        }
+      },
+      "required": [
+        "arguments",
+        "call_id",
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionToolCallOutput": {
+      "additionalProperties": false,
+      "description": "The output of a function tool call.",
+      "properties": {
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "output": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionToolCallOutputStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionToolCallOutputType"
+        }
+      },
+      "required": [
+        "call_id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionToolCallOutputResource": {
+      "additionalProperties": false,
+      "description": "The output of a function tool call.",
+      "properties": {
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionToolCallOutputResourceStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionToolCallOutputResourceType"
+        }
+      },
+      "required": [
+        "call_id",
+        "id",
+        "output",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionToolCallOutputResourceStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallOutputResourceType": {
+      "enum": [
+        "function_call_output"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallOutputStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallOutputType": {
+      "enum": [
+        "function_call_output"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallResource": {
+      "additionalProperties": false,
+      "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
+      "properties": {
+        "arguments": {
+          "type": "string"
+        },
+        "call_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FunctionToolCallResourceStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/FunctionToolCallResourceType"
+        }
+      },
+      "required": [
+        "arguments",
+        "call_id",
+        "id",
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FunctionToolCallResourceStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallResourceType": {
+      "enum": [
+        "function_call"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "FunctionToolCallType": {
+      "enum": [
+        "function_call"
+      ],
+      "type": "string"
+    },
+    "FunctionToolParameters": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "FunctionToolType": {
+      "enum": [
+        "function"
+      ],
+      "type": "string"
+    },
+    "Includable": {
+      "enum": [
+        "computer_call_output.output.image_url",
+        "file_search_call.results",
+        "message.input_image.image_url"
+      ],
+      "type": "string"
+    },
+    "InputContent": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/InputFileContent"
+        },
+        {
+          "$ref": "#/$defs/InputImageContent"
+        },
+        {
+          "$ref": "#/$defs/InputTextContent"
+        }
+      ]
+    },
+    "InputFileContent": {
+      "additionalProperties": false,
+      "description": "A file input to the model.",
+      "properties": {
+        "file_data": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "file_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "filename": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/InputFileContentType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "InputFileContentType": {
+      "enum": [
+        "input_file"
+      ],
+      "type": "string"
+    },
+    "InputImageContent": {
+      "additionalProperties": false,
+      "description": "An image input to the model. Learn about [image inputs](/docs/guides/vision).",
+      "properties": {
+        "detail": {
+          "$ref": "#/$defs/InputImageContentDetail"
+        },
+        "file_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/InputImageContentType"
+        }
+      },
+      "required": [
+        "detail",
+        "type"
+      ],
+      "type": "object"
+    },
+    "InputImageContentDetail": {
+      "enum": [
+        "auto",
+        "high",
+        "low"
+      ],
+      "type": "string"
+    },
+    "InputImageContentType": {
+      "enum": [
+        "input_image"
+      ],
+      "type": "string"
+    },
+    "InputItem": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EasyInputMessage"
+        },
+        {
+          "$ref": "#/$defs/Item"
+        },
+        {
+          "$ref": "#/$defs/ItemReferenceParam"
+        }
+      ]
+    },
+    "InputMessage": {
+      "additionalProperties": false,
+      "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the `developer` or `system` role take\nprecedence over instructions given with the `user` role.",
+      "properties": {
+        "content": {
+          "$ref": "#/$defs/InputMessageContentList"
+        },
+        "role": {
+          "$ref": "#/$defs/InputMessageRole"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/InputMessageStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/InputMessageType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "content",
+        "role"
+      ],
+      "type": "object"
+    },
+    "InputMessageContentList": {
+      "items": {
+        "$ref": "#/$defs/InputContent"
+      },
+      "type": "array"
+    },
+    "InputMessageResource": {
+      "additionalProperties": false,
+      "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the `developer` or `system` role take\nprecedence over instructions given with the `user` role.",
+      "properties": {
+        "content": {
+          "$ref": "#/$defs/InputMessageContentList"
+        },
+        "id": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/InputMessageResourceRole"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/InputMessageResourceStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/InputMessageResourceType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "content",
+        "id",
+        "role"
+      ],
+      "type": "object"
+    },
+    "InputMessageResourceRole": {
+      "enum": [
+        "developer",
+        "system",
+        "user"
+      ],
+      "type": "string"
+    },
+    "InputMessageResourceStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "InputMessageResourceType": {
+      "enum": [
+        "message"
+      ],
+      "type": "string"
+    },
+    "InputMessageRole": {
+      "enum": [
+        "developer",
+        "system",
+        "user"
+      ],
+      "type": "string"
+    },
+    "InputMessageStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "InputMessageType": {
+      "enum": [
+        "message"
+      ],
+      "type": "string"
+    },
+    "InputTextContent": {
+      "additionalProperties": false,
+      "description": "A text input to the model.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/InputTextContentType"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "InputTextContentType": {
+      "enum": [
+        "input_text"
+      ],
+      "type": "string"
+    },
+    "Item": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "ItemReferenceParam": {
+      "additionalProperties": false,
+      "description": "An internal identifier for an item to reference.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ItemReferenceParamType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "ItemReferenceParamType": {
+      "enum": [
+        "item_reference"
+      ],
+      "type": "string"
+    },
+    "ItemResource": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ComputerToolCall"
+        },
+        {
+          "$ref": "#/$defs/ComputerToolCallOutputResource"
+        },
+        {
+          "$ref": "#/$defs/FileSearchToolCall"
+        },
+        {
+          "$ref": "#/$defs/FunctionToolCallOutputResource"
+        },
+        {
+          "$ref": "#/$defs/FunctionToolCallResource"
+        },
+        {
+          "$ref": "#/$defs/InputMessageResource"
+        },
+        {
+          "$ref": "#/$defs/OutputMessage"
+        },
+        {
+          "$ref": "#/$defs/WebSearchToolCall"
+        }
+      ]
+    },
+    "KeyPress": {
+      "additionalProperties": false,
+      "description": "Content item used to generate a response.\nA collection of keypresses the model would like to perform.",
+      "properties": {
+        "keys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/KeyPressType"
+        }
+      },
+      "required": [
+        "keys",
+        "type"
+      ],
+      "type": "object"
+    },
+    "KeyPressType": {
+      "enum": [
+        "keypress"
+      ],
+      "type": "string"
+    },
+    "Metadata": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "ModelIdsShared": {
+      "type": "string"
+    },
+    "ModelResponseProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "service_tier": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceTier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "top_p": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "user": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "Move": {
+      "additionalProperties": false,
+      "description": "A mouse move action.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/MoveType"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type",
+        "x",
+        "y"
+      ],
+      "type": "object"
+    },
+    "MoveType": {
+      "enum": [
+        "move"
+      ],
+      "type": "string"
+    },
+    "OutputContent": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/OutputTextContent"
+        },
+        {
+          "$ref": "#/$defs/RefusalContent"
+        }
+      ]
+    },
+    "OutputItem": {
+      "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ComputerToolCall"
+        },
+        {
+          "$ref": "#/$defs/FileSearchToolCall"
+        },
+        {
+          "$ref": "#/$defs/FunctionToolCall"
+        },
+        {
+          "$ref": "#/$defs/OutputMessage"
+        },
+        {
+          "$ref": "#/$defs/ReasoningItem"
+        },
+        {
+          "$ref": "#/$defs/WebSearchToolCall"
+        }
+      ]
+    },
+    "OutputMessage": {
+      "additionalProperties": false,
+      "description": "An output message from the model.",
+      "properties": {
+        "content": {
+          "items": {
+            "$ref": "#/$defs/OutputContent"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/OutputMessageRole"
+        },
+        "status": {
+          "$ref": "#/$defs/OutputMessageStatus"
+        },
+        "type": {
+          "$ref": "#/$defs/OutputMessageType"
+        }
+      },
+      "required": [
+        "content",
+        "id",
+        "role",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "OutputMessageRole": {
+      "enum": [
+        "assistant"
+      ],
+      "type": "string"
+    },
+    "OutputMessageStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "OutputMessageType": {
+      "enum": [
+        "message"
+      ],
+      "type": "string"
+    },
+    "OutputTextContent": {
+      "additionalProperties": false,
+      "description": "A text output from the model.",
+      "properties": {
+        "annotations": {
+          "items": {
+            "$ref": "#/$defs/Annotation"
+          },
+          "type": "array"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/OutputTextContentType"
+        }
+      },
+      "required": [
+        "annotations",
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "OutputTextContentType": {
+      "enum": [
+        "output_text"
+      ],
+      "type": "string"
+    },
+    "RankingOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "ranker": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/RankingOptionsRanker"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "score_threshold": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RankingOptionsRanker": {
+      "enum": [
+        "auto",
+        "default-2024-11-15"
+      ],
+      "type": "string"
+    },
+    "Reasoning": {
+      "additionalProperties": false,
+      "description": "**o-series models only**\n\nConfiguration options for\n[reasoning models](https://platform.openai.com/docs/guides/reasoning).",
+      "properties": {
+        "effort": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ReasoningEffort"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "generate_summary": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ReasoningGenerateSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ReasoningSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ReasoningEffort": {
+      "enum": [
+        "high",
+        "low",
+        "medium"
+      ],
+      "type": "string"
+    },
+    "ReasoningGenerateSummary": {
+      "enum": [
+        "auto",
+        "concise",
+        "detailed"
+      ],
+      "type": "string"
+    },
+    "ReasoningItem": {
+      "additionalProperties": false,
+      "description": "A description of the chain of thought used by a reasoning model while generating\na response.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ReasoningItemStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "items": {
+            "$ref": "#/$defs/ReasoningItemSummaryElem"
+          },
+          "type": "array"
+        },
+        "type": {
+          "$ref": "#/$defs/ReasoningItemType"
+        }
+      },
+      "required": [
+        "id",
+        "summary",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ReasoningItemStatus": {
+      "enum": [
+        "completed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ReasoningItemSummaryElem": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ReasoningItemSummaryElemType"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ReasoningItemSummaryElemType": {
+      "enum": [
+        "summary_text"
+      ],
+      "type": "string"
+    },
+    "ReasoningItemType": {
+      "enum": [
+        "reasoning"
+      ],
+      "type": "string"
+    },
+    "ReasoningSummary": {
+      "enum": [
+        "auto",
+        "concise",
+        "detailed"
+      ],
+      "type": "string"
+    },
+    "RefusalContent": {
+      "additionalProperties": false,
+      "description": "A refusal from the model.",
+      "properties": {
+        "refusal": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/RefusalContentType"
+        }
+      },
+      "required": [
+        "refusal",
+        "type"
+      ],
+      "type": "object"
+    },
+    "RefusalContentType": {
+      "enum": [
+        "refusal"
+      ],
+      "type": "string"
+    },
+    "Response": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "type": "number"
+        },
+        "error": {
+          "$ref": "#/$defs/ResponseError"
+        },
+        "id": {
+          "type": "string"
+        },
+        "incomplete_details": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseIncompleteDetails"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "instructions": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "model": {
+          "type": "string"
+        },
+        "object": {
+          "$ref": "#/$defs/ResponseObject"
+        },
+        "output": {
+          "items": {
+            "$ref": "#/$defs/OutputItem"
+          },
+          "type": "array"
+        },
+        "output_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parallel_tool_calls": {
+          "type": "boolean"
+        },
+        "previous_response_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reasoning": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Reasoning"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "service_tier": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServiceTier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "text": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/Tool"
+          },
+          "type": "array"
+        },
+        "top_p": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "truncation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseTruncation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "usage": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseUsage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "created_at",
+        "error",
+        "id",
+        "incomplete_details",
+        "instructions",
+        "metadata",
+        "model",
+        "object",
+        "output",
+        "parallel_tool_calls",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "top_p"
+      ],
+      "type": "object"
+    },
+    "ResponseAudioDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when there is a partial audio response.",
+      "properties": {
+        "delta": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseAudioDeltaEventType"
+        }
+      },
+      "required": [
+        "delta",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseAudioDeltaEventType": {
+      "enum": [
+        "response.audio.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseAudioDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the audio response is complete.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ResponseAudioDoneEventType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseAudioDoneEventType": {
+      "enum": [
+        "response.audio.done"
+      ],
+      "type": "string"
+    },
+    "ResponseAudioTranscriptDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when there is a partial transcript of audio.",
+      "properties": {
+        "delta": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseAudioTranscriptDeltaEventType"
+        }
+      },
+      "required": [
+        "delta",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseAudioTranscriptDeltaEventType": {
+      "enum": [
+        "response.audio.transcript.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseAudioTranscriptDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the full audio transcript is completed.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ResponseAudioTranscriptDoneEventType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseAudioTranscriptDoneEventType": {
+      "enum": [
+        "response.audio.transcript.done"
+      ],
+      "type": "string"
+    },
+    "ResponseCodeInterpreterCallCodeDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a partial code snippet is added by the code interpreter.",
+      "properties": {
+        "delta": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDeltaEventType"
+        }
+      },
+      "required": [
+        "delta",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCodeInterpreterCallCodeDeltaEventType": {
+      "enum": [
+        "response.code_interpreter_call.code.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseCodeInterpreterCallCodeDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when code snippet output is finalized by the code interpreter.",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDoneEventType"
+        }
+      },
+      "required": [
+        "code",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCodeInterpreterCallCodeDoneEventType": {
+      "enum": [
+        "response.code_interpreter_call.code.done"
+      ],
+      "type": "string"
+    },
+    "ResponseCodeInterpreterCallCompletedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the code interpreter call is completed.",
+      "properties": {
+        "code_interpreter_call": {
+          "$ref": "#/$defs/CodeInterpreterToolCall"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCompletedEventType"
+        }
+      },
+      "required": [
+        "code_interpreter_call",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCodeInterpreterCallCompletedEventType": {
+      "enum": [
+        "response.code_interpreter_call.completed"
+      ],
+      "type": "string"
+    },
+    "ResponseCodeInterpreterCallInProgressEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a code interpreter call is in progress.",
+      "properties": {
+        "code_interpreter_call": {
+          "$ref": "#/$defs/CodeInterpreterToolCall"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInProgressEventType"
+        }
+      },
+      "required": [
+        "code_interpreter_call",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCodeInterpreterCallInProgressEventType": {
+      "enum": [
+        "response.code_interpreter_call.in_progress"
+      ],
+      "type": "string"
+    },
+    "ResponseCodeInterpreterCallInterpretingEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the code interpreter is actively interpreting the code snippet.",
+      "properties": {
+        "code_interpreter_call": {
+          "$ref": "#/$defs/CodeInterpreterToolCall"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInterpretingEventType"
+        }
+      },
+      "required": [
+        "code_interpreter_call",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCodeInterpreterCallInterpretingEventType": {
+      "enum": [
+        "response.code_interpreter_call.interpreting"
+      ],
+      "type": "string"
+    },
+    "ResponseCompletedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the model response is complete.",
+      "properties": {
+        "response": {
+          "$ref": "#/$defs/Response"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCompletedEventType"
+        }
+      },
+      "required": [
+        "response",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCompletedEventType": {
+      "enum": [
+        "response.completed"
+      ],
+      "type": "string"
+    },
+    "ResponseContentPartAddedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a new content part is added.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "part": {
+          "$ref": "#/$defs/OutputContent"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseContentPartAddedEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "item_id",
+        "output_index",
+        "part",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseContentPartAddedEventType": {
+      "enum": [
+        "response.content_part.added"
+      ],
+      "type": "string"
+    },
+    "ResponseContentPartDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a content part is done.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "part": {
+          "$ref": "#/$defs/OutputContent"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseContentPartDoneEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "item_id",
+        "output_index",
+        "part",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseContentPartDoneEventType": {
+      "enum": [
+        "response.content_part.done"
+      ],
+      "type": "string"
+    },
+    "ResponseCreatedEvent": {
+      "additionalProperties": false,
+      "description": "An event that is emitted when a response is created.",
+      "properties": {
+        "response": {
+          "$ref": "#/$defs/Response"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseCreatedEventType"
+        }
+      },
+      "required": [
+        "response",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseCreatedEventType": {
+      "enum": [
+        "response.created"
+      ],
+      "type": "string"
+    },
+    "ResponseError": {
+      "additionalProperties": false,
+      "description": "An error object returned when the model fails to generate a Response.",
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/ResponseErrorCode"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "type": "object"
+    },
+    "ResponseErrorCode": {
+      "enum": [
+        "empty_image_file",
+        "failed_to_download_image",
+        "image_content_policy_violation",
+        "image_file_not_found",
+        "image_file_too_large",
+        "image_parse_error",
+        "image_too_large",
+        "image_too_small",
+        "invalid_base64_image",
+        "invalid_image",
+        "invalid_image_format",
+        "invalid_image_mode",
+        "invalid_image_url",
+        "invalid_prompt",
+        "rate_limit_exceeded",
+        "server_error",
+        "unsupported_image_media_type",
+        "vector_store_timeout"
+      ],
+      "type": "string"
+    },
+    "ResponseErrorEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when an error occurs.",
+      "properties": {
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "param": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseErrorEventType"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "param",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseErrorEventType": {
+      "enum": [
+        "error"
+      ],
+      "type": "string"
+    },
+    "ResponseFailedEvent": {
+      "additionalProperties": false,
+      "description": "An event that is emitted when a response fails.",
+      "properties": {
+        "response": {
+          "$ref": "#/$defs/Response"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFailedEventType"
+        }
+      },
+      "required": [
+        "response",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFailedEventType": {
+      "enum": [
+        "response.failed"
+      ],
+      "type": "string"
+    },
+    "ResponseFileSearchCallCompletedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a file search call is completed (results found).",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFileSearchCallCompletedEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFileSearchCallCompletedEventType": {
+      "enum": [
+        "response.file_search_call.completed"
+      ],
+      "type": "string"
+    },
+    "ResponseFileSearchCallInProgressEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a file search call is initiated.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFileSearchCallInProgressEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFileSearchCallInProgressEventType": {
+      "enum": [
+        "response.file_search_call.in_progress"
+      ],
+      "type": "string"
+    },
+    "ResponseFileSearchCallSearchingEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a file search is currently searching.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFileSearchCallSearchingEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFileSearchCallSearchingEventType": {
+      "enum": [
+        "response.file_search_call.searching"
+      ],
+      "type": "string"
+    },
+    "ResponseFormatJsonObject": {
+      "additionalProperties": false,
+      "description": "JSON object response format. An older method of generating JSON responses.\nUsing `json_schema` is recommended for models that support it. Note that the\nmodel will not generate JSON without a system or user message instructing it\nto do so.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ResponseFormatJsonObjectType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFormatJsonObjectType": {
+      "enum": [
+        "json_object"
+      ],
+      "type": "string"
+    },
+    "ResponseFormatJsonSchemaSchema": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "ResponseFormatText": {
+      "additionalProperties": false,
+      "description": "Default response format. Used to generate text responses.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ResponseFormatTextType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFormatTextType": {
+      "enum": [
+        "text"
+      ],
+      "type": "string"
+    },
+    "ResponseFunctionCallArgumentsDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when there is a partial function-call arguments delta.",
+      "properties": {
+        "delta": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFunctionCallArgumentsDeltaEventType"
+        }
+      },
+      "required": [
+        "delta",
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFunctionCallArgumentsDeltaEventType": {
+      "enum": [
+        "response.function_call_arguments.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseFunctionCallArgumentsDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when function-call arguments are finalized.",
+      "properties": {
+        "arguments": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseFunctionCallArgumentsDoneEventType"
+        }
+      },
+      "required": [
+        "arguments",
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseFunctionCallArgumentsDoneEventType": {
+      "enum": [
+        "response.function_call_arguments.done"
+      ],
+      "type": "string"
+    },
+    "ResponseInProgressEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when the response is in progress.",
+      "properties": {
+        "response": {
+          "$ref": "#/$defs/Response"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseInProgressEventType"
+        }
+      },
+      "required": [
+        "response",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseInProgressEventType": {
+      "enum": [
+        "response.in_progress"
+      ],
+      "type": "string"
+    },
+    "ResponseIncompleteDetails": {
+      "additionalProperties": false,
+      "description": "Details about why the response is incomplete.",
+      "properties": {
+        "reason": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponseIncompleteDetailsReason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ResponseIncompleteDetailsReason": {
+      "enum": [
+        "content_filter",
+        "max_output_tokens"
+      ],
+      "type": "string"
+    },
+    "ResponseIncompleteEvent": {
+      "additionalProperties": false,
+      "description": "An event that is emitted when a response finishes as incomplete.",
+      "properties": {
+        "response": {
+          "$ref": "#/$defs/Response"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseIncompleteEventType"
+        }
+      },
+      "required": [
+        "response",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseIncompleteEventType": {
+      "enum": [
+        "response.incomplete"
+      ],
+      "type": "string"
+    },
+    "ResponseItemList": {
+      "additionalProperties": false,
+      "description": "A list of Response items.",
+      "properties": {
+        "data": {
+          "items": {
+            "$ref": "#/$defs/ItemResource"
+          },
+          "type": "array"
+        },
+        "first_id": {
+          "type": "string"
+        },
+        "has_more": {
+          "type": "boolean"
+        },
+        "last_id": {
+          "type": "string"
+        },
+        "object": {
+          "$ref": "#/$defs/ResponseItemListObject"
+        }
+      },
+      "required": [
+        "data",
+        "first_id",
+        "has_more",
+        "last_id",
+        "object"
+      ],
+      "type": "object"
+    },
+    "ResponseItemListObject": {
+      "enum": [
+        "list"
+      ],
+      "type": "string"
+    },
+    "ResponseObject": {
+      "enum": [
+        "response"
+      ],
+      "type": "string"
+    },
+    "ResponseOutputItemAddedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a new output item is added.",
+      "properties": {
+        "item": {
+          "$ref": "#/$defs/OutputItem"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseOutputItemAddedEventType"
+        }
+      },
+      "required": [
+        "item",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseOutputItemAddedEventType": {
+      "enum": [
+        "response.output_item.added"
+      ],
+      "type": "string"
+    },
+    "ResponseOutputItemDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when an output item is marked done.",
+      "properties": {
+        "item": {
+          "$ref": "#/$defs/OutputItem"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseOutputItemDoneEventType"
+        }
+      },
+      "required": [
+        "item",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseOutputItemDoneEventType": {
+      "enum": [
+        "response.output_item.done"
+      ],
+      "type": "string"
+    },
+    "ResponseProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "instructions": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "model": {
+          "type": "string"
+        },
+        "previous_response_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reasoning": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Reasoning"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "text": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponsePropertiesText"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tool_choice": {
+          "type": "string"
+        },
+        "tools": {
+          "items": {
+            "$ref": "#/$defs/Tool"
+          },
+          "type": "array"
+        },
+        "truncation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ResponsePropertiesTruncation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ResponsePropertiesText": {
+      "additionalProperties": false,
+      "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "properties": {
+        "format": {
+          "$ref": "#/$defs/TextResponseFormatConfiguration"
+        }
+      },
+      "type": "object"
+    },
+    "ResponsePropertiesTruncation": {
+      "enum": [
+        "auto",
+        "disabled"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryPartAddedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a new reasoning summary part is added.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "part": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPart"
+        },
+        "summary_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "part",
+        "summary_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryPartAddedEventPart": {
+      "additionalProperties": false,
+      "description": "The summary part that was added.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPartType"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryPartAddedEventPartType": {
+      "enum": [
+        "summary_text"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryPartAddedEventType": {
+      "enum": [
+        "response.reasoning_summary_part.added"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryPartDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a reasoning summary part is completed.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "part": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPart"
+        },
+        "summary_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "part",
+        "summary_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryPartDoneEventPart": {
+      "additionalProperties": false,
+      "description": "The completed summary part.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPartType"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryPartDoneEventPartType": {
+      "enum": [
+        "summary_text"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryPartDoneEventType": {
+      "enum": [
+        "response.reasoning_summary_part.done"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryTextDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a delta is added to a reasoning summary text.",
+      "properties": {
+        "delta": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "summary_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDeltaEventType"
+        }
+      },
+      "required": [
+        "delta",
+        "item_id",
+        "output_index",
+        "summary_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryTextDeltaEventType": {
+      "enum": [
+        "response.reasoning_summary_text.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseReasoningSummaryTextDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a reasoning summary text is completed.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "summary_index": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDoneEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "summary_index",
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseReasoningSummaryTextDoneEventType": {
+      "enum": [
+        "response.reasoning_summary_text.done"
+      ],
+      "type": "string"
+    },
+    "ResponseRefusalDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when there is a partial refusal text.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "delta": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseRefusalDeltaEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "delta",
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseRefusalDeltaEventType": {
+      "enum": [
+        "response.refusal.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseRefusalDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when refusal text is finalized.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "refusal": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseRefusalDoneEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "item_id",
+        "output_index",
+        "refusal",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseRefusalDoneEventType": {
+      "enum": [
+        "response.refusal.done"
+      ],
+      "type": "string"
+    },
+    "ResponseStatus": {
+      "enum": [
+        "completed",
+        "failed",
+        "in_progress",
+        "incomplete"
+      ],
+      "type": "string"
+    },
+    "ResponseStreamEvent": {
+      "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ResponseAudioDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseAudioDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseAudioTranscriptDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseAudioTranscriptDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCompletedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInProgressEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInterpretingEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCompletedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseContentPartAddedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseContentPartDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseCreatedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseErrorEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFailedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFileSearchCallCompletedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFileSearchCallInProgressEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFileSearchCallSearchingEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFunctionCallArgumentsDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseFunctionCallArgumentsDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseInProgressEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseIncompleteEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseOutputItemAddedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseOutputItemDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseRefusalDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseRefusalDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseTextAnnotationDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseTextDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseTextDoneEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseWebSearchCallCompletedEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseWebSearchCallInProgressEvent"
+        },
+        {
+          "$ref": "#/$defs/ResponseWebSearchCallSearchingEvent"
+        }
+      ]
+    },
+    "ResponseText": {
+      "additionalProperties": false,
+      "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "properties": {
+        "format": {
+          "$ref": "#/$defs/TextResponseFormatConfiguration"
+        }
+      },
+      "type": "object"
+    },
+    "ResponseTextAnnotationDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a text annotation is added.",
+      "properties": {
+        "annotation": {
+          "$ref": "#/$defs/Annotation"
+        },
+        "annotation_index": {
+          "type": "integer"
+        },
+        "content_index": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseTextAnnotationDeltaEventType"
+        }
+      },
+      "required": [
+        "annotation",
+        "annotation_index",
+        "content_index",
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseTextAnnotationDeltaEventType": {
+      "enum": [
+        "response.output_text.annotation.added"
+      ],
+      "type": "string"
+    },
+    "ResponseTextDeltaEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when there is an additional text delta.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "delta": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseTextDeltaEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "delta",
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseTextDeltaEventType": {
+      "enum": [
+        "response.output_text.delta"
+      ],
+      "type": "string"
+    },
+    "ResponseTextDoneEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when text content is finalized.",
+      "properties": {
+        "content_index": {
+          "type": "integer"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseTextDoneEventType"
+        }
+      },
+      "required": [
+        "content_index",
+        "item_id",
+        "output_index",
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseTextDoneEventType": {
+      "enum": [
+        "response.output_text.done"
+      ],
+      "type": "string"
+    },
+    "ResponseTruncation": {
+      "enum": [
+        "auto",
+        "disabled"
+      ],
+      "type": "string"
+    },
+    "ResponseUsage": {
+      "additionalProperties": false,
+      "description": "Represents token usage details including input tokens, output tokens,\na breakdown of output tokens, and the total tokens used.",
+      "properties": {
+        "input_tokens": {
+          "type": "integer"
+        },
+        "input_tokens_details": {
+          "$ref": "#/$defs/ResponseUsageInputTokensDetails"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "output_tokens_details": {
+          "$ref": "#/$defs/ResponseUsageOutputTokensDetails"
+        },
+        "total_tokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "input_tokens_details",
+        "output_tokens",
+        "output_tokens_details",
+        "total_tokens"
+      ],
+      "type": "object"
+    },
+    "ResponseUsageInputTokensDetails": {
+      "additionalProperties": false,
+      "description": "A detailed breakdown of the input tokens.",
+      "properties": {
+        "cached_tokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cached_tokens"
+      ],
+      "type": "object"
+    },
+    "ResponseUsageOutputTokensDetails": {
+      "additionalProperties": false,
+      "description": "A detailed breakdown of the output tokens.",
+      "properties": {
+        "reasoning_tokens": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "reasoning_tokens"
+      ],
+      "type": "object"
+    },
+    "ResponseWebSearchCallCompletedEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a web search call is completed.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseWebSearchCallCompletedEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseWebSearchCallCompletedEventType": {
+      "enum": [
+        "response.web_search_call.completed"
+      ],
+      "type": "string"
+    },
+    "ResponseWebSearchCallInProgressEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a web search call is initiated.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseWebSearchCallInProgressEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseWebSearchCallInProgressEventType": {
+      "enum": [
+        "response.web_search_call.in_progress"
+      ],
+      "type": "string"
+    },
+    "ResponseWebSearchCallSearchingEvent": {
+      "additionalProperties": false,
+      "description": "Emitted when a web search call is executing.",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "output_index": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ResponseWebSearchCallSearchingEventType"
+        }
+      },
+      "required": [
+        "item_id",
+        "output_index",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResponseWebSearchCallSearchingEventType": {
+      "enum": [
+        "response.web_search_call.searching"
+      ],
+      "type": "string"
+    },
+    "Screenshot": {
+      "additionalProperties": false,
+      "description": "A screenshot action.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ScreenshotType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ScreenshotType": {
+      "enum": [
+        "screenshot"
+      ],
+      "type": "string"
+    },
+    "Scroll": {
+      "additionalProperties": false,
+      "description": "A scroll action.",
+      "properties": {
+        "scroll_x": {
+          "type": "integer"
+        },
+        "scroll_y": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/$defs/ScrollType"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "scroll_x",
+        "scroll_y",
+        "type",
+        "x",
+        "y"
+      ],
+      "type": "object"
+    },
+    "ScrollType": {
+      "enum": [
+        "scroll"
+      ],
+      "type": "string"
+    },
+    "ServiceTier": {
+      "enum": [
+        "auto",
+        "default",
+        "flex"
+      ],
+      "type": "string"
+    },
+    "TextResponseFormatConfiguration": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ResponseFormatJsonObject"
+        },
+        {
+          "$ref": "#/$defs/ResponseFormatText"
+        },
+        {
+          "$ref": "#/$defs/TextResponseFormatJsonSchema"
+        }
+      ]
+    },
+    "TextResponseFormatJsonSchema": {
+      "additionalProperties": false,
+      "description": "An object specifying the format that the model must output.\n\nConfiguring `{ \"type\": \"json_schema\" }` enables Structured Outputs,\nwhich ensures the model will match your supplied JSON schema. Learn more in the\n[Structured Outputs guide](/docs/guides/structured-outputs).\n\nThe default format is `{ \"type\": \"text\" }` with no additional options.\n\n**Not recommended for gpt-4o and newer models:**\n\nSetting to `{ \"type\": \"json_object\" }` enables the older JSON mode, which\nensures the message the model generates is valid JSON. Using `json_schema`\nis preferred for models that support it.\nJSON Schema response format. Used to generate structured JSON responses.\nLearn more about [Structured Outputs](/docs/guides/structured-outputs).",
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "#/$defs/ResponseFormatJsonSchemaSchema"
+        },
+        "strict": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/TextResponseFormatJsonSchemaType"
+        }
+      },
+      "required": [
+        "name",
+        "schema",
+        "type"
+      ],
+      "type": "object"
+    },
+    "TextResponseFormatJsonSchemaType": {
+      "enum": [
+        "json_schema"
+      ],
+      "type": "string"
+    },
+    "Tool": {
+      "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ComputerUsePreviewTool"
+        },
+        {
+          "$ref": "#/$defs/FileSearchTool"
+        },
+        {
+          "$ref": "#/$defs/FunctionTool"
+        },
+        {
+          "$ref": "#/$defs/WebSearchPreviewTool"
+        }
+      ]
+    },
+    "ToolChoiceFunction": {
+      "additionalProperties": false,
+      "description": "Use this option to force the model to call a specific function.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ToolChoiceFunctionType"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ToolChoiceFunctionType": {
+      "enum": [
+        "function"
+      ],
+      "type": "string"
+    },
+    "ToolChoiceOptions": {
+      "enum": [
+        "auto",
+        "none",
+        "required"
+      ],
+      "type": "string"
+    },
+    "ToolChoiceTypes": {
+      "additionalProperties": false,
+      "description": "Indicates that the model should use a built-in tool to generate a response.\n[Learn more about built-in tools](/docs/guides/tools).",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ToolChoiceTypesType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ToolChoiceTypesType": {
+      "enum": [
+        "computer_use_preview",
+        "file_search",
+        "web_search_preview",
+        "web_search_preview_2025_03_11"
+      ],
+      "type": "string"
+    },
+    "Type": {
+      "additionalProperties": false,
+      "description": "An action to type in text.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/TypeType"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "TypeType": {
+      "enum": [
+        "type"
+      ],
+      "type": "string"
+    },
+    "URLCitationBody": {
+      "additionalProperties": false,
+      "description": "A citation for a web resource used to generate a model response.",
+      "properties": {
+        "end_index": {
+          "type": "integer"
+        },
+        "start_index": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/URLCitationBodyType"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "end_index",
+        "start_index",
+        "title",
+        "type",
+        "url"
+      ],
+      "type": "object"
+    },
+    "URLCitationBodyType": {
+      "enum": [
+        "url_citation"
+      ],
+      "type": "string"
+    },
+    "VectorStoreFileAttributes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "Wait": {
+      "additionalProperties": false,
+      "description": "A wait action.",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/WaitType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "WaitType": {
+      "enum": [
+        "wait"
+      ],
+      "type": "string"
+    },
+    "WebSearchPreviewTool": {
+      "additionalProperties": false,
+      "description": "This tool searches the web for relevant results to use in a response. Learn more\nabout the [web search\ntool](https://platform.openai.com/docs/guides/tools-web-search).",
+      "properties": {
+        "search_context_size": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/WebSearchPreviewToolSearchContextSize"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/WebSearchPreviewToolType"
+        },
+        "user_location": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/WebSearchPreviewToolUserLocation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "WebSearchPreviewToolSearchContextSize": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "type": "string"
+    },
+    "WebSearchPreviewToolType": {
+      "enum": [
+        "web_search_preview",
+        "web_search_preview_2025_03_11"
+      ],
+      "type": "string"
+    },
+    "WebSearchPreviewToolUserLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "city": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timezone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ApproximateLocationType"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "WebSearchToolCall": {
+      "additionalProperties": false,
+      "description": "The results of a web search tool call. See the\n[web search guide](/docs/guides/tools-web-search) for more information.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/WebSearchToolCallStatus"
+        },
+        "type": {
+          "$ref": "#/$defs/WebSearchToolCallType"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "type"
+      ],
+      "type": "object"
+    },
+    "WebSearchToolCallStatus": {
+      "enum": [
+        "in_progress",
+        "searching",
+        "completed",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "WebSearchToolCallType": {
+      "enum": [
+        "web_search_call"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
