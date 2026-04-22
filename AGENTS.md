@@ -42,7 +42,9 @@ cmd/compschema/                    # CLI (cobra) — all subcommands
   importcmd.go                     # JSON Schema → Go structs
   generate.go                      # Go types → JSON Schema + Validate + Decode + tests
   diff.go                          # JSON Schema structural comparison
-  uniongen.go                      # sealed interface generation (legacy, for go-jsonschema compat)
+  run.go                           # config-driven pipeline runner
+internal/config/                    # Pipeline config file format (.compschema.yaml)
+  config.go                        # File, Pipeline, Action types + YAML parser
 internal/ir/                       # Schema IR — the core data model
   types.go                         # Type, Field, Constraint, Variant, TypeRef, Kind enum
 internal/analyzer/                 # Go source → IR (the forward direction)
@@ -52,7 +54,8 @@ internal/emitter/                  # IR → output files (the reverse direction)
   emitter.go                       # JSONSchema(), GoCodegen(), GoTests() emitters
   emitter_test.go
 internal/importer/                 # JSON Schema → Go source (import direction)
-  importer.go                      # Parse JSON Schema → IR → Go structs with tags
+  importer.go                      # GenerateGo, emitStruct/Enum/Union, type helpers
+  config.go                        # Config struct, ApplyConfig (rename/exclude transforms)
 internal/jsonschema2ir/            # JSON Schema → IR parser (shared by importer + diff)
   parser.go
 internal/openapi2jsonschema/       # OpenAPI → JSON Schema converter
@@ -62,10 +65,8 @@ internal/openapi2jsonschema/       # OpenAPI → JSON Schema converter
 internal/schemadiff/               # Schema comparison
   diff.go                          # JSON-level keyword diff
   ir_diff.go                       # IR-level structural diff (normalized)
-internal/uniongen/                 # Sealed interface generator (from JSON Schema)
-  uniongen.go                      # Analyze unions, generate Go interfaces + UnmarshalX
-  patch.go                         # Patch go-jsonschema output to remove interface{}
-  uniongen_test.go
+internal/uniongen/                 # Sealed interface generation for oneOf/anyOf unions
+  uniongen.go                      # EmitUnion() — IR-based, used by importer (reusable)
 examples/basic/                    # Simple example: Order, LineItem, Shape union
 examples/openai/                   # Real-world: OpenAI Responses API (261 types)
 testdata/basic/                    # Test fixture source for examples/basic

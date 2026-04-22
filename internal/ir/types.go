@@ -10,6 +10,7 @@ package ir
 type Package struct {
 	Name  string           // Go package name
 	Path  string           // import path
+	Dir   string           // source directory on disk (empty if unknown)
 	Types map[string]*Type // named types, keyed by Go type name
 	Order []string         // insertion order for deterministic output
 }

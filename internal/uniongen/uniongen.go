@@ -1,368 +1,203 @@
-// Package uniongen post-processes generated Go types and a JSON Schema to
-// replace `type X interface{}` with proper sealed interfaces for oneOf/anyOf unions.
-//
-// It reads the JSON Schema to determine variant types and discriminator fields,
-// then rewrites the Go source to generate:
+// Package uniongen generates Go sealed interfaces for oneOf/anyOf unions
+// from the Schema IR. It produces:
 //   - A sealed interface with an unexported marker method
-//   - Variant type assertions via the marker method
-//   - An UnmarshalJSON that dispatches on the discriminator
+//   - Pointer-receiver marker methods on each struct variant
+//   - Wrapper types for primitive variants (string, []T, etc.)
+//   - UnmarshalX([]byte) (X, error) dispatcher for discriminated unions
+//   - MarshalJSON for wrapper types
+//
+// This package is used by the importer but is kept separate so union
+// generation can be reused by other pipelines (e.g. codegen from Go types).
 package uniongen
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
-	"sort"
 	"strings"
+
+	"github.com/codewandler/compschema/internal/ir"
 )
 
-// Union describes a detected oneOf/anyOf union in the JSON Schema.
-type Union struct {
-	Name          string    // Go type name (e.g. "Tool")
-	Keyword       string    // "oneOf" or "anyOf"
-	Discriminator string    // property name used to discriminate (e.g. "type"), or ""
-	Variants      []Variant // the union members
+// TypeResolver maps IR names and type refs to Go source fragments.
+// The importer supplies one; other callers can provide their own.
+type TypeResolver interface {
+	GoName(irName string) string       // schema name → Go identifier
+	GoType(ref *ir.TypeRef) string     // type ref → Go type expression
+	IsStruct(irName string) bool       // true if the named type is a struct
+	Comment(description string) string // sanitize for // comment
 }
 
-// Variant is one arm of a union.
-type Variant struct {
-	RefName      string // name of the $ref target (e.g. "FileSearchTool"), or "" for inline
-	TypeConstVal string // value of the discriminator const/enum, if known
-	InlineType   string // for non-$ref variants: "string", "number", etc.
-}
+// EmitUnion writes a sealed interface, marker methods, optional wrapper
+// types, and an UnmarshalX dispatcher for a single union into b.
+func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver) {
+	marker := fmt.Sprintf("is%s", goName)
 
-// Schema is a minimal JSON Schema representation for union analysis.
-type Schema struct {
-	Defs map[string]SchemaDef `json:"$defs"`
-}
-
-// SchemaDef is a single schema definition.
-type SchemaDef struct {
-	OneOf          []SchemaRef    `json:"oneOf,omitempty"`
-	AnyOf          []SchemaRef    `json:"anyOf,omitempty"`
-	AllOf          []SchemaRef    `json:"allOf,omitempty"`
-	Type           any            `json:"type,omitempty"`
-	Properties     map[string]any `json:"properties,omitempty"`
-	XDiscriminator *Discriminator `json:"x-discriminator,omitempty"`
-	Enum           []any          `json:"enum,omitempty"`
-}
-
-type SchemaRef struct {
-	Ref        string         `json:"$ref,omitempty"`
-	Type       any            `json:"type,omitempty"`
-	Properties map[string]any `json:"properties,omitempty"`
-	Const      any            `json:"const,omitempty"`
-	Enum       []any          `json:"enum,omitempty"`
-	Title      string         `json:"title,omitempty"`
-}
-
-type Discriminator struct {
-	PropertyName string            `json:"propertyName"`
-	Mapping      map[string]string `json:"mapping,omitempty"`
-}
-
-// AnalyzeSchema reads a JSON Schema file and detects all union types.
-func AnalyzeSchema(schemaPath string) ([]Union, error) {
-	data, err := os.ReadFile(schemaPath)
-	if err != nil {
-		return nil, fmt.Errorf("read schema: %w", err)
+	if t.Description != "" {
+		b.WriteString(fmt.Sprintf("// %s %s\n", goName, r.Comment(t.Description)))
+	}
+	if t.Discriminator != "" {
+		b.WriteString(fmt.Sprintf("// Discriminated by %q field.\n", t.Discriminator))
 	}
 
-	var schema Schema
-	if err := json.Unmarshal(data, &schema); err != nil {
-		return nil, fmt.Errorf("parse schema: %w", err)
-	}
+	// Interface.
+	b.WriteString(fmt.Sprintf("//\n//compschema:generate\ntype %s interface {\n\t%s()\n}\n\n", goName, marker))
 
-	var unions []Union
+	// Track which wrapper types we create (for MarshalJSON later).
+	wrapperTypes := map[string]string{} // wrapperName → primType
 
-	for name, def := range schema.Defs {
-		var keyword string
-		var refs []SchemaRef
-
-		if len(def.OneOf) > 0 {
-			keyword = "oneOf"
-			refs = def.OneOf
-		} else if len(def.AnyOf) > 0 {
-			keyword = "anyOf"
-			refs = def.AnyOf
-		} else {
-			continue
+	// Marker methods + wrapper types for primitives.
+	emittedWrappers := make(map[string]bool)
+	for _, v := range t.Variants {
+		vName := r.GoName(v.Name)
+		if vName == goName {
+			continue // skip self-reference
 		}
 
-		// Skip if this has properties (it's an object that happens to have oneOf for validation, not a union)
-		if len(def.Properties) > 0 {
-			continue
-		}
-		// Skip if it also has a type (it's a constrained type, not a pure union)
-		if def.Type != nil {
-			continue
-		}
+		canHaveMethods := true
+		primType := ""
 
-		u := Union{
-			Name:    name,
-			Keyword: keyword,
-		}
-
-		// Determine discriminator
-		if def.XDiscriminator != nil && def.XDiscriminator.PropertyName != "" {
-			u.Discriminator = def.XDiscriminator.PropertyName
-		}
-
-		// Analyze each variant
-		for _, ref := range refs {
-			v := Variant{}
-			if ref.Ref != "" {
-				parts := strings.Split(ref.Ref, "/")
-				v.RefName = parts[len(parts)-1]
-
-				// Try to find discriminator value from the referenced schema
-				if u.Discriminator != "" {
-					if refDef, ok := schema.Defs[v.RefName]; ok {
-						v.TypeConstVal = extractDiscriminatorValue(refDef, u.Discriminator)
-					}
-				}
-			} else if ref.Type != nil {
-				switch t := ref.Type.(type) {
-				case string:
-					v.InlineType = t
-				}
-			}
-			u.Variants = append(u.Variants, v)
-		}
-
-		// If no explicit discriminator, try to infer one from "type" const fields
-		if u.Discriminator == "" {
-			if disc := inferDiscriminator(schema.Defs, refs); disc != "" {
-				u.Discriminator = disc
-				// Re-populate variant type values
-				for i, v := range u.Variants {
-					if v.RefName != "" {
-						if refDef, ok := schema.Defs[v.RefName]; ok {
-							u.Variants[i].TypeConstVal = extractDiscriminatorValue(refDef, disc)
-						}
+		if v.TypeRef.Name != "" {
+			vGoName := r.GoName(v.TypeRef.Name)
+			canHaveMethods = false
+			if r.IsStruct(v.TypeRef.Name) {
+				canHaveMethods = true
+			} else {
+				for _, pt := range pkg.Types {
+					if r.GoName(pt.Name) == vGoName && pt.Kind == ir.KindStruct {
+						canHaveMethods = true
+						break
 					}
 				}
 			}
-		}
-
-		unions = append(unions, u)
-	}
-
-	// Sort for deterministic output
-	sort.Slice(unions, func(i, j int) bool {
-		return unions[i].Name < unions[j].Name
-	})
-
-	return unions, nil
-}
-
-// extractDiscriminatorValue gets the const/single-enum value of a property.
-// For multi-value enums, returns the first value (sufficient for discriminator matching).
-func extractDiscriminatorValue(def SchemaDef, propName string) string {
-	propRaw, ok := def.Properties[propName]
-	if !ok {
-		return ""
-	}
-	propBytes, err := json.Marshal(propRaw)
-	if err != nil {
-		return ""
-	}
-	var prop struct {
-		Const any   `json:"const"`
-		Enum  []any `json:"enum"`
-	}
-	if err := json.Unmarshal(propBytes, &prop); err != nil {
-		return ""
-	}
-	if prop.Const != nil {
-		return fmt.Sprintf("%v", prop.Const)
-	}
-	if len(prop.Enum) >= 1 {
-		return fmt.Sprintf("%v", prop.Enum[0])
-	}
-	return ""
-}
-
-// inferDiscriminator checks if all $ref variants share a common property
-// with a const/single-enum value, making it a natural discriminator.
-func inferDiscriminator(defs map[string]SchemaDef, refs []SchemaRef) string {
-	// Collect all candidate property names from first ref variant
-	var candidates []string
-	for _, ref := range refs {
-		if ref.Ref == "" {
-			continue
-		}
-		parts := strings.Split(ref.Ref, "/")
-		refName := parts[len(parts)-1]
-		refDef, ok := defs[refName]
-		if !ok {
-			continue
-		}
-		for propName := range refDef.Properties {
-			candidates = append(candidates, propName)
-		}
-		break
-	}
-
-	// Check each candidate: does every $ref variant have a const/single-enum for it?
-	for _, candidate := range candidates {
-		allHaveConst := true
-		values := map[string]bool{}
-		refCount := 0
-		for _, ref := range refs {
-			if ref.Ref == "" {
-				// Inline variants (e.g. string) can't have discriminators
-				allHaveConst = false
-				break
-			}
-			parts := strings.Split(ref.Ref, "/")
-			refName := parts[len(parts)-1]
-			refDef, ok := defs[refName]
-			if !ok {
-				allHaveConst = false
-				break
-			}
-			val := extractDiscriminatorValue(refDef, candidate)
-			if val == "" {
-				allHaveConst = false
-				break
-			}
-			if values[val] {
-				// Duplicate value — not a valid discriminator
-				allHaveConst = false
-				break
-			}
-			values[val] = true
-			refCount++
-		}
-		if allHaveConst && refCount == len(refs) {
-			return candidate
-		}
-	}
-
-	return ""
-}
-
-// buildCapitalizationReplacer creates a function that applies Go capitalization
-// rules (e.g. "Url" → "URL", "Id" → "ID") to schema names.
-func buildCapitalizationReplacer(capitalizations []string) func(string) string {
-	if len(capitalizations) == 0 {
-		return func(s string) string { return s }
-	}
-
-	return func(name string) string {
-		for _, cap := range capitalizations {
-			titleCase := strings.ToUpper(cap[:1]) + strings.ToLower(cap[1:])
-			name = strings.ReplaceAll(name, titleCase, cap)
-		}
-		return name
-	}
-}
-
-// GenerateUnionCode generates Go source code for sealed interfaces.
-// capitalizations maps schema names to their Go-idiomatic forms (e.g. "Url" → "URL").
-func GenerateUnionCode(pkg string, unions []Union, capitalizations ...string) string {
-	// Build capitalization replacer
-	replacer := buildCapitalizationReplacer(capitalizations)
-
-	var b strings.Builder
-
-	b.WriteString("// Code generated by compschema uniongen. DO NOT EDIT.\n\n")
-	b.WriteString(fmt.Sprintf("package %s\n\n", pkg))
-	b.WriteString("import (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n\n")
-
-	for _, u := range unions {
-		// Skip unions where not all variants are $refs (can’t generate clean interfaces)
-		allRefs := true
-		for _, v := range u.Variants {
-			if v.RefName == "" {
-				allRefs = false
-				break
+		} else if v.TypeRef.Inline != nil {
+			switch v.TypeRef.Inline.Kind {
+			case ir.KindScalar:
+				canHaveMethods = false
+				primType = r.GoType(&ir.TypeRef{Inline: v.TypeRef.Inline})
+			case ir.KindList:
+				canHaveMethods = false
+				primType = r.GoType(&ir.TypeRef{Inline: v.TypeRef.Inline})
+			case ir.KindMap:
+				canHaveMethods = false
+			case ir.KindRef:
+				if r.IsStruct(v.TypeRef.Inline.RefName) {
+					vName = r.GoName(v.TypeRef.Inline.RefName)
+				} else {
+					canHaveMethods = false
+				}
+			default:
+				canHaveMethods = false
 			}
 		}
-		if !allRefs {
-			b.WriteString(fmt.Sprintf("// %s: skipped (has inline/non-$ref variants)\n\n", u.Name))
-			continue
+
+		if canHaveMethods && vName != "" {
+			for _, pt := range pkg.Types {
+				if r.GoName(pt.Name) == vName && pt.Kind != ir.KindStruct {
+					canHaveMethods = false
+					break
+				}
+			}
 		}
 
-		goTypeName := replacer(u.Name)
-		markerMethod := fmt.Sprintf("is%s", goTypeName)
-
-		// Interface
-		b.WriteString(fmt.Sprintf("// %s is a sealed interface for %s union.\n", goTypeName, u.Keyword))
-		if u.Discriminator != "" {
-			b.WriteString(fmt.Sprintf("// Discriminated by %q field.\n", u.Discriminator))
+		if canHaveMethods && vName != "" {
+			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", vName, marker))
+		} else if primType != "" {
+			wrapperSuffix := r.GoName(primType)
+			if vName != "" {
+				wrapperSuffix = vName
+			}
+			wrapperName := goName + wrapperSuffix
+			if emittedWrappers[wrapperName] {
+				continue
+			}
+			emittedWrappers[wrapperName] = true
+			wrapperTypes[wrapperName] = primType
+			b.WriteString(fmt.Sprintf("\n// %s wraps a %s value as a %s variant.\n", wrapperName, primType, goName))
+			b.WriteString(fmt.Sprintf("type %s struct { Value %s }\n", wrapperName, primType))
+			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", wrapperName, marker))
 		}
-		b.WriteString(fmt.Sprintf("type %s interface {\n", goTypeName))
-		b.WriteString(fmt.Sprintf("\t%s()\n", markerMethod))
+	}
+	b.WriteString("\n")
+
+	// MarshalJSON for wrapper types — marshal as the inner value.
+	for wrapperName, primType := range wrapperTypes {
+		b.WriteString(fmt.Sprintf("func (w %s) MarshalJSON() ([]byte, error) {\n", wrapperName))
+		b.WriteString(fmt.Sprintf("\treturn json.Marshal(w.Value)\n"))
 		b.WriteString("}\n\n")
-
-		// Marker method on each variant
-		for _, v := range u.Variants {
-			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", replacer(v.RefName), markerMethod))
-		}
-		b.WriteString("\n")
-
-		// UnmarshalJSON with discriminator dispatch
-		if u.Discriminator != "" {
-			generateUnmarshalJSON(&b, u, replacer)
-		}
+		_ = primType
 	}
 
-	return b.String()
+	// UnmarshalX dispatcher.
+	emitUnmarshalFunc(b, goName, t, pkg, r)
 }
 
-func generateUnmarshalJSON(b *strings.Builder, u Union, goName func(string) string) {
-	// Collect variants with known discriminator values
+// emitUnmarshalFunc generates the UnmarshalX([]byte) (X, error) function.
+func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver) {
+	// Check if a variant is a struct (can use &val) vs interface/other.
+	isStructVariant := func(typeName string) bool {
+		if typeName == "" {
+			return false
+		}
+		if t, ok := pkg.Types[typeName]; ok {
+			if t.Kind == ir.KindUnion {
+				return false
+			}
+			if len(t.Variants) > 0 {
+				return false
+			}
+			if t.Kind == ir.KindStruct {
+				// Also check if another type with the same Go name is a union
+				// (naming collision from extractInlineEnums).
+				goN := r.GoName(typeName)
+				for _, pt := range pkg.Types {
+					if r.GoName(pt.Name) == goN && pt.Kind == ir.KindUnion {
+						return false
+					}
+				}
+				return true
+			}
+		}
+		if r.IsStruct(typeName) {
+			return true
+		}
+		return false
+	}
+
+	// Collect struct variants with discriminator values.
 	type discVariant struct {
-		Value   string
-		RefName string
-		GoName  string
+		GoName   string
+		Value    string
+		IsStruct bool
 	}
 	var known []discVariant
-
-	for _, v := range u.Variants {
-		if v.TypeConstVal != "" && v.RefName != "" {
-			known = append(known, discVariant{
-				Value:   v.TypeConstVal,
-				RefName: v.RefName,
-				GoName:  goName(v.RefName),
-			})
+	for _, v := range t.Variants {
+		vName := r.GoName(v.Name)
+		if vName == goName {
+			continue
+		}
+		if v.TypeRef.Name != "" {
+			gn := r.GoName(v.TypeRef.Name)
+			is := isStructVariant(v.TypeRef.Name)
+			if v.Discriminator != "" {
+				known = append(known, discVariant{GoName: gn, Value: v.Discriminator, IsStruct: is})
+			}
 		}
 	}
 
-	if len(known) == 0 {
-		return
+	b.WriteString(fmt.Sprintf("// Unmarshal%s unmarshals JSON into the correct %s variant.\n", goName, goName))
+	if t.Discriminator != "" {
+		b.WriteString(fmt.Sprintf("// Dispatches on the %q discriminator field.\n", t.Discriminator))
 	}
+	b.WriteString(fmt.Sprintf("func Unmarshal%s(data []byte) (%s, error) {\n", goName, goName))
 
-	// Detect duplicate discriminator values (e.g. multiple variants with type="message")
-	valCount := map[string]int{}
-	for _, kv := range known {
-		valCount[kv.Value]++
-	}
-	hasDuplicates := false
-	for _, count := range valCount {
-		if count > 1 {
-			hasDuplicates = true
-			break
-		}
-	}
-
-	typeName := goName(u.Name)
-
-	b.WriteString(fmt.Sprintf("// Unmarshal%s unmarshals JSON into the correct %s variant\n", typeName, typeName))
-	b.WriteString(fmt.Sprintf("// based on the %q discriminator field.\n", u.Discriminator))
-	b.WriteString(fmt.Sprintf("func Unmarshal%s(data []byte) (%s, error) {\n", typeName, typeName))
-	b.WriteString(fmt.Sprintf("\tvar disc struct {\n\t\tD string `json:%q`\n\t}\n", u.Discriminator))
-	b.WriteString("\tif err := json.Unmarshal(data, &disc); err != nil {\n")
-	b.WriteString("\t\treturn nil, err\n")
-	b.WriteString("\t}\n")
-
-	if hasDuplicates {
-		// For duplicate discriminator values, try each variant in order
+	if t.Discriminator != "" && len(known) > 0 {
+		// Discriminator-based dispatch.
+		b.WriteString(fmt.Sprintf("\tvar disc struct {\n\t\tD string `json:%q`\n\t}\n", t.Discriminator))
+		b.WriteString("\tif err := json.Unmarshal(data, &disc); err != nil {\n")
+		b.WriteString("\t\treturn nil, err\n")
+		b.WriteString("\t}\n")
 		b.WriteString("\tswitch disc.D {\n")
 
-		// Group by value
+		// Group by discriminator value (handle duplicates).
 		emitted := map[string]bool{}
 		for _, kv := range known {
 			if emitted[kv.Value] {
@@ -370,7 +205,7 @@ func generateUnmarshalJSON(b *strings.Builder, u Union, goName func(string) stri
 			}
 			emitted[kv.Value] = true
 
-			// Collect all variants for this value
+			// Collect all variants for this value.
 			var variants []discVariant
 			for _, kv2 := range known {
 				if kv2.Value == kv.Value {
@@ -380,38 +215,168 @@ func generateUnmarshalJSON(b *strings.Builder, u Union, goName func(string) stri
 
 			b.WriteString(fmt.Sprintf("\tcase %q:\n", kv.Value))
 			if len(variants) == 1 {
-				b.WriteString(fmt.Sprintf("\t\tvar val %s\n", variants[0].GoName))
-				b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
-				b.WriteString("\t\t\treturn nil, err\n")
-				b.WriteString("\t\t}\n")
-				b.WriteString("\t\treturn &val, nil\n")
+				v := variants[0]
+				if !v.IsStruct {
+					// Non-struct variant (interface, enum, etc.) — skip.
+					b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"variant %s for %s=%%q is not directly unmarshalable\", disc.D)\n", v.GoName, t.Discriminator))
+				} else {
+					b.WriteString(fmt.Sprintf("\t\tvar val %s\n", v.GoName))
+					b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
+					b.WriteString("\t\t\treturn nil, err\n")
+					b.WriteString("\t\t}\n")
+					b.WriteString("\t\treturn &val, nil\n")
+				}
 			} else {
-				// Try each in order — first successful unmarshal wins
+				// Try each in order.
 				for i, v := range variants {
+					if !v.IsStruct {
+						continue
+					}
 					varName := fmt.Sprintf("v%d", i)
 					b.WriteString(fmt.Sprintf("\t\tvar %s %s\n", varName, v.GoName))
 					b.WriteString(fmt.Sprintf("\t\tif err := json.Unmarshal(data, &%s); err == nil {\n", varName))
 					b.WriteString(fmt.Sprintf("\t\t\treturn &%s, nil\n", varName))
 					b.WriteString("\t\t}\n")
 				}
-				b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"no matching variant for %s=%%q in %s\", disc.D)\n", u.Discriminator, typeName))
+				b.WriteString(fmt.Sprintf("\t\treturn nil, fmt.Errorf(\"no matching variant for %s=%%q in %s\", disc.D)\n", t.Discriminator, goName))
 			}
 		}
-		b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn nil, fmt.Errorf(\"unknown %s %%q for %s\", disc.D)\n", u.Discriminator, typeName))
+		b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn nil, fmt.Errorf(\"unknown %s %%q for %s\", disc.D)\n", t.Discriminator, goName))
 		b.WriteString("\t}\n")
 	} else {
-		// Simple case — unique discriminator values
-		b.WriteString("\tswitch disc.D {\n")
-		for _, kv := range known {
-			b.WriteString(fmt.Sprintf("\tcase %q:\n", kv.Value))
-			b.WriteString(fmt.Sprintf("\t\tvar val %s\n", kv.GoName))
-			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err != nil {\n")
-			b.WriteString("\t\t\treturn nil, err\n")
-			b.WriteString("\t\t}\n")
-			b.WriteString("\t\treturn &val, nil\n")
+		// No discriminator — try each struct variant in order.
+		for _, v := range t.Variants {
+			vName := r.GoName(v.Name)
+			if vName == goName {
+				continue
+			}
+			goType := vName
+			if v.TypeRef.Name != "" {
+				goType = r.GoName(v.TypeRef.Name)
+			}
+			if goType == "" || !isStructVariant(v.TypeRef.Name) {
+				continue
+			}
+			b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", goType))
+			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
+			b.WriteString("\t\t\treturn &val, nil\n")
+			b.WriteString("\t\t}\n\t}\n")
 		}
-		b.WriteString(fmt.Sprintf("\tdefault:\n\t\treturn nil, fmt.Errorf(\"unknown %s %%q for %s\", disc.D)\n", u.Discriminator, typeName))
-		b.WriteString("\t}\n")
+		b.WriteString(fmt.Sprintf("\treturn nil, fmt.Errorf(\"no matching variant for %s\")\n", goName))
 	}
+
 	b.WriteString("}\n\n")
+}
+
+// EmitStructUnmarshalJSON generates a custom UnmarshalJSON method for a struct
+// that has one or more fields typed as union interfaces. The method uses
+// json.RawMessage for interface fields and dispatches via UnmarshalX.
+func EmitStructUnmarshalJSON(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, emittedUnions map[string]bool) {
+	var ifaceFields []UnionFieldInfo
+	for _, f := range t.Fields {
+		if uf := DetectUnionField(f, pkg, r, emittedUnions); uf != nil {
+			ifaceFields = append(ifaceFields, *uf)
+		}
+	}
+
+	if len(ifaceFields) == 0 {
+		return
+	}
+
+	b.WriteString(fmt.Sprintf("func (v *%s) UnmarshalJSON(data []byte) error {\n", goName))
+	b.WriteString(fmt.Sprintf("\ttype Alias %s\n", goName))
+
+	// Build the raw struct with json.RawMessage for interface fields.
+	b.WriteString("\tvar raw struct {\n")
+	b.WriteString("\t\tAlias\n")
+	for _, uf := range ifaceFields {
+		switch {
+		case uf.IsSlice:
+			b.WriteString(fmt.Sprintf("\t\t%s []json.RawMessage `json:%q`\n", uf.GoName, uf.JSONName))
+		default:
+			b.WriteString(fmt.Sprintf("\t\t%s json.RawMessage `json:%q`\n", uf.GoName, uf.JSONName))
+		}
+	}
+	b.WriteString("\t}\n")
+
+	b.WriteString("\tif err := json.Unmarshal(data, &raw); err != nil {\n")
+	b.WriteString("\t\treturn err\n")
+	b.WriteString("\t}\n")
+	b.WriteString(fmt.Sprintf("\t*v = %s(raw.Alias)\n", goName))
+
+	// Dispatch each interface field.
+	for _, uf := range ifaceFields {
+		if uf.IsSlice {
+			b.WriteString(fmt.Sprintf("\tfor _, item := range raw.%s {\n", uf.GoName))
+			b.WriteString(fmt.Sprintf("\t\tparsed, err := Unmarshal%s(item)\n", uf.TypeName))
+			b.WriteString("\t\tif err != nil {\n")
+			b.WriteString("\t\t\treturn err\n")
+			b.WriteString("\t\t}\n")
+			b.WriteString(fmt.Sprintf("\t\tv.%s = append(v.%s, parsed)\n", uf.GoName, uf.GoName))
+			b.WriteString("\t}\n")
+		} else {
+			b.WriteString(fmt.Sprintf("\tif len(raw.%s) > 0 && string(raw.%s) != \"null\" {\n", uf.GoName, uf.GoName))
+			b.WriteString(fmt.Sprintf("\t\tparsed, err := Unmarshal%s(raw.%s)\n", uf.TypeName, uf.GoName))
+			b.WriteString("\t\tif err != nil {\n")
+			b.WriteString("\t\t\treturn err\n")
+			b.WriteString("\t\t}\n")
+			b.WriteString(fmt.Sprintf("\t\tv.%s = parsed\n", uf.GoName))
+			b.WriteString("\t}\n")
+		}
+	}
+
+	b.WriteString("\treturn nil\n")
+	b.WriteString("}\n\n")
+}
+
+// UnionFieldInfo describes a struct field that is typed as a union interface.
+type UnionFieldInfo struct {
+	GoName    string // Go field name
+	JSONName  string // JSON key
+	TypeName  string // union interface type name (Go)
+	IsSlice   bool   // []Interface
+	IsPointer bool   // *Interface
+}
+
+// DetectUnionField checks if a struct field is (or contains) a union interface.
+// If emittedUnions is non-nil, only unions in that set are considered.
+// Returns nil if the field doesn't need special unmarshal handling.
+func DetectUnionField(f ir.Field, pkg *ir.Package, r TypeResolver, emittedUnions map[string]bool) *UnionFieldInfo {
+	goFieldName := r.GoName(f.JSONName)
+
+	checkUnion := func(typeName string) bool {
+		t, ok := pkg.Types[typeName]
+		if !ok || t.Kind != ir.KindUnion {
+			return false
+		}
+		if emittedUnions != nil {
+			return emittedUnions[r.GoName(typeName)]
+		}
+		return true
+	}
+
+	// Direct interface reference: Field SomeInterface
+	if f.Type.Name != "" && checkUnion(f.Type.Name) {
+		return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Name), false, false}
+	}
+
+	if f.Type.Inline == nil {
+		return nil
+	}
+
+	// Pointer to interface: *SomeInterface
+	if f.Type.Inline.Kind == ir.KindNullable && f.Type.Inline.Inner != nil {
+		if f.Type.Inline.Inner.Name != "" && checkUnion(f.Type.Inline.Inner.Name) {
+			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Inner.Name), false, true}
+		}
+	}
+
+	// Slice of interface: []SomeInterface
+	if f.Type.Inline.Kind == ir.KindList && f.Type.Inline.Items != nil {
+		if f.Type.Inline.Items.Name != "" && checkUnion(f.Type.Inline.Items.Name) {
+			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Items.Name), true, false}
+		}
+	}
+
+	return nil
 }

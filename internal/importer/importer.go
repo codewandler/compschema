@@ -16,16 +16,22 @@ import (
 
 	"github.com/codewandler/compschema/internal/ir"
 	"github.com/codewandler/compschema/internal/jsonschema2ir"
+	"github.com/codewandler/compschema/internal/uniongen"
 )
 
 // Import reads a JSON Schema file and generates Go source code.
 func Import(schemaPath, pkg string) (string, error) {
+	return ImportWithConfig(schemaPath, Config{Package: pkg})
+}
+
+// ImportWithConfig reads a JSON Schema file and generates Go source code
+// with the given configuration (renames, excludes, etc.).
+func ImportWithConfig(schemaPath string, cfg Config) (string, error) {
 	irPkg, err := jsonschema2ir.Parse(schemaPath)
 	if err != nil {
 		return "", fmt.Errorf("parse schema: %w", err)
 	}
-	irPkg.Name = pkg
-
+	ApplyConfig(irPkg, cfg)
 	return GenerateGo(irPkg), nil
 }
 
@@ -57,6 +63,34 @@ func GenerateGo(pkg *ir.Package) string {
 	emitted := make(map[string]bool)
 	constNames := make(map[string]bool)
 
+	// Check if we need json/fmt imports (unions or structs with interface fields).
+	needsJSON := false
+	resolver := &importerResolver{pkg: pkg}
+	for _, name := range names {
+		t := pkg.Types[name]
+		if t == nil {
+			continue
+		}
+		if t.Kind == ir.KindUnion {
+			needsJSON = true
+			break
+		}
+		if t.Kind == ir.KindStruct {
+			for _, f := range t.Fields {
+				if uniongen.DetectUnionField(f, pkg, resolver, nil) != nil {
+					needsJSON = true
+					break
+				}
+			}
+			if needsJSON {
+				break
+			}
+		}
+	}
+	if needsJSON {
+		b.WriteString("\nimport (\n\t\"encoding/json\"\n\t\"fmt\"\n)\n")
+	}
+
 	// First pass: collect all const names from enums.
 	for _, name := range names {
 		t := pkg.Types[name]
@@ -76,6 +110,9 @@ func GenerateGo(pkg *ir.Package) string {
 		}
 	}
 
+	// Track types emitted as unions (interfaces) — can't add methods to these.
+	unionTypes := make(map[string]bool)
+
 	// Third pass: emit types.
 	for _, name := range names {
 		if _, ok := pkg.Types[name]; !ok {
@@ -87,8 +124,26 @@ func GenerateGo(pkg *ir.Package) string {
 		}
 		emitted[goName] = true
 		t := pkg.Types[name]
+		if t.Kind == ir.KindUnion {
+			unionTypes[goName] = true
+		}
 		b.WriteString("\n")
 		emitType(&b, name, t, pkg)
+	}
+
+	// Fourth pass: emit UnmarshalJSON for structs with interface fields.
+	if needsJSON {
+		for _, name := range names {
+			t, ok := pkg.Types[name]
+			if !ok || t.Kind != ir.KindStruct {
+				continue
+			}
+			goName := toGoName(name)
+			if unionTypes[goName] {
+				continue // emitted as interface, can't add methods
+			}
+			uniongen.EmitStructUnmarshalJSON(&b, goName, t, pkg, resolver, unionTypes)
+		}
 	}
 
 	return b.String()
@@ -105,7 +160,7 @@ func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package) {
 		emitEnum(b, goName, t)
 
 	case ir.KindUnion:
-		emitUnion(b, goName, t, pkg)
+		uniongen.EmitUnion(b, goName, t, pkg, &importerResolver{pkg: pkg})
 
 	case ir.KindScalar:
 		if t.Description != "" {
@@ -152,7 +207,24 @@ func emitStruct(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) 
 		fieldType := typeRefGoType(&f.Type, pkg)
 
 		// Add nullable wrapper for non-required fields that aren't already pointers.
-		if !f.Required && !strings.HasPrefix(fieldType, "*") && !strings.HasPrefix(fieldType, "[]") && !strings.HasPrefix(fieldType, "map[") {
+		// Skip interface types (unions) — they're already reference types.
+		isUnion := false
+		if f.Type.Name != "" {
+			if ut, ok := pkg.Types[f.Type.Name]; ok && ut.Kind == ir.KindUnion {
+				isUnion = true
+			}
+		}
+		// Also check for nullable-wrapped union refs.
+		if !isUnion && f.Type.Inline != nil && f.Type.Inline.Kind == ir.KindNullable && f.Type.Inline.Inner != nil {
+			if f.Type.Inline.Inner.Name != "" {
+				if ut, ok := pkg.Types[f.Type.Inline.Inner.Name]; ok && ut.Kind == ir.KindUnion {
+					isUnion = true
+					// Rewrite field type to use the union directly (not *interface).
+					fieldType = typeRefGoType(&ir.TypeRef{Name: f.Type.Inline.Inner.Name}, pkg)
+				}
+			}
+		}
+		if !f.Required && !isUnion && !strings.HasPrefix(fieldType, "*") && !strings.HasPrefix(fieldType, "[]") && !strings.HasPrefix(fieldType, "map[") {
 			fieldType = "*" + fieldType
 		}
 
@@ -205,98 +277,20 @@ func emitEnum(b *strings.Builder, goName string, t *ir.Type) {
 	b.WriteString(")\n")
 }
 
-func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
-	marker := fmt.Sprintf("is%s", goName)
 
-	if t.Description != "" {
-		b.WriteString(fmt.Sprintf("// %s %s\n", goName, cleanComment(t.Description)))
+// importerResolver adapts importer's helpers to the uniongen.TypeResolver interface.
+type importerResolver struct {
+	pkg *ir.Package
+}
+
+func (r *importerResolver) GoName(name string) string         { return toGoName(name) }
+func (r *importerResolver) GoType(ref *ir.TypeRef) string     { return typeRefGoType(ref, r.pkg) }
+func (r *importerResolver) Comment(desc string) string        { return cleanComment(desc) }
+func (r *importerResolver) IsStruct(name string) bool {
+	if t, ok := r.pkg.Types[name]; ok {
+		return t.Kind == ir.KindStruct
 	}
-	if t.Discriminator != "" {
-		b.WriteString(fmt.Sprintf("// Discriminated by %q field.\n", t.Discriminator))
-	}
-
-	// Interface.
-	b.WriteString(fmt.Sprintf("//\n//compschema:generate\ntype %s interface {\n\t%s()\n}\n\n", goName, marker))
-
-	// Marker methods + wrapper types for primitives.
-	emittedWrappers := make(map[string]bool)
-	for _, v := range t.Variants {
-		vName := toGoName(v.Name)
-		if vName == goName {
-			continue // skip self-reference
-		}
-
-		// Check if the variant can have methods directly.
-		canHaveMethods := true
-		primType := ""
-
-		if v.TypeRef.Name != "" {
-			vGoName := toGoName(v.TypeRef.Name)
-			canHaveMethods = false // default: don't emit
-			// Only re-enable for structs.
-			if vt, ok := pkg.Types[v.TypeRef.Name]; ok && vt.Kind == ir.KindStruct {
-				canHaveMethods = true
-			} else {
-				// Try matching by Go name.
-				for _, pt := range pkg.Types {
-					if toGoName(pt.Name) == vGoName && pt.Kind == ir.KindStruct {
-						canHaveMethods = true
-						break
-					}
-				}
-			}
-			_ = vGoName
-		} else if v.TypeRef.Inline != nil {
-			switch v.TypeRef.Inline.Kind {
-			case ir.KindScalar:
-				canHaveMethods = false
-				primType = scalarGoType(v.TypeRef.Inline.ScalarType)
-			case ir.KindList:
-				canHaveMethods = false
-				primType = "[]" + typeRefGoType(v.TypeRef.Inline.Items, pkg)
-			case ir.KindMap:
-				canHaveMethods = false
-			case ir.KindRef:
-				// Resolve the ref and check if it's a struct.
-				if rt, ok := pkg.Types[v.TypeRef.Inline.RefName]; ok && rt.Kind == ir.KindStruct {
-					vName = toGoName(v.TypeRef.Inline.RefName)
-				} else {
-					canHaveMethods = false
-				}
-			default:
-				canHaveMethods = false
-			}
-		}
-
-		if canHaveMethods && vName != "" {
-			// Final safety: check if vName is itself a union interface.
-			for _, pt := range pkg.Types {
-				if toGoName(pt.Name) == vName && pt.Kind != ir.KindStruct {
-					canHaveMethods = false
-					break
-				}
-			}
-		}
-
-		if canHaveMethods && vName != "" {
-			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", vName, marker))
-		} else if primType != "" {
-			// Generate a wrapper struct for this primitive variant.
-			wrapperSuffix := toGoName(primType)
-			if vName != "" {
-				wrapperSuffix = vName
-			}
-			wrapperName := goName + wrapperSuffix
-			if emittedWrappers[wrapperName] {
-				continue
-			}
-			emittedWrappers[wrapperName] = true
-			b.WriteString(fmt.Sprintf("\n// %s wraps a %s value as a %s variant.\n", wrapperName, primType, goName))
-			b.WriteString(fmt.Sprintf("type %s struct { Value %s }\n", wrapperName, primType))
-			b.WriteString(fmt.Sprintf("func (*%s) %s() {}\n", wrapperName, marker))
-		}
-	}
-	b.WriteString("\n")
+	return false
 }
 
 func buildJSONSchemaTag(constraints []ir.Constraint, description string) string {
@@ -477,7 +471,13 @@ func cleanComment(s string) string {
 // ImportFromFile is a convenience function that reads a JSON Schema file,
 // generates Go code, and writes it to the output path.
 func ImportFromFile(schemaPath, pkg, outputPath string) error {
-	code, err := Import(schemaPath, pkg)
+	return ImportFromFileWithConfig(schemaPath, outputPath, Config{Package: pkg})
+}
+
+// ImportFromFileWithConfig reads a JSON Schema, applies config, generates
+// Go code, and writes it to the output path.
+func ImportFromFileWithConfig(schemaPath, outputPath string, cfg Config) error {
+	code, err := ImportWithConfig(schemaPath, cfg)
 	if err != nil {
 		return err
 	}

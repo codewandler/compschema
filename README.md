@@ -156,14 +156,6 @@ compschema diff --ir ground-truth.json generated.json   # IR-level (normalized)
 
 The IR-level diff eliminates noise (array ordering, `$ref` vs inline, whitespace, nullable representation) and reports only true structural differences.
 
-### `compschema uniongen`
-
-Generates sealed Go interfaces for JSON Schema `oneOf`/`anyOf` unions. Used in the OpenAPI pipeline when working with `go-jsonschema` output.
-
-```bash
-compschema uniongen --schema schema.json --package api --out unions.gen.go --patch types.go
-```
-
 ### `compschema schemas`
 
 Lists all component schema names in an OpenAPI spec.
@@ -273,14 +265,14 @@ Every field on the OpenAPI 3.x Schema Object is explicitly handled:
 
 ```
 schema.go                      compschema.Schema interface (importable)
-cmd/compschema/                CLI (cobra): extract, import, generate, diff, uniongen, schemas
+cmd/compschema/                CLI (cobra): extract, import, generate, diff, schemas
 internal/ir/                   Schema IR types (Type, Field, Constraint, Variant, TypeRef)
 internal/analyzer/             Go types → IR (go/packages + go/types)
 internal/emitter/              IR → JSON Schema + Go codegen + tests
 internal/importer/             JSON Schema → Go structs (with sealed interfaces + constraints)
 internal/jsonschema2ir/        JSON Schema → IR parser (for diff + import)
 internal/openapi2jsonschema/   OpenAPI → JSON Schema converter (exhaustive field coverage)
-internal/uniongen/             Union sealed interface generator
+internal/uniongen/             Sealed interface generation for oneOf/anyOf unions (IR-based)
 internal/schemadiff/           JSON Schema + IR structural diff
 examples/basic/                Basic example (Order, LineItem, Shape union — 23 tests)
 examples/openai/               OpenAI Responses API (261 types — 587 tests)

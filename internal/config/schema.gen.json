@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "description": "is a single step in a pipeline, corresponding to a CLI subcommand.",
+      "properties": {
+        "action": {
+          "description": "CLI subcommand to run,enum=extract,enum=import,enum=generate,enum=diff",
+          "type": "string"
+        },
+        "all": {
+          "description": "Analyze all exported types (not just annotated)",
+          "type": "boolean"
+        },
+        "exclude": {
+          "description": "Glob patterns for type names to skip",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "out": {
+          "description": "Output file or directory path",
+          "type": "string"
+        },
+        "package": {
+          "description": "Go package name for generated code",
+          "type": "string"
+        },
+        "packages": {
+          "description": "Go package patterns to analyze",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "path": {
+          "description": "API path prefix to extract (e.g. /responses)",
+          "type": "string"
+        },
+        "rename": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Type rename map: SchemaName → GoName",
+          "type": "object"
+        },
+        "schema": {
+          "description": "Path to the JSON Schema file",
+          "type": "string"
+        },
+        "spec": {
+          "description": "Path to the OpenAPI spec file",
+          "type": "string"
+        },
+        "validate": {
+          "description": "Validate generated schema against meta-schema",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "File": {
+      "additionalProperties": false,
+      "description": "is the top-level config file structure.",
+      "properties": {
+        "pipelines": {
+          "additionalProperties": {
+            "items": {
+              "$ref": "#/$defs/Action"
+            },
+            "type": "array"
+          },
+          "description": "Named pipelines. Each pipeline is a list of actions.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "pipelines"
+      ],
+      "title": "File",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

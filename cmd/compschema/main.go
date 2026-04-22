@@ -20,9 +20,9 @@ It also includes tooling for importing schemas from OpenAPI specs.`,
 		newExtractCmd(),
 		newSchemasCmd(),
 		newGenerateCmd(),
-		newUniongenCmd(),
 		newDiffCmd(),
 		newImportCmd(),
+		newRunCmd(),
 	)
 
 	if err := root.Execute(); err != nil {

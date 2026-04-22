@@ -10,6 +10,7 @@ import (
 	"go/ast"
 	"go/constant"
 	"go/types"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -24,6 +25,7 @@ import (
 func Analyze(allTypes bool, patterns ...string) ([]*ir.Package, error) {
 	cfg := &packages.Config{
 		Mode: packages.NeedName |
+			packages.NeedFiles |
 			packages.NeedTypes |
 			packages.NeedTypesInfo |
 			packages.NeedSyntax |
@@ -55,6 +57,11 @@ func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 		resolving: make(map[string]bool),
 		enumMap:   buildEnumMap(pkg),
 		fieldDocs: buildFieldDocMap(pkg),
+	}
+
+	// Derive source directory from the first Go file.
+	if len(pkg.GoFiles) > 0 {
+		a.irPkg.Dir = filepath.Dir(pkg.GoFiles[0])
 	}
 
 	// Find root types.
@@ -168,7 +175,13 @@ func (a *pkgAnalyzer) convertType(name string, typ types.Type) *ir.Type {
 		return a.convertStruct(name, typ, t)
 	case *types.Interface:
 		if t.NumMethods() == 0 {
-			return nil
+			// Named empty interface (e.g. type Foo interface{}) — accepts any JSON.
+			return &ir.Type{
+				Name:        name,
+				Kind:        ir.KindScalar,
+				ScalarType:  "any",
+				Description: a.typeDoc(name),
+			}
 		}
 		u := a.convertUnion(name, t)
 		if u != nil && u.Kind == ir.KindUnion && len(u.Variants) == 0 {
@@ -188,16 +201,26 @@ func (a *pkgAnalyzer) convertType(name string, typ types.Type) *ir.Type {
 			ScalarType: basicToScalar(t),
 		}
 	case *types.Map:
-		ref := a.resolveTypeRef(typ)
+		ref := a.resolveTypeRef(t) // use underlying, not named type
 		if ref.Inline != nil {
 			ref.Inline.Name = name
+			ref.Inline.Description = a.typeDoc(name)
 			return ref.Inline
 		}
 		return nil
 	case *types.Slice:
-		ref := a.resolveTypeRef(typ)
+		ref := a.resolveTypeRef(t) // use underlying, not named type
 		if ref.Inline != nil {
 			ref.Inline.Name = name
+			ref.Inline.Description = a.typeDoc(name)
+			return ref.Inline
+		}
+		return nil
+	case *types.Pointer:
+		ref := a.resolveTypeRef(t) // use underlying, not named type
+		if ref.Inline != nil {
+			ref.Inline.Name = name
+			ref.Inline.Description = a.typeDoc(name)
 			return ref.Inline
 		}
 		return nil

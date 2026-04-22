@@ -2,6 +2,8 @@ package analyzer
 
 import (
 	"testing"
+
+	"github.com/codewandler/compschema/internal/ir"
 )
 
 func TestAnalyze_BasicPackage(t *testing.T) {
@@ -190,15 +192,20 @@ func TestAnalyze_AllTypes(t *testing.T) {
 }
 
 func TestAnalyze_EmptyInterface(t *testing.T) {
-	// Empty interfaces (interface{}/any) should be skipped.
+	// Named empty interfaces (type Foo interface{}) should be included
+	// as KindScalar/"any" so they get a $defs entry.
 	pkgs, err := Analyze(true, "../../examples/openai")
 	if err != nil {
 		t.Fatal(err)
 	}
 	pkg := pkgs[0]
 
-	// ModelIdsResponses is `interface{}` — should NOT be in the IR.
-	if _, ok := pkg.Types["ModelIdsResponses"]; ok {
-		t.Error("ModelIdsResponses (empty interface) should be skipped")
+	// ModelIdsResponses is `interface{}` — should be in the IR as a scalar "any".
+	typ, ok := pkg.Types["ModelIdsResponses"]
+	if !ok {
+		t.Fatal("ModelIdsResponses (empty interface) should be in the IR")
+	}
+	if typ.Kind != ir.KindScalar || typ.ScalarType != "any" {
+		t.Errorf("ModelIdsResponses should be KindScalar/any, got %v/%v", typ.Kind, typ.ScalarType)
 	}
 }

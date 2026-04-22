@@ -47,9 +47,14 @@ types annotated with //compschema:generate, and emit:
 			for _, pkg := range pkgs {
 				dir := outDir
 				if dir == "" {
-					// Default: write to the package's source directory.
-					// For patterns like ./..., resolve from the working directory.
+					dir = pkg.Dir
+				}
+				if dir == "" {
 					dir = "."
+				}
+
+				if err := os.MkdirAll(dir, 0755); err != nil {
+					return fmt.Errorf("create output directory: %w", err)
 				}
 
 				fmt.Fprintf(os.Stderr, "package %s: %d types\n", pkg.Name, len(pkg.Types))
