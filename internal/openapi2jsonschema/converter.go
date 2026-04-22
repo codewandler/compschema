@@ -4,6 +4,10 @@
 // OpenAPI Schema Objects are a superset of JSON Schema with extra keywords
 // (discriminator, xml, nullable, etc.). This converter strips the OpenAPI-only
 // bits, resolves $ref chains, and produces spec-compliant JSON Schema.
+//
+// Coverage: every field on pb33f/libopenapi's high-level Schema struct is
+// explicitly handled — either converted to its JSON Schema equivalent,
+// intentionally stripped (OpenAPI-only), or documented as a conscious skip.
 package openapi2jsonschema
 
 import (
@@ -12,10 +16,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/pb33f/libopenapi"
 	v3base "github.com/pb33f/libopenapi/datamodel/high/base"
 	v3high "github.com/pb33f/libopenapi/datamodel/high/v3"
 	"github.com/pb33f/libopenapi/orderedmap"
+
+	"github.com/pb33f/libopenapi"
 )
 
 // Converter holds the parsed OpenAPI model and extracted $defs.
@@ -66,7 +71,6 @@ func (c *Converter) ExtractSchema(name string) ([]byte, error) {
 
 	c.convertSchema(name, schema)
 
-	// Build the top-level document.
 	root := orderedmap.New[string, any]()
 	root.Set("$schema", "https://json-schema.org/draft/2020-12/schema")
 	root.Set("$id", name)
@@ -80,6 +84,10 @@ func (c *Converter) ExtractSchema(name string) ([]byte, error) {
 
 // convertSchema converts a high-level Schema into a JSON Schema ordered map,
 // recording any named types into $defs.
+//
+// Field coverage matches pb33f/libopenapi v0.36.1 Schema struct exhaustively.
+// Each field is handled in a named section with a comment. Fields that are
+// intentionally not emitted are documented as "Stripped (OpenAPI-only)".
 func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedmap.Map[string, any] {
 	if schema == nil {
 		return orderedmap.New[string, any]()
@@ -87,34 +95,72 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 
 	out := orderedmap.New[string, any]()
 
-	// Handle allOf
+	// ── Composition keywords ────────────────────────────────────────────
+
+	// allOf
 	if len(schema.AllOf) > 0 {
-		allOf := make([]any, 0, len(schema.AllOf))
+		items := make([]any, 0, len(schema.AllOf))
 		for _, proxy := range schema.AllOf {
-			allOf = append(allOf, c.convertProxy(proxy))
+			items = append(items, c.convertProxy(proxy))
 		}
-		out.Set("allOf", allOf)
+		out.Set("allOf", items)
 	}
 
-	// Handle oneOf
+	// oneOf
 	if len(schema.OneOf) > 0 {
-		oneOf := make([]any, 0, len(schema.OneOf))
+		items := make([]any, 0, len(schema.OneOf))
 		for _, proxy := range schema.OneOf {
-			oneOf = append(oneOf, c.convertProxy(proxy))
+			items = append(items, c.convertProxy(proxy))
 		}
-		out.Set("oneOf", oneOf)
+		out.Set("oneOf", items)
 	}
 
-	// Handle anyOf
+	// anyOf
 	if len(schema.AnyOf) > 0 {
-		anyOf := make([]any, 0, len(schema.AnyOf))
+		items := make([]any, 0, len(schema.AnyOf))
 		for _, proxy := range schema.AnyOf {
-			anyOf = append(anyOf, c.convertProxy(proxy))
+			items = append(items, c.convertProxy(proxy))
 		}
-		out.Set("anyOf", anyOf)
+		out.Set("anyOf", items)
 	}
 
-	// Type — handle nullable (OpenAPI 3.0 nullable → JSON Schema type array with "null")
+	// not
+	if schema.Not != nil {
+		out.Set("not", c.convertProxy(schema.Not))
+	}
+
+	// if / then / else  (3.1+ / JSON Schema 2020-12)
+	if schema.If != nil {
+		out.Set("if", c.convertProxy(schema.If))
+	}
+	if schema.Then != nil {
+		out.Set("then", c.convertProxy(schema.Then))
+	}
+	if schema.Else != nil {
+		out.Set("else", c.convertProxy(schema.Else))
+	}
+
+	// dependentSchemas  (3.1+)
+	if schema.DependentSchemas != nil && schema.DependentSchemas.Len() > 0 {
+		ds := orderedmap.New[string, any]()
+		for pair := schema.DependentSchemas.Oldest(); pair != nil; pair = pair.Next() {
+			ds.Set(pair.Key, c.convertProxy(pair.Value))
+		}
+		out.Set("dependentSchemas", ds)
+	}
+
+	// dependentRequired  (3.1+)
+	if schema.DependentRequired != nil && schema.DependentRequired.Len() > 0 {
+		dr := orderedmap.New[string, any]()
+		for pair := schema.DependentRequired.Oldest(); pair != nil; pair = pair.Next() {
+			dr.Set(pair.Key, pair.Value)
+		}
+		out.Set("dependentRequired", dr)
+	}
+
+	// ── Type & nullable ─────────────────────────────────────────────────
+
+	// Type — handle OpenAPI 3.0 nullable → JSON Schema type array with "null"
 	types := schema.Type
 	if len(types) > 0 {
 		if schema.Nullable != nil && *schema.Nullable {
@@ -126,15 +172,18 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 			out.Set("type", types)
 		}
 	} else if schema.Nullable != nil && *schema.Nullable {
+		// nullable without explicit type — emit just "null"
 		out.Set("type", "null")
 	}
 
-	// Format
+	// ── Format ──────────────────────────────────────────────────────────
+
 	if schema.Format != "" {
 		out.Set("format", schema.Format)
 	}
 
-	// Title / Description
+	// ── Metadata ────────────────────────────────────────────────────────
+
 	if schema.Title != "" {
 		out.Set("title", schema.Title)
 	}
@@ -142,7 +191,28 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		out.Set("description", schema.Description)
 	}
 
-	// Enum
+	// $comment  (3.1+)
+	if schema.Comment != "" {
+		out.Set("$comment", schema.Comment)
+	}
+
+	// deprecated — valid in JSON Schema 2019-09+
+	if schema.Deprecated != nil && *schema.Deprecated {
+		out.Set("deprecated", true)
+	}
+
+	// readOnly
+	if schema.ReadOnly != nil && *schema.ReadOnly {
+		out.Set("readOnly", true)
+	}
+
+	// writeOnly
+	if schema.WriteOnly != nil && *schema.WriteOnly {
+		out.Set("writeOnly", true)
+	}
+
+	// ── Enum / Const / Default ──────────────────────────────────────────
+
 	if len(schema.Enum) > 0 {
 		enums := make([]any, len(schema.Enum))
 		for i, v := range schema.Enum {
@@ -151,17 +221,17 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		out.Set("enum", enums)
 	}
 
-	// Const
 	if schema.Const != nil {
 		out.Set("const", schema.Const.Value)
 	}
 
-	// Default
 	if schema.Default != nil {
 		out.Set("default", schema.Default.Value)
 	}
 
-	// Properties
+	// ── Object keywords ─────────────────────────────────────────────────
+
+	// properties
 	if schema.Properties != nil && schema.Properties.Len() > 0 {
 		props := orderedmap.New[string, any]()
 		for pair := schema.Properties.Oldest(); pair != nil; pair = pair.Next() {
@@ -170,23 +240,54 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		out.Set("properties", props)
 	}
 
-	// Required
-	if len(schema.Required) > 0 {
-		out.Set("required", schema.Required)
+	// patternProperties
+	if schema.PatternProperties != nil && schema.PatternProperties.Len() > 0 {
+		pp := orderedmap.New[string, any]()
+		for pair := schema.PatternProperties.Oldest(); pair != nil; pair = pair.Next() {
+			pp.Set(pair.Key, c.convertProxy(pair.Value))
+		}
+		out.Set("patternProperties", pp)
 	}
 
-	// AdditionalProperties — DynamicValue[*SchemaProxy, bool]
+	// additionalProperties — DynamicValue[*SchemaProxy, bool]
 	if schema.AdditionalProperties != nil {
 		if schema.AdditionalProperties.IsA() {
-			// It's a schema
 			out.Set("additionalProperties", c.convertProxy(schema.AdditionalProperties.A))
 		} else {
-			// It's a boolean
 			out.Set("additionalProperties", schema.AdditionalProperties.B)
 		}
 	}
 
-	// Items — DynamicValue[*SchemaProxy, bool]
+	// unevaluatedProperties — DynamicValue[*SchemaProxy, bool]  (3.1+)
+	if schema.UnevaluatedProperties != nil {
+		if schema.UnevaluatedProperties.IsA() {
+			out.Set("unevaluatedProperties", c.convertProxy(schema.UnevaluatedProperties.A))
+		} else {
+			out.Set("unevaluatedProperties", schema.UnevaluatedProperties.B)
+		}
+	}
+
+	// propertyNames  (3.1+)
+	if schema.PropertyNames != nil {
+		out.Set("propertyNames", c.convertProxy(schema.PropertyNames))
+	}
+
+	// required
+	if len(schema.Required) > 0 {
+		out.Set("required", schema.Required)
+	}
+
+	// minProperties / maxProperties
+	if schema.MinProperties != nil {
+		out.Set("minProperties", *schema.MinProperties)
+	}
+	if schema.MaxProperties != nil {
+		out.Set("maxProperties", *schema.MaxProperties)
+	}
+
+	// ── Array keywords ──────────────────────────────────────────────────
+
+	// items — DynamicValue[*SchemaProxy, bool]
 	if schema.Items != nil {
 		if schema.Items.IsA() {
 			out.Set("items", c.convertProxy(schema.Items.A))
@@ -195,28 +296,83 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		}
 	}
 
-	// Numeric constraints
+	// prefixItems  (3.1+ tuple validation)
+	if len(schema.PrefixItems) > 0 {
+		items := make([]any, 0, len(schema.PrefixItems))
+		for _, proxy := range schema.PrefixItems {
+			items = append(items, c.convertProxy(proxy))
+		}
+		out.Set("prefixItems", items)
+	}
+
+	// unevaluatedItems  (3.1+)
+	if schema.UnevaluatedItems != nil {
+		out.Set("unevaluatedItems", c.convertProxy(schema.UnevaluatedItems))
+	}
+
+	// contains / minContains / maxContains  (3.1+)
+	if schema.Contains != nil {
+		out.Set("contains", c.convertProxy(schema.Contains))
+	}
+	if schema.MinContains != nil {
+		out.Set("minContains", *schema.MinContains)
+	}
+	if schema.MaxContains != nil {
+		out.Set("maxContains", *schema.MaxContains)
+	}
+
+	// minItems / maxItems
+	if schema.MinItems != nil {
+		out.Set("minItems", *schema.MinItems)
+	}
+	if schema.MaxItems != nil {
+		out.Set("maxItems", *schema.MaxItems)
+	}
+
+	// uniqueItems
+	if schema.UniqueItems != nil && *schema.UniqueItems {
+		out.Set("uniqueItems", true)
+	}
+
+	// ── Numeric constraints ─────────────────────────────────────────────
+
 	if schema.Minimum != nil {
 		out.Set("minimum", *schema.Minimum)
 	}
 	if schema.Maximum != nil {
 		out.Set("maximum", *schema.Maximum)
 	}
+
+	// exclusiveMinimum — DynamicValue[bool, float64]
+	// OpenAPI 3.0: A=bool (if true, minimum is exclusive) → convert to 2020-12 number form
+	// OpenAPI 3.1: B=float64 (the exclusive bound itself)
 	if schema.ExclusiveMinimum != nil {
 		if schema.ExclusiveMinimum.IsB() {
+			// 3.1 form: already a number
 			out.Set("exclusiveMinimum", schema.ExclusiveMinimum.B)
+		} else if schema.ExclusiveMinimum.A && schema.Minimum != nil {
+			// 3.0 form: boolean true + minimum → promote minimum to exclusiveMinimum
+			out.Delete("minimum")
+			out.Set("exclusiveMinimum", *schema.Minimum)
 		}
 	}
+
+	// exclusiveMaximum — DynamicValue[bool, float64]
 	if schema.ExclusiveMaximum != nil {
 		if schema.ExclusiveMaximum.IsB() {
 			out.Set("exclusiveMaximum", schema.ExclusiveMaximum.B)
+		} else if schema.ExclusiveMaximum.A && schema.Maximum != nil {
+			out.Delete("maximum")
+			out.Set("exclusiveMaximum", *schema.Maximum)
 		}
 	}
+
 	if schema.MultipleOf != nil {
 		out.Set("multipleOf", *schema.MultipleOf)
 	}
 
-	// String constraints
+	// ── String constraints ──────────────────────────────────────────────
+
 	if schema.MinLength != nil {
 		out.Set("minLength", *schema.MinLength)
 	}
@@ -227,18 +383,98 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		out.Set("pattern", schema.Pattern)
 	}
 
-	// Array constraints
-	if schema.MinItems != nil {
-		out.Set("minItems", *schema.MinItems)
+	// contentEncoding / contentMediaType  (JSON Schema 2020-12 content vocabulary)
+	if schema.ContentEncoding != "" {
+		out.Set("contentEncoding", schema.ContentEncoding)
 	}
-	if schema.MaxItems != nil {
-		out.Set("maxItems", *schema.MaxItems)
-	}
-	if schema.UniqueItems != nil && *schema.UniqueItems {
-		out.Set("uniqueItems", true)
+	if schema.ContentMediaType != "" {
+		out.Set("contentMediaType", schema.ContentMediaType)
 	}
 
-	// Register named schemas in $defs
+	// contentSchema  (3.1+)
+	if schema.ContentSchema != nil {
+		out.Set("contentSchema", c.convertProxy(schema.ContentSchema))
+	}
+
+	// ── Examples ────────────────────────────────────────────────────────
+
+	// OpenAPI 3.0 "example" (singular) → JSON Schema 2020-12 "examples" (array)
+	// OpenAPI 3.1 "examples" (array) → pass through
+	if len(schema.Examples) > 0 {
+		examples := make([]any, len(schema.Examples))
+		for i, node := range schema.Examples {
+			examples[i] = node.Value
+		}
+		out.Set("examples", examples)
+	} else if schema.Example != nil {
+		// Promote singular example to examples array per 2020-12
+		out.Set("examples", []any{schema.Example.Value})
+	}
+
+	// ── JSON Schema 2020-12 identity keywords ───────────────────────────
+
+	// $id on sub-schemas (top-level $id is set by the document builder)
+	if schema.Id != "" && name == "" {
+		out.Set("$id", schema.Id)
+	}
+
+	// $anchor
+	if schema.Anchor != "" {
+		out.Set("$anchor", schema.Anchor)
+	}
+
+	// $dynamicAnchor
+	if schema.DynamicAnchor != "" {
+		out.Set("$dynamicAnchor", schema.DynamicAnchor)
+	}
+
+	// $dynamicRef
+	if schema.DynamicRef != "" {
+		out.Set("$dynamicRef", schema.DynamicRef)
+	}
+
+	// ── Discriminator (OpenAPI → JSON Schema mapping) ───────────────────
+
+	// OpenAPI's discriminator isn't a JSON Schema keyword, but it carries
+	// semantic information about which property determines the union variant.
+	// We preserve it under "x-discriminator" so downstream tools (including
+	// compschema's IR) can use it for union detection.
+	if schema.Discriminator != nil {
+		disc := orderedmap.New[string, any]()
+		disc.Set("propertyName", schema.Discriminator.PropertyName)
+		if schema.Discriminator.Mapping != nil && schema.Discriminator.Mapping.Len() > 0 {
+			mapping := orderedmap.New[string, any]()
+			for pair := schema.Discriminator.Mapping.Oldest(); pair != nil; pair = pair.Next() {
+				mapping.Set(pair.Key, pair.Value)
+			}
+			disc.Set("mapping", mapping)
+		}
+		out.Set("x-discriminator", disc)
+	}
+
+	// ── Extensions (x-* keywords) ──────────────────────────────────────
+
+	// Preserve vendor extensions — they may carry semantic information
+	// (e.g. x-stainless-const in OpenAI's spec).
+	if schema.Extensions != nil {
+		for pair := schema.Extensions.Oldest(); pair != nil; pair = pair.Next() {
+			if pair.Value != nil {
+				out.Set(pair.Key, pair.Value.Value)
+			}
+		}
+	}
+
+	// ── Intentionally stripped (OpenAPI-only, no JSON Schema equivalent) ─
+	//
+	// - XML              → OpenAPI serialization hint, not relevant for JSON
+	// - ExternalDocs     → OpenAPI documentation link, no JSON Schema equivalent
+	// - SchemaTypeRef    → nested $schema dialect (set at document level, not per-def)
+	// - Vocabulary       → meta-schema vocabulary declaration (not per-schema)
+	// - Nullable         → already handled above (merged into type array)
+	// - ParentProxy, low → internal libopenapi bookkeeping
+
+	// ── Register named schemas in $defs ─────────────────────────────────
+
 	if name != "" {
 		c.defs.Set(name, out)
 	}
@@ -246,7 +482,7 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 	return out
 }
 
-// convertProxy handles a SchemaProxy — either resolving a $ref or inlining the schema.
+// convertProxy handles a SchemaProxy — either resolving a $ref or inlining.
 func (c *Converter) convertProxy(proxy *v3base.SchemaProxy) any {
 	if proxy == nil {
 		return orderedmap.New[string, any]()
