@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-04-22
+
+### Added
+- **11/11 real-world API specs pass** the full round-trip pipeline with 0 failures
+- Multi-API test suite: Petstore, Twilio, Spotify, Asana, OpenAI, Kubernetes, Box, GitHub, Discord, Plaid, Stripe, Cloudflare
+- 34,987 fields validated across 9,288 schemas and 14,791 Go types
+- Cycle detection in analyzer (`resolving` map) and emitter (`visiting` map) — fixes stack overflows on self-referencing types (Box, Cloudflare)
+- Stripe support: 1,382 schemas compile and achieve 91% match
+  - Self-referencing union variants resolved by Go name scan
+  - Inline `KindRef` variants resolve before emitting markers
+  - Single-variant unions collapsed to direct refs
+  - Enum const name collisions: skip types, fallback to `any`
+- IR diff fuzzy name matching: `io.k8s.api.v1.Pod` matches `IoK8sAPIV1Pod`
+- `toGoName` handles `$`, `<`, `>`, `=`, `!`, `~`, `%` and numeric prefixes
+- Integer enum consts emitted as `= 1` not `= "1"`
+- Graceful circular `$ref` handling in OpenAPI converter (warnings, not fatal)
+- GitHub Actions CI with Go 1.22/1.23 + full round-trip assertion
+- `go:generate` verified working end-to-end
+- `compschema generate` prints `go get` hint for runtime dependency
+
+### Changed
+- Consolidated docs: PRD + design decisions → `docs/DESIGN.md`
+- Removed `RELEASES.md` (release notes on GitHub)
+
+### Removed
+- Swagger v2 specs (DigitalOcean, NYTimes) — OpenAPI v2 support added to roadmap
+
 ## [0.9.0] - 2026-04-22
 
 ### Added
@@ -148,7 +175,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/codewandler/compschema/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/codewandler/compschema/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/codewandler/compschema/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/codewandler/compschema/compare/v0.6.0...v0.7.0

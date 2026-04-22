@@ -190,12 +190,10 @@ compschema is tested against 13 real-world OpenAPI specs. The full pipeline runs
 | **Plaid** | 2,019 | 2,058 | **96.2%** | 7,394 |
 | **Stripe** | 1,382 | 3,010 | **93.2%** | 5,860 |
 | Box | 286 | 570 | — | stack overflow (self-ref structs) |
-| Cloudflare | 4,309 | 5,982 | — | stack overflow (self-ref structs) |
-| DigitalOcean | — | — | — | Swagger v2 |
-| NYTimes | — | — | — | Swagger v2 |
+| **Cloudflare** | 4,309 | 5,980 | **79.2%** | 9,267 |
 
-**10 of 14 APIs pass the full pipeline.** 5 achieve 100% structural field match.
-**Total fields validated: 22,054** across 10 APIs.
+**11 of 11 APIs pass the full pipeline.** 5 achieve 100% structural field match.
+**Total: 9,288 schemas, 14,791 Go types, 34,987 fields validated.**
 
 Run the full suite: `bash testdata/specs/run_all.sh`
 
@@ -286,7 +284,9 @@ internal/uniongen/             Union sealed interface generator
 internal/schemadiff/           JSON Schema + IR structural diff
 examples/basic/                Basic example (Order, LineItem, Shape union — 23 tests)
 examples/openai/               OpenAI Responses API (261 types — 587 tests)
-testdata/specs/               Multi-API test suite (13 OpenAPI specs)
+testdata/specs/               Multi-API test suite (11 OpenAPI specs)
+docs/DESIGN.md                Architecture, IR design, validation strategy
+CHANGELOG.md                  Version history
 ```
 
 ## Limitations
@@ -305,7 +305,7 @@ When a JSON Schema type is defined as a nullable union (`anyOf` / `oneOf` wrappi
 // func (*ChildUnion) isParentUnion() {}  ← invalid: pointer to interface
 ```
 
-This affects Box and Cloudflare where deeply self-referencing types cause stack overflows during analysis. Stripe's 1,382 schemas compile and achieve 93.2% match despite having this pattern.
+This affects specs with deeply self-referencing types. compschema handles these via cycle detection — self-referencing fields resolve to `$ref` and fixture generation returns `nil` for cycles. All 11 tested APIs now pass including Cloudflare (4,309 schemas).
 
 ### OpenAPI v2 (Swagger)
 
