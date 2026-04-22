@@ -97,13 +97,17 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 
 	// ── Composition keywords ────────────────────────────────────────────
 
-	// allOf
+	// allOf — attempt to flatten when all variants are objects
 	if len(schema.AllOf) > 0 {
-		items := make([]any, 0, len(schema.AllOf))
-		for _, proxy := range schema.AllOf {
-			items = append(items, c.convertProxy(proxy))
+		if flattened, ok := c.flattenAllOf(schema.AllOf); ok {
+			mergeInto(out, flattened)
+		} else {
+			items := make([]any, 0, len(schema.AllOf))
+			for _, proxy := range schema.AllOf {
+				items = append(items, c.convertProxy(proxy))
+			}
+			out.Set("allOf", items)
 		}
-		out.Set("allOf", items)
 	}
 
 	// oneOf — with nullable simplification
@@ -533,6 +537,133 @@ func (c *Converter) ensureDef(name string) {
 		return
 	}
 	c.convertSchema(name, schema)
+}
+
+// flattenAllOf merges allOf variants into a single object schema when all
+// variants are objects (have properties or resolve to object $refs).
+//
+// Pattern: allOf: [{$ref: A}, {$ref: B}, {type:object, properties:{...}}]
+// → type: object, properties: {merged from A + B + inline}, required: [merged]
+//
+// This eliminates interface{} in generated Go for struct-composition patterns
+// that OpenAPI commonly uses for inheritance/mixins.
+func (c *Converter) flattenAllOf(proxies []*v3base.SchemaProxy) (*orderedmap.Map[string, any], bool) {
+	// First pass: convert all variants and check they're all object-like.
+	var converted []*orderedmap.Map[string, any]
+	for _, proxy := range proxies {
+		raw := c.convertProxy(proxy)
+		m, ok := raw.(*orderedmap.Map[string, any])
+		if !ok {
+			return nil, false
+		}
+
+		// If it's a $ref, we need to check if the referenced schema is object-like.
+		// We still keep the $ref in $defs, but we read its resolved properties for merging.
+		if refVal, hasRef := m.Get("$ref"); hasRef {
+			refStr, _ := refVal.(string)
+			// Extract the def name from "#/$defs/Foo"
+			parts := strings.Split(refStr, "/")
+			defName := parts[len(parts)-1]
+			resolved, ok := c.defs.Get(defName)
+			if !ok {
+				return nil, false
+			}
+			resolvedMap, ok := resolved.(*orderedmap.Map[string, any])
+			if !ok {
+				return nil, false
+			}
+			// Must be object-like.
+			if !isObjectLike(resolvedMap) {
+				return nil, false
+			}
+			converted = append(converted, resolvedMap)
+		} else {
+			// Inline schema — must be object-like.
+			if !isObjectLike(m) {
+				return nil, false
+			}
+			converted = append(converted, m)
+		}
+	}
+
+	// Second pass: merge all properties, required, and other object keywords.
+	out := orderedmap.New[string, any]()
+	out.Set("type", "object")
+
+	mergedProps := orderedmap.New[string, any]()
+	var mergedRequired []string
+	requiredSeen := map[string]bool{}
+
+	for _, m := range converted {
+		// Merge properties.
+		if propsRaw, ok := m.Get("properties"); ok {
+			if props, ok := propsRaw.(*orderedmap.Map[string, any]); ok {
+				for pair := props.Oldest(); pair != nil; pair = pair.Next() {
+					if _, exists := mergedProps.Get(pair.Key); !exists {
+						mergedProps.Set(pair.Key, pair.Value)
+					}
+				}
+			}
+		}
+
+		// Merge required.
+		if reqRaw, ok := m.Get("required"); ok {
+			if reqs, ok := reqRaw.([]string); ok {
+				for _, r := range reqs {
+					if !requiredSeen[r] {
+						requiredSeen[r] = true
+						mergedRequired = append(mergedRequired, r)
+					}
+				}
+			}
+		}
+
+		// Carry over additionalProperties from any variant (last wins).
+		if ap, ok := m.Get("additionalProperties"); ok {
+			out.Set("additionalProperties", ap)
+		}
+
+		// Carry over description from first variant that has one.
+		if desc, ok := m.Get("description"); ok {
+			if _, alreadySet := out.Get("description"); !alreadySet {
+				out.Set("description", desc)
+			}
+		}
+
+		// Carry over title.
+		if title, ok := m.Get("title"); ok {
+			if _, alreadySet := out.Get("title"); !alreadySet {
+				out.Set("title", title)
+			}
+		}
+	}
+
+	if mergedProps.Len() > 0 {
+		out.Set("properties", mergedProps)
+	}
+	if len(mergedRequired) > 0 {
+		out.Set("required", mergedRequired)
+	}
+
+	return out, true
+}
+
+// isObjectLike returns true if a converted schema map represents an object
+// (has properties, type:object, or is composed of objects via allOf).
+func isObjectLike(m *orderedmap.Map[string, any]) bool {
+	if _, ok := m.Get("properties"); ok {
+		return true
+	}
+	if t, ok := m.Get("type"); ok {
+		if ts, ok := t.(string); ok && ts == "object" {
+			return true
+		}
+	}
+	// allOf of objects is also object-like (recursive composition).
+	if _, ok := m.Get("allOf"); ok {
+		return true
+	}
+	return false
 }
 
 // simplifyNullableComposition checks if a oneOf/anyOf is just [T, {type:null}]

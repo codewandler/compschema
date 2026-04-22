@@ -325,7 +325,43 @@ type ComputerToolCallOutput struct {
 	Type ComputerToolCallOutputType `json:"type" yaml:"type" mapstructure:"type"`
 }
 
-type ComputerToolCallOutputResource interface{}
+// The output of a computer tool call.
+type ComputerToolCallOutputResource struct {
+	// The safety checks reported by the API that have been acknowledged by the
+	// developer.
+	//
+	AcknowledgedSafetyChecks []ComputerToolCallSafetyCheck `json:"acknowledged_safety_checks,omitempty,omitzero" yaml:"acknowledged_safety_checks,omitempty" mapstructure:"acknowledged_safety_checks,omitempty"`
+
+	// The ID of the computer tool call that produced the output.
+	//
+	CallID string `json:"call_id" yaml:"call_id" mapstructure:"call_id"`
+
+	// The ID of the computer tool call output.
+	//
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Output corresponds to the JSON schema field "output".
+	Output ComputerScreenshotImage `json:"output" yaml:"output" mapstructure:"output"`
+
+	// The status of the message input. One of `in_progress`, `completed`, or
+	// `incomplete`. Populated when input items are returned via API.
+	//
+	Status *ComputerToolCallOutputResourceStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+
+	// The type of the computer tool call output. Always `computer_call_output`.
+	//
+	Type ComputerToolCallOutputResourceType `json:"type" yaml:"type" mapstructure:"type"`
+}
+
+type ComputerToolCallOutputResourceStatus string
+
+const ComputerToolCallOutputResourceStatusCompleted ComputerToolCallOutputResourceStatus = "completed"
+const ComputerToolCallOutputResourceStatusInProgress ComputerToolCallOutputResourceStatus = "in_progress"
+const ComputerToolCallOutputResourceStatusIncomplete ComputerToolCallOutputResourceStatus = "incomplete"
+
+type ComputerToolCallOutputResourceType string
+
+const ComputerToolCallOutputResourceTypeComputerCallOutput ComputerToolCallOutputResourceType = "computer_call_output"
 
 type ComputerToolCallOutputStatus string
 
@@ -398,9 +434,250 @@ type Coordinate struct {
 	Y int `json:"y" yaml:"y" mapstructure:"y"`
 }
 
-type CreateModelResponseProperties interface{}
+type CreateModelResponseProperties struct {
+	// Metadata corresponds to the JSON schema field "metadata".
+	Metadata Metadata `json:"metadata,omitempty,omitzero" yaml:"metadata,omitempty" mapstructure:"metadata,omitempty"`
 
-type CreateResponse interface{}
+	// ServiceTier corresponds to the JSON schema field "service_tier".
+	ServiceTier *ServiceTier `json:"service_tier,omitempty,omitzero" yaml:"service_tier,omitempty" mapstructure:"service_tier,omitempty"`
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+	// make the output more random, while lower values like 0.2 will make it more
+	// focused and deterministic.
+	// We generally recommend altering this or `top_p` but not both.
+	//
+	Temperature CreateModelResponsePropertiesTemperature `json:"temperature,omitempty,omitzero" yaml:"temperature,omitempty" mapstructure:"temperature,omitempty"`
+
+	// An alternative to sampling with temperature, called nucleus sampling,
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or `temperature` but not both.
+	//
+	TopP CreateModelResponsePropertiesTopP `json:"top_p,omitempty,omitzero" yaml:"top_p,omitempty" mapstructure:"top_p,omitempty"`
+
+	// A unique identifier representing your end-user, which can help OpenAI to
+	// monitor and detect abuse. [Learn
+	// more](/docs/guides/safety-best-practices#end-user-ids).
+	//
+	User *string `json:"user,omitempty,omitzero" yaml:"user,omitempty" mapstructure:"user,omitempty"`
+}
+
+// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+// make the output more random, while lower values like 0.2 will make it more
+// focused and deterministic.
+// We generally recommend altering this or `top_p` but not both.
+type CreateModelResponsePropertiesTemperature *float64
+
+// An alternative to sampling with temperature, called nucleus sampling,
+// where the model considers the results of the tokens with top_p probability
+// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+// are considered.
+//
+// We generally recommend altering this or `temperature` but not both.
+type CreateModelResponsePropertiesTopP *float64
+
+type CreateResponse struct {
+	// Specify additional output data to include in the model response. Currently
+	// supported values are:
+	// - `file_search_call.results`: Include the search results of
+	//   the file search tool call.
+	// - `message.input_image.image_url`: Include image urls from the input message.
+	// - `computer_call_output.output.image_url`: Include image urls from the computer
+	// call output.
+	//
+	Include *CreateResponseInclude `json:"include,omitempty,omitzero" yaml:"include,omitempty" mapstructure:"include,omitempty"`
+
+	// Text, image, or file inputs to the model, used to generate a response.
+	//
+	// Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Image inputs](/docs/guides/images)
+	// - [File inputs](/docs/guides/pdf-files)
+	// - [Conversation state](/docs/guides/conversation-state)
+	// - [Function calling](/docs/guides/function-calling)
+	//
+	Input interface{} `json:"input" yaml:"input" mapstructure:"input"`
+
+	// Inserts a system (or developer) message as the first item in the model's
+	// context.
+	//
+	// When using along with `previous_response_id`, the instructions from a previous
+	// response will not be carried over to the next response. This makes it simple
+	// to swap out system (or developer) messages in new responses.
+	//
+	Instructions CreateResponseInstructions `json:"instructions,omitempty,omitzero" yaml:"instructions,omitempty" mapstructure:"instructions,omitempty"`
+
+	// An upper bound for the number of tokens that can be generated for a response,
+	// including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+	//
+	MaxOutputTokens CreateResponseMaxOutputTokens `json:"max_output_tokens,omitempty,omitzero" yaml:"max_output_tokens,omitempty" mapstructure:"max_output_tokens,omitempty"`
+
+	// Metadata corresponds to the JSON schema field "metadata".
+	Metadata Metadata `json:"metadata,omitempty,omitzero" yaml:"metadata,omitempty" mapstructure:"metadata,omitempty"`
+
+	// Model corresponds to the JSON schema field "model".
+	Model ModelIdsResponses `json:"model" yaml:"model" mapstructure:"model"`
+
+	// Whether to allow the model to run tool calls in parallel.
+	//
+	ParallelToolCalls CreateResponseParallelToolCalls `json:"parallel_tool_calls,omitempty,omitzero" yaml:"parallel_tool_calls,omitempty" mapstructure:"parallel_tool_calls,omitempty"`
+
+	// The unique ID of the previous response to the model. Use this to
+	// create multi-turn conversations. Learn more about
+	// [conversation state](/docs/guides/conversation-state).
+	//
+	PreviousResponseID CreateResponsePreviousResponseID `json:"previous_response_id,omitempty,omitzero" yaml:"previous_response_id,omitempty" mapstructure:"previous_response_id,omitempty"`
+
+	// Reasoning corresponds to the JSON schema field "reasoning".
+	Reasoning *Reasoning `json:"reasoning,omitempty,omitzero" yaml:"reasoning,omitempty" mapstructure:"reasoning,omitempty"`
+
+	// ServiceTier corresponds to the JSON schema field "service_tier".
+	ServiceTier *ServiceTier `json:"service_tier,omitempty,omitzero" yaml:"service_tier,omitempty" mapstructure:"service_tier,omitempty"`
+
+	// Whether to store the generated model response for later retrieval via
+	// API.
+	//
+	Store CreateResponseStore `json:"store,omitempty,omitzero" yaml:"store,omitempty" mapstructure:"store,omitempty"`
+
+	// If set to true, the model response data will be streamed to the client
+	// as it is generated using [server-sent
+	// events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+	// See the [Streaming section below](/docs/api-reference/responses-streaming)
+	// for more information.
+	//
+	Stream CreateResponseStream `json:"stream,omitempty,omitzero" yaml:"stream,omitempty" mapstructure:"stream,omitempty"`
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+	// make the output more random, while lower values like 0.2 will make it more
+	// focused and deterministic.
+	// We generally recommend altering this or `top_p` but not both.
+	//
+	Temperature CreateResponseTemperature `json:"temperature,omitempty,omitzero" yaml:"temperature,omitempty" mapstructure:"temperature,omitempty"`
+
+	// Configuration options for a text response from the model. Can be plain
+	// text or structured JSON data. Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Structured Outputs](/docs/guides/structured-outputs)
+	//
+	Text *CreateResponseText `json:"text,omitempty,omitzero" yaml:"text,omitempty" mapstructure:"text,omitempty"`
+
+	// How the model should select which tool (or tools) to use when generating
+	// a response. See the `tools` parameter to see how to specify which tools
+	// the model can call.
+	//
+	ToolChoice interface{} `json:"tool_choice,omitempty,omitzero" yaml:"tool_choice,omitempty" mapstructure:"tool_choice,omitempty"`
+
+	// An array of tools the model may call while generating a response. You
+	// can specify which tool to use by setting the `tool_choice` parameter.
+	//
+	// The two categories of tools you can provide the model are:
+	//
+	// - **Built-in tools**: Tools that are provided by OpenAI that extend the
+	//   model's capabilities, like [web search](/docs/guides/tools-web-search)
+	//   or [file search](/docs/guides/tools-file-search). Learn more about
+	//   [built-in tools](/docs/guides/tools).
+	// - **Function calls (custom tools)**: Functions that are defined by you,
+	//   enabling the model to call your own code. Learn more about
+	//   [function calling](/docs/guides/function-calling).
+	//
+	Tools []Tool `json:"tools,omitempty,omitzero" yaml:"tools,omitempty" mapstructure:"tools,omitempty"`
+
+	// An alternative to sampling with temperature, called nucleus sampling,
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or `temperature` but not both.
+	//
+	TopP CreateResponseTopP `json:"top_p,omitempty,omitzero" yaml:"top_p,omitempty" mapstructure:"top_p,omitempty"`
+
+	// The truncation strategy to use for the model response.
+	// - `auto`: If the context of this response and previous ones exceeds
+	//   the model's context window size, the model will truncate the
+	//   response to fit the context window by dropping input items in the
+	//   middle of the conversation.
+	// - `disabled` (default): If a model response will exceed the context window
+	//   size for a model, the request will fail with a 400 error.
+	//
+	Truncation *CreateResponseTruncation `json:"truncation,omitempty,omitzero" yaml:"truncation,omitempty" mapstructure:"truncation,omitempty"`
+
+	// A unique identifier representing your end-user, which can help OpenAI to
+	// monitor and detect abuse. [Learn
+	// more](/docs/guides/safety-best-practices#end-user-ids).
+	//
+	User *string `json:"user,omitempty,omitzero" yaml:"user,omitempty" mapstructure:"user,omitempty"`
+}
+
+// Specify additional output data to include in the model response. Currently
+// supported values are:
+//   - `file_search_call.results`: Include the search results of
+//     the file search tool call.
+//   - `message.input_image.image_url`: Include image urls from the input message.
+//   - `computer_call_output.output.image_url`: Include image urls from the computer
+//
+// call output.
+type CreateResponseInclude []Includable
+
+// Inserts a system (or developer) message as the first item in the model's
+// context.
+//
+// When using along with `previous_response_id`, the instructions from a previous
+// response will not be carried over to the next response. This makes it simple
+// to swap out system (or developer) messages in new responses.
+type CreateResponseInstructions *string
+
+// An upper bound for the number of tokens that can be generated for a response,
+// including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+type CreateResponseMaxOutputTokens *int
+
+// Whether to allow the model to run tool calls in parallel.
+type CreateResponseParallelToolCalls *bool
+
+// The unique ID of the previous response to the model. Use this to
+// create multi-turn conversations. Learn more about
+// [conversation state](/docs/guides/conversation-state).
+type CreateResponsePreviousResponseID *string
+
+// Whether to store the generated model response for later retrieval via
+// API.
+type CreateResponseStore *bool
+
+// If set to true, the model response data will be streamed to the client
+// as it is generated using [server-sent
+// events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+// See the [Streaming section below](/docs/api-reference/responses-streaming)
+// for more information.
+type CreateResponseStream *bool
+
+// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+// make the output more random, while lower values like 0.2 will make it more
+// focused and deterministic.
+// We generally recommend altering this or `top_p` but not both.
+type CreateResponseTemperature *float64
+
+// Configuration options for a text response from the model. Can be plain
+// text or structured JSON data. Learn more:
+// - [Text inputs and outputs](/docs/guides/text)
+// - [Structured Outputs](/docs/guides/structured-outputs)
+type CreateResponseText struct {
+	// Format corresponds to the JSON schema field "format".
+	Format TextResponseFormatConfiguration `json:"format,omitempty,omitzero" yaml:"format,omitempty" mapstructure:"format,omitempty"`
+}
+
+// An alternative to sampling with temperature, called nucleus sampling,
+// where the model considers the results of the tokens with top_p probability
+// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+// are considered.
+//
+// We generally recommend altering this or `temperature` but not both.
+type CreateResponseTopP *float64
+
+type CreateResponseTruncation string
+
+const CreateResponseTruncationAuto CreateResponseTruncation = "auto"
+const CreateResponseTruncationDisabled CreateResponseTruncation = "disabled"
 
 // A double click action.
 type DoubleClick struct {
@@ -726,7 +1003,40 @@ type FunctionToolCallOutput struct {
 	Type FunctionToolCallOutputType `json:"type" yaml:"type" mapstructure:"type"`
 }
 
-type FunctionToolCallOutputResource interface{}
+// The output of a function tool call.
+type FunctionToolCallOutputResource struct {
+	// The unique ID of the function tool call generated by the model.
+	//
+	CallID string `json:"call_id" yaml:"call_id" mapstructure:"call_id"`
+
+	// The unique ID of the function tool call output. Populated when this item
+	// is returned via API.
+	//
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// A JSON string of the output of the function tool call.
+	//
+	Output string `json:"output" yaml:"output" mapstructure:"output"`
+
+	// The status of the item. One of `in_progress`, `completed`, or
+	// `incomplete`. Populated when items are returned via API.
+	//
+	Status *FunctionToolCallOutputResourceStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+
+	// The type of the function tool call output. Always `function_call_output`.
+	//
+	Type FunctionToolCallOutputResourceType `json:"type" yaml:"type" mapstructure:"type"`
+}
+
+type FunctionToolCallOutputResourceStatus string
+
+const FunctionToolCallOutputResourceStatusCompleted FunctionToolCallOutputResourceStatus = "completed"
+const FunctionToolCallOutputResourceStatusInProgress FunctionToolCallOutputResourceStatus = "in_progress"
+const FunctionToolCallOutputResourceStatusIncomplete FunctionToolCallOutputResourceStatus = "incomplete"
+
+type FunctionToolCallOutputResourceType string
+
+const FunctionToolCallOutputResourceTypeFunctionCallOutput FunctionToolCallOutputResourceType = "function_call_output"
 
 type FunctionToolCallOutputStatus string
 
@@ -738,7 +1048,44 @@ type FunctionToolCallOutputType string
 
 const FunctionToolCallOutputTypeFunctionCallOutput FunctionToolCallOutputType = "function_call_output"
 
-type FunctionToolCallResource interface{}
+// A tool call to run a function. See the
+// [function calling guide](/docs/guides/function-calling) for more information.
+type FunctionToolCallResource struct {
+	// A JSON string of the arguments to pass to the function.
+	//
+	Arguments string `json:"arguments" yaml:"arguments" mapstructure:"arguments"`
+
+	// The unique ID of the function tool call generated by the model.
+	//
+	CallID string `json:"call_id" yaml:"call_id" mapstructure:"call_id"`
+
+	// The unique ID of the function tool call.
+	//
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// The name of the function to run.
+	//
+	Name string `json:"name" yaml:"name" mapstructure:"name"`
+
+	// The status of the item. One of `in_progress`, `completed`, or
+	// `incomplete`. Populated when items are returned via API.
+	//
+	Status *FunctionToolCallResourceStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+
+	// The type of the function tool call. Always `function_call`.
+	//
+	Type FunctionToolCallResourceType `json:"type" yaml:"type" mapstructure:"type"`
+}
+
+type FunctionToolCallResourceStatus string
+
+const FunctionToolCallResourceStatusCompleted FunctionToolCallResourceStatus = "completed"
+const FunctionToolCallResourceStatusInProgress FunctionToolCallResourceStatus = "in_progress"
+const FunctionToolCallResourceStatusIncomplete FunctionToolCallResourceStatus = "incomplete"
+
+type FunctionToolCallResourceType string
+
+const FunctionToolCallResourceTypeFunctionCall FunctionToolCallResourceType = "function_call"
 
 type FunctionToolCallStatus string
 
@@ -856,7 +1203,46 @@ type InputMessage struct {
 // types.
 type InputMessageContentList []InputContent
 
-type InputMessageResource interface{}
+// A message input to the model with a role indicating instruction following
+// hierarchy. Instructions given with the `developer` or `system` role take
+// precedence over instructions given with the `user` role.
+type InputMessageResource struct {
+	// Content corresponds to the JSON schema field "content".
+	Content InputMessageContentList `json:"content" yaml:"content" mapstructure:"content"`
+
+	// The unique ID of the message input.
+	//
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// The role of the message input. One of `user`, `system`, or `developer`.
+	//
+	Role InputMessageResourceRole `json:"role" yaml:"role" mapstructure:"role"`
+
+	// The status of item. One of `in_progress`, `completed`, or
+	// `incomplete`. Populated when items are returned via API.
+	//
+	Status *InputMessageResourceStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+
+	// The type of the message input. Always set to `message`.
+	//
+	Type *InputMessageResourceType `json:"type,omitempty,omitzero" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+}
+
+type InputMessageResourceRole string
+
+const InputMessageResourceRoleDeveloper InputMessageResourceRole = "developer"
+const InputMessageResourceRoleSystem InputMessageResourceRole = "system"
+const InputMessageResourceRoleUser InputMessageResourceRole = "user"
+
+type InputMessageResourceStatus string
+
+const InputMessageResourceStatusCompleted InputMessageResourceStatus = "completed"
+const InputMessageResourceStatusInProgress InputMessageResourceStatus = "in_progress"
+const InputMessageResourceStatusIncomplete InputMessageResourceStatus = "incomplete"
+
+type InputMessageResourceType string
+
+const InputMessageResourceTypeMessage InputMessageResourceType = "message"
 
 type InputMessageRole string
 
@@ -1172,7 +1558,147 @@ type RefusalContentType string
 
 const RefusalContentTypeRefusal RefusalContentType = "refusal"
 
-type Response interface{}
+type Response struct {
+	// Unix timestamp (in seconds) of when this Response was created.
+	//
+	CreatedAt float64 `json:"created_at" yaml:"created_at" mapstructure:"created_at"`
+
+	// Error corresponds to the JSON schema field "error".
+	Error ResponseError `json:"error" yaml:"error" mapstructure:"error"`
+
+	// Unique identifier for this Response.
+	//
+	ID string `json:"id" yaml:"id" mapstructure:"id"`
+
+	// Details about why the response is incomplete.
+	//
+	IncompleteDetails *ResponseIncompleteDetails `json:"incomplete_details" yaml:"incomplete_details" mapstructure:"incomplete_details"`
+
+	// Inserts a system (or developer) message as the first item in the model's
+	// context.
+	//
+	// When using along with `previous_response_id`, the instructions from a previous
+	// response will not be carried over to the next response. This makes it simple
+	// to swap out system (or developer) messages in new responses.
+	//
+	Instructions ResponseInstructions `json:"instructions" yaml:"instructions" mapstructure:"instructions"`
+
+	// An upper bound for the number of tokens that can be generated for a response,
+	// including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+	//
+	MaxOutputTokens ResponseMaxOutputTokens `json:"max_output_tokens,omitempty,omitzero" yaml:"max_output_tokens,omitempty" mapstructure:"max_output_tokens,omitempty"`
+
+	// Metadata corresponds to the JSON schema field "metadata".
+	Metadata Metadata `json:"metadata" yaml:"metadata" mapstructure:"metadata"`
+
+	// Model corresponds to the JSON schema field "model".
+	Model ModelIdsResponses `json:"model" yaml:"model" mapstructure:"model"`
+
+	// The object type of this resource - always set to `response`.
+	//
+	Object ResponseObject `json:"object" yaml:"object" mapstructure:"object"`
+
+	// An array of content items generated by the model.
+	//
+	// - The length and order of items in the `output` array is dependent
+	//   on the model's response.
+	// - Rather than accessing the first item in the `output` array and
+	//   assuming it's an `assistant` message with the content generated by
+	//   the model, you might consider using the `output_text` property where
+	//   supported in SDKs.
+	//
+	Output []OutputItem `json:"output" yaml:"output" mapstructure:"output"`
+
+	// SDK-only convenience property that contains the aggregated text output
+	// from all `output_text` items in the `output` array, if any are present.
+	// Supported in the Python and JavaScript SDKs.
+	//
+	OutputText ResponseOutputText `json:"output_text,omitempty,omitzero" yaml:"output_text,omitempty" mapstructure:"output_text,omitempty"`
+
+	// Whether to allow the model to run tool calls in parallel.
+	//
+	ParallelToolCalls bool `json:"parallel_tool_calls" yaml:"parallel_tool_calls" mapstructure:"parallel_tool_calls"`
+
+	// The unique ID of the previous response to the model. Use this to
+	// create multi-turn conversations. Learn more about
+	// [conversation state](/docs/guides/conversation-state).
+	//
+	PreviousResponseID ResponsePreviousResponseID `json:"previous_response_id,omitempty,omitzero" yaml:"previous_response_id,omitempty" mapstructure:"previous_response_id,omitempty"`
+
+	// Reasoning corresponds to the JSON schema field "reasoning".
+	Reasoning *Reasoning `json:"reasoning,omitempty,omitzero" yaml:"reasoning,omitempty" mapstructure:"reasoning,omitempty"`
+
+	// ServiceTier corresponds to the JSON schema field "service_tier".
+	ServiceTier *ServiceTier `json:"service_tier,omitempty,omitzero" yaml:"service_tier,omitempty" mapstructure:"service_tier,omitempty"`
+
+	// The status of the response generation. One of `completed`, `failed`,
+	// `in_progress`, or `incomplete`.
+	//
+	Status *ResponseStatus `json:"status,omitempty,omitzero" yaml:"status,omitempty" mapstructure:"status,omitempty"`
+
+	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+	// make the output more random, while lower values like 0.2 will make it more
+	// focused and deterministic.
+	// We generally recommend altering this or `top_p` but not both.
+	//
+	Temperature ResponseTemperature `json:"temperature" yaml:"temperature" mapstructure:"temperature"`
+
+	// Configuration options for a text response from the model. Can be plain
+	// text or structured JSON data. Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Structured Outputs](/docs/guides/structured-outputs)
+	//
+	Text *ResponseText `json:"text,omitempty,omitzero" yaml:"text,omitempty" mapstructure:"text,omitempty"`
+
+	// How the model should select which tool (or tools) to use when generating
+	// a response. See the `tools` parameter to see how to specify which tools
+	// the model can call.
+	//
+	ToolChoice interface{} `json:"tool_choice" yaml:"tool_choice" mapstructure:"tool_choice"`
+
+	// An array of tools the model may call while generating a response. You
+	// can specify which tool to use by setting the `tool_choice` parameter.
+	//
+	// The two categories of tools you can provide the model are:
+	//
+	// - **Built-in tools**: Tools that are provided by OpenAI that extend the
+	//   model's capabilities, like [web search](/docs/guides/tools-web-search)
+	//   or [file search](/docs/guides/tools-file-search). Learn more about
+	//   [built-in tools](/docs/guides/tools).
+	// - **Function calls (custom tools)**: Functions that are defined by you,
+	//   enabling the model to call your own code. Learn more about
+	//   [function calling](/docs/guides/function-calling).
+	//
+	Tools []Tool `json:"tools" yaml:"tools" mapstructure:"tools"`
+
+	// An alternative to sampling with temperature, called nucleus sampling,
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or `temperature` but not both.
+	//
+	TopP ResponseTopP `json:"top_p" yaml:"top_p" mapstructure:"top_p"`
+
+	// The truncation strategy to use for the model response.
+	// - `auto`: If the context of this response and previous ones exceeds
+	//   the model's context window size, the model will truncate the
+	//   response to fit the context window by dropping input items in the
+	//   middle of the conversation.
+	// - `disabled` (default): If a model response will exceed the context window
+	//   size for a model, the request will fail with a 400 error.
+	//
+	Truncation *ResponseTruncation `json:"truncation,omitempty,omitzero" yaml:"truncation,omitempty" mapstructure:"truncation,omitempty"`
+
+	// Usage corresponds to the JSON schema field "usage".
+	Usage *ResponseUsage `json:"usage,omitempty,omitzero" yaml:"usage,omitempty" mapstructure:"usage,omitempty"`
+
+	// A unique identifier representing your end-user, which can help OpenAI to
+	// monitor and detect abuse. [Learn
+	// more](/docs/guides/safety-best-practices#end-user-ids).
+	//
+	User *string `json:"user,omitempty,omitzero" yaml:"user,omitempty" mapstructure:"user,omitempty"`
+}
 
 // Emitted when there is a partial audio response.
 type ResponseAudioDeltaEvent struct {
@@ -1616,6 +2142,17 @@ type ResponseInProgressEventType string
 
 const ResponseInProgressEventTypeResponseInProgress ResponseInProgressEventType = "response.in_progress"
 
+// Details about why the response is incomplete.
+type ResponseIncompleteDetails struct {
+	// The reason why the response is incomplete.
+	Reason *ResponseIncompleteDetailsReason `json:"reason,omitempty,omitzero" yaml:"reason,omitempty" mapstructure:"reason,omitempty"`
+}
+
+type ResponseIncompleteDetailsReason string
+
+const ResponseIncompleteDetailsReasonContentFilter ResponseIncompleteDetailsReason = "content_filter"
+const ResponseIncompleteDetailsReasonMaxOutputTokens ResponseIncompleteDetailsReason = "max_output_tokens"
+
 // An event that is emitted when a response finishes as incomplete.
 type ResponseIncompleteEvent struct {
 	// Response corresponds to the JSON schema field "response".
@@ -1629,6 +2166,14 @@ type ResponseIncompleteEvent struct {
 type ResponseIncompleteEventType string
 
 const ResponseIncompleteEventTypeResponseIncomplete ResponseIncompleteEventType = "response.incomplete"
+
+// Inserts a system (or developer) message as the first item in the model's
+// context.
+//
+// When using along with `previous_response_id`, the instructions from a previous
+// response will not be carried over to the next response. This makes it simple
+// to swap out system (or developer) messages in new responses.
+type ResponseInstructions *string
 
 // A list of Response items.
 type ResponseItemList struct {
@@ -1651,6 +2196,14 @@ type ResponseItemList struct {
 type ResponseItemListObject string
 
 const ResponseItemListObjectList ResponseItemListObject = "list"
+
+// An upper bound for the number of tokens that can be generated for a response,
+// including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
+type ResponseMaxOutputTokens *int
+
+type ResponseObject string
+
+const ResponseObjectResponse ResponseObject = "response"
 
 // Emitted when a new output item is added.
 type ResponseOutputItemAddedEvent struct {
@@ -1687,6 +2240,16 @@ type ResponseOutputItemDoneEvent struct {
 type ResponseOutputItemDoneEventType string
 
 const ResponseOutputItemDoneEventTypeResponseOutputItemDone ResponseOutputItemDoneEventType = "response.output_item.done"
+
+// SDK-only convenience property that contains the aggregated text output
+// from all `output_text` items in the `output` array, if any are present.
+// Supported in the Python and JavaScript SDKs.
+type ResponseOutputText *string
+
+// The unique ID of the previous response to the model. Use this to
+// create multi-turn conversations. Learn more about
+// [conversation state](/docs/guides/conversation-state).
+type ResponsePreviousResponseID *string
 
 type ResponseProperties struct {
 	// Inserts a system (or developer) message as the first item in the model's
@@ -1973,7 +2536,29 @@ type ResponseRefusalDoneEventType string
 
 const ResponseRefusalDoneEventTypeResponseRefusalDone ResponseRefusalDoneEventType = "response.refusal.done"
 
+type ResponseStatus string
+
+const ResponseStatusCompleted ResponseStatus = "completed"
+const ResponseStatusFailed ResponseStatus = "failed"
+const ResponseStatusInProgress ResponseStatus = "in_progress"
+const ResponseStatusIncomplete ResponseStatus = "incomplete"
+
 type ResponseStreamEvent interface{}
+
+// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+// make the output more random, while lower values like 0.2 will make it more
+// focused and deterministic.
+// We generally recommend altering this or `top_p` but not both.
+type ResponseTemperature *float64
+
+// Configuration options for a text response from the model. Can be plain
+// text or structured JSON data. Learn more:
+// - [Text inputs and outputs](/docs/guides/text)
+// - [Structured Outputs](/docs/guides/structured-outputs)
+type ResponseText struct {
+	// Format corresponds to the JSON schema field "format".
+	Format TextResponseFormatConfiguration `json:"format,omitempty,omitzero" yaml:"format,omitempty" mapstructure:"format,omitempty"`
+}
 
 // Emitted when a text annotation is added.
 type ResponseTextAnnotationDeltaEvent struct {
@@ -2058,6 +2643,19 @@ type ResponseTextDoneEvent struct {
 type ResponseTextDoneEventType string
 
 const ResponseTextDoneEventTypeResponseOutputTextDone ResponseTextDoneEventType = "response.output_text.done"
+
+// An alternative to sampling with temperature, called nucleus sampling,
+// where the model considers the results of the tokens with top_p probability
+// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+// are considered.
+//
+// We generally recommend altering this or `temperature` but not both.
+type ResponseTopP *float64
+
+type ResponseTruncation string
+
+const ResponseTruncationAuto ResponseTruncation = "auto"
+const ResponseTruncationDisabled ResponseTruncation = "disabled"
 
 // Represents token usage details including input tokens, output tokens,
 // a breakdown of output tokens, and the total tokens used.
@@ -2346,11 +2944,25 @@ type Wait struct {
 
 type WaitType string
 
-type WebSearchPreviewToolUserLocation_0 = ApproximateLocation
-
 const WaitTypeWait WaitType = "wait"
 
-type FileSearchToolFilters_0_0 = ComparisonFilter
+// This tool searches the web for relevant results to use in a response. Learn more
+// about the [web search
+// tool](https://platform.openai.com/docs/guides/tools-web-search).
+type WebSearchPreviewTool struct {
+	// High level guidance for the amount of context window space to use for the
+	// search. One of `low`, `medium`, or `high`. `medium` is the default.
+	SearchContextSize *WebSearchPreviewToolSearchContextSize `json:"search_context_size,omitempty,omitzero" yaml:"search_context_size,omitempty" mapstructure:"search_context_size,omitempty"`
+
+	// The type of the web search tool. One of `web_search_preview` or
+	// `web_search_preview_2025_03_11`.
+	Type WebSearchPreviewToolType `json:"type" yaml:"type" mapstructure:"type"`
+
+	// UserLocation corresponds to the JSON schema field "user_location".
+	UserLocation *WebSearchPreviewToolUserLocation `json:"user_location,omitempty,omitzero" yaml:"user_location,omitempty" mapstructure:"user_location,omitempty"`
+}
+
+type WebSearchPreviewToolUserLocation_0 = ApproximateLocation
 
 type WebSearchPreviewToolSearchContextSize string
 
@@ -2384,21 +2996,7 @@ type WebSearchPreviewToolUserLocation struct {
 	Type ApproximateLocationType `json:"type" yaml:"type" mapstructure:"type"`
 }
 
-// This tool searches the web for relevant results to use in a response. Learn more
-// about the [web search
-// tool](https://platform.openai.com/docs/guides/tools-web-search).
-type WebSearchPreviewTool struct {
-	// High level guidance for the amount of context window space to use for the
-	// search. One of `low`, `medium`, or `high`. `medium` is the default.
-	SearchContextSize *WebSearchPreviewToolSearchContextSize `json:"search_context_size,omitempty,omitzero" yaml:"search_context_size,omitempty" mapstructure:"search_context_size,omitempty"`
-
-	// The type of the web search tool. One of `web_search_preview` or
-	// `web_search_preview_2025_03_11`.
-	Type WebSearchPreviewToolType `json:"type" yaml:"type" mapstructure:"type"`
-
-	// UserLocation corresponds to the JSON schema field "user_location".
-	UserLocation *WebSearchPreviewToolUserLocation `json:"user_location,omitempty,omitzero" yaml:"user_location,omitempty" mapstructure:"user_location,omitempty"`
-}
+type FileSearchToolFilters_0_0 = ComparisonFilter
 
 type WebSearchToolCallStatus string
 
