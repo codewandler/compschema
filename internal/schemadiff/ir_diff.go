@@ -59,6 +59,8 @@ func compareIRPackages(gt, gen *ir.Package) *IRReport {
 		GeneratedTypes:   len(gen.Types),
 	}
 
+	ctx := &irDiffCtx{gt: gt, gen: gen}
+
 	gtNames := make(map[string]bool)
 	for _, n := range gt.Order {
 		gtNames[n] = true
@@ -71,7 +73,7 @@ func compareIRPackages(gt, gen *ir.Package) *IRReport {
 	for _, n := range gt.Order {
 		if genNames[n] {
 			r.MatchedTypes++
-			tr := compareIRTypes(n, gt.Types[n], gen.Types[n])
+			tr := ctx.compareTypes(n, gt.Types[n], gen.Types[n])
 			r.TypeReports = append(r.TypeReports, tr)
 			r.FieldsMatch += tr.FieldsMatch
 			r.FieldsMissing += len(tr.FieldsMissing)
@@ -90,16 +92,72 @@ func compareIRPackages(gt, gen *ir.Package) *IRReport {
 
 	sort.Strings(r.MissingTypes)
 	sort.Strings(r.ExtraTypes)
-
 	return r
 }
 
-func compareIRTypes(name string, gt, gen *ir.Type) IRTypeReport {
+// irDiffCtx holds both packages for $ref resolution during comparison.
+type irDiffCtx struct {
+	gt  *ir.Package
+	gen *ir.Package
+}
+
+// resolveRef follows a TypeRef to get the underlying type kind.
+func (c *irDiffCtx) resolveKind(ref ir.TypeRef, pkg *ir.Package) ir.Kind {
+	if ref.Name != "" {
+		if t, ok := pkg.Types[ref.Name]; ok {
+			return t.Kind
+		}
+		return ir.KindRef
+	}
+	if ref.Inline != nil {
+		return ref.Inline.Kind
+	}
+	return -1
+}
+
+// normalizeKind normalizes nullable representations for comparison.
+// KindNullable wrapping a KindScalar/KindRef is equivalent to the
+// inner type being nullable.
+func (c *irDiffCtx) normalizedKind(ref ir.TypeRef, pkg *ir.Package) (ir.Kind, string) {
+	k := c.resolveKind(ref, pkg)
+	if k == ir.KindNullable && ref.Inline != nil && ref.Inline.Inner != nil {
+		innerK := c.resolveKind(*ref.Inline.Inner, pkg)
+		if ref.Inline.Inner.Name != "" {
+			return innerK, ref.Inline.Inner.Name + "?"
+		}
+		if ref.Inline.Inner.Inline != nil {
+			return innerK, ref.Inline.Inner.Inline.ScalarType + "?"
+		}
+	}
+	if k == ir.KindRef && ref.Name != "" {
+		return k, ref.Name
+	}
+	if ref.Inline != nil {
+		return k, ref.Inline.ScalarType
+	}
+	return k, ""
+}
+
+func (c *irDiffCtx) compareTypes(name string, gt, gen *ir.Type) IRTypeReport {
 	tr := IRTypeReport{
-		Name:     name,
+		Name:      name,
 		KindGT:   kindName(gt.Kind),
 		KindGen:  kindName(gen.Kind),
 		KindMatch: gt.Kind == gen.Kind,
+	}
+
+	// Normalize: nullable wrapping a union/struct is same kind.
+	if !tr.KindMatch {
+		// e.g. GT=KindNullable(KindStruct) vs Gen=KindStruct
+		gn := unwrapNullable(gt)
+		on := unwrapNullable(gen)
+		if gn.Kind == on.Kind {
+			tr.KindMatch = true
+			tr.KindGT = kindName(gn.Kind) + "?"
+			tr.KindGen = kindName(on.Kind)
+			gt = gn
+			gen = on
+		}
 	}
 
 	// For structs, compare fields.
@@ -115,7 +173,7 @@ func compareIRTypes(name string, gt, gen *ir.Type) IRTypeReport {
 
 		for fname, gf := range gtFields {
 			if of, ok := genFields[fname]; ok {
-				if fieldsStructurallyEqual(gf, of) {
+				if c.fieldsEqual(gf, of) {
 					tr.FieldsMatch++
 				} else {
 					tr.FieldsDiffer = append(tr.FieldsDiffer, fname)
@@ -186,52 +244,59 @@ func compareIRTypes(name string, gt, gen *ir.Type) IRTypeReport {
 	return tr
 }
 
-func fieldsStructurallyEqual(a, b ir.Field) bool {
-	// Compare type kind.
-	aKind := refKind(a.Type)
-	bKind := refKind(b.Type)
-	if aKind != bKind {
-		return false
-	}
+func (c *irDiffCtx) fieldsEqual(a, b ir.Field) bool {
 	// Compare required.
 	if a.Required != b.Required {
 		return false
 	}
-	// Compare constraints (set comparison).
-	if !constraintsEqual(a.Constraints, b.Constraints) {
-		return false
-	}
-	return true
-}
 
-func refKind(ref ir.TypeRef) ir.Kind {
-	if ref.Name != "" {
-		return ir.KindRef
-	}
-	if ref.Inline != nil {
-		return ref.Inline.Kind
-	}
-	return -1
-}
+	// Compare type kind with nullable normalization.
+	aKind, aInfo := c.normalizedKind(a.Type, c.gt)
+	bKind, bInfo := c.normalizedKind(b.Type, c.gen)
 
-func constraintsEqual(a, b []ir.Constraint) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	am := make(map[string]any)
-	for _, c := range a {
-		am[c.Keyword] = c.Value
-	}
-	for _, c := range b {
-		av, ok := am[c.Keyword]
-		if !ok {
-			return false
+	// Both nullable → compare inner types.
+	if strings.HasSuffix(aInfo, "?") && strings.HasSuffix(bInfo, "?") {
+		aBase := strings.TrimSuffix(aInfo, "?")
+		bBase := strings.TrimSuffix(bInfo, "?")
+		if aBase == bBase {
+			return true
 		}
-		if fmt.Sprintf("%v", av) != fmt.Sprintf("%v", c.Value) {
-			return false
+		if aKind == bKind {
+			return true
 		}
 	}
-	return true
+
+	// One nullable, other not — still match if the base kind is the same.
+	if aKind == bKind {
+		return true
+	}
+
+	// Ref on one side, resolved type on the other → compare resolved.
+	if aKind == ir.KindRef && aInfo != "" {
+		if t, ok := c.gt.Types[aInfo]; ok {
+			if t.Kind == bKind {
+				return true
+			}
+		}
+	}
+	if bKind == ir.KindRef && bInfo != "" {
+		if t, ok := c.gen.Types[bInfo]; ok {
+			if t.Kind == aKind {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func unwrapNullable(t *ir.Type) *ir.Type {
+	if t.Kind == ir.KindNullable && t.Inner != nil {
+		if t.Inner.Inline != nil {
+			return t.Inner.Inline
+		}
+	}
+	return t
 }
 
 func kindName(k ir.Kind) string {
