@@ -570,6 +570,12 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 			continue
 		}
 
+		// Skip pointer alias types (KindNullable at top level, e.g. type Foo *string)
+		// — can't composite-literal or call methods on them.
+		if t.Kind == ir.KindNullable {
+			continue
+		}
+
 		// JSONSchemaBytes test — for all types.
 		b.WriteString(fmt.Sprintf("func TestCompschema_%s_JSONSchemaBytes(t *testing.T) {\n", name))
 		switch {

@@ -362,7 +362,9 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 			TypeRef: ir.TypeRef{Name: scopeName},
 		}
 
-		// Try to find discriminator const value from any field with a const constraint.
+		// Try to find discriminator value from any field:
+		// 1. const constraint in jsonschema tag
+		// 2. field type is a single-value enum (e.g. ClickType with only "click")
 		if st, ok := tn.Type().Underlying().(*types.Struct); ok {
 			for i := 0; i < st.NumFields(); i++ {
 				f := st.Field(i)
@@ -371,22 +373,32 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 				if jsonName == "" || jsonName == "-" {
 					continue
 				}
+
+				// Check jsonschema:"const=..." tag.
+				var discValue string
 				if jsTag := tag.Get("jsonschema"); jsTag != "" {
 					for _, c := range parseConstraints(jsTag) {
 						if c.Keyword == "const" {
-							v.Discriminator = fmt.Sprintf("%v", c.Value)
-							// Track the field name as candidate discriminator.
-							if irType.Discriminator == "" {
-								irType.Discriminator = jsonName
-							} else if irType.Discriminator != jsonName {
-								// Multiple const fields across variants — can't auto-detect.
-								irType.Discriminator = ""
-							}
+							discValue = fmt.Sprintf("%v", c.Value)
 							break
 						}
 					}
 				}
-				_ = f
+
+				// Check if field type is a single-value enum.
+				if discValue == "" {
+					discValue = singleEnumValue(f.Type(), a.pkg)
+				}
+
+				if discValue != "" {
+					v.Discriminator = discValue
+					if irType.Discriminator == "" {
+						irType.Discriminator = jsonName
+					} else if irType.Discriminator != jsonName {
+						irType.Discriminator = ""
+					}
+					break
+				}
 			}
 		}
 
@@ -759,6 +771,49 @@ func parseTagValue(s string) any {
 		return b
 	}
 	return s
+}
+
+// singleEnumValue checks if a type is a named type with exactly one const value
+// (a single-value enum like `type ClickType string; const ClickTypeClick ClickType = "click"`).
+// Returns the const value string, or "" if not a single-value enum.
+func singleEnumValue(t types.Type, pkg *packages.Package) string {
+	named, ok := t.(*types.Named)
+	if !ok {
+		return ""
+	}
+	// Must be a string or integer type.
+	basic, ok := named.Underlying().(*types.Basic)
+	if !ok {
+		return ""
+	}
+	if basic.Info()&(types.IsString|types.IsInteger) == 0 {
+		return ""
+	}
+
+	// Scan the package scope for const declarations of this type.
+	var values []string
+	scope := pkg.Types.Scope()
+	for _, name := range scope.Names() {
+		obj := scope.Lookup(name)
+		c, ok := obj.(*types.Const)
+		if !ok {
+			continue
+		}
+		if !types.Identical(c.Type(), t) {
+			continue
+		}
+		val := c.Val().ExactString()
+		// Strip quotes from string constants.
+		if len(val) >= 2 && val[0] == '"' {
+			val = val[1 : len(val)-1]
+		}
+		values = append(values, val)
+	}
+
+	if len(values) == 1 {
+		return values[0]
+	}
+	return ""
 }
 
 func basicToScalar(b *types.Basic) string {

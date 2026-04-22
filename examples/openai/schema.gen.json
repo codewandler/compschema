@@ -2,6 +2,9 @@
   "$defs": {
     "Annotation": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/FileCitationBody"
@@ -18,32 +21,20 @@
       "additionalProperties": false,
       "properties": {
         "city": {
-          "description": "Free text input for the city of the user, e.g. `San Francisco`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationCity",
+          "description": "Free text input for the city of the user, e.g. `San Francisco`."
         },
         "country": {
-          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationCountry",
+          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`."
         },
         "region": {
-          "description": "Free text input for the region of the user, e.g. `California`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationRegion",
+          "description": "Free text input for the region of the user, e.g. `California`."
         },
         "timezone": {
-          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationTimezone",
+          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`."
         },
         "type": {
           "$ref": "#/$defs/ApproximateLocationType",
@@ -55,6 +46,30 @@
       ],
       "title": "ApproximateLocation",
       "type": "object"
+    },
+    "ApproximateLocationCity": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ApproximateLocationCountry": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ApproximateLocationRegion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ApproximateLocationTimezone": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "ApproximateLocationType": {
       "enum": [
@@ -224,6 +239,9 @@
     },
     "CodeInterpreterToolOutput": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/CodeInterpreterFileOutput"
@@ -294,6 +312,9 @@
     },
     "ComputerAction": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/Click"
@@ -344,11 +365,8 @@
           "type": "string"
         },
         "id": {
-          "description": "The ID of the computer tool call output.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ComputerCallOutputItemParamID",
+          "description": "The ID of the computer tool call output."
         },
         "output": {
           "$ref": "#/$defs/ComputerScreenshotImage"
@@ -388,32 +406,33 @@
       "type": "object"
     },
     "ComputerCallOutputItemParamAcknowledgedSafetyChecks": {
+      "description": "The safety checks reported by the API that have been acknowledged by the\ndeveloper.",
       "items": {
         "$ref": "#/$defs/ComputerCallSafetyCheckParam"
       },
       "type": "array"
+    },
+    "ComputerCallOutputItemParamID": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "ComputerCallSafetyCheckParam": {
       "additionalProperties": false,
       "description": "A pending safety check for the computer call.",
       "properties": {
         "code": {
-          "description": "The type of the pending safety check.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ComputerCallSafetyCheckParamCode",
+          "description": "The type of the pending safety check."
         },
         "id": {
           "description": "The ID of the pending safety check.",
           "type": "string"
         },
         "message": {
-          "description": "Details about the pending safety check.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ComputerCallSafetyCheckParamMessage",
+          "description": "Details about the pending safety check."
         }
       },
       "required": [
@@ -421,6 +440,18 @@
       ],
       "title": "ComputerCallSafetyCheckParam",
       "type": "object"
+    },
+    "ComputerCallSafetyCheckParamCode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ComputerCallSafetyCheckParamMessage": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "ComputerScreenshotImage": {
       "additionalProperties": false,
@@ -727,18 +758,12 @@
           ]
         },
         "temperature": {
-          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateModelResponsePropertiesTemperature",
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both."
         },
         "top_p": {
-          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateModelResponsePropertiesTopP",
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both."
         },
         "user": {
           "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
@@ -750,6 +775,18 @@
       },
       "title": "CreateModelResponseProperties",
       "type": "object"
+    },
+    "CreateModelResponsePropertiesTemperature": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "CreateModelResponsePropertiesTopP": {
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "CreateResponse": {
       "additionalProperties": false,
@@ -769,36 +806,26 @@
           "description": "Text, image, or file inputs to the model, used to generate a response.\n\nLearn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Image inputs](/docs/guides/images)\n- [File inputs](/docs/guides/pdf-files)\n- [Conversation state](/docs/guides/conversation-state)\n- [Function calling](/docs/guides/function-calling)"
         },
         "instructions": {
-          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseInstructions",
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses."
         },
         "max_output_tokens": {
-          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseMaxOutputTokens",
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning)."
         },
         "metadata": {
           "$ref": "#/$defs/Metadata"
         },
-        "model": {},
+        "model": {
+          "$ref": "#/$defs/ModelIdsResponses"
+        },
         "parallel_tool_calls": {
-          "description": "Whether to allow the model to run tool calls in parallel.",
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseParallelToolCalls",
+          "description": "Whether to allow the model to run tool calls in parallel."
         },
         "previous_response_id": {
-          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponsePreviousResponseID",
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state)."
         },
         "reasoning": {
           "oneOf": [
@@ -821,25 +848,16 @@
           ]
         },
         "store": {
-          "description": "Whether to store the generated model response for later retrieval via\nAPI.",
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseStore",
+          "description": "Whether to store the generated model response for later retrieval via\nAPI."
         },
         "stream": {
-          "description": "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent\nevents](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section below](/docs/api-reference/responses-streaming)\nfor more information.",
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseStream",
+          "description": "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent\nevents](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section below](/docs/api-reference/responses-streaming)\nfor more information."
         },
         "temperature": {
-          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseTemperature",
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both."
         },
         "text": {
           "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
@@ -863,11 +881,8 @@
           "type": "array"
         },
         "top_p": {
-          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/CreateResponseTopP",
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both."
         },
         "truncation": {
           "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
@@ -901,6 +916,7 @@
       "type": "object"
     },
     "CreateResponseInclude": {
+      "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n  - `file_search_call.results`: Include the search results of\n    the file search tool call.\n  - `message.input_image.image_url`: Include image urls from the input message.\n  - `computer_call_output.output.image_url`: Include image urls from the computer\n\ncall output.",
       "items": {
         "enum": [
           "computer_call_output.output.image_url",
@@ -912,6 +928,48 @@
       },
       "type": "array"
     },
+    "CreateResponseInstructions": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "CreateResponseMaxOutputTokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "CreateResponseParallelToolCalls": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "CreateResponsePreviousResponseID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "CreateResponseStore": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "CreateResponseStream": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "CreateResponseTemperature": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
     "CreateResponseText": {
       "additionalProperties": false,
       "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
@@ -922,6 +980,12 @@
       },
       "title": "CreateResponseText",
       "type": "object"
+    },
+    "CreateResponseTopP": {
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "DoubleClick": {
       "additionalProperties": false,
@@ -1024,19 +1088,13 @@
       "additionalProperties": false,
       "properties": {
         "code": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ErrorCode"
         },
         "message": {
           "type": "string"
         },
         "param": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ErrorParam"
         },
         "type": {
           "type": "string"
@@ -1050,6 +1108,18 @@
       ],
       "title": "Error",
       "type": "object"
+    },
+    "ErrorCode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ErrorParam": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "FileCitationBody": {
       "additionalProperties": false,
@@ -1211,6 +1281,7 @@
       "type": "object"
     },
     "FileSearchToolCallResults": {
+      "description": "The results of the file search tool call.",
       "items": {},
       "type": "array"
     },
@@ -1234,11 +1305,8 @@
           "type": "string"
         },
         "id": {
-          "description": "The unique ID of the function tool call output. Populated when this item is\nreturned via API.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/FunctionCallOutputItemParamID",
+          "description": "The unique ID of the function tool call output. Populated when this item is\nreturned via API."
         },
         "output": {
           "description": "A JSON string of the output of the function tool call.",
@@ -1278,16 +1346,19 @@
       "title": "FunctionCallOutputItemParam",
       "type": "object"
     },
+    "FunctionCallOutputItemParamID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "FunctionTool": {
       "additionalProperties": false,
       "description": "Defines a function in your own code the model can choose to call. Learn more\nabout [function\ncalling](https://platform.openai.com/docs/guides/function-calling).",
       "properties": {
         "description": {
-          "description": "A description of the function. Used by the model to determine whether or not to\ncall the function.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/FunctionToolDescription",
+          "description": "A description of the function. Used by the model to determine whether or not to\ncall the function."
         },
         "name": {
           "description": "The name of the function to call.",
@@ -1305,11 +1376,8 @@
           ]
         },
         "strict": {
-          "description": "Whether to enforce strict parameter validation. Default `true`.",
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "$ref": "#/$defs/FunctionToolStrict",
+          "description": "Whether to enforce strict parameter validation. Default `true`."
         },
         "type": {
           "description": "The type of the function tool. Always `function`.",
@@ -1547,12 +1615,30 @@
       "title": "FunctionToolCallResource",
       "type": "object"
     },
+    "FunctionToolDescription": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "FunctionToolParameters": {
-      "additionalProperties": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/FunctionTool"
+      },
+      "description": "A JSON schema object describing the parameters of the function.",
       "type": "object"
+    },
+    "FunctionToolStrict": {
+      "type": [
+        "boolean",
+        "null"
+      ]
     },
     "InputContent": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/InputFileContent"
@@ -1577,11 +1663,8 @@
           ]
         },
         "file_id": {
-          "description": "The ID of the file to be sent to the model.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/InputFileContentFileID",
+          "description": "The ID of the file to be sent to the model."
         },
         "filename": {
           "description": "The name of the file to be sent to the model.",
@@ -1605,6 +1688,12 @@
       "title": "InputFileContent",
       "type": "object"
     },
+    "InputFileContentFileID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "InputImageContent": {
       "additionalProperties": false,
       "description": "An image input to the model. Learn about [image inputs](/docs/guides/vision).",
@@ -1620,18 +1709,12 @@
           "type": "string"
         },
         "file_id": {
-          "description": "The ID of the file to be sent to the model.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/InputImageContentFileID",
+          "description": "The ID of the file to be sent to the model."
         },
         "image_url": {
-          "description": "The URL of the image to be sent to the model. A fully qualified URL or base64\nencoded image in a data URL.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/InputImageContentImageURL",
+          "description": "The URL of the image to be sent to the model. A fully qualified URL or base64\nencoded image in a data URL."
         },
         "type": {
           "description": "The type of the input item. Always `input_image`.",
@@ -1648,6 +1731,18 @@
       ],
       "title": "InputImageContent",
       "type": "object"
+    },
+    "InputImageContentFileID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "InputImageContentImageURL": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "InputItem": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
@@ -1721,6 +1816,7 @@
       "type": "object"
     },
     "InputMessageContentList": {
+      "description": "A list of one or many input items to the model, containing different content\ntypes.",
       "items": {
         "$ref": "#/$defs/InputContent"
       },
@@ -1814,6 +1910,7 @@
     },
     "Item": {
       "additionalProperties": {},
+      "description": "Content item used to generate a response.",
       "type": "object"
     },
     "ItemReferenceParam": {
@@ -1848,6 +1945,9 @@
     },
     "ItemResource": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"
@@ -1906,8 +2006,10 @@
       "additionalProperties": {
         "type": "string"
       },
+      "description": "Set of 16 key-value pairs that can be attached to an object. This can be\nuseful for storing additional information about the object in a structured\nformat, and querying for objects via API or the dashboard.\n\nKeys are strings with a maximum length of 64 characters. Values are strings\nwith a maximum length of 512 characters.",
       "type": "object"
     },
+    "ModelIdsResponses": {},
     "ModelIdsShared": {
       "type": "string"
     },
@@ -1928,18 +2030,12 @@
           ]
         },
         "temperature": {
-          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/ModelResponsePropertiesTemperature",
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both."
         },
         "top_p": {
-          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/ModelResponsePropertiesTopP",
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both."
         },
         "user": {
           "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
@@ -1951,6 +2047,18 @@
       },
       "title": "ModelResponseProperties",
       "type": "object"
+    },
+    "ModelResponsePropertiesTemperature": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "ModelResponsePropertiesTopP": {
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "Move": {
       "additionalProperties": false,
@@ -1983,6 +2091,9 @@
     },
     "OutputContent": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/OutputTextContent"
@@ -1994,6 +2105,9 @@
     },
     "OutputItem": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"
@@ -2309,23 +2423,19 @@
           ]
         },
         "instructions": {
-          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseInstructions",
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses."
         },
         "max_output_tokens": {
-          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseMaxOutputTokens",
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning)."
         },
         "metadata": {
           "$ref": "#/$defs/Metadata"
         },
-        "model": {},
+        "model": {
+          "$ref": "#/$defs/ModelIdsResponses"
+        },
         "object": {
           "description": "The object type of this resource - always set to `response`.",
           "enum": [
@@ -2342,22 +2452,16 @@
           "type": "array"
         },
         "output_text": {
-          "description": "SDK-only convenience property that contains the aggregated text output\nfrom all `output_text` items in the `output` array, if any are present.\nSupported in the Python and JavaScript SDKs.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseOutputText",
+          "description": "SDK-only convenience property that contains the aggregated text output\nfrom all `output_text` items in the `output` array, if any are present.\nSupported in the Python and JavaScript SDKs."
         },
         "parallel_tool_calls": {
           "description": "Whether to allow the model to run tool calls in parallel.",
           "type": "boolean"
         },
         "previous_response_id": {
-          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponsePreviousResponseID",
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state)."
         },
         "reasoning": {
           "oneOf": [
@@ -2398,11 +2502,8 @@
           ]
         },
         "temperature": {
-          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseTemperature",
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both."
         },
         "text": {
           "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
@@ -2426,11 +2527,8 @@
           "type": "array"
         },
         "top_p": {
-          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
-          "type": [
-            "number",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseTopP",
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both."
         },
         "truncation": {
           "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
@@ -2880,22 +2978,16 @@
       "description": "Emitted when an error occurs.",
       "properties": {
         "code": {
-          "description": "The error code.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseErrorEventCode",
+          "description": "The error code."
         },
         "message": {
           "description": "The error message.",
           "type": "string"
         },
         "param": {
-          "description": "The error parameter.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponseErrorEventParam",
+          "description": "The error parameter."
         },
         "type": {
           "description": "The type of the event. Always `error`.",
@@ -2914,6 +3006,18 @@
       ],
       "title": "ResponseErrorEvent",
       "type": "object"
+    },
+    "ResponseErrorEventCode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ResponseErrorEventParam": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "ResponseFailedEvent": {
       "additionalProperties": false,
@@ -3046,6 +3150,7 @@
     },
     "ResponseFormatJsonSchemaSchema": {
       "additionalProperties": {},
+      "description": "The schema for the response format, described as a JSON Schema object.\nLearn how to build JSON schemas [here](https://json-schema.org/).",
       "type": "object"
     },
     "ResponseFormatText": {
@@ -3204,6 +3309,12 @@
       "title": "ResponseIncompleteEvent",
       "type": "object"
     },
+    "ResponseInstructions": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "ResponseItemList": {
       "additionalProperties": false,
       "description": "A list of Response items.",
@@ -3245,6 +3356,12 @@
       ],
       "title": "ResponseItemList",
       "type": "object"
+    },
+    "ResponseMaxOutputTokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
     },
     "ResponseOutputItemAddedEvent": {
       "additionalProperties": false,
@@ -3302,30 +3419,35 @@
       "title": "ResponseOutputItemDoneEvent",
       "type": "object"
     },
+    "ResponseOutputText": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ResponsePreviousResponseID": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "ResponseProperties": {
       "additionalProperties": false,
       "properties": {
         "instructions": {
-          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponsePropertiesInstructions",
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses."
         },
         "max_output_tokens": {
-          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
-          "type": [
-            "integer",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponsePropertiesMaxOutputTokens",
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning)."
         },
-        "model": {},
+        "model": {
+          "$ref": "#/$defs/ModelIdsResponses"
+        },
         "previous_response_id": {
-          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ResponsePropertiesPreviousResponseID",
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state)."
         },
         "reasoning": {
           "oneOf": [
@@ -3377,6 +3499,24 @@
       },
       "title": "ResponseProperties",
       "type": "object"
+    },
+    "ResponsePropertiesInstructions": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ResponsePropertiesMaxOutputTokens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "ResponsePropertiesPreviousResponseID": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "ResponsePropertiesText": {
       "additionalProperties": false,
@@ -3673,6 +3813,9 @@
     },
     "ResponseStreamEvent": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ResponseAudioDeltaEvent"
@@ -3782,6 +3925,12 @@
         {
           "$ref": "#/$defs/ResponseWebSearchCallSearchingEvent"
         }
+      ]
+    },
+    "ResponseTemperature": {
+      "type": [
+        "number",
+        "null"
       ]
     },
     "ResponseText": {
@@ -3915,6 +4064,12 @@
       ],
       "title": "ResponseTextDoneEvent",
       "type": "object"
+    },
+    "ResponseTopP": {
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "ResponseUsage": {
       "additionalProperties": false,
@@ -4137,6 +4292,9 @@
     },
     "TextResponseFormatConfiguration": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ResponseFormatJsonObject"
@@ -4168,11 +4326,8 @@
           "$ref": "#/$defs/ResponseFormatJsonSchemaSchema"
         },
         "strict": {
-          "description": "Whether to enable strict schema adherence when generating the output.\nIf set to true, the model will always follow the exact schema defined\nin the `schema` field. Only a subset of JSON Schema is supported when\n`strict` is `true`. To learn more, read the [Structured Outputs\nguide](/docs/guides/structured-outputs).",
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "$ref": "#/$defs/TextResponseFormatJsonSchemaStrict",
+          "description": "Whether to enable strict schema adherence when generating the output.\nIf set to true, the model will always follow the exact schema defined\nin the `schema` field. Only a subset of JSON Schema is supported when\n`strict` is `true`. To learn more, read the [Structured Outputs\nguide](/docs/guides/structured-outputs)."
         },
         "type": {
           "description": "The type of response format being defined. Always `json_schema`.",
@@ -4191,8 +4346,17 @@
       "title": "TextResponseFormatJsonSchema",
       "type": "object"
     },
+    "TextResponseFormatJsonSchemaStrict": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
     "Tool": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerUsePreviewTool"
@@ -4328,6 +4492,7 @@
     },
     "VectorStoreFileAttributes": {
       "additionalProperties": {},
+      "description": "Set of 16 key-value pairs that can be attached to an object. This can be\nuseful for storing additional information about the object in a structured\nformat, and querying for objects via API or the dashboard. Keys are strings\nwith a maximum length of 64 characters. Values are strings with a maximum\nlength of 512 characters, booleans, or numbers.",
       "type": "object"
     },
     "Wait": {
@@ -4400,32 +4565,20 @@
       "additionalProperties": false,
       "properties": {
         "city": {
-          "description": "Free text input for the city of the user, e.g. `San Francisco`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationCity",
+          "description": "Free text input for the city of the user, e.g. `San Francisco`."
         },
         "country": {
-          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationCountry",
+          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`."
         },
         "region": {
-          "description": "Free text input for the region of the user, e.g. `California`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationRegion",
+          "description": "Free text input for the region of the user, e.g. `California`."
         },
         "timezone": {
-          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`.",
-          "type": [
-            "string",
-            "null"
-          ]
+          "$ref": "#/$defs/ApproximateLocationTimezone",
+          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`."
         },
         "type": {
           "$ref": "#/$defs/ApproximateLocationType",
