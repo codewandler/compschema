@@ -5,6 +5,7 @@ package basic
 import (
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"sync"
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
@@ -156,4 +157,39 @@ func DecodeRectangle(data []byte) (Rectangle, error) {
 
 // ShapeJSONSchemaBytes returns the JSON Schema for the Shape union.
 func ShapeJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Shape") }
+
+// DecodeShape validates and unmarshals JSON into the correct Shape variant.
+// Dispatches on the "type" discriminator field.
+func DecodeShape(data []byte) (Shape, error) {
+	sch := compschemaValidator("Shape")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "circle":
+		var val Circle
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "rectangle":
+		var val Rectangle
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for Shape", disc.D)
+	}
+}
 
