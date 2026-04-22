@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-04-22
+
+### Fixed
+- `type Foo any` aliases no longer get methods generated on them (was causing `invalid receiver type` compile errors)
+- Union wrapper types for named enums (e.g. `ToolChoiceOptions` string enum as a `ToolChoiceParam` variant) now get wrapper structs + `UnmarshalJSON`/`MarshalJSON`, enabling correct JSON round-trip for string union variants like `"auto"`
+- Wrapper type round-trip tests now skip auto-fixture (wrapper MarshalJSON serializes as inner value, not struct form)
+
 ## [2.0.0] - 2026-04-22
 
 ### Added

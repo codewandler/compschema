@@ -61,3 +61,26 @@ stats:
 clean:
 	rm -f $(SCHEMA_OUT) examples/openai/types.go
 	@echo "✓ cleaned generated artifacts"
+
+# Release safety gate — ensures all tests pass before tagging.
+# Usage: make release VERSION=v2.0.1
+.PHONY: release prerelease-check
+
+prerelease-check:
+	@echo "=== pre-release checks ==="
+	go build ./...
+	@echo "  ✓ build clean"
+	go vet ./...
+	@echo "  ✓ vet clean"
+	go test ./... -count=1 -timeout=120s
+	@echo "  ✓ all tests pass"
+	@echo ""
+	@echo "=== all checks passed ==="
+
+release: prerelease-check
+	@test -n "$(VERSION)" || (echo "usage: make release VERSION=vX.Y.Z" && exit 1)
+	@echo ""
+	@echo "tagging $(VERSION)..."
+	git tag -a $(VERSION) -m "release $(VERSION)"
+	@echo "✓ tagged $(VERSION)"
+	@echo "push with: git push origin $(VERSION)"

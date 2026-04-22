@@ -68,6 +68,10 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 					}
 				}
 			}
+			// For non-struct named types (enums, scalars), create a wrapper.
+			if !canHaveMethods {
+				primType = vGoName
+			}
 		} else if v.TypeRef.Inline != nil {
 			switch v.TypeRef.Inline.Kind {
 			case ir.KindScalar:
@@ -118,20 +122,23 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 	}
 	b.WriteString("\n")
 
-	// MarshalJSON for wrapper types — marshal as the inner value.
+	// MarshalJSON + UnmarshalJSON for wrapper types.
 	for wrapperName, primType := range wrapperTypes {
 		b.WriteString(fmt.Sprintf("func (w %s) MarshalJSON() ([]byte, error) {\n", wrapperName))
-		b.WriteString(fmt.Sprintf("\treturn json.Marshal(w.Value)\n"))
+		b.WriteString("\treturn json.Marshal(w.Value)\n")
+		b.WriteString("}\n\n")
+		b.WriteString(fmt.Sprintf("func (w *%s) UnmarshalJSON(data []byte) error {\n", wrapperName))
+		b.WriteString(fmt.Sprintf("\treturn json.Unmarshal(data, &w.Value)\n"))
 		b.WriteString("}\n\n")
 		_ = primType
 	}
 
 	// UnmarshalX dispatcher.
-	emitUnmarshalFunc(b, goName, t, pkg, r)
+	emitUnmarshalFunc(b, goName, t, pkg, r, wrapperTypes)
 }
 
 // emitUnmarshalFunc generates the UnmarshalX([]byte) (X, error) function.
-func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver) {
+func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, wrapperTypes map[string]string) {
 	// Check if a variant is a struct (can use &val) vs interface/other.
 	isStructVariant := func(typeName string) bool {
 		if typeName == "" {
@@ -258,6 +265,13 @@ func emitUnmarshalFunc(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Pa
 				continue
 			}
 			b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", goType))
+			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
+			b.WriteString("\t\t\treturn &val, nil\n")
+			b.WriteString("\t\t}\n\t}\n")
+		}
+		// Also try wrapper types (for enum/scalar variants).
+		for wrapperName := range wrapperTypes {
+			b.WriteString(fmt.Sprintf("\t{\n\t\tvar val %s\n", wrapperName))
 			b.WriteString("\t\tif err := json.Unmarshal(data, &val); err == nil {\n")
 			b.WriteString("\t\t\treturn &val, nil\n")
 			b.WriteString("\t\t}\n\t}\n")
