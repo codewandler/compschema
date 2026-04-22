@@ -372,6 +372,7 @@ func ImportFromFile(schemaPath, pkg, outputPath string) error {
 
 // extractInlineEnums finds struct fields with inline enum types and
 // extracts them as named types in the package.
+// Also extracts inline unions (oneOf/anyOf) as named sealed interfaces.
 func extractInlineEnums(pkg *ir.Package) {
 	for _, name := range pkg.Order {
 		t := pkg.Types[name]
@@ -383,44 +384,64 @@ func extractInlineEnums(pkg *ir.Package) {
 				continue
 			}
 			inline := f.Type.Inline
-			if inline.Kind != ir.KindEnum || len(inline.EnumValues) == 0 {
+
+			// Extract inline enums.
+			if inline.Kind == ir.KindEnum && len(inline.EnumValues) > 0 {
+				typeName := ""
+				for _, c := range inline.Constraints {
+					if c.Keyword == "title" {
+						if s, ok := c.Value.(string); ok {
+							typeName = s
+						}
+					}
+				}
+				if typeName == "" {
+					typeName = name + toGoName(f.JSONName)
+				}
+
+				var cleanConstraints []ir.Constraint
+				for _, c := range inline.Constraints {
+					if c.Keyword != "title" {
+						cleanConstraints = append(cleanConstraints, c)
+					}
+				}
+
+				enumType := &ir.Type{
+					Name:        typeName,
+					Kind:        ir.KindEnum,
+					EnumType:    inline.EnumType,
+					EnumValues:  inline.EnumValues,
+					Description: inline.Description,
+					Constraints: cleanConstraints,
+				}
+				pkg.Add(enumType)
+				t.Fields[i].Type = ir.TypeRef{Name: typeName}
 				continue
 			}
 
-			// Find a name: from title constraint, or generate from struct+field.
-			typeName := ""
-			for _, c := range inline.Constraints {
-				if c.Keyword == "title" {
-					if s, ok := c.Value.(string); ok {
-						typeName = s
-					}
+			// Extract inline unions as sealed interfaces.
+			if inline.Kind == ir.KindUnion && len(inline.Variants) > 0 {
+				typeName := name + toGoName(f.JSONName)
+				unionType := &ir.Type{
+					Name:          typeName,
+					Kind:          ir.KindUnion,
+					Description:   inline.Description,
+					Discriminator: inline.Discriminator,
+					Variants:      inline.Variants,
 				}
-			}
-			if typeName == "" {
-				typeName = name + toGoName(f.JSONName)
-			}
-
-			// Remove title from constraints (it becomes the type name).
-			var cleanConstraints []ir.Constraint
-			for _, c := range inline.Constraints {
-				if c.Keyword != "title" {
-					cleanConstraints = append(cleanConstraints, c)
-				}
+				pkg.Add(unionType)
+				t.Fields[i].Type = ir.TypeRef{Name: typeName}
+				continue
 			}
 
-			// Create the named enum type.
-			enumType := &ir.Type{
-				Name:        typeName,
-				Kind:        ir.KindEnum,
-				EnumType:    inline.EnumType,
-				EnumValues:  inline.EnumValues,
-				Description: inline.Description,
-				Constraints: cleanConstraints,
+			// Extract inline objects as named struct types.
+			if inline.Kind == ir.KindStruct && len(inline.Fields) > 0 {
+				typeName := name + toGoName(f.JSONName)
+				inline.Name = typeName
+				pkg.Add(inline)
+				t.Fields[i].Type = ir.TypeRef{Name: typeName}
+				continue
 			}
-			pkg.Add(enumType)
-
-			// Replace inline type with reference.
-			t.Fields[i].Type = ir.TypeRef{Name: typeName}
 		}
 	}
 }

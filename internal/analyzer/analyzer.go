@@ -609,6 +609,14 @@ func parseConstraintsAndMeta(tag string) ([]ir.Constraint, string) {
 	var constraints []ir.Constraint
 	var description string
 
+	// Handle description= specially since it can contain commas.
+	// Format: "key1=val1,key2=val2,description=rest of the string"
+	descPrefix := "description="
+	if idx := strings.Index(tag, descPrefix); idx >= 0 {
+		description = tag[idx+len(descPrefix):]
+		tag = strings.TrimRight(tag[:idx], ",")
+	}
+
 	for _, part := range strings.Split(tag, ",") {
 		part = strings.TrimSpace(part)
 		if part == "" {
@@ -635,7 +643,10 @@ func parseConstraintsAndMeta(tag string) ([]ir.Constraint, string) {
 		// Handle metadata keywords separately.
 		switch keyword {
 		case "description":
-			description = valueStr
+			// Should already be handled above, but catch any edge case.
+			if description == "" {
+				description = valueStr
+			}
 			continue
 		case "title":
 			constraints = append(constraints, ir.Constraint{Keyword: "title", Value: valueStr})
