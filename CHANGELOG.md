@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-04-22
+
+### Added
+- `Taskfile.yml` with 12 tasks (`task check` runs fmt → vet → lint → test)
+- `.golangci.yml` with 10 linters + 2 formatters — 0 issues
+- `LICENSE` (MIT)
+- `CONTRIBUTING.md` (dev workflow, code style, testing layers)
+- `AGENTS.md` (AI agent guidelines: structure, concepts, pitfalls, workflows)
+- `.editorconfig`
+- `.github/SECURITY.md`
+- `.github/ISSUE_TEMPLATE/` (bug + feature templates)
+- Generated tests now run in multi-spec pipeline (`testdata/specs/run_all.sh`)
+
+### Fixed
+- Kubernetes test failure: inline `KindMap` in fixture generator produced `""` instead of `{}`
+- 16 lint issues (unchecked errors, unused code, formatting)
+
 ## [1.0.0] - 2026-04-22
 
 ### Added
@@ -175,7 +192,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/codewandler/compschema/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/codewandler/compschema/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/codewandler/compschema/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/codewandler/compschema/compare/v0.7.0...v0.8.0
