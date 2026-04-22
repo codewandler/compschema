@@ -427,15 +427,15 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 }
 
 // emitUnionAs generates a generic As function for type-safe variant extraction.
-// Works like errors.As: returns true and populates target if the union value
-// matches the target type.
+// Uses the pointer constraint pattern so only types implementing the union
+// interface can be used as targets — compile-time safety like errors.As.
 //
 // Generated:
 //
-//	func ShapeAs[T any](v Shape, target *T) bool
+//	func ShapeAs[T any, P interface{ *T; Shape }](v Shape, target *T) bool
 func emitUnionAs(b *strings.Builder, name string) {
 	b.WriteString(fmt.Sprintf("// %sAs extracts a variant from a %s union value, like errors.As.\n", name, name))
-	b.WriteString(fmt.Sprintf("// Returns true and populates *target if v is of type *T.\n"))
+	b.WriteString(fmt.Sprintf("// Only types whose pointer implements %s can be used as target (compile-time checked).\n", name))
 	b.WriteString(fmt.Sprintf("//\n"))
 	b.WriteString(fmt.Sprintf("// Usage:\n"))
 	b.WriteString(fmt.Sprintf("//\n"))
@@ -443,8 +443,8 @@ func emitUnionAs(b *strings.Builder, name string) {
 	b.WriteString(fmt.Sprintf("//\tif %sAs(shape, &circle) {\n", name))
 	b.WriteString(fmt.Sprintf("//\t\t// circle is populated\n"))
 	b.WriteString(fmt.Sprintf("//\t}\n"))
-	b.WriteString(fmt.Sprintf("func %sAs[T any](v %s, target *T) bool {\n", name, name))
-	b.WriteString("\tt, ok := any(v).(*T)\n")
+	b.WriteString(fmt.Sprintf("func %sAs[T any, P interface{ *T; %s }](v %s, target *T) bool {\n", name, name, name))
+	b.WriteString("\tt, ok := v.(P)\n")
 	b.WriteString("\tif ok {\n")
 	b.WriteString("\t\t*target = *t\n")
 	b.WriteString("\t}\n")

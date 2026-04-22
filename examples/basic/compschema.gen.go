@@ -194,7 +194,7 @@ func DecodeShape(data []byte) (Shape, error) {
 }
 
 // ShapeAs extracts a variant from a Shape union value, like errors.As.
-// Returns true and populates *target if v is of type *T.
+// Only types whose pointer implements Shape can be used as target (compile-time checked).
 //
 // Usage:
 //
@@ -202,8 +202,8 @@ func DecodeShape(data []byte) (Shape, error) {
 //	if ShapeAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ShapeAs[T any](v Shape, target *T) bool {
-	t, ok := any(v).(*T)
+func ShapeAs[T any, P interface{ *T; Shape }](v Shape, target *T) bool {
+	t, ok := v.(P)
 	if ok {
 		*target = *t
 	}
