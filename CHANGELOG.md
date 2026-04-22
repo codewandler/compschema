@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-04-22
+
+### Added
+- Recursive string enum resolution in JSON Schema → IR parser: follows `$ref` chains through nested `anyOf` to collapse all-string unions into single enums
+- Union-of-union normalization in IR diff: `variantSubsumed` and `variantExistsInBoth` handle cases where Go type system can't express union composition
+- Union/enum kind equivalence in IR diff: `anyOf(all-string-enums)` ≈ `KindEnum`
+
+### Changed
+- **IR field match rate: 100.0%** — 600 fields matched, 0 missing, 0 extra, 0 differ
+- Full round-trip: OpenAPI → extract → JSON Schema → import → Go → generate → JSON Schema → diff = perfect structural match
+
 ## [0.8.0] - 2026-04-22
 
 ### Added
@@ -137,7 +148,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/codewandler/compschema/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/codewandler/compschema/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/codewandler/compschema/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/codewandler/compschema/compare/v0.4.0...v0.6.0
