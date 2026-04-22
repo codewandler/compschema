@@ -46,6 +46,8 @@ func TestIRToYAML_Basic(t *testing.T) {
 	// Verify key content is present.
 	for _, want := range []string{
 		"package: test",
+		"hash:",
+		"hashes:",
 		"name: User",
 		"kind: struct",
 		"json_name: name",
@@ -53,11 +55,15 @@ func TestIRToYAML_Basic(t *testing.T) {
 		"minLength:",
 		"name: Status",
 		"kind: enum",
-		"_hash:",
 	} {
 		if !contains(yaml, want) {
 			t.Errorf("IR YAML missing %q\n\nGot:\n%s", want, yaml)
 		}
+	}
+
+	// Verify _hash is NOT embedded in type nodes (moved to top-level hashes map).
+	if contains(yaml, "_hash:") {
+		t.Errorf("IR YAML should not contain _hash in type nodes\n\nGot:\n%s", yaml)
 	}
 }
 

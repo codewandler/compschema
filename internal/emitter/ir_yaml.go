@@ -11,10 +11,32 @@ import (
 // IRToYAML serializes an IR Package to a human-readable YAML document.
 // This is the canonical representation of what compschema understood
 // from the Go types — useful for review, diffing, and debugging.
+//
+// Structure:
+//
+//	package: mypackage
+//	hash: <package merkle hash>
+//	hashes:
+//	  TypeA: <hash>
+//	  TypeB: <hash>
+//	types:
+//	  - name: TypeA
+//	    kind: struct
+//	    fields: [...]
 func IRToYAML(pkg *ir.Package) ([]byte, error) {
-	doc := make(map[string]any, 2)
+	doc := make(map[string]any, 4)
 	doc["package"] = pkg.Name
+	doc["hash"] = fmt.Sprintf("%x", pkg.Hash())
 
+	// Per-type hashes as a flat map at the top level.
+	hashes := make(map[string]string, len(pkg.Order))
+	for _, name := range pkg.Order {
+		t := pkg.Types[name]
+		hashes[name] = fmt.Sprintf("%x", t.Hash())
+	}
+	doc["hashes"] = hashes
+
+	// Types without embedded hashes.
 	types := make([]any, 0, len(pkg.Order))
 	for _, name := range pkg.Order {
 		t := pkg.Types[name]
@@ -26,11 +48,9 @@ func IRToYAML(pkg *ir.Package) ([]byte, error) {
 }
 
 func typeToIR(t *ir.Type) map[string]any {
-	hash := t.Hash()
 	m := map[string]any{
-		"name":  t.Name,
-		"kind":  kindString(t.Kind),
-		"_hash": fmt.Sprintf("%x", hash[:8]),
+		"name": t.Name,
+		"kind": kindString(t.Kind),
 	}
 
 	if t.Description != "" {
