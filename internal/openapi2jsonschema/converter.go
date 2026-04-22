@@ -43,7 +43,11 @@ func New(path string) (*Converter, error) {
 	}
 	model, err := doc.BuildV3Model()
 	if err != nil {
-		return nil, fmt.Errorf("build v3 model: %w", err)
+		// libopenapi may return errors for circular refs but still produce a usable model.
+		if model == nil {
+			return nil, fmt.Errorf("build v3 model: %w", err)
+		}
+		fmt.Fprintf(os.Stderr, "warning: build v3 model: %v\n", err)
 	}
 	return &Converter{
 		doc:       &model.Model,

@@ -61,38 +61,78 @@ func compareIRPackages(gt, gen *ir.Package) *IRReport {
 
 	ctx := &irDiffCtx{gt: gt, gen: gen}
 
-	gtNames := make(map[string]bool)
+	// Build normalized name maps for fuzzy matching.
+	gtByNorm := make(map[string]string) // normalized → original
 	for _, n := range gt.Order {
-		gtNames[n] = true
+		gtByNorm[normalizeName(n)] = n
 	}
-	genNames := make(map[string]bool)
+	genByNorm := make(map[string]string)
 	for _, n := range gen.Order {
-		genNames[n] = true
+		genByNorm[normalizeName(n)] = n
 	}
 
+	matched := make(map[string]bool) // GT names that were matched
+	matchedGen := make(map[string]bool)
+
+	// First pass: exact name match.
 	for _, n := range gt.Order {
-		if genNames[n] {
-			r.MatchedTypes++
-			tr := ctx.compareTypes(n, gt.Types[n], gen.Types[n])
-			r.TypeReports = append(r.TypeReports, tr)
-			r.FieldsMatch += tr.FieldsMatch
-			r.FieldsMissing += len(tr.FieldsMissing)
-			r.FieldsExtra += len(tr.FieldsExtra)
-			r.FieldsDiffer += len(tr.FieldsDiffer)
-			r.FieldsTotal += tr.FieldsMatch + len(tr.FieldsMissing) + len(tr.FieldsDiffer)
-		} else {
-			r.MissingTypes = append(r.MissingTypes, n)
+		if _, ok := gen.Types[n]; ok {
+			matched[n] = true
+			matchedGen[n] = true
 		}
 	}
-	for _, n := range gen.Order {
-		if !gtNames[n] {
-			r.ExtraTypes = append(r.ExtraTypes, n)
+
+	// Second pass: normalized name match for unmatched.
+	for _, gtName := range gt.Order {
+		if matched[gtName] {
+			continue
+		}
+		norm := normalizeName(gtName)
+		if genOrig, ok := genByNorm[norm]; ok && !matchedGen[genOrig] {
+			matched[gtName] = true
+			matchedGen[genOrig] = true
+		}
+	}
+
+	// Compare matched types.
+	for _, gtName := range gt.Order {
+		if !matched[gtName] {
+			r.MissingTypes = append(r.MissingTypes, gtName)
+			continue
+		}
+		// Find the gen name (exact or normalized).
+		genName := gtName
+		if _, ok := gen.Types[gtName]; !ok {
+			norm := normalizeName(gtName)
+			genName = genByNorm[norm]
+		}
+		r.MatchedTypes++
+		tr := ctx.compareTypes(gtName, gt.Types[gtName], gen.Types[genName])
+		r.TypeReports = append(r.TypeReports, tr)
+		r.FieldsMatch += tr.FieldsMatch
+		r.FieldsMissing += len(tr.FieldsMissing)
+		r.FieldsExtra += len(tr.FieldsExtra)
+		r.FieldsDiffer += len(tr.FieldsDiffer)
+		r.FieldsTotal += tr.FieldsMatch + len(tr.FieldsMissing) + len(tr.FieldsDiffer)
+	}
+	for _, genName := range gen.Order {
+		if !matchedGen[genName] {
+			r.ExtraTypes = append(r.ExtraTypes, genName)
 		}
 	}
 
 	sort.Strings(r.MissingTypes)
 	sort.Strings(r.ExtraTypes)
 	return r
+}
+
+// normalizeName strips dots, underscores, hyphens and lowercases for fuzzy matching.
+func normalizeName(s string) string {
+	s = strings.ToLower(s)
+	s = strings.ReplaceAll(s, ".", "")
+	s = strings.ReplaceAll(s, "-", "")
+	s = strings.ReplaceAll(s, "_", "")
+	return s
 }
 
 // irDiffCtx holds both packages for $ref resolution during comparison.

@@ -57,7 +57,32 @@ func GenerateGo(pkg *ir.Package) string {
 	sort.Strings(names)
 
 	emitted := make(map[string]bool)
+	constNames := make(map[string]bool)
+
+	// First pass: collect all const names from enums.
 	for _, name := range names {
+		t := pkg.Types[name]
+		if t.Kind == ir.KindEnum {
+			goName := toGoName(name)
+			for _, v := range t.EnumValues {
+				constNames[goName+toGoName(fmt.Sprintf("%v", v))] = true
+			}
+		}
+	}
+
+	// Second pass: remove types that collide with enum const names.
+	for _, name := range names {
+		goName := toGoName(name)
+		if constNames[goName] {
+			delete(pkg.Types, name)
+		}
+	}
+
+	// Third pass: emit types.
+	for _, name := range names {
+		if _, ok := pkg.Types[name]; !ok {
+			continue // was deleted
+		}
 		goName := toGoName(name)
 		if emitted[goName] {
 			continue
@@ -199,6 +224,9 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 	emittedWrappers := make(map[string]bool)
 	for _, v := range t.Variants {
 		vName := toGoName(v.Name)
+		if vName == goName {
+			continue // skip self-reference
+		}
 
 		// Check if the variant can have methods directly.
 		canHaveMethods := true
@@ -206,11 +234,12 @@ func emitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
 
 		if v.TypeRef.Name != "" {
 			if vt, ok := pkg.Types[v.TypeRef.Name]; ok {
-				if vt.Kind == ir.KindMap || vt.Kind == ir.KindList ||
-					(vt.Kind == ir.KindScalar && vt.ScalarType == "any") ||
-					vt.Kind == ir.KindUnion {
+				// Only structs can have pointer receiver methods.
+				if vt.Kind != ir.KindStruct {
 					canHaveMethods = false
 				}
+			} else {
+				canHaveMethods = false
 			}
 		} else if v.TypeRef.Inline != nil {
 			switch v.TypeRef.Inline.Kind {
@@ -286,6 +315,10 @@ func sanitizeTagValue(s string) string {
 
 func typeRefGoType(ref *ir.TypeRef, pkg *ir.Package) string {
 	if ref.Name != "" {
+		// Check if the type was skipped (const collision) — use any.
+		if _, ok := pkg.Types[ref.Name]; !ok {
+			return "any"
+		}
 		return toGoName(ref.Name)
 	}
 	if ref.Inline == nil {
