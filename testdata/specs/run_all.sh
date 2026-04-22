@@ -81,15 +81,32 @@ for spec in testdata/specs/*.yaml testdata/specs/*.json; do
         continue
     fi
     
+    # Step 4b: Run generated tests (skip for very large packages)
+    test_pass=0
+    test_skip=0
+    test_fail=0
+    if [ "$types_count" -lt 1000 ] 2>/dev/null; then
+        if (cd "$dir" && go get github.com/santhosh-tekuri/jsonschema/v6 2>/dev/null); then
+            test_output=$(cd "$dir" && timeout 60 go test -v -count=1 ./... 2>&1 || true)
+            test_pass=$(echo "$test_output" | grep -cF -- '--- PASS' 2>/dev/null || echo 0)
+            test_skip=$(echo "$test_output" | grep -cF -- '--- SKIP' 2>/dev/null || echo 0)
+            test_fail=$(echo "$test_output" | grep -cF -- '--- FAIL' 2>/dev/null || echo 0)
+        fi
+    else
+        test_pass="-"
+        test_skip="-"
+        test_fail="skip(large)"
+    fi
+    
     # Step 5: IR diff
     diff_output=$($COMPSCHEMA diff --ir "${dir}/schema.json" "${dir}/schema.gen.json" 2>&1)
     match_rate=$(echo "$diff_output" | grep 'Field match rate' | grep -oP '[\d.]+%' || echo "?")
     matched=$(echo "$diff_output" | grep 'Matched:' | head -1 | grep -oP '\d+' || echo "0")
     differ=$(echo "$diff_output" | grep 'Differ:' | grep -oP '\d+' || echo "0")
     
-    echo "  ✓ ${defs_count} defs → ${types_count} Go types → ${match_rate} field match"
+    echo "  ✓ ${defs_count} defs → ${types_count} Go types → ${match_rate} field match → tests: ${test_pass}p/${test_skip}s/${test_fail}f"
     PASS=$((PASS + 1))
-    RESULTS="${RESULTS}\n  ✓ ${name}: ${defs_count} defs, ${types_count} Go types, ${match_rate} match (${matched} fields, ${differ} differ)"
+    RESULTS="${RESULTS}\n  ✓ ${name}: ${defs_count} defs, ${types_count} types, ${match_rate} match, tests ${test_pass}p/${test_skip}s/${test_fail}f"
     
     # Cleanup
     rm -rf "$dir"
