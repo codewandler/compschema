@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-22
+
+### Added
+- Full `jsonschema:"..."` struct tag support (compatible with invopop/jsonschema):
+  description, title, format, default, examples, readOnly, writeOnly,
+  deprecated, uniqueItems, multipleOf, minProperties, maxProperties,
+  exclusiveMinimum, exclusiveMaximum
+- `compschema.Schema` interface (`schema.go`) — `JSONSchemaBytes() []byte` + `Validate([]byte) error`. Enables `Handle[T compschema.Schema]` generic patterns.
+- Struct embedding support — embedded fields are flattened into parent struct
+- `compschema diff` — structural JSON Schema comparison with per-keyword reporting
+- Title emission from Go type names on structs and enums
+- Empty schema `{}` for `interface{}`/`any` types in JSON Schema output
+- Whitespace-normalized description comparison in diff
+- Comprehensive README with CLI docs, tag reference, pipeline numbers
+
+### Changed
+- Diff match rate: 57.6% → 69.4% on OpenAI Responses API round-trip
+- Annotation gaps reduced from 113 → 58
+- All 702 tests passing, 0 failures
+
 ## [0.3.0] - 2026-04-22
 
 ### Added
@@ -54,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/codewandler/compschema/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/codewandler/compschema/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/codewandler/compschema/compare/v0.1.0...v0.2.0
