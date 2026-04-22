@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-04-22
+
+### Added
+- Primitive wrapper types for union variants in `compschema import`:
+  `oneOf(string, number, bool)` → `ComparisonFilterValueString{Value string}`, etc.
+- Inline union/object extraction: field-level `oneOf`/`anyOf`/object schemas → named Go types
+- String enum collapse: `anyOf` of string enums → single enum with combined values
+- `$ref` resolution during string enum collapsing
+- `parseContext` in JSON Schema → IR parser for cross-def resolution
+
+### Fixed
+- Description comma parsing: `description=Text, image, or...` no longer corrupted
+- `[]T` naming in wrapper types: `[]InputItem` → `SliceInputItem`
+- Skip empty unions (0 implementors) in analyzer
+
+### Changed
+- Round-trip match rate (compschema import pipeline): **99.2%**
+  - 490 fields: 486 match, 3 differ (model), 1 missing (Item variant)
+  - Remaining 0.8%: nested anyOf-of-anyOf (ModelIdsResponses) + union-of-union (Item)
+
 ## [0.7.0] - 2026-04-22
 
 ### Added
@@ -117,7 +137,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/codewandler/compschema/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/codewandler/compschema/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/codewandler/compschema/compare/v0.4.0...v0.6.0
 [0.4.0]: https://github.com/codewandler/compschema/compare/v0.3.0...v0.4.0
