@@ -6,6 +6,13 @@
 .idea/
 *.iml
 .vscode/
+*.swp
+*~
 
 # OS
 .DS_Store
+Thumbs.db
+
+# Test artifacts
+/tmp/
+coverage.out
