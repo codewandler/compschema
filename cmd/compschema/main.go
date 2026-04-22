@@ -22,6 +22,7 @@ It also includes tooling for importing schemas from OpenAPI specs.`,
 		newGenerateCmd(),
 		newUniongenCmd(),
 		newDiffCmd(),
+		newImportCmd(),
 	)
 
 	if err := root.Execute(); err != nil {

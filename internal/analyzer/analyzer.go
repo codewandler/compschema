@@ -166,10 +166,14 @@ func (a *pkgAnalyzer) convertType(name string, typ types.Type) *ir.Type {
 		return a.convertStruct(name, typ, t)
 	case *types.Interface:
 		if t.NumMethods() == 0 {
-			// Empty interface (interface{}/any) — treat as opaque.
 			return nil
 		}
-		return a.convertUnion(name, t)
+		u := a.convertUnion(name, t)
+		if u != nil && u.Kind == ir.KindUnion && len(u.Variants) == 0 {
+			// Union with no implementors — skip.
+			return nil
+		}
+		return u
 	case *types.Basic:
 		// Check if it's an enum.
 		if vals, ok := a.enumMap[name]; ok {
