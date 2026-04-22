@@ -49,10 +49,11 @@ func Analyze(allTypes bool, patterns ...string) ([]*ir.Package, error) {
 
 func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 	a := &pkgAnalyzer{
-		pkg:     pkg,
-		irPkg:   ir.NewPackage(pkg.Name, pkg.PkgPath),
-		seen:    make(map[string]bool),
-		enumMap: buildEnumMap(pkg),
+		pkg:       pkg,
+		irPkg:     ir.NewPackage(pkg.Name, pkg.PkgPath),
+		seen:      make(map[string]bool),
+		enumMap:   buildEnumMap(pkg),
+		fieldDocs: buildFieldDocMap(pkg),
 	}
 
 	// Find root types.
@@ -75,10 +76,11 @@ func analyzePackage(pkg *packages.Package, allTypes bool) *ir.Package {
 }
 
 type pkgAnalyzer struct {
-	pkg     *packages.Package
-	irPkg   *ir.Package
-	seen    map[string]bool
-	enumMap map[string][]any // type name → const values
+	pkg       *packages.Package
+	irPkg     *ir.Package
+	seen      map[string]bool
+	enumMap   map[string][]any     // type name → const values
+	fieldDocs map[string]string    // "TypeName.FieldName" → doc comment
 }
 
 // findAnnotatedTypes scans comments for //compschema:generate directives.
@@ -274,6 +276,11 @@ func (a *pkgAnalyzer) convertStruct(name string, named types.Type, st *types.Str
 			f.Constraints, f.Description = parseConstraintsAndMeta(jsTag)
 		}
 
+		// Fall back to field comment if no description from tag.
+		if f.Description == "" {
+			f.Description = a.fieldDocs[name+"."+field.Name()]
+		}
+
 		irType.Fields = append(irType.Fields, f)
 	}
 
@@ -465,6 +472,45 @@ func (a *pkgAnalyzer) typeDoc(name string) string {
 }
 
 // buildEnumMap collects const blocks that define enum values for named types.
+// buildFieldDocMap extracts doc comments for struct fields.
+// Key format: "TypeName.FieldName" → comment text.
+func buildFieldDocMap(pkg *packages.Package) map[string]string {
+	result := make(map[string]string)
+	for _, file := range pkg.Syntax {
+		for _, decl := range file.Decls {
+			gd, ok := decl.(*ast.GenDecl)
+			if !ok {
+				continue
+			}
+			for _, spec := range gd.Specs {
+				ts, ok := spec.(*ast.TypeSpec)
+				if !ok {
+					continue
+				}
+				st, ok := ts.Type.(*ast.StructType)
+				if !ok {
+					continue
+				}
+				for _, field := range st.Fields.List {
+					if field.Doc == nil || len(field.Names) == 0 {
+						continue
+					}
+					for _, name := range field.Names {
+						doc := strings.TrimSpace(field.Doc.Text())
+						// Strip "FieldName corresponds to..." boilerplate from go-jsonschema.
+						if strings.HasPrefix(doc, name.Name+" corresponds to") {
+							continue
+						}
+						if doc != "" {
+							result[ts.Name.Name+"."+name.Name] = doc
+						}
+					}
+				}
+			}
+		}
+	}
+	return result
+}
 func buildEnumMap(pkg *packages.Package) map[string][]any {
 	result := make(map[string][]any)
 	for _, file := range pkg.Syntax {

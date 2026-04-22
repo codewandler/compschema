@@ -18,31 +18,36 @@
       "additionalProperties": false,
       "properties": {
         "city": {
+          "description": "Free text input for the city of the user, e.g. `San Francisco`.",
           "type": [
             "string",
             "null"
           ]
         },
         "country": {
+          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`.",
           "type": [
             "string",
             "null"
           ]
         },
         "region": {
+          "description": "Free text input for the region of the user, e.g. `California`.",
           "type": [
             "string",
             "null"
           ]
         },
         "timezone": {
+          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/ApproximateLocationType"
+          "$ref": "#/$defs/ApproximateLocationType",
+          "description": "The type of location approximation. Always `approximate`."
         }
       },
       "required": [
@@ -63,15 +68,19 @@
       "description": "A click action.",
       "properties": {
         "button": {
-          "$ref": "#/$defs/ClickButton"
+          "$ref": "#/$defs/ClickButton",
+          "description": "Indicates which mouse button was pressed during the click. One of `left`,\n`right`, `wheel`, `back`, or `forward`."
         },
         "type": {
-          "$ref": "#/$defs/ClickType"
+          "$ref": "#/$defs/ClickType",
+          "description": "Specifies the event type. For a click action, this property is\nalways set to `click`."
         },
         "x": {
+          "description": "The x-coordinate where the click occurred.",
           "type": "integer"
         },
         "y": {
+          "description": "The y-coordinate where the click occurred.",
           "type": "integer"
         }
       },
@@ -113,7 +122,8 @@
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterFileOutputType"
+          "$ref": "#/$defs/CodeInterpreterFileOutputType",
+          "description": "The type of the code interpreter file output. Always `files`."
         }
       },
       "required": [
@@ -127,9 +137,11 @@
       "additionalProperties": false,
       "properties": {
         "file_id": {
+          "description": "The ID of the file.",
           "type": "string"
         },
         "mime_type": {
+          "description": "The MIME type of the file.",
           "type": "string"
         }
       },
@@ -152,10 +164,12 @@
       "description": "The output of a code interpreter tool call that is text.",
       "properties": {
         "logs": {
+          "description": "The logs of the code interpreter tool call.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterTextOutputType"
+          "$ref": "#/$defs/CodeInterpreterTextOutputType",
+          "description": "The type of the code interpreter text output. Always `logs`."
         }
       },
       "required": [
@@ -177,22 +191,27 @@
       "description": "A tool call to run code.",
       "properties": {
         "code": {
+          "description": "The code to run.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the code interpreter tool call.",
           "type": "string"
         },
         "results": {
+          "description": "The results of the code interpreter tool call.",
           "items": {
             "$ref": "#/$defs/CodeInterpreterToolOutput"
           },
           "type": "array"
         },
         "status": {
-          "$ref": "#/$defs/CodeInterpreterToolCallStatus"
+          "$ref": "#/$defs/CodeInterpreterToolCallStatus",
+          "description": "The status of the code interpreter tool call."
         },
         "type": {
-          "$ref": "#/$defs/CodeInterpreterToolCallType"
+          "$ref": "#/$defs/CodeInterpreterToolCallType",
+          "description": "The type of the code interpreter tool call. Always `code_interpreter_call`."
         }
       },
       "required": [
@@ -237,12 +256,16 @@
       "description": "A filter used to compare a specified attribute key to a given value using a\ndefined comparison operation.",
       "properties": {
         "key": {
+          "description": "The key to compare against the value.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ComparisonFilterType"
+          "$ref": "#/$defs/ComparisonFilterType",
+          "description": "Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.\n- `eq`: equals\n- `ne`: not equal\n- `gt`: greater than\n- `gte`: greater than or equal\n- `lt`: less than\n- `lte`: less than or equal"
         },
-        "value": {}
+        "value": {
+          "description": "The value to compare against the attribute key; supports string, number, or\nboolean types."
+        }
       },
       "required": [
         "key",
@@ -269,11 +292,13 @@
       "description": "Combine multiple filters using `and` or `or`.",
       "properties": {
         "filters": {
+          "description": "Array of filters to combine. Items can be `ComparisonFilter` or\n`CompoundFilter`.",
           "items": {},
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/CompoundFilterType"
+          "$ref": "#/$defs/CompoundFilterType",
+          "description": "Type of operation: `and` or `or`."
         }
       },
       "required": [
@@ -328,6 +353,7 @@
       "description": "The output of a computer tool call.",
       "properties": {
         "acknowledged_safety_checks": {
+          "description": "The safety checks reported by the API that have been acknowledged by the\ndeveloper.",
           "oneOf": [
             {
               "$ref": "#/$defs/ComputerCallOutputItemParamAcknowledgedSafetyChecks"
@@ -338,9 +364,11 @@
           ]
         },
         "call_id": {
+          "description": "The ID of the computer tool call that produced the output.",
           "type": "string"
         },
         "id": {
+          "description": "The ID of the computer tool call output.",
           "type": [
             "string",
             "null"
@@ -350,6 +378,7 @@
           "$ref": "#/$defs/ComputerScreenshotImage"
         },
         "status": {
+          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/ComputerCallOutputItemParamStatus"
@@ -360,7 +389,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerCallOutputItemParamType"
+          "$ref": "#/$defs/ComputerCallOutputItemParamType",
+          "description": "The type of the computer tool call output. Always `computer_call_output`."
         }
       },
       "required": [
@@ -398,15 +428,18 @@
       "description": "A pending safety check for the computer call.",
       "properties": {
         "code": {
+          "description": "The type of the pending safety check.",
           "type": [
             "string",
             "null"
           ]
         },
         "id": {
+          "description": "The ID of the pending safety check.",
           "type": "string"
         },
         "message": {
+          "description": "Details about the pending safety check.",
           "type": [
             "string",
             "null"
@@ -424,19 +457,22 @@
       "description": "A computer screenshot image used with the computer use tool.",
       "properties": {
         "file_id": {
+          "description": "The identifier of an uploaded file that contains the screenshot.",
           "type": [
             "string",
             "null"
           ]
         },
         "image_url": {
+          "description": "The URL of the screenshot image.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerScreenshotImageType"
+          "$ref": "#/$defs/ComputerScreenshotImageType",
+          "description": "Specifies the event type. For a computer screenshot, this property is\nalways set to `computer_screenshot`."
         }
       },
       "required": [
@@ -460,22 +496,27 @@
           "$ref": "#/$defs/ComputerAction"
         },
         "call_id": {
+          "description": "An identifier used when responding to the tool call with output.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the computer call.",
           "type": "string"
         },
         "pending_safety_checks": {
+          "description": "The pending safety checks for the computer call.",
           "items": {
             "$ref": "#/$defs/ComputerToolCallSafetyCheck"
           },
           "type": "array"
         },
         "status": {
-          "$ref": "#/$defs/ComputerToolCallStatus"
+          "$ref": "#/$defs/ComputerToolCallStatus",
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API."
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallType"
+          "$ref": "#/$defs/ComputerToolCallType",
+          "description": "The type of the computer call. Always `computer_call`."
         }
       },
       "required": [
@@ -494,15 +535,18 @@
       "description": "The output of a computer tool call.",
       "properties": {
         "acknowledged_safety_checks": {
+          "description": "The safety checks reported by the API that have been acknowledged by the\ndeveloper.",
           "items": {
             "$ref": "#/$defs/ComputerToolCallSafetyCheck"
           },
           "type": "array"
         },
         "call_id": {
+          "description": "The ID of the computer tool call that produced the output.",
           "type": "string"
         },
         "id": {
+          "description": "The ID of the computer tool call output.",
           "type": [
             "string",
             "null"
@@ -512,6 +556,7 @@
           "$ref": "#/$defs/ComputerScreenshotImage"
         },
         "status": {
+          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/ComputerToolCallOutputStatus"
@@ -522,7 +567,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallOutputType"
+          "$ref": "#/$defs/ComputerToolCallOutputType",
+          "description": "The type of the computer tool call output. Always `computer_call_output`."
         }
       },
       "required": [
@@ -538,21 +584,25 @@
       "description": "The output of a computer tool call.",
       "properties": {
         "acknowledged_safety_checks": {
+          "description": "The safety checks reported by the API that have been acknowledged by the\ndeveloper.",
           "items": {
             "$ref": "#/$defs/ComputerToolCallSafetyCheck"
           },
           "type": "array"
         },
         "call_id": {
+          "description": "The ID of the computer tool call that produced the output.",
           "type": "string"
         },
         "id": {
+          "description": "The ID of the computer tool call output.",
           "type": "string"
         },
         "output": {
           "$ref": "#/$defs/ComputerScreenshotImage"
         },
         "status": {
+          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/ComputerToolCallOutputResourceStatus"
@@ -563,7 +613,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/ComputerToolCallOutputResourceType"
+          "$ref": "#/$defs/ComputerToolCallOutputResourceType",
+          "description": "The type of the computer tool call output. Always `computer_call_output`."
         }
       },
       "required": [
@@ -612,12 +663,15 @@
       "description": "A pending safety check for the computer call.",
       "properties": {
         "code": {
+          "description": "The type of the pending safety check.",
           "type": "string"
         },
         "id": {
+          "description": "The ID of the pending safety check.",
           "type": "string"
         },
         "message": {
+          "description": "Details about the pending safety check.",
           "type": "string"
         }
       },
@@ -650,16 +704,20 @@
       "description": "A tool that controls a virtual computer. Learn more about the [computer\ntool](https://platform.openai.com/docs/guides/tools-computer-use).",
       "properties": {
         "display_height": {
+          "description": "The height of the computer display.",
           "type": "integer"
         },
         "display_width": {
+          "description": "The width of the computer display.",
           "type": "integer"
         },
         "environment": {
-          "$ref": "#/$defs/ComputerUsePreviewToolEnvironment"
+          "$ref": "#/$defs/ComputerUsePreviewToolEnvironment",
+          "description": "The type of computer environment to control."
         },
         "type": {
-          "$ref": "#/$defs/ComputerUsePreviewToolType"
+          "$ref": "#/$defs/ComputerUsePreviewToolType",
+          "description": "The type of the computer use tool. Always `computer_use_preview`."
         }
       },
       "required": [
@@ -694,9 +752,11 @@
       "description": "An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.",
       "properties": {
         "x": {
+          "description": "The x-coordinate.",
           "type": "integer"
         },
         "y": {
+          "description": "The y-coordinate.",
           "type": "integer"
         }
       },
@@ -724,18 +784,21 @@
           ]
         },
         "temperature": {
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "top_p": {
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "user": {
+          "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
           "type": [
             "string",
             "null"
@@ -749,6 +812,7 @@
       "additionalProperties": false,
       "properties": {
         "include": {
+          "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n- `file_search_call.results`: Include the search results of\n  the file search tool call.\n- `message.input_image.image_url`: Include image urls from the input message.\n- `computer_call_output.output.image_url`: Include image urls from the computer\ncall output.",
           "oneOf": [
             {
               "$ref": "#/$defs/CreateResponseInclude"
@@ -758,14 +822,18 @@
             }
           ]
         },
-        "input": {},
+        "input": {
+          "description": "Text, image, or file inputs to the model, used to generate a response.\n\nLearn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Image inputs](/docs/guides/images)\n- [File inputs](/docs/guides/pdf-files)\n- [Conversation state](/docs/guides/conversation-state)\n- [Function calling](/docs/guides/function-calling)"
+        },
         "instructions": {
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
           "type": [
             "string",
             "null"
           ]
         },
         "max_output_tokens": {
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
           "type": [
             "integer",
             "null"
@@ -776,12 +844,14 @@
         },
         "model": {},
         "parallel_tool_calls": {
+          "description": "Whether to allow the model to run tool calls in parallel.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "previous_response_id": {
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
           "type": [
             "string",
             "null"
@@ -808,24 +878,28 @@
           ]
         },
         "store": {
+          "description": "Whether to store the generated model response for later retrieval via\nAPI.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "stream": {
+          "description": "If set to true, the model response data will be streamed to the client\nas it is generated using [server-sent\nevents](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).\nSee the [Streaming section below](/docs/api-reference/responses-streaming)\nfor more information.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "temperature": {
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "text": {
+          "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
           "oneOf": [
             {
               "$ref": "#/$defs/CreateResponseText"
@@ -835,20 +909,25 @@
             }
           ]
         },
-        "tool_choice": {},
+        "tool_choice": {
+          "description": "How the model should select which tool (or tools) to use when generating\na response. See the `tools` parameter to see how to specify which tools\nthe model can call."
+        },
         "tools": {
+          "description": "An array of tools the model may call while generating a response. You\ncan specify which tool to use by setting the `tool_choice` parameter.\n\nThe two categories of tools you can provide the model are:\n\n- **Built-in tools**: Tools that are provided by OpenAI that extend the\n  model's capabilities, like [web search](/docs/guides/tools-web-search)\n  or [file search](/docs/guides/tools-file-search). Learn more about\n  [built-in tools](/docs/guides/tools).\n- **Function calls (custom tools)**: Functions that are defined by you,\n  enabling the model to call your own code. Learn more about\n  [function calling](/docs/guides/function-calling).",
           "items": {
             "$ref": "#/$defs/Tool"
           },
           "type": "array"
         },
         "top_p": {
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "truncation": {
+          "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
               "$ref": "#/$defs/CreateResponseTruncation"
@@ -859,6 +938,7 @@
           ]
         },
         "user": {
+          "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
           "type": [
             "string",
             "null"
@@ -902,12 +982,15 @@
       "description": "A double click action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/DoubleClickType"
+          "$ref": "#/$defs/DoubleClickType",
+          "description": "Specifies the event type. For a double click action, this property is\nalways set to `double_click`."
         },
         "x": {
+          "description": "The x-coordinate where the double click occurred.",
           "type": "integer"
         },
         "y": {
+          "description": "The y-coordinate where the double click occurred.",
           "type": "integer"
         }
       },
@@ -931,13 +1014,15 @@
       "description": "A drag action.",
       "properties": {
         "path": {
+          "description": "An array of coordinates representing the path of the drag action. Coordinates\nwill appear as an array\nof objects, eg\n```\n[\n  { x: 100, y: 200 },\n  { x: 200, y: 300 }\n]\n```",
           "items": {
             "$ref": "#/$defs/Coordinate"
           },
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/DragType"
+          "$ref": "#/$defs/DragType",
+          "description": "Specifies the event type. For a drag action, this property is\nalways set to `drag`."
         }
       },
       "required": [
@@ -958,11 +1043,15 @@
       "additionalProperties": false,
       "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the `developer` or `system` role take\nprecedence over instructions given with the `user` role. Messages with the\n`assistant` role are presumed to have been generated by the model in previous\ninteractions.",
       "properties": {
-        "content": {},
+        "content": {
+          "description": "Text, image, or audio input to the model, used to generate a response.\nCan also contain previous assistant responses."
+        },
         "role": {
-          "$ref": "#/$defs/EasyInputMessageRole"
+          "$ref": "#/$defs/EasyInputMessageRole",
+          "description": "The role of the message input. One of `user`, `assistant`, `system`, or\n`developer`."
         },
         "type": {
+          "description": "The type of the message input. Always `message`.",
           "oneOf": [
             {
               "$ref": "#/$defs/EasyInputMessageType"
@@ -1033,13 +1122,16 @@
       "description": "A citation to a file.",
       "properties": {
         "file_id": {
+          "description": "The ID of the file.",
           "type": "string"
         },
         "index": {
+          "description": "The index of the file in the list of files.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/FileCitationBodyType"
+          "$ref": "#/$defs/FileCitationBodyType",
+          "description": "The type of the file citation. Always `file_citation`."
         }
       },
       "required": [
@@ -1062,13 +1154,16 @@
       "description": "A path to a file.",
       "properties": {
         "file_id": {
+          "description": "The ID of the file.",
           "type": "string"
         },
         "index": {
+          "description": "The index of the file in the list of files.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/FilePathType"
+          "$ref": "#/$defs/FilePathType",
+          "description": "The type of the file path. Always `file_path`."
         }
       },
       "required": [
@@ -1092,6 +1187,7 @@
       "properties": {
         "filters": {},
         "max_num_results": {
+          "description": "The maximum number of results to return. This number should be between 1 and 50\ninclusive.",
           "type": [
             "integer",
             "null"
@@ -1108,9 +1204,11 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FileSearchToolType"
+          "$ref": "#/$defs/FileSearchToolType",
+          "description": "The type of the file search tool. Always `file_search`."
         },
         "vector_store_ids": {
+          "description": "The IDs of the vector stores to search.",
           "items": {
             "type": "string"
           },
@@ -1129,15 +1227,18 @@
       "description": "The results of a file search tool call. See the\n[file search guide](/docs/guides/tools-file-search) for more information.",
       "properties": {
         "id": {
+          "description": "The unique ID of the file search tool call.",
           "type": "string"
         },
         "queries": {
+          "description": "The queries used to search for files.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "results": {
+          "description": "The results of the file search tool call.",
           "oneOf": [
             {
               "$ref": "#/$defs/FileSearchToolCallResults"
@@ -1148,10 +1249,12 @@
           ]
         },
         "status": {
-          "$ref": "#/$defs/FileSearchToolCallStatus"
+          "$ref": "#/$defs/FileSearchToolCallStatus",
+          "description": "The status of the file search tool call. One of `in_progress`,\n`searching`, `incomplete` or `failed`,"
         },
         "type": {
-          "$ref": "#/$defs/FileSearchToolCallType"
+          "$ref": "#/$defs/FileSearchToolCallType",
+          "description": "The type of the file search tool call. Always `file_search_call`."
         }
       },
       "required": [
@@ -1208,18 +1311,22 @@
       "description": "The output of a function tool call.",
       "properties": {
         "call_id": {
+          "description": "The unique ID of the function tool call generated by the model.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the function tool call output. Populated when this item is\nreturned via API.",
           "type": [
             "string",
             "null"
           ]
         },
         "output": {
+          "description": "A JSON string of the output of the function tool call.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or `incomplete`.\nPopulated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionCallOutputItemParamStatus"
@@ -1230,7 +1337,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionCallOutputItemParamType"
+          "$ref": "#/$defs/FunctionCallOutputItemParamType",
+          "description": "The type of the function tool call output. Always `function_call_output`."
         }
       },
       "required": [
@@ -1262,15 +1370,18 @@
       "description": "Defines a function in your own code the model can choose to call. Learn more\nabout [function\ncalling](https://platform.openai.com/docs/guides/function-calling).",
       "properties": {
         "description": {
+          "description": "A description of the function. Used by the model to determine whether or not to\ncall the function.",
           "type": [
             "string",
             "null"
           ]
         },
         "name": {
+          "description": "The name of the function to call.",
           "type": "string"
         },
         "parameters": {
+          "description": "A JSON schema object describing the parameters of the function.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionToolParameters"
@@ -1281,13 +1392,15 @@
           ]
         },
         "strict": {
+          "description": "Whether to enforce strict parameter validation. Default `true`.",
           "type": [
             "boolean",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolType"
+          "$ref": "#/$defs/FunctionToolType",
+          "description": "The type of the function tool. Always `function`."
         }
       },
       "required": [
@@ -1304,21 +1417,26 @@
       "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
       "properties": {
         "arguments": {
+          "description": "A JSON string of the arguments to pass to the function.",
           "type": "string"
         },
         "call_id": {
+          "description": "The unique ID of the function tool call generated by the model.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the function tool call.",
           "type": [
             "string",
             "null"
           ]
         },
         "name": {
+          "description": "The name of the function to run.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionToolCallStatus"
@@ -1329,7 +1447,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallType"
+          "$ref": "#/$defs/FunctionToolCallType",
+          "description": "The type of the function tool call. Always `function_call`."
         }
       },
       "required": [
@@ -1346,18 +1465,22 @@
       "description": "The output of a function tool call.",
       "properties": {
         "call_id": {
+          "description": "The unique ID of the function tool call generated by the model.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the function tool call output. Populated when this item\nis returned via API.",
           "type": [
             "string",
             "null"
           ]
         },
         "output": {
+          "description": "A JSON string of the output of the function tool call.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionToolCallOutputStatus"
@@ -1368,7 +1491,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallOutputType"
+          "$ref": "#/$defs/FunctionToolCallOutputType",
+          "description": "The type of the function tool call output. Always `function_call_output`."
         }
       },
       "required": [
@@ -1384,15 +1508,19 @@
       "description": "The output of a function tool call.",
       "properties": {
         "call_id": {
+          "description": "The unique ID of the function tool call generated by the model.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the function tool call output. Populated when this item\nis returned via API.",
           "type": "string"
         },
         "output": {
+          "description": "A JSON string of the output of the function tool call.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionToolCallOutputResourceStatus"
@@ -1403,7 +1531,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallOutputResourceType"
+          "$ref": "#/$defs/FunctionToolCallOutputResourceType",
+          "description": "The type of the function tool call output. Always `function_call_output`."
         }
       },
       "required": [
@@ -1452,18 +1581,23 @@
       "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
       "properties": {
         "arguments": {
+          "description": "A JSON string of the arguments to pass to the function.",
           "type": "string"
         },
         "call_id": {
+          "description": "The unique ID of the function tool call generated by the model.",
           "type": "string"
         },
         "id": {
+          "description": "The unique ID of the function tool call.",
           "type": "string"
         },
         "name": {
+          "description": "The name of the function to run.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/FunctionToolCallResourceStatus"
@@ -1474,7 +1608,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/FunctionToolCallResourceType"
+          "$ref": "#/$defs/FunctionToolCallResourceType",
+          "description": "The type of the function tool call. Always `function_call`."
         }
       },
       "required": [
@@ -1558,25 +1693,29 @@
       "description": "A file input to the model.",
       "properties": {
         "file_data": {
+          "description": "The content of the file to be sent to the model.",
           "type": [
             "string",
             "null"
           ]
         },
         "file_id": {
+          "description": "The ID of the file to be sent to the model.",
           "type": [
             "string",
             "null"
           ]
         },
         "filename": {
+          "description": "The name of the file to be sent to the model.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/InputFileContentType"
+          "$ref": "#/$defs/InputFileContentType",
+          "description": "The type of the input item. Always `input_file`."
         }
       },
       "required": [
@@ -1597,22 +1736,26 @@
       "description": "An image input to the model. Learn about [image inputs](/docs/guides/vision).",
       "properties": {
         "detail": {
-          "$ref": "#/$defs/InputImageContentDetail"
+          "$ref": "#/$defs/InputImageContentDetail",
+          "description": "The detail level of the image to be sent to the model. One of `high`, `low`, or\n`auto`. Defaults to `auto`."
         },
         "file_id": {
+          "description": "The ID of the file to be sent to the model.",
           "type": [
             "string",
             "null"
           ]
         },
         "image_url": {
+          "description": "The URL of the image to be sent to the model. A fully qualified URL or base64\nencoded image in a data URL.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/InputImageContentType"
+          "$ref": "#/$defs/InputImageContentType",
+          "description": "The type of the input item. Always `input_image`."
         }
       },
       "required": [
@@ -1660,9 +1803,11 @@
           "$ref": "#/$defs/InputMessageContentList"
         },
         "role": {
-          "$ref": "#/$defs/InputMessageRole"
+          "$ref": "#/$defs/InputMessageRole",
+          "description": "The role of the message input. One of `user`, `system`, or `developer`."
         },
         "status": {
+          "description": "The status of item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/InputMessageStatus"
@@ -1673,6 +1818,7 @@
           ]
         },
         "type": {
+          "description": "The type of the message input. Always set to `message`.",
           "oneOf": [
             {
               "$ref": "#/$defs/InputMessageType"
@@ -1704,12 +1850,15 @@
           "$ref": "#/$defs/InputMessageContentList"
         },
         "id": {
+          "description": "The unique ID of the message input.",
           "type": "string"
         },
         "role": {
-          "$ref": "#/$defs/InputMessageResourceRole"
+          "$ref": "#/$defs/InputMessageResourceRole",
+          "description": "The role of the message input. One of `user`, `system`, or `developer`."
         },
         "status": {
+          "description": "The status of item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/InputMessageResourceStatus"
@@ -1720,6 +1869,7 @@
           ]
         },
         "type": {
+          "description": "The type of the message input. Always set to `message`.",
           "oneOf": [
             {
               "$ref": "#/$defs/InputMessageResourceType"
@@ -1793,10 +1943,12 @@
       "description": "A text input to the model.",
       "properties": {
         "text": {
+          "description": "The text input to the model.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/InputTextContentType"
+          "$ref": "#/$defs/InputTextContentType",
+          "description": "The type of the input item. Always `input_text`."
         }
       },
       "required": [
@@ -1822,9 +1974,11 @@
       "description": "An internal identifier for an item to reference.",
       "properties": {
         "id": {
+          "description": "The ID of the item to reference.",
           "type": "string"
         },
         "type": {
+          "description": "The type of item to reference. Always `item_reference`.",
           "oneOf": [
             {
               "$ref": "#/$defs/ItemReferenceParamType"
@@ -1882,13 +2036,15 @@
       "description": "Content item used to generate a response.\nA collection of keypresses the model would like to perform.",
       "properties": {
         "keys": {
+          "description": "The combination of keys the model is requesting to be pressed. This is an\narray of strings, each representing a key.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/KeyPressType"
+          "$ref": "#/$defs/KeyPressType",
+          "description": "Specifies the event type. For a keypress action, this property is\nalways set to `keypress`."
         }
       },
       "required": [
@@ -1931,18 +2087,21 @@
           ]
         },
         "temperature": {
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "top_p": {
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "user": {
+          "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
           "type": [
             "string",
             "null"
@@ -1957,12 +2116,15 @@
       "description": "A mouse move action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/MoveType"
+          "$ref": "#/$defs/MoveType",
+          "description": "Specifies the event type. For a move action, this property is\nalways set to `move`."
         },
         "x": {
+          "description": "The x-coordinate to move to.",
           "type": "integer"
         },
         "y": {
+          "description": "The y-coordinate to move to.",
           "type": "integer"
         }
       },
@@ -2020,22 +2182,27 @@
       "description": "An output message from the model.",
       "properties": {
         "content": {
+          "description": "The content of the output message.",
           "items": {
             "$ref": "#/$defs/OutputContent"
           },
           "type": "array"
         },
         "id": {
+          "description": "The unique ID of the output message.",
           "type": "string"
         },
         "role": {
-          "$ref": "#/$defs/OutputMessageRole"
+          "$ref": "#/$defs/OutputMessageRole",
+          "description": "The role of the output message. Always `assistant`."
         },
         "status": {
-          "$ref": "#/$defs/OutputMessageStatus"
+          "$ref": "#/$defs/OutputMessageStatus",
+          "description": "The status of the message input. One of `in_progress`, `completed`, or\n`incomplete`. Populated when input items are returned via API."
         },
         "type": {
-          "$ref": "#/$defs/OutputMessageType"
+          "$ref": "#/$defs/OutputMessageType",
+          "description": "The type of the output message. Always `message`."
         }
       },
       "required": [
@@ -2076,16 +2243,19 @@
       "description": "A text output from the model.",
       "properties": {
         "annotations": {
+          "description": "The annotations of the text output.",
           "items": {
             "$ref": "#/$defs/Annotation"
           },
           "type": "array"
         },
         "text": {
+          "description": "The text output from the model.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/OutputTextContentType"
+          "$ref": "#/$defs/OutputTextContentType",
+          "description": "The type of the output text. Always `output_text`."
         }
       },
       "required": [
@@ -2107,6 +2277,7 @@
       "additionalProperties": false,
       "properties": {
         "ranker": {
+          "description": "The ranker to use for the file search.",
           "oneOf": [
             {
               "$ref": "#/$defs/RankingOptionsRanker"
@@ -2117,6 +2288,7 @@
           ]
         },
         "score_threshold": {
+          "description": "The score threshold for the file search, a number between 0 and 1. Numbers\ncloser to 1 will attempt to return only the most relevant results, but may\nreturn fewer results.",
           "type": [
             "number",
             "null"
@@ -2149,6 +2321,7 @@
           ]
         },
         "generate_summary": {
+          "description": "**Deprecated:** use `summary` instead.\n\nA summary of the reasoning performed by the model. This can be\nuseful for debugging and understanding the model's reasoning process.\nOne of `auto`, `concise`, or `detailed`.",
           "oneOf": [
             {
               "$ref": "#/$defs/ReasoningGenerateSummary"
@@ -2159,6 +2332,7 @@
           ]
         },
         "summary": {
+          "description": "A summary of the reasoning performed by the model. This can be\nuseful for debugging and understanding the model's reasoning process.\nOne of `auto`, `concise`, or `detailed`.",
           "oneOf": [
             {
               "$ref": "#/$defs/ReasoningSummary"
@@ -2195,9 +2369,11 @@
       "description": "A description of the chain of thought used by a reasoning model while generating\na response.",
       "properties": {
         "id": {
+          "description": "The unique identifier of the reasoning content.",
           "type": "string"
         },
         "status": {
+          "description": "The status of the item. One of `in_progress`, `completed`, or\n`incomplete`. Populated when items are returned via API.",
           "oneOf": [
             {
               "$ref": "#/$defs/ReasoningItemStatus"
@@ -2208,13 +2384,15 @@
           ]
         },
         "summary": {
+          "description": "Reasoning text contents.",
           "items": {
             "$ref": "#/$defs/ReasoningItemSummaryElem"
           },
           "type": "array"
         },
         "type": {
-          "$ref": "#/$defs/ReasoningItemType"
+          "$ref": "#/$defs/ReasoningItemType",
+          "description": "The type of the object. Always `reasoning`."
         }
       },
       "required": [
@@ -2238,10 +2416,12 @@
       "additionalProperties": false,
       "properties": {
         "text": {
+          "description": "A short summary of the reasoning used by the model when generating\nthe response.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ReasoningItemSummaryElemType"
+          "$ref": "#/$defs/ReasoningItemSummaryElemType",
+          "description": "The type of the object. Always `summary_text`."
         }
       },
       "required": [
@@ -2279,10 +2459,12 @@
       "description": "A refusal from the model.",
       "properties": {
         "refusal": {
+          "description": "The refusal explanationfrom the model.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/RefusalContentType"
+          "$ref": "#/$defs/RefusalContentType",
+          "description": "The type of the refusal. Always `refusal`."
         }
       },
       "required": [
@@ -2303,15 +2485,18 @@
       "additionalProperties": false,
       "properties": {
         "created_at": {
+          "description": "Unix timestamp (in seconds) of when this Response was created.",
           "type": "number"
         },
         "error": {
           "$ref": "#/$defs/ResponseError"
         },
         "id": {
+          "description": "Unique identifier for this Response.",
           "type": "string"
         },
         "incomplete_details": {
+          "description": "Details about why the response is incomplete.",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponseIncompleteDetails"
@@ -2322,12 +2507,14 @@
           ]
         },
         "instructions": {
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
           "type": [
             "string",
             "null"
           ]
         },
         "max_output_tokens": {
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
           "type": [
             "integer",
             "null"
@@ -2338,24 +2525,29 @@
         },
         "model": {},
         "object": {
-          "$ref": "#/$defs/ResponseObject"
+          "$ref": "#/$defs/ResponseObject",
+          "description": "The object type of this resource - always set to `response`."
         },
         "output": {
+          "description": "An array of content items generated by the model.\n\n- The length and order of items in the `output` array is dependent\n  on the model's response.\n- Rather than accessing the first item in the `output` array and\n  assuming it's an `assistant` message with the content generated by\n  the model, you might consider using the `output_text` property where\n  supported in SDKs.",
           "items": {
             "$ref": "#/$defs/OutputItem"
           },
           "type": "array"
         },
         "output_text": {
+          "description": "SDK-only convenience property that contains the aggregated text output\nfrom all `output_text` items in the `output` array, if any are present.\nSupported in the Python and JavaScript SDKs.",
           "type": [
             "string",
             "null"
           ]
         },
         "parallel_tool_calls": {
+          "description": "Whether to allow the model to run tool calls in parallel.",
           "type": "boolean"
         },
         "previous_response_id": {
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
           "type": [
             "string",
             "null"
@@ -2382,6 +2574,7 @@
           ]
         },
         "status": {
+          "description": "The status of the response generation. One of `completed`, `failed`,\n`in_progress`, or `incomplete`.",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponseStatus"
@@ -2392,12 +2585,14 @@
           ]
         },
         "temperature": {
+          "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will\nmake the output more random, while lower values like 0.2 will make it more\nfocused and deterministic.\nWe generally recommend altering this or `top_p` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "text": {
+          "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponseText"
@@ -2407,20 +2602,25 @@
             }
           ]
         },
-        "tool_choice": {},
+        "tool_choice": {
+          "description": "How the model should select which tool (or tools) to use when generating\na response. See the `tools` parameter to see how to specify which tools\nthe model can call."
+        },
         "tools": {
+          "description": "An array of tools the model may call while generating a response. You\ncan specify which tool to use by setting the `tool_choice` parameter.\n\nThe two categories of tools you can provide the model are:\n\n- **Built-in tools**: Tools that are provided by OpenAI that extend the\n  model's capabilities, like [web search](/docs/guides/tools-web-search)\n  or [file search](/docs/guides/tools-file-search). Learn more about\n  [built-in tools](/docs/guides/tools).\n- **Function calls (custom tools)**: Functions that are defined by you,\n  enabling the model to call your own code. Learn more about\n  [function calling](/docs/guides/function-calling).",
           "items": {
             "$ref": "#/$defs/Tool"
           },
           "type": "array"
         },
         "top_p": {
+          "description": "An alternative to sampling with temperature, called nucleus sampling,\nwhere the model considers the results of the tokens with top_p probability\nmass. So 0.1 means only the tokens comprising the top 10% probability mass\nare considered.\n\nWe generally recommend altering this or `temperature` but not both.",
           "type": [
             "number",
             "null"
           ]
         },
         "truncation": {
+          "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponseTruncation"
@@ -2441,6 +2641,7 @@
           ]
         },
         "user": {
+          "description": "A unique identifier representing your end-user, which can help OpenAI to\nmonitor and detect abuse. [Learn\nmore](/docs/guides/safety-best-practices#end-user-ids).",
           "type": [
             "string",
             "null"
@@ -2471,10 +2672,12 @@
       "description": "Emitted when there is a partial audio response.",
       "properties": {
         "delta": {
+          "description": "A chunk of Base64 encoded response audio bytes.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseAudioDeltaEventType"
+          "$ref": "#/$defs/ResponseAudioDeltaEventType",
+          "description": "The type of the event. Always `response.audio.delta`."
         }
       },
       "required": [
@@ -2496,7 +2699,8 @@
       "description": "Emitted when the audio response is complete.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseAudioDoneEventType"
+          "$ref": "#/$defs/ResponseAudioDoneEventType",
+          "description": "The type of the event. Always `response.audio.done`."
         }
       },
       "required": [
@@ -2517,10 +2721,12 @@
       "description": "Emitted when there is a partial transcript of audio.",
       "properties": {
         "delta": {
+          "description": "The partial transcript of the audio response.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseAudioTranscriptDeltaEventType"
+          "$ref": "#/$defs/ResponseAudioTranscriptDeltaEventType",
+          "description": "The type of the event. Always `response.audio.transcript.delta`."
         }
       },
       "required": [
@@ -2542,7 +2748,8 @@
       "description": "Emitted when the full audio transcript is completed.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseAudioTranscriptDoneEventType"
+          "$ref": "#/$defs/ResponseAudioTranscriptDoneEventType",
+          "description": "The type of the event. Always `response.audio.transcript.done`."
         }
       },
       "required": [
@@ -2563,13 +2770,16 @@
       "description": "Emitted when a partial code snippet is added by the code interpreter.",
       "properties": {
         "delta": {
+          "description": "The partial code snippet added by the code interpreter.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the code interpreter call is in progress.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDeltaEventType"
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDeltaEventType",
+          "description": "The type of the event. Always `response.code_interpreter_call.code.delta`."
         }
       },
       "required": [
@@ -2592,13 +2802,16 @@
       "description": "Emitted when code snippet output is finalized by the code interpreter.",
       "properties": {
         "code": {
+          "description": "The final code snippet output by the code interpreter.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the code interpreter call is in progress.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDoneEventType"
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCodeDoneEventType",
+          "description": "The type of the event. Always `response.code_interpreter_call.code.done`."
         }
       },
       "required": [
@@ -2624,10 +2837,12 @@
           "$ref": "#/$defs/CodeInterpreterToolCall"
         },
         "output_index": {
+          "description": "The index of the output item that the code interpreter call is in progress.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallCompletedEventType"
+          "$ref": "#/$defs/ResponseCodeInterpreterCallCompletedEventType",
+          "description": "The type of the event. Always `response.code_interpreter_call.completed`."
         }
       },
       "required": [
@@ -2653,10 +2868,12 @@
           "$ref": "#/$defs/CodeInterpreterToolCall"
         },
         "output_index": {
+          "description": "The index of the output item that the code interpreter call is in progress.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallInProgressEventType"
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInProgressEventType",
+          "description": "The type of the event. Always `response.code_interpreter_call.in_progress`."
         }
       },
       "required": [
@@ -2682,10 +2899,12 @@
           "$ref": "#/$defs/CodeInterpreterToolCall"
         },
         "output_index": {
+          "description": "The index of the output item that the code interpreter call is in progress.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCodeInterpreterCallInterpretingEventType"
+          "$ref": "#/$defs/ResponseCodeInterpreterCallInterpretingEventType",
+          "description": "The type of the event. Always `response.code_interpreter_call.interpreting`."
         }
       },
       "required": [
@@ -2711,7 +2930,8 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCompletedEventType"
+          "$ref": "#/$defs/ResponseCompletedEventType",
+          "description": "The type of the event. Always `response.completed`."
         }
       },
       "required": [
@@ -2733,19 +2953,23 @@
       "description": "Emitted when a new content part is added.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that was added.",
           "type": "integer"
         },
         "item_id": {
+          "description": "The ID of the output item that the content part was added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the content part was added to.",
           "type": "integer"
         },
         "part": {
           "$ref": "#/$defs/OutputContent"
         },
         "type": {
-          "$ref": "#/$defs/ResponseContentPartAddedEventType"
+          "$ref": "#/$defs/ResponseContentPartAddedEventType",
+          "description": "The type of the event. Always `response.content_part.added`."
         }
       },
       "required": [
@@ -2770,19 +2994,23 @@
       "description": "Emitted when a content part is done.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that is done.",
           "type": "integer"
         },
         "item_id": {
+          "description": "The ID of the output item that the content part was added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the content part was added to.",
           "type": "integer"
         },
         "part": {
           "$ref": "#/$defs/OutputContent"
         },
         "type": {
-          "$ref": "#/$defs/ResponseContentPartDoneEventType"
+          "$ref": "#/$defs/ResponseContentPartDoneEventType",
+          "description": "The type of the event. Always `response.content_part.done`."
         }
       },
       "required": [
@@ -2810,7 +3038,8 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseCreatedEventType"
+          "$ref": "#/$defs/ResponseCreatedEventType",
+          "description": "The type of the event. Always `response.created`."
         }
       },
       "required": [
@@ -2835,6 +3064,7 @@
           "$ref": "#/$defs/ResponseErrorCode"
         },
         "message": {
+          "description": "A human-readable description of the error.",
           "type": "string"
         }
       },
@@ -2874,22 +3104,26 @@
       "description": "Emitted when an error occurs.",
       "properties": {
         "code": {
+          "description": "The error code.",
           "type": [
             "string",
             "null"
           ]
         },
         "message": {
+          "description": "The error message.",
           "type": "string"
         },
         "param": {
+          "description": "The error parameter.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/ResponseErrorEventType"
+          "$ref": "#/$defs/ResponseErrorEventType",
+          "description": "The type of the event. Always `error`."
         }
       },
       "required": [
@@ -2916,7 +3150,8 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFailedEventType"
+          "$ref": "#/$defs/ResponseFailedEventType",
+          "description": "The type of the event. Always `response.failed`."
         }
       },
       "required": [
@@ -2938,13 +3173,16 @@
       "description": "Emitted when a file search call is completed (results found).",
       "properties": {
         "item_id": {
+          "description": "The ID of the output item that the file search call is initiated.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the file search call is initiated.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallCompletedEventType"
+          "$ref": "#/$defs/ResponseFileSearchCallCompletedEventType",
+          "description": "The type of the event. Always `response.file_search_call.completed`."
         }
       },
       "required": [
@@ -2967,13 +3205,16 @@
       "description": "Emitted when a file search call is initiated.",
       "properties": {
         "item_id": {
+          "description": "The ID of the output item that the file search call is initiated.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the file search call is initiated.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallInProgressEventType"
+          "$ref": "#/$defs/ResponseFileSearchCallInProgressEventType",
+          "description": "The type of the event. Always `response.file_search_call.in_progress`."
         }
       },
       "required": [
@@ -2996,13 +3237,16 @@
       "description": "Emitted when a file search is currently searching.",
       "properties": {
         "item_id": {
+          "description": "The ID of the output item that the file search call is initiated.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the file search call is searching.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFileSearchCallSearchingEventType"
+          "$ref": "#/$defs/ResponseFileSearchCallSearchingEventType",
+          "description": "The type of the event. Always `response.file_search_call.searching`."
         }
       },
       "required": [
@@ -3025,7 +3269,8 @@
       "description": "JSON object response format. An older method of generating JSON responses.\nUsing `json_schema` is recommended for models that support it. Note that the\nmodel will not generate JSON without a system or user message instructing it\nto do so.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseFormatJsonObjectType"
+          "$ref": "#/$defs/ResponseFormatJsonObjectType",
+          "description": "The type of response format being defined. Always `json_object`."
         }
       },
       "required": [
@@ -3050,7 +3295,8 @@
       "description": "Default response format. Used to generate text responses.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ResponseFormatTextType"
+          "$ref": "#/$defs/ResponseFormatTextType",
+          "description": "The type of response format being defined. Always `text`."
         }
       },
       "required": [
@@ -3071,16 +3317,20 @@
       "description": "Emitted when there is a partial function-call arguments delta.",
       "properties": {
         "delta": {
+          "description": "The function-call arguments delta that is added.",
           "type": "string"
         },
         "item_id": {
+          "description": "The ID of the output item that the function-call arguments delta is added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the function-call arguments delta is added\nto.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseFunctionCallArgumentsDeltaEventType"
+          "$ref": "#/$defs/ResponseFunctionCallArgumentsDeltaEventType",
+          "description": "The type of the event. Always `response.function_call_arguments.delta`."
         }
       },
       "required": [
@@ -3104,12 +3354,15 @@
       "description": "Emitted when function-call arguments are finalized.",
       "properties": {
         "arguments": {
+          "description": "The function-call arguments.",
           "type": "string"
         },
         "item_id": {
+          "description": "The ID of the item.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item.",
           "type": "integer"
         },
         "type": {
@@ -3140,7 +3393,8 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseInProgressEventType"
+          "$ref": "#/$defs/ResponseInProgressEventType",
+          "description": "The type of the event. Always `response.in_progress`."
         }
       },
       "required": [
@@ -3162,6 +3416,7 @@
       "description": "Details about why the response is incomplete.",
       "properties": {
         "reason": {
+          "description": "The reason why the response is incomplete.",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponseIncompleteDetailsReason"
@@ -3191,7 +3446,8 @@
           "$ref": "#/$defs/Response"
         },
         "type": {
-          "$ref": "#/$defs/ResponseIncompleteEventType"
+          "$ref": "#/$defs/ResponseIncompleteEventType",
+          "description": "The type of the event. Always `response.incomplete`."
         }
       },
       "required": [
@@ -3213,22 +3469,27 @@
       "description": "A list of Response items.",
       "properties": {
         "data": {
+          "description": "A list of items used to generate this response.",
           "items": {
             "$ref": "#/$defs/ItemResource"
           },
           "type": "array"
         },
         "first_id": {
+          "description": "The ID of the first item in the list.",
           "type": "string"
         },
         "has_more": {
+          "description": "Whether there are more items available.",
           "type": "boolean"
         },
         "last_id": {
+          "description": "The ID of the last item in the list.",
           "type": "string"
         },
         "object": {
-          "$ref": "#/$defs/ResponseItemListObject"
+          "$ref": "#/$defs/ResponseItemListObject",
+          "description": "The type of object returned, must be `list`."
         }
       },
       "required": [
@@ -3263,10 +3524,12 @@
           "$ref": "#/$defs/OutputItem"
         },
         "output_index": {
+          "description": "The index of the output item that was added.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseOutputItemAddedEventType"
+          "$ref": "#/$defs/ResponseOutputItemAddedEventType",
+          "description": "The type of the event. Always `response.output_item.added`."
         }
       },
       "required": [
@@ -3292,10 +3555,12 @@
           "$ref": "#/$defs/OutputItem"
         },
         "output_index": {
+          "description": "The index of the output item that was marked done.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseOutputItemDoneEventType"
+          "$ref": "#/$defs/ResponseOutputItemDoneEventType",
+          "description": "The type of the event. Always `response.output_item.done`."
         }
       },
       "required": [
@@ -3317,12 +3582,14 @@
       "additionalProperties": false,
       "properties": {
         "instructions": {
+          "description": "Inserts a system (or developer) message as the first item in the model's\ncontext.\n\nWhen using along with `previous_response_id`, the instructions from a previous\nresponse will not be carried over to the next response. This makes it simple\nto swap out system (or developer) messages in new responses.",
           "type": [
             "string",
             "null"
           ]
         },
         "max_output_tokens": {
+          "description": "An upper bound for the number of tokens that can be generated for a response,\nincluding visible output tokens and [reasoning tokens](/docs/guides/reasoning).",
           "type": [
             "integer",
             "null"
@@ -3330,6 +3597,7 @@
         },
         "model": {},
         "previous_response_id": {
+          "description": "The unique ID of the previous response to the model. Use this to\ncreate multi-turn conversations. Learn more about\n[conversation state](/docs/guides/conversation-state).",
           "type": [
             "string",
             "null"
@@ -3346,6 +3614,7 @@
           ]
         },
         "text": {
+          "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponsePropertiesText"
@@ -3355,14 +3624,18 @@
             }
           ]
         },
-        "tool_choice": {},
+        "tool_choice": {
+          "description": "How the model should select which tool (or tools) to use when generating\na response. See the `tools` parameter to see how to specify which tools\nthe model can call."
+        },
         "tools": {
+          "description": "An array of tools the model may call while generating a response. You\ncan specify which tool to use by setting the `tool_choice` parameter.\n\nThe two categories of tools you can provide the model are:\n\n- **Built-in tools**: Tools that are provided by OpenAI that extend the\n  model's capabilities, like [web search](/docs/guides/tools-web-search)\n  or [file search](/docs/guides/tools-file-search). Learn more about\n  [built-in tools](/docs/guides/tools).\n- **Function calls (custom tools)**: Functions that are defined by you,\n  enabling the model to call your own code. Learn more about\n  [function calling](/docs/guides/function-calling).",
           "items": {
             "$ref": "#/$defs/Tool"
           },
           "type": "array"
         },
         "truncation": {
+          "description": "The truncation strategy to use for the model response.\n- `auto`: If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- `disabled` (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
               "$ref": "#/$defs/ResponsePropertiesTruncation"
@@ -3400,19 +3673,24 @@
       "description": "Emitted when a new reasoning summary part is added.",
       "properties": {
         "item_id": {
+          "description": "The ID of the item this summary part is associated with.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item this summary part is associated with.",
           "type": "integer"
         },
         "part": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPart"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPart",
+          "description": "The summary part that was added."
         },
         "summary_index": {
+          "description": "The index of the summary part within the reasoning summary.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventType"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventType",
+          "description": "The type of the event. Always `response.reasoning_summary_part.added`."
         }
       },
       "required": [
@@ -3430,10 +3708,12 @@
       "description": "The summary part that was added.",
       "properties": {
         "text": {
+          "description": "The text of the summary part.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPartType"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartAddedEventPartType",
+          "description": "The type of the summary part. Always `summary_text`."
         }
       },
       "required": [
@@ -3462,19 +3742,24 @@
       "description": "Emitted when a reasoning summary part is completed.",
       "properties": {
         "item_id": {
+          "description": "The ID of the item this summary part is associated with.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item this summary part is associated with.",
           "type": "integer"
         },
         "part": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPart"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPart",
+          "description": "The completed summary part."
         },
         "summary_index": {
+          "description": "The index of the summary part within the reasoning summary.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventType"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventType",
+          "description": "The type of the event. Always `response.reasoning_summary_part.done`."
         }
       },
       "required": [
@@ -3492,10 +3777,12 @@
       "description": "The completed summary part.",
       "properties": {
         "text": {
+          "description": "The text of the summary part.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPartType"
+          "$ref": "#/$defs/ResponseReasoningSummaryPartDoneEventPartType",
+          "description": "The type of the summary part. Always `summary_text`."
         }
       },
       "required": [
@@ -3524,19 +3811,24 @@
       "description": "Emitted when a delta is added to a reasoning summary text.",
       "properties": {
         "delta": {
+          "description": "The text delta that was added to the summary.",
           "type": "string"
         },
         "item_id": {
+          "description": "The ID of the item this summary text delta is associated with.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item this summary text delta is associated with.",
           "type": "integer"
         },
         "summary_index": {
+          "description": "The index of the summary part within the reasoning summary.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryTextDeltaEventType"
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDeltaEventType",
+          "description": "The type of the event. Always `response.reasoning_summary_text.delta`."
         }
       },
       "required": [
@@ -3561,19 +3853,24 @@
       "description": "Emitted when a reasoning summary text is completed.",
       "properties": {
         "item_id": {
+          "description": "The ID of the item this summary text is associated with.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item this summary text is associated with.",
           "type": "integer"
         },
         "summary_index": {
+          "description": "The index of the summary part within the reasoning summary.",
           "type": "integer"
         },
         "text": {
+          "description": "The full text of the completed reasoning summary.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseReasoningSummaryTextDoneEventType"
+          "$ref": "#/$defs/ResponseReasoningSummaryTextDoneEventType",
+          "description": "The type of the event. Always `response.reasoning_summary_text.done`."
         }
       },
       "required": [
@@ -3598,19 +3895,24 @@
       "description": "Emitted when there is a partial refusal text.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that the refusal text is added to.",
           "type": "integer"
         },
         "delta": {
+          "description": "The refusal text that is added.",
           "type": "string"
         },
         "item_id": {
+          "description": "The ID of the output item that the refusal text is added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the refusal text is added to.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseRefusalDeltaEventType"
+          "$ref": "#/$defs/ResponseRefusalDeltaEventType",
+          "description": "The type of the event. Always `response.refusal.delta`."
         }
       },
       "required": [
@@ -3635,19 +3937,24 @@
       "description": "Emitted when refusal text is finalized.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that the refusal text is finalized.",
           "type": "integer"
         },
         "item_id": {
+          "description": "The ID of the output item that the refusal text is finalized.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the refusal text is finalized.",
           "type": "integer"
         },
         "refusal": {
+          "description": "The refusal text that is finalized.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseRefusalDoneEventType"
+          "$ref": "#/$defs/ResponseRefusalDoneEventType",
+          "description": "The type of the event. Always `response.refusal.done`."
         }
       },
       "required": [
@@ -3809,19 +4116,24 @@
           "$ref": "#/$defs/Annotation"
         },
         "annotation_index": {
+          "description": "The index of the annotation that was added.",
           "type": "integer"
         },
         "content_index": {
+          "description": "The index of the content part that the text annotation was added to.",
           "type": "integer"
         },
         "item_id": {
+          "description": "The ID of the output item that the text annotation was added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the text annotation was added to.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextAnnotationDeltaEventType"
+          "$ref": "#/$defs/ResponseTextAnnotationDeltaEventType",
+          "description": "The type of the event. Always `response.output_text.annotation.added`."
         }
       },
       "required": [
@@ -3847,19 +4159,24 @@
       "description": "Emitted when there is an additional text delta.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that the text delta was added to.",
           "type": "integer"
         },
         "delta": {
+          "description": "The text delta that was added.",
           "type": "string"
         },
         "item_id": {
+          "description": "The ID of the output item that the text delta was added to.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the text delta was added to.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextDeltaEventType"
+          "$ref": "#/$defs/ResponseTextDeltaEventType",
+          "description": "The type of the event. Always `response.output_text.delta`."
         }
       },
       "required": [
@@ -3884,19 +4201,24 @@
       "description": "Emitted when text content is finalized.",
       "properties": {
         "content_index": {
+          "description": "The index of the content part that the text content is finalized.",
           "type": "integer"
         },
         "item_id": {
+          "description": "The ID of the output item that the text content is finalized.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the text content is finalized.",
           "type": "integer"
         },
         "text": {
+          "description": "The text content that is finalized.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ResponseTextDoneEventType"
+          "$ref": "#/$defs/ResponseTextDoneEventType",
+          "description": "The type of the event. Always `response.output_text.done`."
         }
       },
       "required": [
@@ -3929,18 +4251,23 @@
       "description": "Represents token usage details including input tokens, output tokens,\na breakdown of output tokens, and the total tokens used.",
       "properties": {
         "input_tokens": {
+          "description": "The number of input tokens.",
           "type": "integer"
         },
         "input_tokens_details": {
-          "$ref": "#/$defs/ResponseUsageInputTokensDetails"
+          "$ref": "#/$defs/ResponseUsageInputTokensDetails",
+          "description": "A detailed breakdown of the input tokens."
         },
         "output_tokens": {
+          "description": "The number of output tokens.",
           "type": "integer"
         },
         "output_tokens_details": {
-          "$ref": "#/$defs/ResponseUsageOutputTokensDetails"
+          "$ref": "#/$defs/ResponseUsageOutputTokensDetails",
+          "description": "A detailed breakdown of the output tokens."
         },
         "total_tokens": {
+          "description": "The total number of tokens used.",
           "type": "integer"
         }
       },
@@ -3959,6 +4286,7 @@
       "description": "A detailed breakdown of the input tokens.",
       "properties": {
         "cached_tokens": {
+          "description": "The number of tokens that were retrieved from the cache.\n[More on prompt caching](/docs/guides/prompt-caching).",
           "type": "integer"
         }
       },
@@ -3973,6 +4301,7 @@
       "description": "A detailed breakdown of the output tokens.",
       "properties": {
         "reasoning_tokens": {
+          "description": "The number of reasoning tokens.",
           "type": "integer"
         }
       },
@@ -3987,13 +4316,16 @@
       "description": "Emitted when a web search call is completed.",
       "properties": {
         "item_id": {
+          "description": "Unique ID for the output item associated with the web search call.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the web search call is associated with.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallCompletedEventType"
+          "$ref": "#/$defs/ResponseWebSearchCallCompletedEventType",
+          "description": "The type of the event. Always `response.web_search_call.completed`."
         }
       },
       "required": [
@@ -4016,13 +4348,16 @@
       "description": "Emitted when a web search call is initiated.",
       "properties": {
         "item_id": {
+          "description": "Unique ID for the output item associated with the web search call.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the web search call is associated with.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallInProgressEventType"
+          "$ref": "#/$defs/ResponseWebSearchCallInProgressEventType",
+          "description": "The type of the event. Always `response.web_search_call.in_progress`."
         }
       },
       "required": [
@@ -4045,13 +4380,16 @@
       "description": "Emitted when a web search call is executing.",
       "properties": {
         "item_id": {
+          "description": "Unique ID for the output item associated with the web search call.",
           "type": "string"
         },
         "output_index": {
+          "description": "The index of the output item that the web search call is associated with.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ResponseWebSearchCallSearchingEventType"
+          "$ref": "#/$defs/ResponseWebSearchCallSearchingEventType",
+          "description": "The type of the event. Always `response.web_search_call.searching`."
         }
       },
       "required": [
@@ -4074,7 +4412,8 @@
       "description": "A screenshot action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ScreenshotType"
+          "$ref": "#/$defs/ScreenshotType",
+          "description": "Specifies the event type. For a screenshot action, this property is\nalways set to `screenshot`."
         }
       },
       "required": [
@@ -4095,18 +4434,23 @@
       "description": "A scroll action.",
       "properties": {
         "scroll_x": {
+          "description": "The horizontal scroll distance.",
           "type": "integer"
         },
         "scroll_y": {
+          "description": "The vertical scroll distance.",
           "type": "integer"
         },
         "type": {
-          "$ref": "#/$defs/ScrollType"
+          "$ref": "#/$defs/ScrollType",
+          "description": "Specifies the event type. For a scroll action, this property is\nalways set to `scroll`."
         },
         "x": {
+          "description": "The x-coordinate where the scroll occurred.",
           "type": "integer"
         },
         "y": {
+          "description": "The y-coordinate where the scroll occurred.",
           "type": "integer"
         }
       },
@@ -4155,25 +4499,29 @@
       "description": "An object specifying the format that the model must output.\n\nConfiguring `{ \"type\": \"json_schema\" }` enables Structured Outputs,\nwhich ensures the model will match your supplied JSON schema. Learn more in the\n[Structured Outputs guide](/docs/guides/structured-outputs).\n\nThe default format is `{ \"type\": \"text\" }` with no additional options.\n\n**Not recommended for gpt-4o and newer models:**\n\nSetting to `{ \"type\": \"json_object\" }` enables the older JSON mode, which\nensures the message the model generates is valid JSON. Using `json_schema`\nis preferred for models that support it.\nJSON Schema response format. Used to generate structured JSON responses.\nLearn more about [Structured Outputs](/docs/guides/structured-outputs).",
       "properties": {
         "description": {
+          "description": "A description of what the response format is for, used by the model to\ndetermine how to respond in the format.",
           "type": [
             "string",
             "null"
           ]
         },
         "name": {
+          "description": "The name of the response format. Must be a-z, A-Z, 0-9, or contain\nunderscores and dashes, with a maximum length of 64.",
           "type": "string"
         },
         "schema": {
           "$ref": "#/$defs/ResponseFormatJsonSchemaSchema"
         },
         "strict": {
+          "description": "Whether to enable strict schema adherence when generating the output.\nIf set to true, the model will always follow the exact schema defined\nin the `schema` field. Only a subset of JSON Schema is supported when\n`strict` is `true`. To learn more, read the [Structured Outputs\nguide](/docs/guides/structured-outputs).",
           "type": [
             "boolean",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/TextResponseFormatJsonSchemaType"
+          "$ref": "#/$defs/TextResponseFormatJsonSchemaType",
+          "description": "The type of response format being defined. Always `json_schema`."
         }
       },
       "required": [
@@ -4213,10 +4561,12 @@
       "description": "Use this option to force the model to call a specific function.",
       "properties": {
         "name": {
+          "description": "The name of the function to call.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/ToolChoiceFunctionType"
+          "$ref": "#/$defs/ToolChoiceFunctionType",
+          "description": "For function calling, the type is always `function`."
         }
       },
       "required": [
@@ -4247,7 +4597,8 @@
       "description": "Indicates that the model should use a built-in tool to generate a response.\n[Learn more about built-in tools](/docs/guides/tools).",
       "properties": {
         "type": {
-          "$ref": "#/$defs/ToolChoiceTypesType"
+          "$ref": "#/$defs/ToolChoiceTypesType",
+          "description": "The type of hosted tool the model should to use. Learn more about\n[built-in tools](/docs/guides/tools).\n\nAllowed values are:\n- `file_search`\n- `web_search_preview`\n- `computer_use_preview`"
         }
       },
       "required": [
@@ -4271,10 +4622,12 @@
       "description": "An action to type in text.",
       "properties": {
         "text": {
+          "description": "The text to type.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/TypeType"
+          "$ref": "#/$defs/TypeType",
+          "description": "Specifies the event type. For a type action, this property is\nalways set to `type`."
         }
       },
       "required": [
@@ -4296,18 +4649,23 @@
       "description": "A citation for a web resource used to generate a model response.",
       "properties": {
         "end_index": {
+          "description": "The index of the last character of the URL citation in the message.",
           "type": "integer"
         },
         "start_index": {
+          "description": "The index of the first character of the URL citation in the message.",
           "type": "integer"
         },
         "title": {
+          "description": "The title of the web resource.",
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/URLCitationBodyType"
+          "$ref": "#/$defs/URLCitationBodyType",
+          "description": "The type of the URL citation. Always `url_citation`."
         },
         "url": {
+          "description": "The URL of the web resource.",
           "type": "string"
         }
       },
@@ -4337,7 +4695,8 @@
       "description": "A wait action.",
       "properties": {
         "type": {
-          "$ref": "#/$defs/WaitType"
+          "$ref": "#/$defs/WaitType",
+          "description": "Specifies the event type. For a wait action, this property is\nalways set to `wait`."
         }
       },
       "required": [
@@ -4358,6 +4717,7 @@
       "description": "This tool searches the web for relevant results to use in a response. Learn more\nabout the [web search\ntool](https://platform.openai.com/docs/guides/tools-web-search).",
       "properties": {
         "search_context_size": {
+          "description": "High level guidance for the amount of context window space to use for the\nsearch. One of `low`, `medium`, or `high`. `medium` is the default.",
           "oneOf": [
             {
               "$ref": "#/$defs/WebSearchPreviewToolSearchContextSize"
@@ -4368,7 +4728,8 @@
           ]
         },
         "type": {
-          "$ref": "#/$defs/WebSearchPreviewToolType"
+          "$ref": "#/$defs/WebSearchPreviewToolType",
+          "description": "The type of the web search tool. One of `web_search_preview` or\n`web_search_preview_2025_03_11`."
         },
         "user_location": {
           "oneOf": [
@@ -4408,31 +4769,36 @@
       "additionalProperties": false,
       "properties": {
         "city": {
+          "description": "Free text input for the city of the user, e.g. `San Francisco`.",
           "type": [
             "string",
             "null"
           ]
         },
         "country": {
+          "description": "The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of\nthe user, e.g. `US`.",
           "type": [
             "string",
             "null"
           ]
         },
         "region": {
+          "description": "Free text input for the region of the user, e.g. `California`.",
           "type": [
             "string",
             "null"
           ]
         },
         "timezone": {
+          "description": "The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the\nuser, e.g. `America/Los_Angeles`.",
           "type": [
             "string",
             "null"
           ]
         },
         "type": {
-          "$ref": "#/$defs/ApproximateLocationType"
+          "$ref": "#/$defs/ApproximateLocationType",
+          "description": "The type of location approximation. Always `approximate`."
         }
       },
       "required": [
@@ -4446,13 +4812,16 @@
       "description": "The results of a web search tool call. See the\n[web search guide](/docs/guides/tools-web-search) for more information.",
       "properties": {
         "id": {
+          "description": "The unique ID of the web search tool call.",
           "type": "string"
         },
         "status": {
-          "$ref": "#/$defs/WebSearchToolCallStatus"
+          "$ref": "#/$defs/WebSearchToolCallStatus",
+          "description": "The status of the web search tool call."
         },
         "type": {
-          "$ref": "#/$defs/WebSearchToolCallType"
+          "$ref": "#/$defs/WebSearchToolCallType",
+          "description": "The type of the web search tool call. Always `web_search_call`."
         }
       },
       "required": [

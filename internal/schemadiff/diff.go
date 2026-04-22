@@ -160,6 +160,28 @@ func compareDef(name string, gt, gen map[string]any) DefReport {
 					}
 				}
 			}
+			// For properties, do per-property comparison to get finer-grained reporting.
+			if !match && k == "properties" {
+				gtProps, _ := gtVal.(map[string]any)
+				genProps, _ := genVal.(map[string]any)
+				if gtProps != nil && genProps != nil {
+					propMatched, propTotal := compareProperties(gtProps, genProps)
+					if propMatched == propTotal && propTotal > 0 {
+						// All properties match individually even though the objects differ
+						// (e.g. ordering). Count as match.
+						match = true
+					} else if propTotal > 0 {
+						dr.Mismatches = append(dr.Mismatches, Mismatch{
+							Path:     name,
+							Keyword:  k,
+							Expected: fmt.Sprintf("%d/%d properties match", propMatched, propTotal),
+							Got:      fmt.Sprintf("%d missing, %d differ", propTotal-propMatched-(propTotal-len(gtProps)), propTotal-propMatched),
+							Category: "structural",
+						})
+						continue
+					}
+				}
+			}
 			if match {
 				dr.Matches = append(dr.Matches, k)
 			} else {
@@ -367,4 +389,51 @@ func toSet(s []string) map[string]bool {
 func normalizeWS(s string) string {
 	fields := strings.Fields(s)
 	return strings.Join(fields, " ")
+}
+
+// compareProperties compares two property maps and returns how many match.
+func compareProperties(gt, gen map[string]any) (matched, total int) {
+	for k, gtv := range gt {
+		total++
+		genv, ok := gen[k]
+		if !ok {
+			continue
+		}
+		gtj, _ := json.Marshal(gtv)
+		genj, _ := json.Marshal(genv)
+		if string(gtj) == string(genj) {
+			matched++
+			continue
+		}
+		if structurallyEqual(gtv, genv) {
+			matched++
+		}
+	}
+	return
+}
+
+// structurallyEqual compares two property schemas ignoring annotation keywords.
+func structurallyEqual(a, b any) bool {
+	am, aOk := a.(map[string]any)
+	bm, bOk := b.(map[string]any)
+	if !aOk || !bOk {
+		ja, _ := json.Marshal(a)
+		jb, _ := json.Marshal(b)
+		return string(ja) == string(jb)
+	}
+	for k := range structuralKeywords {
+		av, aHas := am[k]
+		bv, bHas := bm[k]
+		if aHas != bHas {
+			return false
+		}
+		if aHas {
+			ja, _ := json.Marshal(av)
+			jb, _ := json.Marshal(bv)
+			if string(ja) != string(jb) {
+				return false
+			}
+		}
+	}
+	return true
 }
