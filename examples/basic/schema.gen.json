@@ -1,0 +1,121 @@
+{
+  "$defs": {
+    "Circle": {
+      "additionalProperties": false,
+      "description": "is a round shape.",
+      "properties": {
+        "radius": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "type": {
+          "const": "circle",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "radius"
+      ],
+      "type": "object"
+    },
+    "LineItem": {
+      "additionalProperties": false,
+      "description": "is a single item in an order.",
+      "properties": {
+        "qty": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "sku": {
+          "pattern": "^[A-Z]{3}-[0-9]+$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sku",
+        "qty"
+      ],
+      "type": "object"
+    },
+    "Order": {
+      "additionalProperties": false,
+      "description": "represents a customer order.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/LineItem"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/OrderStatus"
+        }
+      },
+      "required": [
+        "id",
+        "items",
+        "status"
+      ],
+      "type": "object"
+    },
+    "OrderStatus": {
+      "description": "is an enum of valid order states.",
+      "enum": [
+        "pending",
+        "confirmed",
+        "shipped"
+      ],
+      "type": "string"
+    },
+    "Rectangle": {
+      "additionalProperties": false,
+      "description": "has four sides.",
+      "properties": {
+        "height": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "type": {
+          "const": "rectangle",
+          "type": "string"
+        },
+        "width": {
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "width",
+        "height"
+      ],
+      "type": "object"
+    },
+    "Shape": {
+      "description": "is a sealed union of shape types.",
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Circle"
+        },
+        {
+          "$ref": "#/$defs/Rectangle"
+        }
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
