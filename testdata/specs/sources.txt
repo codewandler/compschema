@@ -1,0 +1,9 @@
+# Popular OpenAPI specs for round-trip testing
+petstore|https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.yaml
+petstore-expanded|https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore-expanded.yaml
+github|https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.yaml
+stripe|https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.yaml
+slack|https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2.json
+twilio|https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/yaml/twilio_api_v2010.yaml
+kubernetes|https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/v3/api__v1_openapi.json
+discord|https://raw.githubusercontent.com/discord/discord-api-spec/refs/heads/main/specs/openapi.json

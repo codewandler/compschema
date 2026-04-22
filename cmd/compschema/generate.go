@@ -93,6 +93,8 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "  ✓ %s\n", testPath)
 			}
 
+			fmt.Fprintf(os.Stderr, "\nensure runtime dependency:\n  go get github.com/santhosh-tekuri/jsonschema/v6\n")
+
 			return nil
 		},
 	}
