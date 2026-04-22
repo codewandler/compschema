@@ -298,6 +298,7 @@ func (a *pkgAnalyzer) convertStruct(name string, named types.Type, st *types.Str
 			JSONName: jsonName,
 			Required: !opts.contains("omitempty") && !opts.contains("omitzero"),
 			Type:     a.resolveTypeRef(field.Type()),
+			Tags:     parseStructTags(tag),
 		}
 
 		// Parse jsonschema tag for constraints and metadata.
@@ -624,6 +625,42 @@ func (o tagOptions) contains(name string) bool {
 	}
 	return false
 }
+// parseStructTags extracts all key:"value" pairs from a reflect.StructTag.
+// Returns a map like {"json": "bar,omitempty", "yaml": "baz", "mapstructure": "bar"}.
+// The jsonschema tag is excluded (handled separately as constraints).
+func parseStructTags(tag reflect.StructTag) map[string]string {
+	tags := make(map[string]string)
+	raw := string(tag)
+	for raw != "" {
+		raw = strings.TrimLeft(raw, " ")
+		if raw == "" {
+			break
+		}
+		// Find key.
+		i := strings.IndexByte(raw, ':')
+		if i < 0 {
+			break
+		}
+		key := raw[:i]
+		raw = raw[i+1:]
+		// Find quoted value.
+		if len(raw) == 0 || raw[0] != '"' {
+			break
+		}
+		raw = raw[1:]
+		j := strings.IndexByte(raw, '"')
+		if j < 0 {
+			break
+		}
+		value := raw[:j]
+		raw = raw[j+1:]
+		if key != "jsonschema" {
+			tags[key] = value
+		}
+	}
+	return tags
+}
+
 
 // Metadata keywords that go to Field.Description / Type properties, not JSON Schema constraints.
 

@@ -105,6 +105,9 @@ func fieldToIR(f ir.Field) map[string]any {
 	if len(f.Constraints) > 0 {
 		m["constraints"] = constraintsToIR(f.Constraints)
 	}
+	if len(f.Tags) > 0 {
+		m["tags"] = f.Tags
+	}
 	return m
 }
 

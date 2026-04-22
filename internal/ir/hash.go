@@ -147,6 +147,19 @@ func (f *Field) Hash() [32]byte {
 
 	writeConstraints(h, f.Constraints)
 
+	// Include tags in hash (sorted by key for determinism).
+	if len(f.Tags) > 0 {
+		tagKeys := make([]string, 0, len(f.Tags))
+		for k := range f.Tags {
+			tagKeys = append(tagKeys, k)
+		}
+		sort.Strings(tagKeys)
+		for _, k := range tagKeys {
+			writeString(h, k)
+			writeString(h, f.Tags[k])
+		}
+	}
+
 	var out [32]byte
 	h.Sum(out[:0])
 	return out

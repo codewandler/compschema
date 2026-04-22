@@ -86,12 +86,13 @@ type Type struct {
 
 // Field is a property in a struct type.
 type Field struct {
-	Name        string // Go field name
-	JSONName    string // from json tag
+	Name        string            // Go field name
+	JSONName    string            // from json tag
 	Description string
-	Required    bool // true if no omitempty/omitzero
+	Required    bool              // true if no omitempty/omitzero
 	Type        TypeRef
 	Constraints []Constraint
+	Tags        map[string]string // raw struct tags: "json" → "bar,omitempty", "yaml" → "baz", etc.
 }
 
 // TypeRef is a reference to a type — either inline (anonymous) or by name.
