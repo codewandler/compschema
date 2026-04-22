@@ -82,6 +82,10 @@ func typeToSchema(t *ir.Type, topLevel bool) map[string]any {
 		}
 
 	case ir.KindScalar:
+		if t.ScalarType == "any" {
+			// interface{} — accepts any JSON value.
+			return s
+		}
 		s["type"] = t.ScalarType
 
 	case ir.KindList:
@@ -316,8 +320,10 @@ func GoTests(pkg *ir.Package) string {
 
 		// Round-trip test.
 		b.WriteString(fmt.Sprintf("func TestCompschema_%s_RoundTrip(t *testing.T) {\n", name))
-		fixture := generateFixture(t, pkg)
-		if fixture == "" {
+		fixture, feasible := generateFixture(t, pkg)
+		if !feasible {
+			b.WriteString("\tt.Skip(\"type has fields with union/interface types that cannot be auto-fixtured\")\n")
+		} else if fixture == "" {
 			b.WriteString("\tt.Skip(\"auto-generated fixture not available for this type\")\n")
 		} else {
 			b.WriteString(fmt.Sprintf("\tdata := []byte(`%s`)\n", fixture))
@@ -338,36 +344,42 @@ func GoTests(pkg *ir.Package) string {
 }
 
 // generateFixture creates a minimal valid JSON string for a struct type.
-func generateFixture(t *ir.Type, pkg *ir.Package) string {
+// Returns the JSON string and whether the fixture is feasible (no interface{} fields).
+func generateFixture(t *ir.Type, pkg *ir.Package) (string, bool) {
 	if t.Kind != ir.KindStruct {
-		return ""
+		return "", false
 	}
 
+	feasible := true
 	fields := make(map[string]any)
 	for _, f := range t.Fields {
 		if !f.Required {
 			continue
 		}
-		fields[f.JSONName] = fieldZeroValue(f, pkg)
+		val, ok := fieldZeroValue(f, pkg)
+		if !ok {
+			feasible = false
+		}
+		fields[f.JSONName] = val
 	}
 
 	b, err := json.Marshal(fields)
 	if err != nil {
-		return ""
+		return "", false
 	}
-	return string(b)
+	return string(b), feasible
 }
 
 // fieldZeroValue produces a minimal valid value for a field.
-func fieldZeroValue(f ir.Field, pkg *ir.Package) any {
+func fieldZeroValue(f ir.Field, pkg *ir.Package) (any, bool) {
 	// Check for const constraint.
 	for _, c := range f.Constraints {
 		if c.Keyword == "const" {
-			return c.Value
+			return c.Value, true
 		}
 	}
 
-	val := typeRefZeroValue(f.Type, pkg)
+	val, feasible := typeRefZeroValue(f.Type, pkg)
 
 	// Apply constraints to adjust the zero value.
 	for _, c := range f.Constraints {
@@ -389,12 +401,10 @@ func fieldZeroValue(f ir.Field, pkg *ir.Package) any {
 				}
 			}
 		case "pattern":
-			// Can't auto-generate a matching string — use a placeholder.
 			if _, ok := val.(string); ok {
-				// Try common patterns.
 				p := fmt.Sprintf("%v", c.Value)
 				if strings.Contains(p, "[A-Z]") && strings.Contains(p, "[0-9]") {
-					val = "AAA-000" // common SKU-like pattern
+					val = "AAA-000"
 				} else {
 					val = "test"
 				}
@@ -402,7 +412,6 @@ func fieldZeroValue(f ir.Field, pkg *ir.Package) any {
 		case "minItems":
 			if mi, ok := toFloat(c.Value); ok && mi > 0 {
 				if arr, ok := val.([]any); ok && len(arr) < int(mi) {
-					// Extend array to meet minItems.
 					for len(arr) < int(mi) {
 						if len(arr) > 0 {
 							arr = append(arr, arr[0])
@@ -416,7 +425,7 @@ func fieldZeroValue(f ir.Field, pkg *ir.Package) any {
 		}
 	}
 
-	return val
+	return val, feasible
 }
 
 func toFloat(v any) (float64, bool) {
@@ -434,50 +443,68 @@ func toFloat(v any) (float64, bool) {
 	return 0, false
 }
 
-func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package) any {
+func typeRefZeroValue(ref ir.TypeRef, pkg *ir.Package) (any, bool) {
 	if ref.Name != "" {
 		if t, ok := pkg.Types[ref.Name]; ok {
 			switch t.Kind {
 			case ir.KindEnum:
 				if len(t.EnumValues) > 0 {
-					return t.EnumValues[0]
+					return t.EnumValues[0], true
 				}
-				return ""
+				return "", true
 			case ir.KindStruct:
 				fields := make(map[string]any)
+				feasible := true
 				for _, f := range t.Fields {
 					if f.Required {
-						fields[f.JSONName] = fieldZeroValue(f, pkg)
+						v, ok := fieldZeroValue(f, pkg)
+						if !ok {
+							feasible = false
+						}
+						fields[f.JSONName] = v
 					}
 				}
-				return fields
+				return fields, feasible
+			case ir.KindUnion:
+				// Can't auto-generate a valid union variant.
+				return "", false
 			case ir.KindScalar:
-				return scalarZero(t.ScalarType)
+				if t.ScalarType == "any" {
+					return nil, false
+				}
+				return scalarZero(t.ScalarType), true
+			case ir.KindMap:
+				return map[string]any{}, true
+			case ir.KindList:
+				return []any{}, true
 			}
 		}
-		return ""
+		return "", true
 	}
 
 	if ref.Inline == nil {
-		return ""
+		return "", true
 	}
 
 	switch ref.Inline.Kind {
 	case ir.KindScalar:
-		return scalarZero(ref.Inline.ScalarType)
-	case ir.KindList:
-		// Generate one element if minItems constraint exists.
-		if ref.Inline.Items != nil {
-			return []any{typeRefZeroValue(*ref.Inline.Items, pkg)}
+		if ref.Inline.ScalarType == "any" {
+			return nil, false // interface{} — can't generate valid fixture
 		}
-		return []any{}
+		return scalarZero(ref.Inline.ScalarType), true
+	case ir.KindList:
+		if ref.Inline.Items != nil {
+			item, ok := typeRefZeroValue(*ref.Inline.Items, pkg)
+			return []any{item}, ok
+		}
+		return []any{}, true
 	case ir.KindNullable:
 		if ref.Inline.Inner != nil {
 			return typeRefZeroValue(*ref.Inline.Inner, pkg)
 		}
-		return nil
+		return nil, true
 	default:
-		return ""
+		return "", true
 	}
 }
 

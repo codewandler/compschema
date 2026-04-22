@@ -7,16 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-04-22
+
 ### Added
-- `compschema uniongen` command — generates sealed Go interfaces for JSON Schema `oneOf`/`anyOf` unions with discriminator-based `UnmarshalX` dispatch functions.
-- `internal/uniongen` package — schema analysis, discriminator detection (explicit `x-discriminator` or inferred from `type` const fields), Go code generation, and source patching.
-- `--patch` flag on `uniongen` to remove conflicting `type X interface{}` declarations from go-jsonschema output.
-- `--capitalization` flag on `uniongen` to match go-jsonschema naming (e.g. `Url` → `URL`).
-- `$recursiveRef` resolution in converter — detects empty schemas from unresolved `$recursiveRef: "#"` and replaces with self-referencing `$ref`.
+- `compschema generate` command — the core pipeline is working end-to-end:
+  - Analyzer: reads Go packages via `go/packages` + `go/types`, builds Schema IR
+  - Detects `//compschema:generate` annotations and `--all` flag for all exported types
+  - Resolves transitive dependencies, enum const blocks, sealed interface unions
+  - Handles type aliases, named maps, named slices, `interface{}`/any
+- Schema IR (`internal/ir`): Type, Field, Constraint, Variant, TypeRef with Struct, Enum, Union, Scalar, List, Map, Nullable, Ref kinds
+- JSON Schema emitter: IR → `schema.gen.json` (draft 2020-12, all types as `$defs`)
+- Go codegen emitter: IR → `compschema.gen.go`
+  - `(T).JSONSchemaBytes()` — returns `$defs` entry via lazy cache from `go:embed`
+  - `(T).Validate([]byte) error` — compiled schema per type via `sync.Once`
+  - `DecodeT([]byte) (T, error)` — validate-then-unmarshal
+- Test emitter: IR → `compschema.gen_test.go`
+  - Schema validity, JSONSchemaBytes, Validate rejects invalid/wrong-type/empty, round-trip
+  - Constraint-aware fixture generation (minimum, pattern, minItems)
+  - Infeasible fixture detection (union fields, interface{} types) → `t.Skip`
+- `compschema diff` command — structurally compares two JSON Schemas
+  - Order-insensitive comparison for `required`, `enum`, `oneOf`, `anyOf`, `allOf`
+  - Classifies gaps as structural vs annotation
+  - Reports per-type keyword match/missing/mismatch
+- OpenAI Responses API round-trip: 261 types, 702 tests passing, 23 skipped, 0 failing
+- `examples/basic/` — Order, LineItem, OrderStatus, Shape union (23 tests, all pass)
+- `examples/openai/` — full OpenAI Responses API (697 tests pass, 23 skip)
 
 ### Changed
-- Pipeline (`make pipeline`) now includes `uniongen` step: generates `unions.gen.go` and patches `types.go`.
-- `interface{}` in generated Go types reduced from 50 → 12 (76% reduction).
+- `compschema uniongen` output moved from `testdata/` to `examples/`
 
 ## [0.1.0] - 2026-04-22
 
@@ -36,5 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/codewandler/compschema/releases/tag/v0.1.0
+[Unreleased]: https://github.com/codewandler/compschema/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/codewandler/compschema/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/codewandler/compschema/compare/v0.1.0...v0.2.0

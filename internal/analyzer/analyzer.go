@@ -392,8 +392,12 @@ func (a *pkgAnalyzer) resolveTypeRef(typ types.Type) ir.TypeRef {
 			},
 		}
 
+	case *types.Interface:
+		// interface{} / any — opaque, can't generate fixtures.
+		return ir.TypeRef{Inline: &ir.Type{Kind: ir.KindScalar, ScalarType: "any"}}
+
 	default:
-		return ir.TypeRef{Inline: &ir.Type{Kind: ir.KindScalar, ScalarType: "string"}}
+		return ir.TypeRef{Inline: &ir.Type{Kind: ir.KindScalar, ScalarType: "any"}}
 	}
 }
 
