@@ -5,14 +5,22 @@ import (
 	"strings"
 
 	"github.com/codewandler/compschema/internal/ir"
+	"github.com/codewandler/compschema/internal/uniongen"
 )
 
 // Config controls the import pipeline.
 type Config struct {
-	Package string            // Go package name
-	Rename  map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
-	Exclude []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
-	Tags    []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
+	Package   string            // Go package name
+	Rename    map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
+	Exclude   []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
+	Tags      []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
+	Implement []ImplementRule   // accessor methods to generate on union variants
+}
+
+// ImplementRule configures accessor method generation for a union's variants.
+type ImplementRule struct {
+	Union               string // union type name (schema name or Go name)
+	DiscriminatorMethod string // method name for the discriminator accessor (default: "DiscriminatorValue")
 }
 
 // ApplyConfig transforms an IR package according to the config:
@@ -156,4 +164,29 @@ func matchesAny(name string, patterns []string) bool {
 		}
 	}
 	return false
+}
+
+// resolveAccessors builds UnionAccessor values for a union type based on
+// the implement config rules. If no explicit rule matches but the union
+// has a discriminator, a default accessor is generated.
+func resolveAccessors(goName, schemaName string, t *ir.Type, rules []ImplementRule) []uniongen.UnionAccessor {
+	if t.Discriminator == "" {
+		return nil // only discriminated unions get accessors
+	}
+
+	methodName := "DiscriminatorValue" // default
+	for _, rule := range rules {
+		if rule.Union == schemaName || rule.Union == goName || rule.Union == toGoName(schemaName) {
+			if rule.DiscriminatorMethod != "" {
+				methodName = rule.DiscriminatorMethod
+			}
+			break
+		}
+	}
+
+	return []uniongen.UnionAccessor{{
+		Method:     methodName,
+		Field:      t.Discriminator,
+		ReturnType: "string",
+	}}
 }

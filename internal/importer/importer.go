@@ -133,7 +133,7 @@ func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 			unionTypes[goName] = true
 		}
 		b.WriteString("\n")
-		emitType(&b, name, t, pkg, cfg.Tags)
+		emitType(&b, name, t, pkg, cfg)
 	}
 
 	// Fourth pass: emit UnmarshalJSON for structs with interface fields.
@@ -154,18 +154,19 @@ func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 	return b.String()
 }
 
-func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, extraTags []string) {
+func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, cfg Config) {
 	goName := toGoName(name)
 
 	switch t.Kind {
 	case ir.KindStruct:
-		emitStruct(b, goName, t, pkg, extraTags)
+		emitStruct(b, goName, t, pkg, cfg.Tags)
 
 	case ir.KindEnum:
 		emitEnum(b, goName, t)
 
 	case ir.KindUnion:
-		uniongen.EmitUnion(b, goName, t, pkg, &importerResolver{pkg: pkg})
+		accessors := resolveAccessors(goName, name, t, cfg.Implement)
+		uniongen.EmitUnion(b, goName, t, pkg, &importerResolver{pkg: pkg}, accessors...)
 
 	case ir.KindScalar:
 		if t.Description != "" {

@@ -10,11 +10,12 @@ import (
 
 func newImportCmd() *cobra.Command {
 	var (
-		pkg      string
-		outPath  string
-		renames  []string
-		excludes []string
-		tags     []string
+		pkg        string
+		outPath    string
+		renames    []string
+		excludes   []string
+		tags       []string
+		implements []string
 	)
 
 	cmd := &cobra.Command{
@@ -27,7 +28,8 @@ that preserves constraints for perfect round-trip with compschema generate.`,
 		Example: `  compschema import --package models --out types.go schema.json
   compschema import --package api --out api.go --rename CompactionBody=CompactionItem responses.schema.json
   compschema import --package api --out api.go --exclude 'Response*Event' --exclude '*Param' schema.json
-  compschema import --package api --out api.go --tags yaml schema.json`,
+  compschema import --package api --out api.go --tags yaml schema.json
+  compschema import --package api --out api.go --implement 'ResponseStreamEvent=EventType' schema.json`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			schemaPath := args[0]
@@ -54,6 +56,16 @@ that preserves constraints for perfect round-trip with compschema generate.`,
 				}
 			}
 
+			// Parse --implement Union=MethodName flags.
+			for _, impl := range implements {
+				parts := strings.SplitN(impl, "=", 2)
+				rule := importer.ImplementRule{Union: parts[0]}
+				if len(parts) == 2 {
+					rule.DiscriminatorMethod = parts[1]
+				}
+				cfg.Implement = append(cfg.Implement, rule)
+			}
+
 			return importer.ImportFromFileWithConfig(schemaPath, outPath, cfg)
 		},
 	}
@@ -63,6 +75,7 @@ that preserves constraints for perfect round-trip with compschema generate.`,
 	cmd.Flags().StringSliceVar(&renames, "rename", nil, "rename types: SchemaName=GoName (repeatable)")
 	cmd.Flags().StringArrayVar(&excludes, "exclude", nil, "glob patterns for types to exclude (repeatable)")
 	cmd.Flags().StringSliceVar(&tags, "tags", nil, "additional struct tags to emit (e.g. yaml)")
+	cmd.Flags().StringArrayVar(&implements, "implement", nil, "accessor on union variants: Union=MethodName (repeatable)")
 	_ = cmd.MarkFlagRequired("out")
 
 	return cmd

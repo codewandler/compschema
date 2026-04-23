@@ -222,10 +222,11 @@ func runImportAction(a config.Action, sr *report.StepReport) error {
 	}
 
 	cfg := importer.Config{
-		Package: a.Package,
-		Rename:  a.Rename,
-		Exclude: a.Exclude,
-		Tags:    a.Tags,
+		Package:   a.Package,
+		Rename:    a.Rename,
+		Exclude:   a.Exclude,
+		Tags:      a.Tags,
+		Implement: convertImplementRules(a.Implement),
 	}
 
 	if err := importer.ImportFromFileWithConfig(schemaPath, a.Out, cfg); err != nil {
@@ -448,6 +449,19 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 }
 
 // splitLines splits byte data into lines (helper for counting types).
+func convertImplementRules(rules []config.ImplementRule) []importer.ImplementRule {
+	if len(rules) == 0 {
+		return nil
+	}
+	out := make([]importer.ImplementRule, len(rules))
+	for i, r := range rules {
+		out[i] = importer.ImplementRule{
+			Union:               r.Union,
+			DiscriminatorMethod: r.DiscriminatorMethod,
+		}
+	}
+	return out
+}
 func splitLines(data []byte) [][]byte {
 	var lines [][]byte
 	start := 0

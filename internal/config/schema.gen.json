@@ -12,6 +12,12 @@
           "exclude": [
             "example"
           ],
+          "implement": [
+            {
+              "discriminator_method": "example",
+              "union": "example"
+            }
+          ],
           "out": "example",
           "package": "example",
           "packages": [
@@ -51,6 +57,13 @@
           "description": "Glob patterns for type names to skip",
           "items": {
             "type": "string"
+          },
+          "type": "array"
+        },
+        "implement": {
+          "description": "Accessor methods to generate on union variants",
+          "items": {
+            "$ref": "#/$defs/ImplementRule"
           },
           "type": "array"
         },
@@ -125,6 +138,12 @@
                 "exclude": [
                   "example"
                 ],
+                "implement": [
+                  {
+                    "discriminator_method": "example",
+                    "union": "example"
+                  }
+                ],
                 "out": "example",
                 "package": "example",
                 "packages": [
@@ -162,6 +181,31 @@
         "pipelines"
       ],
       "title": "File",
+      "type": "object"
+    },
+    "ImplementRule": {
+      "additionalProperties": false,
+      "description": "configures accessor method generation on union variants.",
+      "examples": [
+        {
+          "discriminator_method": "example",
+          "union": "example"
+        }
+      ],
+      "properties": {
+        "discriminator_method": {
+          "description": "Method name for discriminator accessor (default: DiscriminatorValue)",
+          "type": "string"
+        },
+        "union": {
+          "description": "Union type name (schema or Go name)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "union"
+      ],
+      "title": "ImplementRule",
       "type": "object"
     }
   },

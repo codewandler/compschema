@@ -14,6 +14,51 @@ func TestCompschema_SchemaIsValidJSON(t *testing.T) {
 	}
 }
 
+func TestCompschema_Circle_JSONSchemaBytes(t *testing.T) {
+	b := (Circle{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_Circle_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (Circle{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_Circle_ValidateRejectsWrongType(t *testing.T) {
+	err := (Circle{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("Circle.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_Circle_ValidateRejectsEmpty(t *testing.T) {
+	err := (Circle{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("Circle.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_Circle_RoundTrip(t *testing.T) {
+	data := []byte(`{"radius":0,"type":"circle"}`)
+	result, err := DecodeCircle(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
 func TestCompschema_LineItem_JSONSchemaBytes(t *testing.T) {
 	b := (LineItem{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -104,51 +149,6 @@ func TestCompschema_Order_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_Circle_JSONSchemaBytes(t *testing.T) {
-	b := (Circle{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_Circle_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (Circle{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_Circle_ValidateRejectsWrongType(t *testing.T) {
-	err := (Circle{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("Circle.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_Circle_ValidateRejectsEmpty(t *testing.T) {
-	err := (Circle{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("Circle.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_Circle_RoundTrip(t *testing.T) {
-	data := []byte(`{"radius":0,"type":"circle"}`)
-	result, err := DecodeCircle(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
 func TestCompschema_Rectangle_JSONSchemaBytes(t *testing.T) {
 	b := (Rectangle{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -203,93 +203,5 @@ func TestCompschema_Shape_JSONSchemaBytes(t *testing.T) {
 	if err := json.Unmarshal(b, &v); err != nil {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
-}
-
-func TestCompschema_ExamplesValidate(t *testing.T) {
-	tests := []struct {
-		name    string
-		example string
-	}{
-		{"LineItem", `{"qty":1,"sku":"ABC-123"}`},
-		{"Order", `{"id":"example","items":[{"qty":1,"sku":"ABC-123"}],"notes":"example","status":"pending"}`},
-		{"Circle", `{"radius":1,"type":"circle"}`},
-		{"Rectangle", `{"height":1,"type":"rectangle","width":1}`},
-		{"Shape", `{"radius":1,"type":"circle"}`},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// Verify example is valid JSON.
-			var v any
-			if err := json.Unmarshal([]byte(tt.example), &v); err != nil {
-				t.Fatalf("example is not valid JSON: %v", err)
-			}
-			// Validate against schema.
-			sch := compschemaValidator(tt.name)
-			if err := sch.Validate(v); err != nil {
-				t.Errorf("example failed validation: %v", err)
-			}
-		})
-	}
-}
-
-func TestCompschema_ExamplesDecode(t *testing.T) {
-	t.Run("LineItem", func(t *testing.T) {
-		data := []byte(`{"qty":1,"sku":"ABC-123"}`)
-		result, err := DecodeLineItem(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("Order", func(t *testing.T) {
-		data := []byte(`{"id":"example","items":[{"qty":1,"sku":"ABC-123"}],"notes":"example","status":"pending"}`)
-		result, err := DecodeOrder(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("Circle", func(t *testing.T) {
-		data := []byte(`{"radius":1,"type":"circle"}`)
-		result, err := DecodeCircle(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("Rectangle", func(t *testing.T) {
-		data := []byte(`{"height":1,"type":"rectangle","width":1}`)
-		result, err := DecodeRectangle(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("Shape", func(t *testing.T) {
-		data := []byte(`{"radius":1,"type":"circle"}`)
-		result, err := DecodeShape(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
-	})
 }
 

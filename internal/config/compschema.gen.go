@@ -50,6 +50,32 @@ func compschemaValidator(name string) *jsonschema.Schema {
 	return sch
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for ImplementRule.
+func (ImplementRule) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImplementRule") }
+
+// Validate checks whether raw JSON conforms to the ImplementRule schema.
+func (ImplementRule) Validate(data []byte) error {
+	sch := compschemaValidator("ImplementRule")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImplementRule validates and unmarshals JSON into a ImplementRule.
+func DecodeImplementRule(data []byte) (ImplementRule, error) {
+	var zero ImplementRule
+	if err := zero.Validate(data); err != nil {
+		return ImplementRule{}, err
+	}
+	var result ImplementRule
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImplementRule{}, err
+	}
+	return result, nil
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for Action.
 func (Action) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Action") }
 

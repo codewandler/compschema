@@ -14,6 +14,51 @@ func TestCompschema_SchemaIsValidJSON(t *testing.T) {
 	}
 }
 
+func TestCompschema_ImplementRule_JSONSchemaBytes(t *testing.T) {
+	b := (ImplementRule{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ImplementRule_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ImplementRule{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ImplementRule_ValidateRejectsWrongType(t *testing.T) {
+	err := (ImplementRule{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ImplementRule.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ImplementRule_ValidateRejectsEmpty(t *testing.T) {
+	err := (ImplementRule{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ImplementRule.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ImplementRule_RoundTrip(t *testing.T) {
+	data := []byte(`{"union":""}`)
+	result, err := DecodeImplementRule(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
 func TestCompschema_Action_JSONSchemaBytes(t *testing.T) {
 	b := (Action{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -109,8 +154,9 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		name    string
 		example string
 	}{
-		{"Action", `{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`},
-		{"File", `{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`},
+		{"ImplementRule", `{"discriminator_method":"example","union":"example"}`},
+		{"Action", `{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`},
+		{"File", `{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -129,8 +175,20 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 }
 
 func TestCompschema_ExamplesDecode(t *testing.T) {
+	t.Run("ImplementRule", func(t *testing.T) {
+		data := []byte(`{"discriminator_method":"example","union":"example"}`)
+		result, err := DecodeImplementRule(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
 	t.Run("Action", func(t *testing.T) {
-		data := []byte(`{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`)
+		data := []byte(`{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`)
 		result, err := DecodeAction(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
@@ -142,7 +200,7 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		_ = reencoded
 	})
 	t.Run("File", func(t *testing.T) {
-		data := []byte(`{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`)
+		data := []byte(`{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`)
 		result, err := DecodeFile(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)

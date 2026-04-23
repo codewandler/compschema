@@ -55,11 +55,12 @@ type Action struct {
 	Source any    `json:"-" yaml:"source"` // parsed separately; polymorphic (string, map, array)
 
 	// import flags
-	Schema  string            `json:"schema,omitempty" jsonschema:"description=Path to the JSON Schema file"`
-	Package string            `json:"package,omitempty" jsonschema:"description=Go package name for generated code"`
-	Rename  map[string]string `json:"rename,omitempty" jsonschema:"description=Type rename map: SchemaName → GoName"`
-	Exclude []string          `json:"exclude,omitempty" jsonschema:"description=Glob patterns for type names to skip"`
-	Tags    []string          `json:"tags,omitempty" jsonschema:"description=Additional struct tags to emit (e.g. yaml)"`
+	Schema    string            `json:"schema,omitempty" jsonschema:"description=Path to the JSON Schema file"`
+	Package   string            `json:"package,omitempty" jsonschema:"description=Go package name for generated code"`
+	Rename    map[string]string `json:"rename,omitempty" jsonschema:"description=Type rename map: SchemaName → GoName"`
+	Exclude   []string          `json:"exclude,omitempty" jsonschema:"description=Glob patterns for type names to skip"`
+	Tags      []string          `json:"tags,omitempty" jsonschema:"description=Additional struct tags to emit (e.g. yaml)"`
+	Implement []ImplementRule   `json:"implement,omitempty" yaml:"implement,omitempty" jsonschema:"description=Accessor methods to generate on union variants"`
 
 	// generate flags
 	All      bool     `json:"all,omitempty" jsonschema:"description=Analyze all exported types (not just annotated)"`
@@ -71,6 +72,12 @@ type Action struct {
 	// shared flags
 	ValidateSchema bool   `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`
 	Out            string `json:"out,omitempty" jsonschema:"description=Output file or directory path"`
+}
+
+// ImplementRule configures accessor method generation on union variants.
+type ImplementRule struct {
+	Union               string `json:"union" yaml:"union" jsonschema:"description=Union type name (schema or Go name)"`
+	DiscriminatorMethod string `json:"discriminator_method,omitempty" yaml:"discriminator_method,omitempty" jsonschema:"description=Method name for discriminator accessor (default: DiscriminatorValue)"`
 }
 
 // Load reads a config file (YAML or JSON).

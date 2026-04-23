@@ -51,6 +51,32 @@ func compschemaValidator(name string) *jsonschema.Schema {
 	return sch
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for Circle.
+func (Circle) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Circle") }
+
+// Validate checks whether raw JSON conforms to the Circle schema.
+func (Circle) Validate(data []byte) error {
+	sch := compschemaValidator("Circle")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCircle validates and unmarshals JSON into a Circle.
+func DecodeCircle(data []byte) (Circle, error) {
+	var zero Circle
+	if err := zero.Validate(data); err != nil {
+		return Circle{}, err
+	}
+	var result Circle
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Circle{}, err
+	}
+	return result, nil
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for LineItem.
 func (LineItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LineItem") }
 
@@ -99,32 +125,6 @@ func DecodeOrder(data []byte) (Order, error) {
 	var result Order
 	if err := json.Unmarshal(data, &result); err != nil {
 		return Order{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for Circle.
-func (Circle) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Circle") }
-
-// Validate checks whether raw JSON conforms to the Circle schema.
-func (Circle) Validate(data []byte) error {
-	sch := compschemaValidator("Circle")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCircle validates and unmarshals JSON into a Circle.
-func DecodeCircle(data []byte) (Circle, error) {
-	var zero Circle
-	if err := zero.Validate(data); err != nil {
-		return Circle{}, err
-	}
-	var result Circle
-	if err := json.Unmarshal(data, &result); err != nil {
-		return Circle{}, err
 	}
 	return result, nil
 }

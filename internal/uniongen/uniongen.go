@@ -26,9 +26,19 @@ type TypeResolver interface {
 	Comment(description string) string // sanitize for // comment
 }
 
+// UnionAccessor describes an accessor method to generate on all struct
+// variants of a union and include in the union interface.
+type UnionAccessor struct {
+	Method     string // Go method name (e.g. "EventType")
+	Field      string // JSON field name to read (e.g. "type")
+	ReturnType string // Go return type (e.g. "string")
+}
+
 // EmitUnion writes a sealed interface, marker methods, optional wrapper
 // types, and an UnmarshalX dispatcher for a single union into b.
-func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver) {
+// If accessors is non-empty, accessor methods are added to the interface
+// and implemented on every struct variant.
+func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, accessors ...UnionAccessor) {
 	marker := fmt.Sprintf("is%s", goName)
 
 	if t.Description != "" {
@@ -38,8 +48,12 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 		b.WriteString(fmt.Sprintf("// Discriminated by %q field.\n", t.Discriminator))
 	}
 
-	// Interface.
-	b.WriteString(fmt.Sprintf("//\n//compschema:generate\ntype %s interface {\n\t%s()\n}\n\n", goName, marker))
+	// Interface — marker method + any accessor methods.
+	b.WriteString(fmt.Sprintf("//\n//compschema:generate\ntype %s interface {\n\t%s()\n", goName, marker))
+	for _, acc := range accessors {
+		b.WriteString(fmt.Sprintf("\t%s() %s\n", acc.Method, acc.ReturnType))
+	}
+	b.WriteString("}\n\n")
 
 	// Track which wrapper types we create (for MarshalJSON later).
 	wrapperTypes := map[string]string{} // wrapperName → primType
@@ -121,6 +135,44 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 		}
 	}
 	b.WriteString("\n")
+
+	// Accessor methods on struct variants.
+	if len(accessors) > 0 {
+		emittedAccessors := make(map[string]bool)
+		for _, v := range t.Variants {
+			vName := r.GoName(v.Name)
+			if vName == goName || vName == "" || emittedAccessors[vName] {
+				continue
+			}
+			// Resolve the variant's struct type to find fields.
+			var variantType *ir.Type
+			if v.TypeRef.Name != "" {
+				variantType = pkg.Types[v.TypeRef.Name]
+			} else if v.TypeRef.Inline != nil {
+				switch v.TypeRef.Inline.Kind {
+				case ir.KindRef:
+					variantType = pkg.Types[v.TypeRef.Inline.RefName]
+				case ir.KindStruct:
+					variantType = v.TypeRef.Inline
+				}
+			}
+			if variantType == nil || variantType.Kind != ir.KindStruct {
+				continue
+			}
+			for _, acc := range accessors {
+				for _, f := range variantType.Fields {
+					if f.JSONName == acc.Field {
+						fieldGoName := r.GoName(f.JSONName)
+						b.WriteString(fmt.Sprintf("func (x *%s) %s() %s { return %s(x.%s) }\n",
+							vName, acc.Method, acc.ReturnType, acc.ReturnType, fieldGoName))
+						break
+					}
+				}
+			}
+			emittedAccessors[vName] = true
+		}
+		b.WriteString("\n")
+	}
 
 	// MarshalJSON + UnmarshalJSON for wrapper types.
 	for wrapperName, primType := range wrapperTypes {
