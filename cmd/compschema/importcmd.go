@@ -24,7 +24,7 @@ func newImportCmd() *cobra.Command {
 		Short: "Generate Go structs from a JSON Schema file",
 		Long: `Import a JSON Schema file and generate Go structs with proper
 jsonschema:"..." tags, sealed interfaces for oneOf/anyOf unions,
-and enum constants. This replaces go-jsonschema with a generator
+and enum constants. This replaces external JSON Schema importers with a generator
 that preserves constraints for perfect round-trip with compschema generate.`,
 		Example: `  compschema import --package models --out types.go schema.json
   compschema import --package api --out api.go --rename CompactionBody=CompactionItem responses.schema.json

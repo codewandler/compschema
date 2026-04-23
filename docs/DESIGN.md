@@ -151,7 +151,7 @@ To prove completeness against a real-world, complex schema we use the **OpenAI `
 |------|------|---------|--------|
 | **(1)** Fetch OpenAI OpenAPI spec | Download `openapi.yaml` from the `manual_spec` branch of `github.com/openai/openai-openapi`. | `curl` → `testdata/openai/openapi.yaml` (39,848 lines) | ✅ Done |
 | **(2)** OpenAPI → JSON Schema | Extract `/responses` endpoint request+response schemas and all transitive `$ref` dependencies. Convert OpenAPI 3.0 Schema Objects into JSON Schema draft 2020-12. Resolves `$ref` chains, strips OpenAPI-only keywords, converts `nullable` → `type: ["T", "null"]`. Output is validated against the JSON Schema draft 2020-12 meta-schema. | **Built-in**: `internal/openapi2jsonschema` (Go, uses `pb33f/libopenapi`). CLI: `compschema extract --validate`. Output: 124 `$defs`, 117KB, meta-schema valid ✅. | ✅ Done |
-| **(3)** JSON Schema → Go structs | Generate Go types preserving `json` tags, enums, struct nesting. `oneOf`/`anyOf` → `interface{}` (unions not fully expressible in generated Go). | **[`go-jsonschema`](https://github.com/atombender/go-jsonschema)** (`--only-models`). Output: 272 types (102 structs, 134 enum types), 2,426 lines. | ✅ Done |
+| **(3)** JSON Schema → Go structs | Generate Go types preserving `json` tags, enums, struct nesting. `oneOf`/`anyOf` → sealed interfaces with discriminated unions. | **Built-in**: `compschema import` with constraint-preserving tags and sealed interface generation. | ✅ Done |
 | **(4)** Go structs → JSON Schema | Run compschema on the generated Go package. **This is the system under test.** | `compschema ./testdata/openai/generated/...` | ⬜ TODO |
 | **(5)** Diff & report | Structurally compare step 2 output (ground truth) with step 4 output. Report per-keyword coverage, missing constraints, extra properties. | Custom Go test or `json-diff` CLI. | ⬜ TODO |
 
@@ -170,7 +170,7 @@ Perfect round-trip parity is not expected — some information is lost in the Op
 
 1. **Structural gaps** (missing `oneOf`, wrong `type`) — bugs in compschema.
 2. **Annotation gaps** (missing `description`, `default`) — need richer tags, future work.
-3. **Tooling artifacts** (naming differences from go-jsonschema) — expected, ignore.
+3. **Import artifacts** (naming normalization) — expected, ignore.
 
 ### Future: Built-In OpenAPI Pipeline
 

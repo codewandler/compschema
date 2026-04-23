@@ -192,20 +192,19 @@ func TestAnalyze_AllTypes(t *testing.T) {
 }
 
 func TestAnalyze_EmptyInterface(t *testing.T) {
-	// Named empty interfaces (type Foo interface{}) should be included
-	// as KindScalar/"any" so they get a $defs entry.
+	// Named map types (map[string]any) should be included as KindMap.
 	pkgs, err := Analyze(true, "../../examples/openai")
 	if err != nil {
 		t.Fatal(err)
 	}
 	pkg := pkgs[0]
 
-	// ModelIdsResponses is `interface{}` — should be in the IR as a scalar "any".
-	typ, ok := pkg.Types["ModelIdsResponses"]
+	// ResponseFormatJsonSchemaSchema is `map[string]any` — should be KindMap.
+	typ, ok := pkg.Types["ResponseFormatJsonSchemaSchema"]
 	if !ok {
-		t.Fatal("ModelIdsResponses (empty interface) should be in the IR")
+		t.Fatal("ResponseFormatJsonSchemaSchema should be in the IR")
 	}
-	if typ.Kind != ir.KindScalar || typ.ScalarType != "any" {
-		t.Errorf("ModelIdsResponses should be KindScalar/any, got %v/%v", typ.Kind, typ.ScalarType)
+	if typ.Kind != ir.KindMap {
+		t.Errorf("ResponseFormatJsonSchemaSchema should be KindMap, got %v", typ.Kind)
 	}
 }

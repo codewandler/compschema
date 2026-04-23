@@ -1,18 +1,22 @@
 pipelines:
   openai:
     - action: extract
-      spec: testdata/openai/openapi.yaml
+      source: https://raw.githubusercontent.com/openai/openai-openapi/refs/heads/manual_spec/openapi.yaml
       path: /responses
       validate: true
-      out: testdata/openai/responses.schema.json
+      out: examples/openai/responses.schema.json
     - action: import
-      schema: testdata/openai/responses.schema.json
+      schema: examples/openai/responses.schema.json
       package: openairesponses
-      out: examples/openai/types.go
+      out: examples/openai/types.gen.go
+      implement:
+        - union: ResponseStreamEvent
+          discriminator_method: EventType
     - action: generate
       all: true
       validate: true
       test: true
+      constructors: true
       out: examples/openai
       packages:
         - "./examples/openai/"

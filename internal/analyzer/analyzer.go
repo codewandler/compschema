@@ -653,10 +653,6 @@ func buildFieldDocMap(pkg *packages.Package) map[string]string {
 					}
 					for _, name := range field.Names {
 						doc := strings.TrimSpace(field.Doc.Text())
-						// Strip "FieldName corresponds to..." boilerplate from go-jsonschema.
-						if strings.HasPrefix(doc, name.Name+" corresponds to") {
-							continue
-						}
 						if doc != "" {
 							result[ts.Name.Name+"."+name.Name] = doc
 						}

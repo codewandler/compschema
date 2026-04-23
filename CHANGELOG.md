@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-04-23
+
+### Changed
+- **Removed go-jsonschema dependency** — `examples/openai` now uses `compschema import` for type generation, same as all other pipelines. The legacy `types.go` (from go-jsonschema) and `unions.gen.go` (from uniongen CLI) are replaced by a single `types.gen.go` from the unified importer.
+- Pipeline config (`.compschema.yaml`) updated: `openai` pipeline now fetches from upstream URL, uses `compschema import` with `--implement` and `--constructors`
+- Constructor tests skip schema validation when params have complex types (unions, structs with required fields, constrained scalars) whose zero values won’t be schema-valid
+- Constructor test args produce non-null values for lists (`[]T{zero}`), maps (`T{}`), and unions (`&FirstVariant{}`)
+
+### Removed
+- `examples/openai/types.go` — replaced by `types.gen.go` (compschema import)
+- `examples/openai/unions.gen.go` — unions now inline in `types.gen.go`
+- `testdata/specs/run_all.sh` — replaced by `compschema run specs`
+- go-jsonschema field comment stripping workaround in analyzer
+- go-jsonschema references in docs and comments
+
+### Fixed
+- Importer discriminator detection requires field in ≥2 variants (prevents single-variant `detail` field from overriding `type`)
+- Constructor test arg for named list/map types uses `T{}` instead of `nil`
+
 ## [3.2.1] - 2026-04-23
 
 ### Fixed
@@ -367,7 +386,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v3.2.1...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v3.3.0...HEAD
+[3.3.0]: https://github.com/codewandler/compschema/compare/v3.2.1...v3.3.0
 [3.2.1]: https://github.com/codewandler/compschema/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/codewandler/compschema/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/codewandler/compschema/compare/v3.0.0...v3.1.0

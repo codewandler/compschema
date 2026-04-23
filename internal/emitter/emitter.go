@@ -1263,7 +1263,7 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 				continue
 			}
 			t := pkg.Types[name]
-			if t.Kind != ir.KindStruct {
+			if t.Kind != ir.KindStruct || isWrapperType(t) {
 				continue
 			}
 			params := constructorParams(t)
@@ -1282,6 +1282,47 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 func emitConstructorTest(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package) {
 	params := constructorParams(t)
 	autoFilled := autoFilledFields(t)
+
+	// Check if any param is a union type or has constraints that zero values
+	// won't satisfy — skip validation for these.
+	hasComplexParam := false
+	for _, f := range params {
+		if isUnionTypedField(f, pkg) {
+			hasComplexParam = true
+			break
+		}
+		// Check for constraints that zero values fail.
+		for _, c := range f.Constraints {
+			switch c.Keyword {
+			case "minLength", "minItems", "pattern":
+				if n, ok := toFloat(c.Value); ok && n > 0 {
+					hasComplexParam = true
+				}
+				if c.Keyword == "pattern" {
+					hasComplexParam = true
+				}
+			case "minimum":
+				if n, ok := toFloat(c.Value); ok && n > 0 {
+					hasComplexParam = true
+				}
+			}
+		}
+		if hasComplexParam {
+			break
+		}
+		// Check if the field references a struct with required/const fields
+		// (zero value won't be schema-valid).
+		if f.Type.Name != "" {
+			if ft, ok := pkg.Types[f.Type.Name]; ok && ft.Kind == ir.KindStruct {
+				if ft.HasRequired() {
+					hasComplexParam = true
+				}
+			}
+		}
+		if hasComplexParam {
+			break
+		}
+	}
 
 	b.WriteString(fmt.Sprintf("func TestCompschema_New%s(t *testing.T) {\n", name))
 
@@ -1310,15 +1351,51 @@ func emitConstructorTest(b *strings.Builder, name string, t *ir.Type, pkg *ir.Pa
 	}
 
 	// Validate round-trip: marshal and validate against schema.
-	b.WriteString("\tdata, err := json.Marshal(v)\n")
-	b.WriteString("\tif err != nil {\n")
-	b.WriteString("\t\tt.Fatalf(\"marshal: %v\", err)\n")
-	b.WriteString("\t}\n")
-	b.WriteString("\tif err := v.Validate(data); err != nil {\n")
-	b.WriteString(fmt.Sprintf("\t\tt.Errorf(\"New%s output fails validation: %%v\", err)\n", name))
-	b.WriteString("\t}\n")
+	// Skip validation when params include union types — zero-value variants
+	// typically don't satisfy oneOf constraints.
+	if hasComplexParam {
+		b.WriteString("\t// Skip validation: constructor has union-typed params whose zero values\n")
+		b.WriteString("\t// may not satisfy oneOf schema constraints.\n")
+	} else {
+		b.WriteString("\tdata, err := json.Marshal(v)\n")
+		b.WriteString("\tif err != nil {\n")
+		b.WriteString("\t\tt.Fatalf(\"marshal: %v\", err)\n")
+		b.WriteString("\t}\n")
+		b.WriteString("\tif err := v.Validate(data); err != nil {\n")
+		b.WriteString(fmt.Sprintf("\t\tt.Errorf(\"New%s output fails validation: %%v\", err)\n", name))
+		b.WriteString("\t}\n")
+	}
 
 	b.WriteString("}\n\n")
+}
+
+// isUnionTypedField returns true if the field's type (directly or through
+// lists/nullable wrappers) involves a union interface.
+func isUnionTypedField(f ir.Field, pkg *ir.Package) bool {
+	return isUnionTypeRef(f.Type, pkg)
+}
+
+func isUnionTypeRef(ref ir.TypeRef, pkg *ir.Package) bool {
+	if ref.Name != "" {
+		if t, ok := pkg.Types[ref.Name]; ok {
+			if t.Kind == ir.KindUnion {
+				return true
+			}
+			// Named list whose items are a union.
+			if t.Kind == ir.KindList && t.Items != nil {
+				return isUnionTypeRef(*t.Items, pkg)
+			}
+		}
+	}
+	if ref.Inline != nil {
+		if ref.Inline.Kind == ir.KindNullable && ref.Inline.Inner != nil {
+			return isUnionTypeRef(*ref.Inline.Inner, pkg)
+		}
+		if ref.Inline.Kind == ir.KindList && ref.Inline.Items != nil {
+			return isUnionTypeRef(*ref.Inline.Items, pkg)
+		}
+	}
+	return false
 }
 
 // constructorTestArg returns a Go expression for a constructor test argument.
@@ -1356,6 +1433,14 @@ func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
 			case ir.KindStruct:
 				return ref.Name + "{}"
 			case ir.KindUnion:
+				// Pick the first struct variant to construct a valid value.
+				for _, v := range t.Variants {
+					if v.Name != "" {
+						if vt, ok := pkg.Types[v.Name]; ok && vt.Kind == ir.KindStruct {
+							return "&" + v.Name + "{}"
+						}
+					}
+				}
 				return "nil"
 			case ir.KindScalar:
 				switch t.ScalarType {
@@ -1371,9 +1456,9 @@ func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
 					return "nil"
 				}
 			case ir.KindList:
-				return "nil"
+				return ref.Name + "{}"
 			case ir.KindMap:
-				return "nil"
+				return ref.Name + "{}"
 			case ir.KindNullable:
 				if t.Inner != nil {
 					return constructorTestArgFromType(*t.Inner, pkg)
@@ -1399,9 +1484,16 @@ func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
 				return "nil"
 			}
 		case ir.KindList:
-			return "nil"
+			if ref.Inline.Items != nil {
+				item := constructorTestArgFromType(*ref.Inline.Items, pkg)
+				return "[]" + fieldGoTypeFromRef(*ref.Inline.Items, pkg) + "{" + item + "}"
+			}
+			return "[]any{}"
 		case ir.KindMap:
-			return "nil"
+			if ref.Inline.MapValue != nil {
+				return "map[string]" + fieldGoTypeFromRef(*ref.Inline.MapValue, pkg) + "{}"
+			}
+			return "map[string]any{}"
 		case ir.KindNullable:
 			if ref.Inline.Inner != nil {
 				return constructorTestArgFromType(*ref.Inline.Inner, pkg)

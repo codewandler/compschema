@@ -754,9 +754,9 @@ func (c *Converter) simplifyNullableComposition(proxies []*v3base.SchemaProxy) (
 		return nil, false
 	}
 
-	// If the concrete variant is a $ref, don't simplify — go-jsonschema
-	// already handles anyOf($ref, null) correctly by generating a pointer
-	// to the referenced type. Our allOf+null wrapping would break that.
+	// If the concrete variant is a $ref, don't simplify — the importer
+	// handles anyOf($ref, null) correctly by generating a pointer to the
+	// referenced type.
 	if _, hasRef := concreteMap.Get("$ref"); hasRef {
 		return nil, false
 	}

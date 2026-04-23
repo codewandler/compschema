@@ -1,9 +1,6 @@
 // Package importer generates Go structs from JSON Schema, preserving
 // constraints in jsonschema:"..." tags and generating sealed interfaces
 // for oneOf/anyOf unions.
-//
-// This replaces go-jsonschema in the compschema pipeline with a generator
-// that produces Go types that round-trip perfectly through compschema generate.
 package importer
 
 import (
