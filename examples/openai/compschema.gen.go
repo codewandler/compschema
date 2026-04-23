@@ -11,9 +11,6 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
-// Ptr returns a pointer to v. Useful for setting optional fields on generated types.
-func Ptr[T any](v T) *T { return &v }
-
 //go:embed schema.gen.json
 var compschemaJSON []byte
 
@@ -80,15 +77,6 @@ func DecodeFileCitationBody(data []byte) (FileCitationBody, error) {
 	return result, nil
 }
 
-// NewFileCitationBody creates a new FileCitationBody with required fields and auto-filled const/default values.
-func NewFileCitationBody(type_ FileCitationBodyType, fileID string, index int64) *FileCitationBody {
-	return &FileCitationBody{
-		Type: type_,
-		FileID: fileID,
-		Index: index,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for FilePath.
 func (FilePath) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FilePath") }
 
@@ -115,15 +103,6 @@ func DecodeFilePath(data []byte) (FilePath, error) {
 	return result, nil
 }
 
-// NewFilePath creates a new FilePath with required fields and auto-filled const/default values.
-func NewFilePath(type_ FilePathType, fileID string, index int64) *FilePath {
-	return &FilePath{
-		Type: type_,
-		FileID: fileID,
-		Index: index,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for UrlCitationBody.
 func (UrlCitationBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UrlCitationBody") }
 
@@ -148,17 +127,6 @@ func DecodeUrlCitationBody(data []byte) (UrlCitationBody, error) {
 		return UrlCitationBody{}, err
 	}
 	return result, nil
-}
-
-// NewUrlCitationBody creates a new UrlCitationBody with required fields and auto-filled const/default values.
-func NewUrlCitationBody(startIndex int64, endIndex int64, title string, type_ UrlCitationBodyType, url string) *UrlCitationBody {
-	return &UrlCitationBody{
-		StartIndex: startIndex,
-		EndIndex: endIndex,
-		Title: title,
-		Type: type_,
-		URL: url,
-	}
 }
 
 // AnnotationJSONSchemaBytes returns the JSON Schema for the Annotation union.
@@ -248,13 +216,6 @@ func DecodeApproximateLocation(data []byte) (ApproximateLocation, error) {
 	return result, nil
 }
 
-// NewApproximateLocation creates a new ApproximateLocation with required fields and auto-filled const/default values.
-func NewApproximateLocation(type_ ApproximateLocationType) *ApproximateLocation {
-	return &ApproximateLocation{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Click.
 func (Click) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Click") }
 
@@ -279,16 +240,6 @@ func DecodeClick(data []byte) (Click, error) {
 		return Click{}, err
 	}
 	return result, nil
-}
-
-// NewClick creates a new Click with required fields and auto-filled const/default values.
-func NewClick(x int64, y int64, type_ ClickType, button ClickButton) *Click {
-	return &Click{
-		X: x,
-		Y: y,
-		Type: type_,
-		Button: button,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterFileOutput.
@@ -317,14 +268,6 @@ func DecodeCodeInterpreterFileOutput(data []byte) (CodeInterpreterFileOutput, er
 	return result, nil
 }
 
-// NewCodeInterpreterFileOutput creates a new CodeInterpreterFileOutput with required fields and auto-filled const/default values.
-func NewCodeInterpreterFileOutput(type_ CodeInterpreterFileOutputType, files []any) *CodeInterpreterFileOutput {
-	return &CodeInterpreterFileOutput{
-		Type: type_,
-		Files: files,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterTextOutput.
 func (CodeInterpreterTextOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterTextOutput") }
 
@@ -349,14 +292,6 @@ func DecodeCodeInterpreterTextOutput(data []byte) (CodeInterpreterTextOutput, er
 		return CodeInterpreterTextOutput{}, err
 	}
 	return result, nil
-}
-
-// NewCodeInterpreterTextOutput creates a new CodeInterpreterTextOutput with required fields and auto-filled const/default values.
-func NewCodeInterpreterTextOutput(type_ CodeInterpreterTextOutputType, logs string) *CodeInterpreterTextOutput {
-	return &CodeInterpreterTextOutput{
-		Type: type_,
-		Logs: logs,
-	}
 }
 
 // CodeInterpreterToolOutputJSONSchemaBytes returns the JSON Schema for the CodeInterpreterToolOutput union.
@@ -438,17 +373,6 @@ func DecodeCodeInterpreterToolCall(data []byte) (CodeInterpreterToolCall, error)
 		return CodeInterpreterToolCall{}, err
 	}
 	return result, nil
-}
-
-// NewCodeInterpreterToolCall creates a new CodeInterpreterToolCall with required fields and auto-filled const/default values.
-func NewCodeInterpreterToolCall(id string, type_ CodeInterpreterToolCallType, code string, status CodeInterpreterToolCallStatus, results []CodeInterpreterToolOutput) *CodeInterpreterToolCall {
-	return &CodeInterpreterToolCall{
-		ID: id,
-		Type: type_,
-		Code: code,
-		Status: status,
-		Results: results,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueBool.
@@ -606,15 +530,6 @@ func DecodeComparisonFilter(data []byte) (ComparisonFilter, error) {
 	return result, nil
 }
 
-// NewComparisonFilter creates a new ComparisonFilter with required fields and auto-filled const/default values.
-func NewComparisonFilter(type_ ComparisonFilterType, key string, value ComparisonFilterValue) *ComparisonFilter {
-	return &ComparisonFilter{
-		Type: type_,
-		Key: key,
-		Value: value,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for CompoundFilter.
 func (CompoundFilter) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilter") }
 
@@ -639,14 +554,6 @@ func DecodeCompoundFilter(data []byte) (CompoundFilter, error) {
 		return CompoundFilter{}, err
 	}
 	return result, nil
-}
-
-// NewCompoundFilter creates a new CompoundFilter with required fields and auto-filled const/default values.
-func NewCompoundFilter(filters []any, type_ CompoundFilterType) *CompoundFilter {
-	return &CompoundFilter{
-		Filters: filters,
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for DoubleClick.
@@ -675,15 +582,6 @@ func DecodeDoubleClick(data []byte) (DoubleClick, error) {
 	return result, nil
 }
 
-// NewDoubleClick creates a new DoubleClick with required fields and auto-filled const/default values.
-func NewDoubleClick(type_ DoubleClickType, x int64, y int64) *DoubleClick {
-	return &DoubleClick{
-		Type: type_,
-		X: x,
-		Y: y,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Coordinate.
 func (Coordinate) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Coordinate") }
 
@@ -708,14 +606,6 @@ func DecodeCoordinate(data []byte) (Coordinate, error) {
 		return Coordinate{}, err
 	}
 	return result, nil
-}
-
-// NewCoordinate creates a new Coordinate with required fields and auto-filled const/default values.
-func NewCoordinate(x int64, y int64) *Coordinate {
-	return &Coordinate{
-		X: x,
-		Y: y,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Drag.
@@ -744,14 +634,6 @@ func DecodeDrag(data []byte) (Drag, error) {
 	return result, nil
 }
 
-// NewDrag creates a new Drag with required fields and auto-filled const/default values.
-func NewDrag(type_ DragType, path []Coordinate) *Drag {
-	return &Drag{
-		Type: type_,
-		Path: path,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for KeyPress.
 func (KeyPress) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("KeyPress") }
 
@@ -776,14 +658,6 @@ func DecodeKeyPress(data []byte) (KeyPress, error) {
 		return KeyPress{}, err
 	}
 	return result, nil
-}
-
-// NewKeyPress creates a new KeyPress with required fields and auto-filled const/default values.
-func NewKeyPress(type_ KeyPressType, keys []string) *KeyPress {
-	return &KeyPress{
-		Type: type_,
-		Keys: keys,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Move.
@@ -812,15 +686,6 @@ func DecodeMove(data []byte) (Move, error) {
 	return result, nil
 }
 
-// NewMove creates a new Move with required fields and auto-filled const/default values.
-func NewMove(y int64, type_ MoveType, x int64) *Move {
-	return &Move{
-		Y: y,
-		Type: type_,
-		X: x,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Screenshot.
 func (Screenshot) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Screenshot") }
 
@@ -845,13 +710,6 @@ func DecodeScreenshot(data []byte) (Screenshot, error) {
 		return Screenshot{}, err
 	}
 	return result, nil
-}
-
-// NewScreenshot creates a new Screenshot with required fields and auto-filled const/default values.
-func NewScreenshot(type_ ScreenshotType) *Screenshot {
-	return &Screenshot{
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for Scroll.
@@ -880,17 +738,6 @@ func DecodeScroll(data []byte) (Scroll, error) {
 	return result, nil
 }
 
-// NewScroll creates a new Scroll with required fields and auto-filled const/default values.
-func NewScroll(y int64, scrollX int64, scrollY int64, type_ ScrollType, x int64) *Scroll {
-	return &Scroll{
-		Y: y,
-		ScrollX: scrollX,
-		ScrollY: scrollY,
-		Type: type_,
-		X: x,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Type.
 func (Type) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Type") }
 
@@ -917,14 +764,6 @@ func DecodeType(data []byte) (Type, error) {
 	return result, nil
 }
 
-// NewType creates a new Type with required fields and auto-filled const/default values.
-func NewType(type_ TypeType, text string) *Type {
-	return &Type{
-		Type: type_,
-		Text: text,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Wait.
 func (Wait) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Wait") }
 
@@ -949,13 +788,6 @@ func DecodeWait(data []byte) (Wait, error) {
 		return Wait{}, err
 	}
 	return result, nil
-}
-
-// NewWait creates a new Wait with required fields and auto-filled const/default values.
-func NewWait(type_ WaitType) *Wait {
-	return &Wait{
-		Type: type_,
-	}
 }
 
 // ComputerActionJSONSchemaBytes returns the JSON Schema for the ComputerAction union.
@@ -1081,13 +913,6 @@ func DecodeComputerScreenshotImage(data []byte) (ComputerScreenshotImage, error)
 	return result, nil
 }
 
-// NewComputerScreenshotImage creates a new ComputerScreenshotImage with required fields and auto-filled const/default values.
-func NewComputerScreenshotImage(type_ ComputerScreenshotImageType) *ComputerScreenshotImage {
-	return &ComputerScreenshotImage{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallSafetyCheckParam.
 func (ComputerCallSafetyCheckParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallSafetyCheckParam") }
 
@@ -1112,13 +937,6 @@ func DecodeComputerCallSafetyCheckParam(data []byte) (ComputerCallSafetyCheckPar
 		return ComputerCallSafetyCheckParam{}, err
 	}
 	return result, nil
-}
-
-// NewComputerCallSafetyCheckParam creates a new ComputerCallSafetyCheckParam with required fields and auto-filled const/default values.
-func NewComputerCallSafetyCheckParam(id string) *ComputerCallSafetyCheckParam {
-	return &ComputerCallSafetyCheckParam{
-		ID: id,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutputItemParam.
@@ -1147,15 +965,6 @@ func DecodeComputerCallOutputItemParam(data []byte) (ComputerCallOutputItemParam
 	return result, nil
 }
 
-// NewComputerCallOutputItemParam creates a new ComputerCallOutputItemParam with required fields and auto-filled const/default values.
-func NewComputerCallOutputItemParam(callID string, type_ ComputerCallOutputItemParamType, output ComputerScreenshotImage) *ComputerCallOutputItemParam {
-	return &ComputerCallOutputItemParam{
-		CallID: callID,
-		Type: type_,
-		Output: output,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallSafetyCheck.
 func (ComputerToolCallSafetyCheck) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCallSafetyCheck") }
 
@@ -1180,15 +989,6 @@ func DecodeComputerToolCallSafetyCheck(data []byte) (ComputerToolCallSafetyCheck
 		return ComputerToolCallSafetyCheck{}, err
 	}
 	return result, nil
-}
-
-// NewComputerToolCallSafetyCheck creates a new ComputerToolCallSafetyCheck with required fields and auto-filled const/default values.
-func NewComputerToolCallSafetyCheck(id string, code string, message string) *ComputerToolCallSafetyCheck {
-	return &ComputerToolCallSafetyCheck{
-		ID: id,
-		Code: code,
-		Message: message,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCall.
@@ -1217,18 +1017,6 @@ func DecodeComputerToolCall(data []byte) (ComputerToolCall, error) {
 	return result, nil
 }
 
-// NewComputerToolCall creates a new ComputerToolCall with required fields and auto-filled const/default values.
-func NewComputerToolCall(id string, callID string, action ComputerAction, pendingSafetyChecks []ComputerToolCallSafetyCheck, status ComputerToolCallStatus, type_ ComputerToolCallType) *ComputerToolCall {
-	return &ComputerToolCall{
-		ID: id,
-		CallID: callID,
-		Action: action,
-		PendingSafetyChecks: pendingSafetyChecks,
-		Status: status,
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutput.
 func (ComputerToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCallOutput") }
 
@@ -1253,15 +1041,6 @@ func DecodeComputerToolCallOutput(data []byte) (ComputerToolCallOutput, error) {
 		return ComputerToolCallOutput{}, err
 	}
 	return result, nil
-}
-
-// NewComputerToolCallOutput creates a new ComputerToolCallOutput with required fields and auto-filled const/default values.
-func NewComputerToolCallOutput(type_ ComputerToolCallOutputType, callID string, output ComputerScreenshotImage) *ComputerToolCallOutput {
-	return &ComputerToolCallOutput{
-		Type: type_,
-		CallID: callID,
-		Output: output,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutputResource.
@@ -1290,16 +1069,6 @@ func DecodeComputerToolCallOutputResource(data []byte) (ComputerToolCallOutputRe
 	return result, nil
 }
 
-// NewComputerToolCallOutputResource creates a new ComputerToolCallOutputResource with required fields and auto-filled const/default values.
-func NewComputerToolCallOutputResource(type_ ComputerToolCallOutputResourceType, id string, callID string, output ComputerScreenshotImage) *ComputerToolCallOutputResource {
-	return &ComputerToolCallOutputResource{
-		Type: type_,
-		ID: id,
-		CallID: callID,
-		Output: output,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewTool.
 func (ComputerUsePreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerUsePreviewTool") }
 
@@ -1324,16 +1093,6 @@ func DecodeComputerUsePreviewTool(data []byte) (ComputerUsePreviewTool, error) {
 		return ComputerUsePreviewTool{}, err
 	}
 	return result, nil
-}
-
-// NewComputerUsePreviewTool creates a new ComputerUsePreviewTool with required fields and auto-filled const/default values.
-func NewComputerUsePreviewTool(type_ ComputerUsePreviewToolType, environment ComputerUsePreviewToolEnvironment, displayWidth int64, displayHeight int64) *ComputerUsePreviewTool {
-	return &ComputerUsePreviewTool{
-		Type: type_,
-		Environment: environment,
-		DisplayWidth: displayWidth,
-		DisplayHeight: displayHeight,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema for Metadata.
@@ -1504,14 +1263,6 @@ func DecodeFileSearchTool(data []byte) (FileSearchTool, error) {
 	return result, nil
 }
 
-// NewFileSearchTool creates a new FileSearchTool with required fields and auto-filled const/default values.
-func NewFileSearchTool(type_ FileSearchToolType, vectorStoreIds []string) *FileSearchTool {
-	return &FileSearchTool{
-		Type: type_,
-		VectorStoreIds: vectorStoreIds,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionTool.
 func (FunctionTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionTool") }
 
@@ -1538,16 +1289,6 @@ func DecodeFunctionTool(data []byte) (FunctionTool, error) {
 	return result, nil
 }
 
-// NewFunctionTool creates a new FunctionTool with required fields and auto-filled const/default values.
-func NewFunctionTool(type_ FunctionToolType, name string, parameters map[string]FunctionTool, strict bool) *FunctionTool {
-	return &FunctionTool{
-		Type: type_,
-		Name: name,
-		Parameters: parameters,
-		Strict: &strict,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewTool.
 func (WebSearchPreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchPreviewTool") }
 
@@ -1572,13 +1313,6 @@ func DecodeWebSearchPreviewTool(data []byte) (WebSearchPreviewTool, error) {
 		return WebSearchPreviewTool{}, err
 	}
 	return result, nil
-}
-
-// NewWebSearchPreviewTool creates a new WebSearchPreviewTool with required fields and auto-filled const/default values.
-func NewWebSearchPreviewTool(type_ WebSearchPreviewToolType) *WebSearchPreviewTool {
-	return &WebSearchPreviewTool{
-		Type: type_,
-	}
 }
 
 // ToolJSONSchemaBytes returns the JSON Schema for the Tool union.
@@ -1674,13 +1408,6 @@ func DecodeInputFileContent(data []byte) (InputFileContent, error) {
 	return result, nil
 }
 
-// NewInputFileContent creates a new InputFileContent with required fields and auto-filled const/default values.
-func NewInputFileContent(type_ InputFileContentType) *InputFileContent {
-	return &InputFileContent{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for InputImageContent.
 func (InputImageContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageContent") }
 
@@ -1707,14 +1434,6 @@ func DecodeInputImageContent(data []byte) (InputImageContent, error) {
 	return result, nil
 }
 
-// NewInputImageContent creates a new InputImageContent with required fields and auto-filled const/default values.
-func NewInputImageContent(detail InputImageContentDetail, type_ InputImageContentType) *InputImageContent {
-	return &InputImageContent{
-		Detail: detail,
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for InputTextContent.
 func (InputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTextContent") }
 
@@ -1739,14 +1458,6 @@ func DecodeInputTextContent(data []byte) (InputTextContent, error) {
 		return InputTextContent{}, err
 	}
 	return result, nil
-}
-
-// NewInputTextContent creates a new InputTextContent with required fields and auto-filled const/default values.
-func NewInputTextContent(type_ InputTextContentType, text string) *InputTextContent {
-	return &InputTextContent{
-		Type: type_,
-		Text: text,
-	}
 }
 
 // InputContentJSONSchemaBytes returns the JSON Schema for the InputContent union.
@@ -1936,14 +1647,6 @@ func DecodeEasyInputMessage(data []byte) (EasyInputMessage, error) {
 	return result, nil
 }
 
-// NewEasyInputMessage creates a new EasyInputMessage with required fields and auto-filled const/default values.
-func NewEasyInputMessage(content EasyInputMessageContent, role EasyInputMessageRole) *EasyInputMessage {
-	return &EasyInputMessage{
-		Content: content,
-		Role: role,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for FileSearchToolCall.
 func (FileSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolCall") }
 
@@ -1968,16 +1671,6 @@ func DecodeFileSearchToolCall(data []byte) (FileSearchToolCall, error) {
 		return FileSearchToolCall{}, err
 	}
 	return result, nil
-}
-
-// NewFileSearchToolCall creates a new FileSearchToolCall with required fields and auto-filled const/default values.
-func NewFileSearchToolCall(id string, type_ FileSearchToolCallType, status FileSearchToolCallStatus, queries []string) *FileSearchToolCall {
-	return &FileSearchToolCall{
-		ID: id,
-		Type: type_,
-		Status: status,
-		Queries: queries,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParam.
@@ -2006,15 +1699,6 @@ func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam
 	return result, nil
 }
 
-// NewFunctionCallOutputItemParam creates a new FunctionCallOutputItemParam with required fields and auto-filled const/default values.
-func NewFunctionCallOutputItemParam(output string, callID string, type_ FunctionCallOutputItemParamType) *FunctionCallOutputItemParam {
-	return &FunctionCallOutputItemParam{
-		Output: output,
-		CallID: callID,
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCall.
 func (FunctionToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCall") }
 
@@ -2039,16 +1723,6 @@ func DecodeFunctionToolCall(data []byte) (FunctionToolCall, error) {
 		return FunctionToolCall{}, err
 	}
 	return result, nil
-}
-
-// NewFunctionToolCall creates a new FunctionToolCall with required fields and auto-filled const/default values.
-func NewFunctionToolCall(type_ FunctionToolCallType, callID string, name string, arguments string) *FunctionToolCall {
-	return &FunctionToolCall{
-		Type: type_,
-		CallID: callID,
-		Name: name,
-		Arguments: arguments,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputMessage.
@@ -2077,14 +1751,6 @@ func DecodeInputMessage(data []byte) (InputMessage, error) {
 	return result, nil
 }
 
-// NewInputMessage creates a new InputMessage with required fields and auto-filled const/default values.
-func NewInputMessage(role InputMessageRole, content InputMessageContentList) *InputMessage {
-	return &InputMessage{
-		Role: role,
-		Content: content,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for OutputTextContent.
 func (OutputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContent") }
 
@@ -2111,15 +1777,6 @@ func DecodeOutputTextContent(data []byte) (OutputTextContent, error) {
 	return result, nil
 }
 
-// NewOutputTextContent creates a new OutputTextContent with required fields and auto-filled const/default values.
-func NewOutputTextContent(type_ OutputTextContentType, text string, annotations []Annotation) *OutputTextContent {
-	return &OutputTextContent{
-		Type: type_,
-		Text: text,
-		Annotations: annotations,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for RefusalContent.
 func (RefusalContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RefusalContent") }
 
@@ -2144,14 +1801,6 @@ func DecodeRefusalContent(data []byte) (RefusalContent, error) {
 		return RefusalContent{}, err
 	}
 	return result, nil
-}
-
-// NewRefusalContent creates a new RefusalContent with required fields and auto-filled const/default values.
-func NewRefusalContent(type_ RefusalContentType, refusal string) *RefusalContent {
-	return &RefusalContent{
-		Type: type_,
-		Refusal: refusal,
-	}
 }
 
 // OutputContentJSONSchemaBytes returns the JSON Schema for the OutputContent union.
@@ -2235,17 +1884,6 @@ func DecodeOutputMessage(data []byte) (OutputMessage, error) {
 	return result, nil
 }
 
-// NewOutputMessage creates a new OutputMessage with required fields and auto-filled const/default values.
-func NewOutputMessage(status OutputMessageStatus, id string, type_ OutputMessageType, role OutputMessageRole, content []OutputContent) *OutputMessage {
-	return &OutputMessage{
-		Status: status,
-		ID: id,
-		Type: type_,
-		Role: role,
-		Content: content,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ReasoningItem.
 func (ReasoningItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningItem") }
 
@@ -2272,15 +1910,6 @@ func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
 	return result, nil
 }
 
-// NewReasoningItem creates a new ReasoningItem with required fields and auto-filled const/default values.
-func NewReasoningItem(type_ ReasoningItemType, id string, summary []any) *ReasoningItem {
-	return &ReasoningItem{
-		Type: type_,
-		ID: id,
-		Summary: summary,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for WebSearchToolCall.
 func (WebSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolCall") }
 
@@ -2305,15 +1934,6 @@ func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
 		return WebSearchToolCall{}, err
 	}
 	return result, nil
-}
-
-// NewWebSearchToolCall creates a new WebSearchToolCall with required fields and auto-filled const/default values.
-func NewWebSearchToolCall(id string, type_ WebSearchToolCallType, status WebSearchToolCallStatus) *WebSearchToolCall {
-	return &WebSearchToolCall{
-		ID: id,
-		Type: type_,
-		Status: status,
-	}
 }
 
 // ItemJSONSchemaBytes returns the JSON Schema for the Item union.
@@ -2457,13 +2077,6 @@ func DecodeItemReferenceParam(data []byte) (ItemReferenceParam, error) {
 		return ItemReferenceParam{}, err
 	}
 	return result, nil
-}
-
-// NewItemReferenceParam creates a new ItemReferenceParam with required fields and auto-filled const/default values.
-func NewItemReferenceParam(id string) *ItemReferenceParam {
-	return &ItemReferenceParam{
-		ID: id,
-	}
 }
 
 // InputItemJSONSchemaBytes returns the JSON Schema for the InputItem union.
@@ -2667,14 +2280,6 @@ func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
 	return result, nil
 }
 
-// NewToolChoiceFunction creates a new ToolChoiceFunction with required fields and auto-filled const/default values.
-func NewToolChoiceFunction(type_ ToolChoiceFunctionType, name string) *ToolChoiceFunction {
-	return &ToolChoiceFunction{
-		Type: type_,
-		Name: name,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
 func (ToolChoiceTypes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceTypes") }
 
@@ -2699,13 +2304,6 @@ func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
 		return ToolChoiceTypes{}, err
 	}
 	return result, nil
-}
-
-// NewToolChoiceTypes creates a new ToolChoiceTypes with required fields and auto-filled const/default values.
-func NewToolChoiceTypes(type_ ToolChoiceTypesType) *ToolChoiceTypes {
-	return &ToolChoiceTypes{
-		Type: type_,
-	}
 }
 
 // CreateResponseToolChoiceJSONSchemaBytes returns the JSON Schema for the CreateResponseToolChoice union.
@@ -2789,13 +2387,6 @@ func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, erro
 	return result, nil
 }
 
-// NewResponseFormatJsonObject creates a new ResponseFormatJsonObject with required fields and auto-filled const/default values.
-func NewResponseFormatJsonObject(type_ ResponseFormatJsonObjectType) *ResponseFormatJsonObject {
-	return &ResponseFormatJsonObject{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
 func (ResponseFormatText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatText") }
 
@@ -2820,13 +2411,6 @@ func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
 		return ResponseFormatText{}, err
 	}
 	return result, nil
-}
-
-// NewResponseFormatText creates a new ResponseFormatText with required fields and auto-filled const/default values.
-func NewResponseFormatText(type_ ResponseFormatTextType) *ResponseFormatText {
-	return &ResponseFormatText{
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
@@ -2856,15 +2440,6 @@ func DecodeTextResponseFormatJsonSchema(data []byte) (TextResponseFormatJsonSche
 		return TextResponseFormatJsonSchema{}, err
 	}
 	return result, nil
-}
-
-// NewTextResponseFormatJsonSchema creates a new TextResponseFormatJsonSchema with required fields and auto-filled const/default values.
-func NewTextResponseFormatJsonSchema(type_ TextResponseFormatJsonSchemaType, name string, schema ResponseFormatJsonSchemaSchema) *TextResponseFormatJsonSchema {
-	return &TextResponseFormatJsonSchema{
-		Type: type_,
-		Name: name,
-		Schema: schema,
-	}
 }
 
 // TextResponseFormatConfigurationJSONSchemaBytes returns the JSON Schema for the TextResponseFormatConfiguration union.
@@ -2980,14 +2555,6 @@ func DecodeCreateResponse(data []byte) (CreateResponse, error) {
 	return result, nil
 }
 
-// NewCreateResponse creates a new CreateResponse with required fields and auto-filled const/default values.
-func NewCreateResponse(model ModelIdsResponses, input CreateResponseInput) *CreateResponse {
-	return &CreateResponse{
-		Model: model,
-		Input: input,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Error.
 func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
 
@@ -3012,16 +2579,6 @@ func DecodeError(data []byte) (Error, error) {
 		return Error{}, err
 	}
 	return result, nil
-}
-
-// NewError creates a new Error with required fields and auto-filled const/default values.
-func NewError(code string, message string, param string, type_ string) *Error {
-	return &Error{
-		Code: &code,
-		Message: message,
-		Param: &param,
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
@@ -3050,15 +2607,6 @@ func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
 	return result, nil
 }
 
-// NewFunctionToolCallOutput creates a new FunctionToolCallOutput with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutput(callID string, output string, type_ FunctionToolCallOutputType) *FunctionToolCallOutput {
-	return &FunctionToolCallOutput{
-		CallID: callID,
-		Output: output,
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
 func (FunctionToolCallOutputResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutputResource") }
 
@@ -3083,16 +2631,6 @@ func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputRe
 		return FunctionToolCallOutputResource{}, err
 	}
 	return result, nil
-}
-
-// NewFunctionToolCallOutputResource creates a new FunctionToolCallOutputResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutputResource(output string, id string, type_ FunctionToolCallOutputResourceType, callID string) *FunctionToolCallOutputResource {
-	return &FunctionToolCallOutputResource{
-		Output: output,
-		ID: id,
-		Type: type_,
-		CallID: callID,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
@@ -3121,17 +2659,6 @@ func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, erro
 	return result, nil
 }
 
-// NewFunctionToolCallResource creates a new FunctionToolCallResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallResource(type_ FunctionToolCallResourceType, callID string, name string, arguments string, id string) *FunctionToolCallResource {
-	return &FunctionToolCallResource{
-		Type: type_,
-		CallID: callID,
-		Name: name,
-		Arguments: arguments,
-		ID: id,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for InputMessageResource.
 func (InputMessageResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessageResource") }
 
@@ -3156,15 +2683,6 @@ func DecodeInputMessageResource(data []byte) (InputMessageResource, error) {
 		return InputMessageResource{}, err
 	}
 	return result, nil
-}
-
-// NewInputMessageResource creates a new InputMessageResource with required fields and auto-filled const/default values.
-func NewInputMessageResource(role InputMessageResourceRole, content InputMessageContentList, id string) *InputMessageResource {
-	return &InputMessageResource{
-		Role: role,
-		Content: content,
-		ID: id,
-	}
 }
 
 // ItemResourceJSONSchemaBytes returns the JSON Schema for the ItemResource union.
@@ -3386,14 +2904,6 @@ func DecodeResponseError(data []byte) (ResponseError, error) {
 	return result, nil
 }
 
-// NewResponseError creates a new ResponseError with required fields and auto-filled const/default values.
-func NewResponseError(code ResponseErrorCode, message string) *ResponseError {
-	return &ResponseError{
-		Code: code,
-		Message: message,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseText.
 func (ResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseText") }
 
@@ -3472,13 +2982,6 @@ func DecodeResponseUsageOutputTokensDetails(data []byte) (ResponseUsageOutputTok
 	return result, nil
 }
 
-// NewResponseUsageOutputTokensDetails creates a new ResponseUsageOutputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageOutputTokensDetails(reasoningTokens int64) *ResponseUsageOutputTokensDetails {
-	return &ResponseUsageOutputTokensDetails{
-		ReasoningTokens: reasoningTokens,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
 func (ResponseUsageInputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageInputTokensDetails") }
 
@@ -3505,13 +3008,6 @@ func DecodeResponseUsageInputTokensDetails(data []byte) (ResponseUsageInputToken
 	return result, nil
 }
 
-// NewResponseUsageInputTokensDetails creates a new ResponseUsageInputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageInputTokensDetails(cachedTokens int64) *ResponseUsageInputTokensDetails {
-	return &ResponseUsageInputTokensDetails{
-		CachedTokens: cachedTokens,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseUsage.
 func (ResponseUsage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsage") }
 
@@ -3536,17 +3032,6 @@ func DecodeResponseUsage(data []byte) (ResponseUsage, error) {
 		return ResponseUsage{}, err
 	}
 	return result, nil
-}
-
-// NewResponseUsage creates a new ResponseUsage with required fields and auto-filled const/default values.
-func NewResponseUsage(outputTokensDetails ResponseUsageOutputTokensDetails, totalTokens int64, inputTokens int64, inputTokensDetails ResponseUsageInputTokensDetails, outputTokens int64) *ResponseUsage {
-	return &ResponseUsage{
-		OutputTokensDetails: outputTokensDetails,
-		TotalTokens: totalTokens,
-		InputTokens: inputTokens,
-		InputTokensDetails: inputTokensDetails,
-		OutputTokens: outputTokens,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseToolChoiceToolChoiceOptions.
@@ -3656,26 +3141,6 @@ func DecodeResponse(data []byte) (Response, error) {
 	return result, nil
 }
 
-// NewResponse creates a new Response with required fields and auto-filled const/default values.
-func NewResponse(id string, parallelToolCalls bool, topP float64, model ModelIdsResponses, object ResponseObject, error ResponseError, temperature float64, instructions string, createdAt float64, incompleteDetails ResponseIncompleteDetails, output []OutputItem, metadata Metadata, tools []Tool, toolChoice ResponseToolChoice) *Response {
-	return &Response{
-		ID: id,
-		ParallelToolCalls: parallelToolCalls,
-		TopP: &topP,
-		Model: model,
-		Object: object,
-		Error: error,
-		Temperature: &temperature,
-		Instructions: &instructions,
-		CreatedAt: createdAt,
-		IncompleteDetails: incompleteDetails,
-		Output: output,
-		Metadata: metadata,
-		Tools: tools,
-		ToolChoice: toolChoice,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDeltaEvent.
 func (ResponseAudioDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioDeltaEvent") }
 
@@ -3700,14 +3165,6 @@ func DecodeResponseAudioDeltaEvent(data []byte) (ResponseAudioDeltaEvent, error)
 		return ResponseAudioDeltaEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseAudioDeltaEvent creates a new ResponseAudioDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseAudioDeltaEvent(type_ ResponseAudioDeltaEventType, delta string) *ResponseAudioDeltaEvent {
-	return &ResponseAudioDeltaEvent{
-		Type: type_,
-		Delta: delta,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDoneEvent.
@@ -3736,13 +3193,6 @@ func DecodeResponseAudioDoneEvent(data []byte) (ResponseAudioDoneEvent, error) {
 	return result, nil
 }
 
-// NewResponseAudioDoneEvent creates a new ResponseAudioDoneEvent with required fields and auto-filled const/default values.
-func NewResponseAudioDoneEvent(type_ ResponseAudioDoneEventType) *ResponseAudioDoneEvent {
-	return &ResponseAudioDoneEvent{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDeltaEvent.
 func (ResponseAudioTranscriptDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioTranscriptDeltaEvent") }
 
@@ -3767,14 +3217,6 @@ func DecodeResponseAudioTranscriptDeltaEvent(data []byte) (ResponseAudioTranscri
 		return ResponseAudioTranscriptDeltaEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseAudioTranscriptDeltaEvent creates a new ResponseAudioTranscriptDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseAudioTranscriptDeltaEvent(delta string, type_ ResponseAudioTranscriptDeltaEventType) *ResponseAudioTranscriptDeltaEvent {
-	return &ResponseAudioTranscriptDeltaEvent{
-		Delta: delta,
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDoneEvent.
@@ -3803,13 +3245,6 @@ func DecodeResponseAudioTranscriptDoneEvent(data []byte) (ResponseAudioTranscrip
 	return result, nil
 }
 
-// NewResponseAudioTranscriptDoneEvent creates a new ResponseAudioTranscriptDoneEvent with required fields and auto-filled const/default values.
-func NewResponseAudioTranscriptDoneEvent(type_ ResponseAudioTranscriptDoneEventType) *ResponseAudioTranscriptDoneEvent {
-	return &ResponseAudioTranscriptDoneEvent{
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDeltaEvent.
 func (ResponseCodeInterpreterCallCodeDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDeltaEvent") }
 
@@ -3834,15 +3269,6 @@ func DecodeResponseCodeInterpreterCallCodeDeltaEvent(data []byte) (ResponseCodeI
 		return ResponseCodeInterpreterCallCodeDeltaEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseCodeInterpreterCallCodeDeltaEvent creates a new ResponseCodeInterpreterCallCodeDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCodeDeltaEvent(type_ ResponseCodeInterpreterCallCodeDeltaEventType, outputIndex int64, delta string) *ResponseCodeInterpreterCallCodeDeltaEvent {
-	return &ResponseCodeInterpreterCallCodeDeltaEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Delta: delta,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDoneEvent.
@@ -3871,15 +3297,6 @@ func DecodeResponseCodeInterpreterCallCodeDoneEvent(data []byte) (ResponseCodeIn
 	return result, nil
 }
 
-// NewResponseCodeInterpreterCallCodeDoneEvent creates a new ResponseCodeInterpreterCallCodeDoneEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCodeDoneEvent(type_ ResponseCodeInterpreterCallCodeDoneEventType, outputIndex int64, code string) *ResponseCodeInterpreterCallCodeDoneEvent {
-	return &ResponseCodeInterpreterCallCodeDoneEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Code: code,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCompletedEvent.
 func (ResponseCodeInterpreterCallCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallCompletedEvent") }
 
@@ -3904,15 +3321,6 @@ func DecodeResponseCodeInterpreterCallCompletedEvent(data []byte) (ResponseCodeI
 		return ResponseCodeInterpreterCallCompletedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseCodeInterpreterCallCompletedEvent creates a new ResponseCodeInterpreterCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCompletedEvent(type_ ResponseCodeInterpreterCallCompletedEventType, outputIndex int64, codeInterpreterCall CodeInterpreterToolCall) *ResponseCodeInterpreterCallCompletedEvent {
-	return &ResponseCodeInterpreterCallCompletedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		CodeInterpreterCall: codeInterpreterCall,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInProgressEvent.
@@ -3941,15 +3349,6 @@ func DecodeResponseCodeInterpreterCallInProgressEvent(data []byte) (ResponseCode
 	return result, nil
 }
 
-// NewResponseCodeInterpreterCallInProgressEvent creates a new ResponseCodeInterpreterCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallInProgressEvent(outputIndex int64, codeInterpreterCall CodeInterpreterToolCall, type_ ResponseCodeInterpreterCallInProgressEventType) *ResponseCodeInterpreterCallInProgressEvent {
-	return &ResponseCodeInterpreterCallInProgressEvent{
-		OutputIndex: outputIndex,
-		CodeInterpreterCall: codeInterpreterCall,
-		Type: type_,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInterpretingEvent.
 func (ResponseCodeInterpreterCallInterpretingEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallInterpretingEvent") }
 
@@ -3974,15 +3373,6 @@ func DecodeResponseCodeInterpreterCallInterpretingEvent(data []byte) (ResponseCo
 		return ResponseCodeInterpreterCallInterpretingEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseCodeInterpreterCallInterpretingEvent creates a new ResponseCodeInterpreterCallInterpretingEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallInterpretingEvent(type_ ResponseCodeInterpreterCallInterpretingEventType, outputIndex int64, codeInterpreterCall CodeInterpreterToolCall) *ResponseCodeInterpreterCallInterpretingEvent {
-	return &ResponseCodeInterpreterCallInterpretingEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		CodeInterpreterCall: codeInterpreterCall,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCompletedEvent.
@@ -4011,14 +3401,6 @@ func DecodeResponseCompletedEvent(data []byte) (ResponseCompletedEvent, error) {
 	return result, nil
 }
 
-// NewResponseCompletedEvent creates a new ResponseCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseCompletedEvent(type_ ResponseCompletedEventType, response Response) *ResponseCompletedEvent {
-	return &ResponseCompletedEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartAddedEvent.
 func (ResponseContentPartAddedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseContentPartAddedEvent") }
 
@@ -4043,17 +3425,6 @@ func DecodeResponseContentPartAddedEvent(data []byte) (ResponseContentPartAddedE
 		return ResponseContentPartAddedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseContentPartAddedEvent creates a new ResponseContentPartAddedEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartAddedEvent(part OutputContent, type_ ResponseContentPartAddedEventType, itemID string, outputIndex int64, contentIndex int64) *ResponseContentPartAddedEvent {
-	return &ResponseContentPartAddedEvent{
-		Part: part,
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartDoneEvent.
@@ -4082,17 +3453,6 @@ func DecodeResponseContentPartDoneEvent(data []byte) (ResponseContentPartDoneEve
 	return result, nil
 }
 
-// NewResponseContentPartDoneEvent creates a new ResponseContentPartDoneEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartDoneEvent(type_ ResponseContentPartDoneEventType, itemID string, outputIndex int64, contentIndex int64, part OutputContent) *ResponseContentPartDoneEvent {
-	return &ResponseContentPartDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Part: part,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseCreatedEvent.
 func (ResponseCreatedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCreatedEvent") }
 
@@ -4117,14 +3477,6 @@ func DecodeResponseCreatedEvent(data []byte) (ResponseCreatedEvent, error) {
 		return ResponseCreatedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseCreatedEvent creates a new ResponseCreatedEvent with required fields and auto-filled const/default values.
-func NewResponseCreatedEvent(type_ ResponseCreatedEventType, response Response) *ResponseCreatedEvent {
-	return &ResponseCreatedEvent{
-		Type: type_,
-		Response: response,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseErrorEvent.
@@ -4153,16 +3505,6 @@ func DecodeResponseErrorEvent(data []byte) (ResponseErrorEvent, error) {
 	return result, nil
 }
 
-// NewResponseErrorEvent creates a new ResponseErrorEvent with required fields and auto-filled const/default values.
-func NewResponseErrorEvent(type_ ResponseErrorEventType, code string, message string, param string) *ResponseErrorEvent {
-	return &ResponseErrorEvent{
-		Type: type_,
-		Code: &code,
-		Message: message,
-		Param: &param,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFailedEvent.
 func (ResponseFailedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFailedEvent") }
 
@@ -4187,14 +3529,6 @@ func DecodeResponseFailedEvent(data []byte) (ResponseFailedEvent, error) {
 		return ResponseFailedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseFailedEvent creates a new ResponseFailedEvent with required fields and auto-filled const/default values.
-func NewResponseFailedEvent(type_ ResponseFailedEventType, response Response) *ResponseFailedEvent {
-	return &ResponseFailedEvent{
-		Type: type_,
-		Response: response,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallCompletedEvent.
@@ -4223,15 +3557,6 @@ func DecodeResponseFileSearchCallCompletedEvent(data []byte) (ResponseFileSearch
 	return result, nil
 }
 
-// NewResponseFileSearchCallCompletedEvent creates a new ResponseFileSearchCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallCompletedEvent(itemID string, type_ ResponseFileSearchCallCompletedEventType, outputIndex int64) *ResponseFileSearchCallCompletedEvent {
-	return &ResponseFileSearchCallCompletedEvent{
-		ItemID: itemID,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallInProgressEvent.
 func (ResponseFileSearchCallInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFileSearchCallInProgressEvent") }
 
@@ -4256,15 +3581,6 @@ func DecodeResponseFileSearchCallInProgressEvent(data []byte) (ResponseFileSearc
 		return ResponseFileSearchCallInProgressEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseFileSearchCallInProgressEvent creates a new ResponseFileSearchCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallInProgressEvent(type_ ResponseFileSearchCallInProgressEventType, outputIndex int64, itemID string) *ResponseFileSearchCallInProgressEvent {
-	return &ResponseFileSearchCallInProgressEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallSearchingEvent.
@@ -4293,15 +3609,6 @@ func DecodeResponseFileSearchCallSearchingEvent(data []byte) (ResponseFileSearch
 	return result, nil
 }
 
-// NewResponseFileSearchCallSearchingEvent creates a new ResponseFileSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallSearchingEvent(itemID string, type_ ResponseFileSearchCallSearchingEventType, outputIndex int64) *ResponseFileSearchCallSearchingEvent {
-	return &ResponseFileSearchCallSearchingEvent{
-		ItemID: itemID,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDeltaEvent.
 func (ResponseFunctionCallArgumentsDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFunctionCallArgumentsDeltaEvent") }
 
@@ -4326,16 +3633,6 @@ func DecodeResponseFunctionCallArgumentsDeltaEvent(data []byte) (ResponseFunctio
 		return ResponseFunctionCallArgumentsDeltaEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseFunctionCallArgumentsDeltaEvent creates a new ResponseFunctionCallArgumentsDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseFunctionCallArgumentsDeltaEvent(type_ ResponseFunctionCallArgumentsDeltaEventType, itemID string, outputIndex int64, delta string) *ResponseFunctionCallArgumentsDeltaEvent {
-	return &ResponseFunctionCallArgumentsDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		Delta: delta,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDoneEvent.
@@ -4364,16 +3661,6 @@ func DecodeResponseFunctionCallArgumentsDoneEvent(data []byte) (ResponseFunction
 	return result, nil
 }
 
-// NewResponseFunctionCallArgumentsDoneEvent creates a new ResponseFunctionCallArgumentsDoneEvent with required fields and auto-filled const/default values.
-func NewResponseFunctionCallArgumentsDoneEvent(type_ ResponseFunctionCallArgumentsDoneEventType, itemID string, outputIndex int64, arguments string) *ResponseFunctionCallArgumentsDoneEvent {
-	return &ResponseFunctionCallArgumentsDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		Arguments: arguments,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseInProgressEvent.
 func (ResponseInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseInProgressEvent") }
 
@@ -4398,14 +3685,6 @@ func DecodeResponseInProgressEvent(data []byte) (ResponseInProgressEvent, error)
 		return ResponseInProgressEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseInProgressEvent creates a new ResponseInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseInProgressEvent(type_ ResponseInProgressEventType, response Response) *ResponseInProgressEvent {
-	return &ResponseInProgressEvent{
-		Type: type_,
-		Response: response,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteEvent.
@@ -4434,14 +3713,6 @@ func DecodeResponseIncompleteEvent(data []byte) (ResponseIncompleteEvent, error)
 	return result, nil
 }
 
-// NewResponseIncompleteEvent creates a new ResponseIncompleteEvent with required fields and auto-filled const/default values.
-func NewResponseIncompleteEvent(type_ ResponseIncompleteEventType, response Response) *ResponseIncompleteEvent {
-	return &ResponseIncompleteEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseItemList.
 func (ResponseItemList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseItemList") }
 
@@ -4466,17 +3737,6 @@ func DecodeResponseItemList(data []byte) (ResponseItemList, error) {
 		return ResponseItemList{}, err
 	}
 	return result, nil
-}
-
-// NewResponseItemList creates a new ResponseItemList with required fields and auto-filled const/default values.
-func NewResponseItemList(hasMore bool, firstID string, lastID string, object ResponseItemListObject, data []ItemResource) *ResponseItemList {
-	return &ResponseItemList{
-		HasMore: hasMore,
-		FirstID: firstID,
-		LastID: lastID,
-		Object: object,
-		Data: data,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemAddedEvent.
@@ -4505,15 +3765,6 @@ func DecodeResponseOutputItemAddedEvent(data []byte) (ResponseOutputItemAddedEve
 	return result, nil
 }
 
-// NewResponseOutputItemAddedEvent creates a new ResponseOutputItemAddedEvent with required fields and auto-filled const/default values.
-func NewResponseOutputItemAddedEvent(type_ ResponseOutputItemAddedEventType, outputIndex int64, item OutputItem) *ResponseOutputItemAddedEvent {
-	return &ResponseOutputItemAddedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Item: item,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemDoneEvent.
 func (ResponseOutputItemDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseOutputItemDoneEvent") }
 
@@ -4538,15 +3789,6 @@ func DecodeResponseOutputItemDoneEvent(data []byte) (ResponseOutputItemDoneEvent
 		return ResponseOutputItemDoneEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseOutputItemDoneEvent creates a new ResponseOutputItemDoneEvent with required fields and auto-filled const/default values.
-func NewResponseOutputItemDoneEvent(type_ ResponseOutputItemDoneEventType, outputIndex int64, item OutputItem) *ResponseOutputItemDoneEvent {
-	return &ResponseOutputItemDoneEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Item: item,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesToolChoiceToolChoiceOptions.
@@ -4708,14 +3950,6 @@ func DecodeResponseReasoningSummaryPartAddedEventPart(data []byte) (ResponseReas
 	return result, nil
 }
 
-// NewResponseReasoningSummaryPartAddedEventPart creates a new ResponseReasoningSummaryPartAddedEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartAddedEventPart(type_ string, text string) *ResponseReasoningSummaryPartAddedEventPart {
-	return &ResponseReasoningSummaryPartAddedEventPart{
-		Type: type_,
-		Text: text,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEvent.
 func (ResponseReasoningSummaryPartAddedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEvent") }
 
@@ -4740,17 +3974,6 @@ func DecodeResponseReasoningSummaryPartAddedEvent(data []byte) (ResponseReasonin
 		return ResponseReasoningSummaryPartAddedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseReasoningSummaryPartAddedEvent creates a new ResponseReasoningSummaryPartAddedEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartAddedEvent(type_ ResponseReasoningSummaryPartAddedEventType, itemID string, outputIndex int64, summaryIndex int64, part ResponseReasoningSummaryPartAddedEventPart) *ResponseReasoningSummaryPartAddedEvent {
-	return &ResponseReasoningSummaryPartAddedEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Part: part,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEventPart.
@@ -4779,14 +4002,6 @@ func DecodeResponseReasoningSummaryPartDoneEventPart(data []byte) (ResponseReaso
 	return result, nil
 }
 
-// NewResponseReasoningSummaryPartDoneEventPart creates a new ResponseReasoningSummaryPartDoneEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartDoneEventPart(type_ string, text string) *ResponseReasoningSummaryPartDoneEventPart {
-	return &ResponseReasoningSummaryPartDoneEventPart{
-		Type: type_,
-		Text: text,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEvent.
 func (ResponseReasoningSummaryPartDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEvent") }
 
@@ -4811,17 +4026,6 @@ func DecodeResponseReasoningSummaryPartDoneEvent(data []byte) (ResponseReasoning
 		return ResponseReasoningSummaryPartDoneEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseReasoningSummaryPartDoneEvent creates a new ResponseReasoningSummaryPartDoneEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartDoneEvent(type_ ResponseReasoningSummaryPartDoneEventType, itemID string, outputIndex int64, summaryIndex int64, part ResponseReasoningSummaryPartDoneEventPart) *ResponseReasoningSummaryPartDoneEvent {
-	return &ResponseReasoningSummaryPartDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Part: part,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDeltaEvent.
@@ -4850,17 +4054,6 @@ func DecodeResponseReasoningSummaryTextDeltaEvent(data []byte) (ResponseReasonin
 	return result, nil
 }
 
-// NewResponseReasoningSummaryTextDeltaEvent creates a new ResponseReasoningSummaryTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryTextDeltaEvent(delta string, type_ ResponseReasoningSummaryTextDeltaEventType, itemID string, outputIndex int64, summaryIndex int64) *ResponseReasoningSummaryTextDeltaEvent {
-	return &ResponseReasoningSummaryTextDeltaEvent{
-		Delta: delta,
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDoneEvent.
 func (ResponseReasoningSummaryTextDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryTextDoneEvent") }
 
@@ -4885,17 +4078,6 @@ func DecodeResponseReasoningSummaryTextDoneEvent(data []byte) (ResponseReasoning
 		return ResponseReasoningSummaryTextDoneEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseReasoningSummaryTextDoneEvent creates a new ResponseReasoningSummaryTextDoneEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryTextDoneEvent(type_ ResponseReasoningSummaryTextDoneEventType, itemID string, outputIndex int64, summaryIndex int64, text string) *ResponseReasoningSummaryTextDoneEvent {
-	return &ResponseReasoningSummaryTextDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Text: text,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDeltaEvent.
@@ -4924,17 +4106,6 @@ func DecodeResponseRefusalDeltaEvent(data []byte) (ResponseRefusalDeltaEvent, er
 	return result, nil
 }
 
-// NewResponseRefusalDeltaEvent creates a new ResponseRefusalDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseRefusalDeltaEvent(type_ ResponseRefusalDeltaEventType, itemID string, outputIndex int64, contentIndex int64, delta string) *ResponseRefusalDeltaEvent {
-	return &ResponseRefusalDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Delta: delta,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDoneEvent.
 func (ResponseRefusalDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseRefusalDoneEvent") }
 
@@ -4959,17 +4130,6 @@ func DecodeResponseRefusalDoneEvent(data []byte) (ResponseRefusalDoneEvent, erro
 		return ResponseRefusalDoneEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseRefusalDoneEvent creates a new ResponseRefusalDoneEvent with required fields and auto-filled const/default values.
-func NewResponseRefusalDoneEvent(contentIndex int64, refusal string, type_ ResponseRefusalDoneEventType, itemID string, outputIndex int64) *ResponseRefusalDoneEvent {
-	return &ResponseRefusalDoneEvent{
-		ContentIndex: contentIndex,
-		Refusal: refusal,
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextAnnotationDeltaEvent.
@@ -4998,18 +4158,6 @@ func DecodeResponseTextAnnotationDeltaEvent(data []byte) (ResponseTextAnnotation
 	return result, nil
 }
 
-// NewResponseTextAnnotationDeltaEvent creates a new ResponseTextAnnotationDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseTextAnnotationDeltaEvent(type_ ResponseTextAnnotationDeltaEventType, itemID string, outputIndex int64, contentIndex int64, annotationIndex int64, annotation Annotation) *ResponseTextAnnotationDeltaEvent {
-	return &ResponseTextAnnotationDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		AnnotationIndex: annotationIndex,
-		Annotation: annotation,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDeltaEvent.
 func (ResponseTextDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseTextDeltaEvent") }
 
@@ -5034,17 +4182,6 @@ func DecodeResponseTextDeltaEvent(data []byte) (ResponseTextDeltaEvent, error) {
 		return ResponseTextDeltaEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseTextDeltaEvent creates a new ResponseTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseTextDeltaEvent(itemID string, outputIndex int64, contentIndex int64, delta string, type_ ResponseTextDeltaEventType) *ResponseTextDeltaEvent {
-	return &ResponseTextDeltaEvent{
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Delta: delta,
-		Type: type_,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseTextDoneEvent.
@@ -5073,17 +4210,6 @@ func DecodeResponseTextDoneEvent(data []byte) (ResponseTextDoneEvent, error) {
 	return result, nil
 }
 
-// NewResponseTextDoneEvent creates a new ResponseTextDoneEvent with required fields and auto-filled const/default values.
-func NewResponseTextDoneEvent(type_ ResponseTextDoneEventType, itemID string, outputIndex int64, contentIndex int64, text string) *ResponseTextDoneEvent {
-	return &ResponseTextDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Text: text,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallCompletedEvent.
 func (ResponseWebSearchCallCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseWebSearchCallCompletedEvent") }
 
@@ -5108,15 +4234,6 @@ func DecodeResponseWebSearchCallCompletedEvent(data []byte) (ResponseWebSearchCa
 		return ResponseWebSearchCallCompletedEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseWebSearchCallCompletedEvent creates a new ResponseWebSearchCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallCompletedEvent(type_ ResponseWebSearchCallCompletedEventType, outputIndex int64, itemID string) *ResponseWebSearchCallCompletedEvent {
-	return &ResponseWebSearchCallCompletedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallInProgressEvent.
@@ -5145,15 +4262,6 @@ func DecodeResponseWebSearchCallInProgressEvent(data []byte) (ResponseWebSearchC
 	return result, nil
 }
 
-// NewResponseWebSearchCallInProgressEvent creates a new ResponseWebSearchCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallInProgressEvent(type_ ResponseWebSearchCallInProgressEventType, outputIndex int64, itemID string) *ResponseWebSearchCallInProgressEvent {
-	return &ResponseWebSearchCallInProgressEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallSearchingEvent.
 func (ResponseWebSearchCallSearchingEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseWebSearchCallSearchingEvent") }
 
@@ -5178,15 +4286,6 @@ func DecodeResponseWebSearchCallSearchingEvent(data []byte) (ResponseWebSearchCa
 		return ResponseWebSearchCallSearchingEvent{}, err
 	}
 	return result, nil
-}
-
-// NewResponseWebSearchCallSearchingEvent creates a new ResponseWebSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallSearchingEvent(type_ ResponseWebSearchCallSearchingEventType, outputIndex int64, itemID string) *ResponseWebSearchCallSearchingEvent {
-	return &ResponseWebSearchCallSearchingEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
 }
 
 // ResponseStreamEventJSONSchemaBytes returns the JSON Schema for the ResponseStreamEvent union.

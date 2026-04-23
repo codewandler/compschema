@@ -396,20 +396,6 @@ func TestCompschema_ComparisonFilterValueBool_ValidateRejectsInvalidJSON(t *test
 	}
 }
 
-func TestCompschema_ComparisonFilterValueBool_ValidateRejectsWrongType(t *testing.T) {
-	err := (ComparisonFilterValueBool{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueBool.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ComparisonFilterValueBool_ValidateRejectsEmpty(t *testing.T) {
-	err := (ComparisonFilterValueBool{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueBool.Validate({}) should fail (has required fields)")
-	}
-}
-
 func TestCompschema_ComparisonFilterValueBool_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
@@ -432,20 +418,6 @@ func TestCompschema_ComparisonFilterValueFloat64_ValidateRejectsInvalidJSON(t *t
 	}
 }
 
-func TestCompschema_ComparisonFilterValueFloat64_ValidateRejectsWrongType(t *testing.T) {
-	err := (ComparisonFilterValueFloat64{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueFloat64.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ComparisonFilterValueFloat64_ValidateRejectsEmpty(t *testing.T) {
-	err := (ComparisonFilterValueFloat64{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueFloat64.Validate({}) should fail (has required fields)")
-	}
-}
-
 func TestCompschema_ComparisonFilterValueFloat64_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
@@ -465,20 +437,6 @@ func TestCompschema_ComparisonFilterValueString_ValidateRejectsInvalidJSON(t *te
 	err := (ComparisonFilterValueString{}).Validate([]byte(`{not json}`))
 	if err == nil {
 		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ComparisonFilterValueString_ValidateRejectsWrongType(t *testing.T) {
-	err := (ComparisonFilterValueString{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueString.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ComparisonFilterValueString_ValidateRejectsEmpty(t *testing.T) {
-	err := (ComparisonFilterValueString{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ComparisonFilterValueString.Validate({}) should fail (has required fields)")
 	}
 }
 
@@ -1851,20 +1809,6 @@ func TestCompschema_EasyInputMessageContentString_ValidateRejectsInvalidJSON(t *
 	}
 }
 
-func TestCompschema_EasyInputMessageContentString_ValidateRejectsWrongType(t *testing.T) {
-	err := (EasyInputMessageContentString{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("EasyInputMessageContentString.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_EasyInputMessageContentString_ValidateRejectsEmpty(t *testing.T) {
-	err := (EasyInputMessageContentString{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("EasyInputMessageContentString.Validate({}) should fail (has required fields)")
-	}
-}
-
 func TestCompschema_EasyInputMessageContentString_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
@@ -2459,20 +2403,6 @@ func TestCompschema_CreateResponseInputString_ValidateRejectsInvalidJSON(t *test
 	err := (CreateResponseInputString{}).Validate([]byte(`{not json}`))
 	if err == nil {
 		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_CreateResponseInputString_ValidateRejectsWrongType(t *testing.T) {
-	err := (CreateResponseInputString{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("CreateResponseInputString.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_CreateResponseInputString_ValidateRejectsEmpty(t *testing.T) {
-	err := (CreateResponseInputString{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("CreateResponseInputString.Validate({}) should fail (has required fields)")
 	}
 }
 
@@ -5279,1234 +5209,1706 @@ func TestCompschema_VectorStoreFileAttributes_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_NewFileCitationBody(t *testing.T) {
-	v := NewFileCitationBody(FileCitationBodyType("file_citation"), "", 0)
-	if v == nil {
-		t.Fatal("NewFileCitationBody returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFileCitationBody output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFilePath(t *testing.T) {
-	v := NewFilePath(FilePathType("file_path"), "", 0)
-	if v == nil {
-		t.Fatal("NewFilePath returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFilePath output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewUrlCitationBody(t *testing.T) {
-	v := NewUrlCitationBody(0, 0, "", UrlCitationBodyType("url_citation"), "")
-	if v == nil {
-		t.Fatal("NewUrlCitationBody returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewUrlCitationBody output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewApproximateLocation(t *testing.T) {
-	v := NewApproximateLocation(ApproximateLocationType("approximate"))
-	if v == nil {
-		t.Fatal("NewApproximateLocation returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewApproximateLocation output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewClick(t *testing.T) {
-	v := NewClick(0, 0, ClickType("click"), ClickButton("left"))
-	if v == nil {
-		t.Fatal("NewClick returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewClick output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewCodeInterpreterFileOutput(t *testing.T) {
-	v := NewCodeInterpreterFileOutput(CodeInterpreterFileOutputType("files"), []any{nil})
-	if v == nil {
-		t.Fatal("NewCodeInterpreterFileOutput returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewCodeInterpreterFileOutput output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewCodeInterpreterTextOutput(t *testing.T) {
-	v := NewCodeInterpreterTextOutput(CodeInterpreterTextOutputType("logs"), "")
-	if v == nil {
-		t.Fatal("NewCodeInterpreterTextOutput returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewCodeInterpreterTextOutput output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewCodeInterpreterToolCall(t *testing.T) {
-	v := NewCodeInterpreterToolCall("", CodeInterpreterToolCallType("code_interpreter_call"), "", CodeInterpreterToolCallStatus("in_progress"), []CodeInterpreterToolOutput{&CodeInterpreterFileOutput{}})
-	if v == nil {
-		t.Fatal("NewCodeInterpreterToolCall returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewComparisonFilter(t *testing.T) {
-	v := NewComparisonFilter(ComparisonFilterType("eq"), "", &ComparisonFilterValueBool{})
-	if v == nil {
-		t.Fatal("NewComparisonFilter returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewCompoundFilter(t *testing.T) {
-	v := NewCompoundFilter([]any{nil}, CompoundFilterType("and"))
-	if v == nil {
-		t.Fatal("NewCompoundFilter returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewCompoundFilter output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewDoubleClick(t *testing.T) {
-	v := NewDoubleClick(DoubleClickType("double_click"), 0, 0)
-	if v == nil {
-		t.Fatal("NewDoubleClick returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewDoubleClick output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewCoordinate(t *testing.T) {
-	v := NewCoordinate(0, 0)
-	if v == nil {
-		t.Fatal("NewCoordinate returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewCoordinate output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewDrag(t *testing.T) {
-	v := NewDrag(DragType("drag"), []Coordinate{Coordinate{}})
-	if v == nil {
-		t.Fatal("NewDrag returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewDrag output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewKeyPress(t *testing.T) {
-	v := NewKeyPress(KeyPressType("keypress"), []string{""})
-	if v == nil {
-		t.Fatal("NewKeyPress returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewKeyPress output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewMove(t *testing.T) {
-	v := NewMove(0, MoveType("move"), 0)
-	if v == nil {
-		t.Fatal("NewMove returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewMove output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewScreenshot(t *testing.T) {
-	v := NewScreenshot(ScreenshotType("screenshot"))
-	if v == nil {
-		t.Fatal("NewScreenshot returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewScreenshot output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewScroll(t *testing.T) {
-	v := NewScroll(0, 0, 0, ScrollType("scroll"), 0)
-	if v == nil {
-		t.Fatal("NewScroll returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewScroll output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewType(t *testing.T) {
-	v := NewType(TypeType("type"), "")
-	if v == nil {
-		t.Fatal("NewType returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewType output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewWait(t *testing.T) {
-	v := NewWait(WaitType("wait"))
-	if v == nil {
-		t.Fatal("NewWait returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewWait output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewComputerScreenshotImage(t *testing.T) {
-	v := NewComputerScreenshotImage(ComputerScreenshotImageType("computer_screenshot"))
-	if v == nil {
-		t.Fatal("NewComputerScreenshotImage returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewComputerScreenshotImage output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewComputerCallSafetyCheckParam(t *testing.T) {
-	v := NewComputerCallSafetyCheckParam("")
-	if v == nil {
-		t.Fatal("NewComputerCallSafetyCheckParam returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewComputerCallSafetyCheckParam output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewComputerCallOutputItemParam(t *testing.T) {
-	v := NewComputerCallOutputItemParam("", ComputerCallOutputItemParamType("computer_call_output"), ComputerScreenshotImage{})
-	if v == nil {
-		t.Fatal("NewComputerCallOutputItemParam returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewComputerToolCallSafetyCheck(t *testing.T) {
-	v := NewComputerToolCallSafetyCheck("", "", "")
-	if v == nil {
-		t.Fatal("NewComputerToolCallSafetyCheck returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewComputerToolCallSafetyCheck output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewComputerToolCall(t *testing.T) {
-	v := NewComputerToolCall("", "", &Click{}, []ComputerToolCallSafetyCheck{ComputerToolCallSafetyCheck{}}, ComputerToolCallStatus("in_progress"), ComputerToolCallType("computer_call"))
-	if v == nil {
-		t.Fatal("NewComputerToolCall returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewComputerToolCallOutput(t *testing.T) {
-	v := NewComputerToolCallOutput(ComputerToolCallOutputType("computer_call_output"), "", ComputerScreenshotImage{})
-	if v == nil {
-		t.Fatal("NewComputerToolCallOutput returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewComputerToolCallOutputResource(t *testing.T) {
-	v := NewComputerToolCallOutputResource(ComputerToolCallOutputResourceType("computer_call_output"), "", "", ComputerScreenshotImage{})
-	if v == nil {
-		t.Fatal("NewComputerToolCallOutputResource returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewComputerUsePreviewTool(t *testing.T) {
-	v := NewComputerUsePreviewTool(ComputerUsePreviewToolType("computer_use_preview"), ComputerUsePreviewToolEnvironment("windows"), 0, 0)
-	if v == nil {
-		t.Fatal("NewComputerUsePreviewTool returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewComputerUsePreviewTool output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFileSearchTool(t *testing.T) {
-	v := NewFileSearchTool(FileSearchToolType("file_search"), []string{""})
-	if v == nil {
-		t.Fatal("NewFileSearchTool returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFileSearchTool output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFunctionTool(t *testing.T) {
-	v := NewFunctionTool(FunctionToolType("function"), "", map[string]FunctionTool{}, false)
-	if v == nil {
-		t.Fatal("NewFunctionTool returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFunctionTool output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewWebSearchPreviewTool(t *testing.T) {
-	v := NewWebSearchPreviewTool(WebSearchPreviewToolType("web_search_preview"))
-	if v == nil {
-		t.Fatal("NewWebSearchPreviewTool returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewWebSearchPreviewTool output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewInputFileContent(t *testing.T) {
-	v := NewInputFileContent(InputFileContentType("input_file"))
-	if v == nil {
-		t.Fatal("NewInputFileContent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewInputFileContent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewInputImageContent(t *testing.T) {
-	v := NewInputImageContent(InputImageContentDetail("low"), InputImageContentType("input_image"))
-	if v == nil {
-		t.Fatal("NewInputImageContent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewInputImageContent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewInputTextContent(t *testing.T) {
-	v := NewInputTextContent(InputTextContentType("input_text"), "")
-	if v == nil {
-		t.Fatal("NewInputTextContent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewInputTextContent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewEasyInputMessage(t *testing.T) {
-	v := NewEasyInputMessage(&EasyInputMessageContentInputMessageContentList{}, EasyInputMessageRole("user"))
-	if v == nil {
-		t.Fatal("NewEasyInputMessage returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewFileSearchToolCall(t *testing.T) {
-	v := NewFileSearchToolCall("", FileSearchToolCallType("file_search_call"), FileSearchToolCallStatus("in_progress"), []string{""})
-	if v == nil {
-		t.Fatal("NewFileSearchToolCall returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFileSearchToolCall output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFunctionCallOutputItemParam(t *testing.T) {
-	v := NewFunctionCallOutputItemParam("", "", FunctionCallOutputItemParamType("function_call_output"))
-	if v == nil {
-		t.Fatal("NewFunctionCallOutputItemParam returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewFunctionToolCall(t *testing.T) {
-	v := NewFunctionToolCall(FunctionToolCallType("function_call"), "", "", "")
-	if v == nil {
-		t.Fatal("NewFunctionToolCall returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFunctionToolCall output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewInputMessage(t *testing.T) {
-	v := NewInputMessage(InputMessageRole("user"), InputMessageContentList{})
-	if v == nil {
-		t.Fatal("NewInputMessage returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewOutputTextContent(t *testing.T) {
-	v := NewOutputTextContent(OutputTextContentType("output_text"), "", []Annotation{&FileCitationBody{}})
-	if v == nil {
-		t.Fatal("NewOutputTextContent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewRefusalContent(t *testing.T) {
-	v := NewRefusalContent(RefusalContentType("refusal"), "")
-	if v == nil {
-		t.Fatal("NewRefusalContent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewRefusalContent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewOutputMessage(t *testing.T) {
-	v := NewOutputMessage(OutputMessageStatus("in_progress"), "", OutputMessageType("message"), OutputMessageRole("assistant"), []OutputContent{&OutputTextContent{}})
-	if v == nil {
-		t.Fatal("NewOutputMessage returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewReasoningItem(t *testing.T) {
-	v := NewReasoningItem(ReasoningItemType("reasoning"), "", []any{nil})
-	if v == nil {
-		t.Fatal("NewReasoningItem returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewReasoningItem output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewWebSearchToolCall(t *testing.T) {
-	v := NewWebSearchToolCall("", WebSearchToolCallType("web_search_call"), WebSearchToolCallStatus("in_progress"))
-	if v == nil {
-		t.Fatal("NewWebSearchToolCall returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewWebSearchToolCall output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewItemReferenceParam(t *testing.T) {
-	v := NewItemReferenceParam("")
-	if v == nil {
-		t.Fatal("NewItemReferenceParam returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewItemReferenceParam output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewToolChoiceFunction(t *testing.T) {
-	v := NewToolChoiceFunction(ToolChoiceFunctionType("function"), "")
-	if v == nil {
-		t.Fatal("NewToolChoiceFunction returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewToolChoiceFunction output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewToolChoiceTypes(t *testing.T) {
-	v := NewToolChoiceTypes(ToolChoiceTypesType("file_search"))
-	if v == nil {
-		t.Fatal("NewToolChoiceTypes returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewToolChoiceTypes output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFormatJsonObject(t *testing.T) {
-	v := NewResponseFormatJsonObject(ResponseFormatJsonObjectType("json_object"))
-	if v == nil {
-		t.Fatal("NewResponseFormatJsonObject returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFormatJsonObject output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFormatText(t *testing.T) {
-	v := NewResponseFormatText(ResponseFormatTextType("text"))
-	if v == nil {
-		t.Fatal("NewResponseFormatText returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFormatText output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewTextResponseFormatJsonSchema(t *testing.T) {
-	v := NewTextResponseFormatJsonSchema(TextResponseFormatJsonSchemaType("json_schema"), "", ResponseFormatJsonSchemaSchema{})
-	if v == nil {
-		t.Fatal("NewTextResponseFormatJsonSchema returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewTextResponseFormatJsonSchema output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewCreateResponse(t *testing.T) {
-	v := NewCreateResponse(ModelIdsResponses("gpt-4.1"), &CreateResponseInputSliceInputItem{})
-	if v == nil {
-		t.Fatal("NewCreateResponse returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewError(t *testing.T) {
-	v := NewError("", "", "", "")
-	if v == nil {
-		t.Fatal("NewError returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewError output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFunctionToolCallOutput(t *testing.T) {
-	v := NewFunctionToolCallOutput("", "", FunctionToolCallOutputType("function_call_output"))
-	if v == nil {
-		t.Fatal("NewFunctionToolCallOutput returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFunctionToolCallOutput output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFunctionToolCallOutputResource(t *testing.T) {
-	v := NewFunctionToolCallOutputResource("", "", FunctionToolCallOutputResourceType("function_call_output"), "")
-	if v == nil {
-		t.Fatal("NewFunctionToolCallOutputResource returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFunctionToolCallOutputResource output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewFunctionToolCallResource(t *testing.T) {
-	v := NewFunctionToolCallResource(FunctionToolCallResourceType("function_call"), "", "", "", "")
-	if v == nil {
-		t.Fatal("NewFunctionToolCallResource returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewFunctionToolCallResource output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewInputMessageResource(t *testing.T) {
-	v := NewInputMessageResource(InputMessageResourceRole("user"), InputMessageContentList{}, "")
-	if v == nil {
-		t.Fatal("NewInputMessageResource returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseError(t *testing.T) {
-	v := NewResponseError(ResponseErrorCode("server_error"), "")
-	if v == nil {
-		t.Fatal("NewResponseError returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseError output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseUsageOutputTokensDetails(t *testing.T) {
-	v := NewResponseUsageOutputTokensDetails(0)
-	if v == nil {
-		t.Fatal("NewResponseUsageOutputTokensDetails returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseUsageOutputTokensDetails output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseUsageInputTokensDetails(t *testing.T) {
-	v := NewResponseUsageInputTokensDetails(0)
-	if v == nil {
-		t.Fatal("NewResponseUsageInputTokensDetails returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseUsageInputTokensDetails output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseUsage(t *testing.T) {
-	v := NewResponseUsage(ResponseUsageOutputTokensDetails{}, 0, 0, ResponseUsageInputTokensDetails{}, 0)
-	if v == nil {
-		t.Fatal("NewResponseUsage returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponse(t *testing.T) {
-	v := NewResponse("", false, 0, ModelIdsResponses("gpt-4.1"), ResponseObject("response"), ResponseError{}, 0, "", 0.0, ResponseIncompleteDetails{}, []OutputItem{&ComputerToolCall{}}, Metadata{}, []Tool{&ComputerUsePreviewTool{}}, &ResponseToolChoiceToolChoiceOptions{})
-	if v == nil {
-		t.Fatal("NewResponse returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseAudioDeltaEvent(t *testing.T) {
-	v := NewResponseAudioDeltaEvent(ResponseAudioDeltaEventType("response.audio.delta"), "")
-	if v == nil {
-		t.Fatal("NewResponseAudioDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseAudioDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseAudioDoneEvent(t *testing.T) {
-	v := NewResponseAudioDoneEvent(ResponseAudioDoneEventType("response.audio.done"))
-	if v == nil {
-		t.Fatal("NewResponseAudioDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseAudioDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseAudioTranscriptDeltaEvent(t *testing.T) {
-	v := NewResponseAudioTranscriptDeltaEvent("", ResponseAudioTranscriptDeltaEventType("response.audio.transcript.delta"))
-	if v == nil {
-		t.Fatal("NewResponseAudioTranscriptDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseAudioTranscriptDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseAudioTranscriptDoneEvent(t *testing.T) {
-	v := NewResponseAudioTranscriptDoneEvent(ResponseAudioTranscriptDoneEventType("response.audio.transcript.done"))
-	if v == nil {
-		t.Fatal("NewResponseAudioTranscriptDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseAudioTranscriptDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseCodeInterpreterCallCodeDeltaEvent(t *testing.T) {
-	v := NewResponseCodeInterpreterCallCodeDeltaEvent(ResponseCodeInterpreterCallCodeDeltaEventType("response.code_interpreter_call.code.delta"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseCodeInterpreterCallCodeDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseCodeInterpreterCallCodeDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseCodeInterpreterCallCodeDoneEvent(t *testing.T) {
-	v := NewResponseCodeInterpreterCallCodeDoneEvent(ResponseCodeInterpreterCallCodeDoneEventType("response.code_interpreter_call.code.done"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseCodeInterpreterCallCodeDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseCodeInterpreterCallCodeDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseCodeInterpreterCallCompletedEvent(t *testing.T) {
-	v := NewResponseCodeInterpreterCallCompletedEvent(ResponseCodeInterpreterCallCompletedEventType("response.code_interpreter_call.completed"), 0, CodeInterpreterToolCall{})
-	if v == nil {
-		t.Fatal("NewResponseCodeInterpreterCallCompletedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseCodeInterpreterCallInProgressEvent(t *testing.T) {
-	v := NewResponseCodeInterpreterCallInProgressEvent(0, CodeInterpreterToolCall{}, ResponseCodeInterpreterCallInProgressEventType("response.code_interpreter_call.in_progress"))
-	if v == nil {
-		t.Fatal("NewResponseCodeInterpreterCallInProgressEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseCodeInterpreterCallInterpretingEvent(t *testing.T) {
-	v := NewResponseCodeInterpreterCallInterpretingEvent(ResponseCodeInterpreterCallInterpretingEventType("response.code_interpreter_call.interpreting"), 0, CodeInterpreterToolCall{})
-	if v == nil {
-		t.Fatal("NewResponseCodeInterpreterCallInterpretingEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseCompletedEvent(t *testing.T) {
-	v := NewResponseCompletedEvent(ResponseCompletedEventType("response.completed"), Response{})
-	if v == nil {
-		t.Fatal("NewResponseCompletedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseContentPartAddedEvent(t *testing.T) {
-	v := NewResponseContentPartAddedEvent(&OutputTextContent{}, ResponseContentPartAddedEventType("response.content_part.added"), "", 0, 0)
-	if v == nil {
-		t.Fatal("NewResponseContentPartAddedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseContentPartDoneEvent(t *testing.T) {
-	v := NewResponseContentPartDoneEvent(ResponseContentPartDoneEventType("response.content_part.done"), "", 0, 0, &OutputTextContent{})
-	if v == nil {
-		t.Fatal("NewResponseContentPartDoneEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseCreatedEvent(t *testing.T) {
-	v := NewResponseCreatedEvent(ResponseCreatedEventType("response.created"), Response{})
-	if v == nil {
-		t.Fatal("NewResponseCreatedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseErrorEvent(t *testing.T) {
-	v := NewResponseErrorEvent(ResponseErrorEventType("error"), "", "", "")
-	if v == nil {
-		t.Fatal("NewResponseErrorEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseErrorEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFailedEvent(t *testing.T) {
-	v := NewResponseFailedEvent(ResponseFailedEventType("response.failed"), Response{})
-	if v == nil {
-		t.Fatal("NewResponseFailedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseFileSearchCallCompletedEvent(t *testing.T) {
-	v := NewResponseFileSearchCallCompletedEvent("", ResponseFileSearchCallCompletedEventType("response.file_search_call.completed"), 0)
-	if v == nil {
-		t.Fatal("NewResponseFileSearchCallCompletedEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFileSearchCallCompletedEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFileSearchCallInProgressEvent(t *testing.T) {
-	v := NewResponseFileSearchCallInProgressEvent(ResponseFileSearchCallInProgressEventType("response.file_search_call.in_progress"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseFileSearchCallInProgressEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFileSearchCallInProgressEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFileSearchCallSearchingEvent(t *testing.T) {
-	v := NewResponseFileSearchCallSearchingEvent("", ResponseFileSearchCallSearchingEventType("response.file_search_call.searching"), 0)
-	if v == nil {
-		t.Fatal("NewResponseFileSearchCallSearchingEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFileSearchCallSearchingEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFunctionCallArgumentsDeltaEvent(t *testing.T) {
-	v := NewResponseFunctionCallArgumentsDeltaEvent(ResponseFunctionCallArgumentsDeltaEventType("response.function_call_arguments.delta"), "", 0, "")
-	if v == nil {
-		t.Fatal("NewResponseFunctionCallArgumentsDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFunctionCallArgumentsDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseFunctionCallArgumentsDoneEvent(t *testing.T) {
-	v := NewResponseFunctionCallArgumentsDoneEvent(ResponseFunctionCallArgumentsDoneEventType("response.function_call_arguments.done"), "", 0, "")
-	if v == nil {
-		t.Fatal("NewResponseFunctionCallArgumentsDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseFunctionCallArgumentsDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseInProgressEvent(t *testing.T) {
-	v := NewResponseInProgressEvent(ResponseInProgressEventType("response.in_progress"), Response{})
-	if v == nil {
-		t.Fatal("NewResponseInProgressEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseIncompleteEvent(t *testing.T) {
-	v := NewResponseIncompleteEvent(ResponseIncompleteEventType("response.incomplete"), Response{})
-	if v == nil {
-		t.Fatal("NewResponseIncompleteEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseItemList(t *testing.T) {
-	v := NewResponseItemList(false, "", "", ResponseItemListObject("list"), []ItemResource{&ComputerToolCall{}})
-	if v == nil {
-		t.Fatal("NewResponseItemList returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseOutputItemAddedEvent(t *testing.T) {
-	v := NewResponseOutputItemAddedEvent(ResponseOutputItemAddedEventType("response.output_item.added"), 0, &ComputerToolCall{})
-	if v == nil {
-		t.Fatal("NewResponseOutputItemAddedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseOutputItemDoneEvent(t *testing.T) {
-	v := NewResponseOutputItemDoneEvent(ResponseOutputItemDoneEventType("response.output_item.done"), 0, &ComputerToolCall{})
-	if v == nil {
-		t.Fatal("NewResponseOutputItemDoneEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseReasoningSummaryPartAddedEventPart(t *testing.T) {
-	v := NewResponseReasoningSummaryPartAddedEventPart("", "")
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryPartAddedEventPart returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseReasoningSummaryPartAddedEventPart output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseReasoningSummaryPartAddedEvent(t *testing.T) {
-	v := NewResponseReasoningSummaryPartAddedEvent(ResponseReasoningSummaryPartAddedEventType("response.reasoning_summary_part.added"), "", 0, 0, ResponseReasoningSummaryPartAddedEventPart{})
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryPartAddedEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseReasoningSummaryPartDoneEventPart(t *testing.T) {
-	v := NewResponseReasoningSummaryPartDoneEventPart("", "")
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryPartDoneEventPart returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseReasoningSummaryPartDoneEventPart output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseReasoningSummaryPartDoneEvent(t *testing.T) {
-	v := NewResponseReasoningSummaryPartDoneEvent(ResponseReasoningSummaryPartDoneEventType("response.reasoning_summary_part.done"), "", 0, 0, ResponseReasoningSummaryPartDoneEventPart{})
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryPartDoneEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseReasoningSummaryTextDeltaEvent(t *testing.T) {
-	v := NewResponseReasoningSummaryTextDeltaEvent("", ResponseReasoningSummaryTextDeltaEventType("response.reasoning_summary_text.delta"), "", 0, 0)
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryTextDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseReasoningSummaryTextDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseReasoningSummaryTextDoneEvent(t *testing.T) {
-	v := NewResponseReasoningSummaryTextDoneEvent(ResponseReasoningSummaryTextDoneEventType("response.reasoning_summary_text.done"), "", 0, 0, "")
-	if v == nil {
-		t.Fatal("NewResponseReasoningSummaryTextDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseReasoningSummaryTextDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseRefusalDeltaEvent(t *testing.T) {
-	v := NewResponseRefusalDeltaEvent(ResponseRefusalDeltaEventType("response.refusal.delta"), "", 0, 0, "")
-	if v == nil {
-		t.Fatal("NewResponseRefusalDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseRefusalDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseRefusalDoneEvent(t *testing.T) {
-	v := NewResponseRefusalDoneEvent(0, "", ResponseRefusalDoneEventType("response.refusal.done"), "", 0)
-	if v == nil {
-		t.Fatal("NewResponseRefusalDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseRefusalDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseTextAnnotationDeltaEvent(t *testing.T) {
-	v := NewResponseTextAnnotationDeltaEvent(ResponseTextAnnotationDeltaEventType("response.output_text.annotation.added"), "", 0, 0, 0, &FileCitationBody{})
-	if v == nil {
-		t.Fatal("NewResponseTextAnnotationDeltaEvent returned nil")
-	}
-	// Skip validation: constructor has union-typed params whose zero values
-	// may not satisfy oneOf schema constraints.
-}
-
-func TestCompschema_NewResponseTextDeltaEvent(t *testing.T) {
-	v := NewResponseTextDeltaEvent("", 0, 0, "", ResponseTextDeltaEventType("response.output_text.delta"))
-	if v == nil {
-		t.Fatal("NewResponseTextDeltaEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseTextDeltaEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseTextDoneEvent(t *testing.T) {
-	v := NewResponseTextDoneEvent(ResponseTextDoneEventType("response.output_text.done"), "", 0, 0, "")
-	if v == nil {
-		t.Fatal("NewResponseTextDoneEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseTextDoneEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseWebSearchCallCompletedEvent(t *testing.T) {
-	v := NewResponseWebSearchCallCompletedEvent(ResponseWebSearchCallCompletedEventType("response.web_search_call.completed"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseWebSearchCallCompletedEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseWebSearchCallCompletedEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseWebSearchCallInProgressEvent(t *testing.T) {
-	v := NewResponseWebSearchCallInProgressEvent(ResponseWebSearchCallInProgressEventType("response.web_search_call.in_progress"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseWebSearchCallInProgressEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseWebSearchCallInProgressEvent output fails validation: %v", err)
-	}
-}
-
-func TestCompschema_NewResponseWebSearchCallSearchingEvent(t *testing.T) {
-	v := NewResponseWebSearchCallSearchingEvent(ResponseWebSearchCallSearchingEventType("response.web_search_call.searching"), 0, "")
-	if v == nil {
-		t.Fatal("NewResponseWebSearchCallSearchingEvent returned nil")
-	}
-	data, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	if err := v.Validate(data); err != nil {
-		t.Errorf("NewResponseWebSearchCallSearchingEvent output fails validation: %v", err)
-	}
+func TestCompschema_ExamplesValidate(t *testing.T) {
+	tests := []struct {
+		name    string
+		example string
+	}{
+		{"FileCitationBody", `{"file_id":"example","index":1,"type":"file_citation"}`},
+		{"FilePath", `{"file_id":"example","index":1,"type":"file_path"}`},
+		{"UrlCitationBody", `{"end_index":1,"start_index":1,"title":"example","type":"url_citation","url":"example"}`},
+		{"Annotation", `{"file_id":"example","index":1,"type":"file_citation"}`},
+		{"ApproximateLocation", `{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`},
+		{"Click", `{"button":"left","type":"click","x":1,"y":1}`},
+		{"CodeInterpreterFileOutput", `{"files":[{}],"type":"files"}`},
+		{"CodeInterpreterTextOutput", `{"logs":"example","type":"logs"}`},
+		{"CodeInterpreterToolOutput", `{"files":[{}],"type":"files"}`},
+		{"CodeInterpreterToolCall", `{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"}`},
+		{"ComparisonFilterValueBool", `true`},
+		{"ComparisonFilterValueFloat64", `1`},
+		{"ComparisonFilterValueString", `"example"`},
+		{"ComparisonFilterValue", `true`},
+		{"ComparisonFilter", `{"key":"example","type":"eq","value":true}`},
+		{"CompoundFilter", `{"filters":[{}],"type":"and"}`},
+		{"DoubleClick", `{"type":"double_click","x":1,"y":1}`},
+		{"Coordinate", `{"x":1,"y":1}`},
+		{"Drag", `{"path":[{"x":1,"y":1}],"type":"drag"}`},
+		{"KeyPress", `{"keys":["example"],"type":"keypress"}`},
+		{"Move", `{"type":"move","x":1,"y":1}`},
+		{"Screenshot", `{"type":"screenshot"}`},
+		{"Scroll", `{"scroll_x":1,"scroll_y":1,"type":"scroll","x":1,"y":1}`},
+		{"Type", `{"text":"example","type":"type"}`},
+		{"Wait", `{"type":"wait"}`},
+		{"ComputerAction", `{"button":"left","type":"click","x":1,"y":1}`},
+		{"ComputerScreenshotImage", `{"file_id":"example","image_url":"example","type":"computer_screenshot"}`},
+		{"ComputerCallSafetyCheckParam", `{"code":"example","id":"example","message":"example"}`},
+		{"ComputerCallOutputItemParam", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"id_abc123","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`},
+		{"ComputerToolCallSafetyCheck", `{"code":"example","id":"example","message":"example"}`},
+		{"ComputerToolCall", `{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`},
+		{"ComputerToolCallOutput", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`},
+		{"ComputerToolCallOutputResource", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`},
+		{"ComputerUsePreviewTool", `{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`},
+		{"Metadata", `{"key1":"example"}`},
+		{"ServiceTier", `"auto"`},
+		{"CreateModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
+		{"Reasoning", `{"effort":"low","generate_summary":"auto","summary":"auto"}`},
+		{"ModelIdsResponses", `"gpt-4.1"`},
+		{"RankingOptions", `{"ranker":"auto","score_threshold":1}`},
+		{"Filters", `{"key":"example","type":"eq","value":true}`},
+		{"FileSearchTool", `{"filters":{"key":"example","type":"eq","value":true},"max_num_results":1,"ranking_options":{"ranker":"auto","score_threshold":1},"type":"file_search","vector_store_ids":["example"]}`},
+		{"FunctionTool", `{"description":"example","name":"example","parameters":{"key1":{"description":"example","name":"example","parameters":{},"strict":true,"type":"function"}},"strict":true,"type":"function"}`},
+		{"WebSearchPreviewTool", `{"search_context_size":"low","type":"web_search_preview","user_location":{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}}`},
+		{"Tool", `{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`},
+		{"InputFileContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
+		{"InputImageContent", `{"detail":"low","file_id":"example","image_url":"example","type":"input_image"}`},
+		{"InputTextContent", `{"text":"example","type":"input_text"}`},
+		{"InputContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
+		{"InputMessageContentList", `[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`},
+		{"EasyInputMessageContentString", `"example"`},
+		{"EasyInputMessageContent", `"example"`},
+		{"EasyInputMessage", `{"content":"example","role":"user","type":"message"}`},
+		{"FileSearchToolCall", `{"id":"example","queries":["example"],"results":[{}],"status":"in_progress","type":"file_search_call"}`},
+		{"FunctionCallOutputItemParam", `{"call_id":"id_abc123","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`},
+		{"FunctionToolCall", `{"arguments":"example","call_id":"example","id":"example","name":"example","status":"in_progress","type":"function_call"}`},
+		{"InputMessage", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"role":"user","status":"in_progress","type":"message"}`},
+		{"OutputTextContent", `{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`},
+		{"RefusalContent", `{"refusal":"example","type":"refusal"}`},
+		{"OutputContent", `{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`},
+		{"OutputMessage", `{"content":[{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}],"id":"example","role":"assistant","status":"in_progress","type":"message"}`},
+		{"ReasoningItem", `{"id":"example","status":"in_progress","summary":[{}],"type":"reasoning"}`},
+		{"WebSearchToolCall", `{"id":"example","status":"in_progress","type":"web_search_call"}`},
+		{"Item", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"id_abc123","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`},
+		{"ItemReferenceParam", `{"id":"example","type":"item_reference"}`},
+		{"InputItem", `{"content":"example","role":"user","type":"message"}`},
+		{"CreateResponseInputString", `"example"`},
+		{"CreateResponseInput", `"example"`},
+		{"ToolChoiceOptions", `"none"`},
+		{"ToolChoiceFunction", `{"name":"example","type":"function"}`},
+		{"ToolChoiceTypes", `{"type":"file_search"}`},
+		{"CreateResponseToolChoice", `{"name":"example","type":"function"}`},
+		{"ResponseFormatJsonObject", `{"type":"json_object"}`},
+		{"ResponseFormatText", `{"type":"text"}`},
+		{"ResponseFormatJsonSchemaSchema", `{"key1":"example"}`},
+		{"TextResponseFormatJsonSchema", `{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`},
+		{"TextResponseFormatConfiguration", `{"type":"json_object"}`},
+		{"CreateResponseText", `{"format":{"type":"json_object"}}`},
+		{"CreateResponse", `{"include":["file_search_call.results"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`},
+		{"Error", `{"code":"example","message":"example","param":"example","type":"example"}`},
+		{"FunctionToolCallOutput", `{"call_id":"example","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`},
+		{"FunctionToolCallOutputResource", `{"call_id":"example","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`},
+		{"FunctionToolCallResource", `{"arguments":"example","call_id":"example","id":"example","name":"example","status":"in_progress","type":"function_call"}`},
+		{"InputMessageResource", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"id":"example","role":"user","status":"in_progress","type":"message"}`},
+		{"ItemResource", `{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`},
+		{"ModelIdsShared", `"gpt-4.1"`},
+		{"ModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
+		{"OutputItem", `{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`},
+		{"ResponseError", `{"code":"server_error","message":"example"}`},
+		{"ResponseText", `{"format":{"type":"json_object"}}`},
+		{"ResponseIncompleteDetails", `{"reason":"example"}`},
+		{"ResponseUsageOutputTokensDetails", `{"reasoning_tokens":1}`},
+		{"ResponseUsageInputTokensDetails", `{"cached_tokens":1}`},
+		{"ResponseUsage", `{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`},
+		{"ResponseToolChoice", `{"name":"example","type":"function"}`},
+		{"Response", `{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`},
+		{"ResponseAudioDeltaEvent", `{"delta":"example","type":"response.audio.delta"}`},
+		{"ResponseAudioDoneEvent", `{"type":"response.audio.done"}`},
+		{"ResponseAudioTranscriptDeltaEvent", `{"delta":"example","type":"response.audio.transcript.delta"}`},
+		{"ResponseAudioTranscriptDoneEvent", `{"type":"response.audio.transcript.done"}`},
+		{"ResponseCodeInterpreterCallCodeDeltaEvent", `{"delta":"example","output_index":1,"type":"response.code_interpreter_call.code.delta"}`},
+		{"ResponseCodeInterpreterCallCodeDoneEvent", `{"code":"example","output_index":1,"type":"response.code_interpreter_call.code.done"}`},
+		{"ResponseCodeInterpreterCallCompletedEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.completed"}`},
+		{"ResponseCodeInterpreterCallInProgressEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.in_progress"}`},
+		{"ResponseCodeInterpreterCallInterpretingEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.interpreting"}`},
+		{"ResponseCompletedEvent", `{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.completed"}`},
+		{"ResponseContentPartAddedEvent", `{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.added"}`},
+		{"ResponseContentPartDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.done"}`},
+		{"ResponseCreatedEvent", `{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.created"}`},
+		{"ResponseErrorEvent", `{"code":"example","message":"example","param":"example","type":"error"}`},
+		{"ResponseFailedEvent", `{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.failed"}`},
+		{"ResponseFileSearchCallCompletedEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.completed"}`},
+		{"ResponseFileSearchCallInProgressEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.in_progress"}`},
+		{"ResponseFileSearchCallSearchingEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.searching"}`},
+		{"ResponseFunctionCallArgumentsDeltaEvent", `{"delta":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.delta"}`},
+		{"ResponseFunctionCallArgumentsDoneEvent", `{"arguments":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.done"}`},
+		{"ResponseInProgressEvent", `{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.in_progress"}`},
+		{"ResponseIncompleteEvent", `{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.incomplete"}`},
+		{"ResponseItemList", `{"data":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"first_id":"example","has_more":true,"last_id":"example","object":"list"}`},
+		{"ResponseOutputItemAddedEvent", `{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.added"}`},
+		{"ResponseOutputItemDoneEvent", `{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.done"}`},
+		{"ResponsePropertiesToolChoice", `{"name":"example","type":"function"}`},
+		{"ResponsePropertiesText", `{"format":{"type":"json_object"}}`},
+		{"ResponseProperties", `{"instructions":"example","max_output_tokens":1,"model":"gpt-4.1","previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"truncation":"auto"}`},
+		{"ResponseReasoningSummaryPartAddedEventPart", `{"text":"example","type":"example"}`},
+		{"ResponseReasoningSummaryPartAddedEvent", `{"item_id":"example","output_index":1,"part":{"text":"example","type":"example"},"summary_index":1,"type":"response.reasoning_summary_part.added"}`},
+		{"ResponseReasoningSummaryPartDoneEventPart", `{"text":"example","type":"example"}`},
+		{"ResponseReasoningSummaryPartDoneEvent", `{"item_id":"example","output_index":1,"part":{"text":"example","type":"example"},"summary_index":1,"type":"response.reasoning_summary_part.done"}`},
+		{"ResponseReasoningSummaryTextDeltaEvent", `{"delta":"example","item_id":"example","output_index":1,"summary_index":1,"type":"response.reasoning_summary_text.delta"}`},
+		{"ResponseReasoningSummaryTextDoneEvent", `{"item_id":"example","output_index":1,"summary_index":1,"text":"example","type":"response.reasoning_summary_text.done"}`},
+		{"ResponseRefusalDeltaEvent", `{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.refusal.delta"}`},
+		{"ResponseRefusalDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"refusal":"example","type":"response.refusal.done"}`},
+		{"ResponseTextAnnotationDeltaEvent", `{"annotation":{"file_id":"example","index":1,"type":"file_citation"},"annotation_index":1,"content_index":1,"item_id":"example","output_index":1,"type":"response.output_text.annotation.added"}`},
+		{"ResponseTextDeltaEvent", `{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.output_text.delta"}`},
+		{"ResponseTextDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"text":"example","type":"response.output_text.done"}`},
+		{"ResponseWebSearchCallCompletedEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.completed"}`},
+		{"ResponseWebSearchCallInProgressEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.in_progress"}`},
+		{"ResponseWebSearchCallSearchingEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.searching"}`},
+		{"ResponseStreamEvent", `{"delta":"example","type":"response.audio.delta"}`},
+		{"VectorStoreFileAttributes", `{"key1":"example"}`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Verify example is valid JSON.
+			var v any
+			if err := json.Unmarshal([]byte(tt.example), &v); err != nil {
+				t.Fatalf("example is not valid JSON: %v", err)
+			}
+			// Validate against schema.
+			sch := compschemaValidator(tt.name)
+			if err := sch.Validate(v); err != nil {
+				t.Errorf("example failed validation: %v", err)
+			}
+		})
+	}
+}
+
+func TestCompschema_ExamplesDecode(t *testing.T) {
+	t.Run("FileCitationBody", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_citation"}`)
+		result, err := DecodeFileCitationBody(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FilePath", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_path"}`)
+		result, err := DecodeFilePath(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("UrlCitationBody", func(t *testing.T) {
+		data := []byte(`{"end_index":1,"start_index":1,"title":"example","type":"url_citation","url":"example"}`)
+		result, err := DecodeUrlCitationBody(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Annotation", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_citation"}`)
+		result, err := DecodeAnnotation(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ApproximateLocation", func(t *testing.T) {
+		data := []byte(`{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`)
+		result, err := DecodeApproximateLocation(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Click", func(t *testing.T) {
+		data := []byte(`{"button":"left","type":"click","x":1,"y":1}`)
+		result, err := DecodeClick(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterFileOutput", func(t *testing.T) {
+		data := []byte(`{"files":[{}],"type":"files"}`)
+		result, err := DecodeCodeInterpreterFileOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterTextOutput", func(t *testing.T) {
+		data := []byte(`{"logs":"example","type":"logs"}`)
+		result, err := DecodeCodeInterpreterTextOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterToolOutput", func(t *testing.T) {
+		data := []byte(`{"files":[{}],"type":"files"}`)
+		result, err := DecodeCodeInterpreterToolOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CodeInterpreterToolCall", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"}`)
+		result, err := DecodeCodeInterpreterToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComparisonFilterValueBool", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data // wrapper type, skip decode
+	})
+	t.Run("ComparisonFilterValueFloat64", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data // wrapper type, skip decode
+	})
+	t.Run("ComparisonFilterValueString", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data // wrapper type, skip decode
+	})
+	t.Run("ComparisonFilterValue", func(t *testing.T) {
+		data := []byte(`true`)
+		result, err := DecodeComparisonFilterValue(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ComparisonFilter", func(t *testing.T) {
+		data := []byte(`{"key":"example","type":"eq","value":true}`)
+		result, err := DecodeComparisonFilter(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CompoundFilter", func(t *testing.T) {
+		data := []byte(`{"filters":[{}],"type":"and"}`)
+		result, err := DecodeCompoundFilter(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("DoubleClick", func(t *testing.T) {
+		data := []byte(`{"type":"double_click","x":1,"y":1}`)
+		result, err := DecodeDoubleClick(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Coordinate", func(t *testing.T) {
+		data := []byte(`{"x":1,"y":1}`)
+		result, err := DecodeCoordinate(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Drag", func(t *testing.T) {
+		data := []byte(`{"path":[{"x":1,"y":1}],"type":"drag"}`)
+		result, err := DecodeDrag(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("KeyPress", func(t *testing.T) {
+		data := []byte(`{"keys":["example"],"type":"keypress"}`)
+		result, err := DecodeKeyPress(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Move", func(t *testing.T) {
+		data := []byte(`{"type":"move","x":1,"y":1}`)
+		result, err := DecodeMove(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Screenshot", func(t *testing.T) {
+		data := []byte(`{"type":"screenshot"}`)
+		result, err := DecodeScreenshot(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Scroll", func(t *testing.T) {
+		data := []byte(`{"scroll_x":1,"scroll_y":1,"type":"scroll","x":1,"y":1}`)
+		result, err := DecodeScroll(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Type", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"type"}`)
+		result, err := DecodeType(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Wait", func(t *testing.T) {
+		data := []byte(`{"type":"wait"}`)
+		result, err := DecodeWait(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerAction", func(t *testing.T) {
+		data := []byte(`{"button":"left","type":"click","x":1,"y":1}`)
+		result, err := DecodeComputerAction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ComputerScreenshotImage", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","image_url":"example","type":"computer_screenshot"}`)
+		result, err := DecodeComputerScreenshotImage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerCallSafetyCheckParam", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","message":"example"}`)
+		result, err := DecodeComputerCallSafetyCheckParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerCallOutputItemParam", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"id_abc123","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`)
+		result, err := DecodeComputerCallOutputItemParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallSafetyCheck", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","message":"example"}`)
+		result, err := DecodeComputerToolCallSafetyCheck(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCall", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`)
+		result, err := DecodeComputerToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallOutput", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`)
+		result, err := DecodeComputerToolCallOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallOutputResource", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`)
+		result, err := DecodeComputerToolCallOutputResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerUsePreviewTool", func(t *testing.T) {
+		data := []byte(`{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`)
+		result, err := DecodeComputerUsePreviewTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Metadata", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("ServiceTier", func(t *testing.T) {
+		data := []byte(`"auto"`)
+		_ = data
+	})
+	t.Run("CreateModelResponseProperties", func(t *testing.T) {
+		data := []byte(`{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`)
+		result, err := DecodeCreateModelResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Reasoning", func(t *testing.T) {
+		data := []byte(`{"effort":"low","generate_summary":"auto","summary":"auto"}`)
+		result, err := DecodeReasoning(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ModelIdsResponses", func(t *testing.T) {
+		data := []byte(`"gpt-4.1"`)
+		_ = data
+	})
+	t.Run("RankingOptions", func(t *testing.T) {
+		data := []byte(`{"ranker":"auto","score_threshold":1}`)
+		result, err := DecodeRankingOptions(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Filters", func(t *testing.T) {
+		data := []byte(`{"key":"example","type":"eq","value":true}`)
+		result, err := DecodeFilters(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("FileSearchTool", func(t *testing.T) {
+		data := []byte(`{"filters":{"key":"example","type":"eq","value":true},"max_num_results":1,"ranking_options":{"ranker":"auto","score_threshold":1},"type":"file_search","vector_store_ids":["example"]}`)
+		result, err := DecodeFileSearchTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionTool", func(t *testing.T) {
+		data := []byte(`{"description":"example","name":"example","parameters":{"key1":{"description":"example","name":"example","parameters":{},"strict":true,"type":"function"}},"strict":true,"type":"function"}`)
+		result, err := DecodeFunctionTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("WebSearchPreviewTool", func(t *testing.T) {
+		data := []byte(`{"search_context_size":"low","type":"web_search_preview","user_location":{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}}`)
+		result, err := DecodeWebSearchPreviewTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Tool", func(t *testing.T) {
+		data := []byte(`{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`)
+		result, err := DecodeTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("InputFileContent", func(t *testing.T) {
+		data := []byte(`{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`)
+		result, err := DecodeInputFileContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputImageContent", func(t *testing.T) {
+		data := []byte(`{"detail":"low","file_id":"example","image_url":"example","type":"input_image"}`)
+		result, err := DecodeInputImageContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputTextContent", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"input_text"}`)
+		result, err := DecodeInputTextContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputContent", func(t *testing.T) {
+		data := []byte(`{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`)
+		result, err := DecodeInputContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("InputMessageContentList", func(t *testing.T) {
+		data := []byte(`[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`)
+		_ = data
+	})
+	t.Run("EasyInputMessageContentString", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data // wrapper type, skip decode
+	})
+	t.Run("EasyInputMessageContent", func(t *testing.T) {
+		data := []byte(`"example"`)
+		result, err := DecodeEasyInputMessageContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("EasyInputMessage", func(t *testing.T) {
+		data := []byte(`{"content":"example","role":"user","type":"message"}`)
+		result, err := DecodeEasyInputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FileSearchToolCall", func(t *testing.T) {
+		data := []byte(`{"id":"example","queries":["example"],"results":[{}],"status":"in_progress","type":"file_search_call"}`)
+		result, err := DecodeFileSearchToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionCallOutputItemParam", func(t *testing.T) {
+		data := []byte(`{"call_id":"id_abc123","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`)
+		result, err := DecodeFunctionCallOutputItemParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCall", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","call_id":"example","id":"example","name":"example","status":"in_progress","type":"function_call"}`)
+		result, err := DecodeFunctionToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputMessage", func(t *testing.T) {
+		data := []byte(`{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"role":"user","status":"in_progress","type":"message"}`)
+		result, err := DecodeInputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputTextContent", func(t *testing.T) {
+		data := []byte(`{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`)
+		result, err := DecodeOutputTextContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("RefusalContent", func(t *testing.T) {
+		data := []byte(`{"refusal":"example","type":"refusal"}`)
+		result, err := DecodeRefusalContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputContent", func(t *testing.T) {
+		data := []byte(`{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`)
+		result, err := DecodeOutputContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("OutputMessage", func(t *testing.T) {
+		data := []byte(`{"content":[{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}],"id":"example","role":"assistant","status":"in_progress","type":"message"}`)
+		result, err := DecodeOutputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ReasoningItem", func(t *testing.T) {
+		data := []byte(`{"id":"example","status":"in_progress","summary":[{}],"type":"reasoning"}`)
+		result, err := DecodeReasoningItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("WebSearchToolCall", func(t *testing.T) {
+		data := []byte(`{"id":"example","status":"in_progress","type":"web_search_call"}`)
+		result, err := DecodeWebSearchToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Item", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"id_abc123","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"in_progress","type":"computer_call_output"}`)
+		result, err := DecodeItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ItemReferenceParam", func(t *testing.T) {
+		data := []byte(`{"id":"example","type":"item_reference"}`)
+		result, err := DecodeItemReferenceParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputItem", func(t *testing.T) {
+		data := []byte(`{"content":"example","role":"user","type":"message"}`)
+		result, err := DecodeInputItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CreateResponseInputString", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data // wrapper type, skip decode
+	})
+	t.Run("CreateResponseInput", func(t *testing.T) {
+		data := []byte(`"example"`)
+		result, err := DecodeCreateResponseInput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ToolChoiceOptions", func(t *testing.T) {
+		data := []byte(`"none"`)
+		_ = data
+	})
+	t.Run("ToolChoiceFunction", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeToolChoiceFunction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ToolChoiceTypes", func(t *testing.T) {
+		data := []byte(`{"type":"file_search"}`)
+		result, err := DecodeToolChoiceTypes(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CreateResponseToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeCreateResponseToolChoice(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ResponseFormatJsonObject", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeResponseFormatJsonObject(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatText", func(t *testing.T) {
+		data := []byte(`{"type":"text"}`)
+		result, err := DecodeResponseFormatText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatJsonSchemaSchema", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("TextResponseFormatJsonSchema", func(t *testing.T) {
+		data := []byte(`{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`)
+		result, err := DecodeTextResponseFormatJsonSchema(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("TextResponseFormatConfiguration", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeTextResponseFormatConfiguration(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CreateResponseText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeCreateResponseText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CreateResponse", func(t *testing.T) {
+		data := []byte(`{"include":["file_search_call.results"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`)
+		result, err := DecodeCreateResponse(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Error", func(t *testing.T) {
+		data := []byte(`{"code":"example","message":"example","param":"example","type":"example"}`)
+		result, err := DecodeError(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallOutput", func(t *testing.T) {
+		data := []byte(`{"call_id":"example","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`)
+		result, err := DecodeFunctionToolCallOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallOutputResource", func(t *testing.T) {
+		data := []byte(`{"call_id":"example","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`)
+		result, err := DecodeFunctionToolCallOutputResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallResource", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","call_id":"example","id":"example","name":"example","status":"in_progress","type":"function_call"}`)
+		result, err := DecodeFunctionToolCallResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputMessageResource", func(t *testing.T) {
+		data := []byte(`{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"id":"example","role":"user","status":"in_progress","type":"message"}`)
+		result, err := DecodeInputMessageResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ItemResource", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`)
+		result, err := DecodeItemResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ModelIdsShared", func(t *testing.T) {
+		data := []byte(`"gpt-4.1"`)
+		_ = data
+	})
+	t.Run("ModelResponseProperties", func(t *testing.T) {
+		data := []byte(`{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`)
+		result, err := DecodeModelResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputItem", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`)
+		result, err := DecodeOutputItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ResponseError", func(t *testing.T) {
+		data := []byte(`{"code":"server_error","message":"example"}`)
+		result, err := DecodeResponseError(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeResponseText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseIncompleteDetails", func(t *testing.T) {
+		data := []byte(`{"reason":"example"}`)
+		result, err := DecodeResponseIncompleteDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseUsageOutputTokensDetails", func(t *testing.T) {
+		data := []byte(`{"reasoning_tokens":1}`)
+		result, err := DecodeResponseUsageOutputTokensDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseUsageInputTokensDetails", func(t *testing.T) {
+		data := []byte(`{"cached_tokens":1}`)
+		result, err := DecodeResponseUsageInputTokensDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseUsage", func(t *testing.T) {
+		data := []byte(`{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`)
+		result, err := DecodeResponseUsage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeResponseToolChoice(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("Response", func(t *testing.T) {
+		data := []byte(`{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`)
+		result, err := DecodeResponse(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.delta"}`)
+		result, err := DecodeResponseAudioDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioDoneEvent", func(t *testing.T) {
+		data := []byte(`{"type":"response.audio.done"}`)
+		result, err := DecodeResponseAudioDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioTranscriptDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.transcript.delta"}`)
+		result, err := DecodeResponseAudioTranscriptDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioTranscriptDoneEvent", func(t *testing.T) {
+		data := []byte(`{"type":"response.audio.transcript.done"}`)
+		result, err := DecodeResponseAudioTranscriptDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCodeDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","output_index":1,"type":"response.code_interpreter_call.code.delta"}`)
+		result, err := DecodeResponseCodeInterpreterCallCodeDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCodeDoneEvent", func(t *testing.T) {
+		data := []byte(`{"code":"example","output_index":1,"type":"response.code_interpreter_call.code.done"}`)
+		result, err := DecodeResponseCodeInterpreterCallCodeDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.completed"}`)
+		result, err := DecodeResponseCodeInterpreterCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.in_progress"}`)
+		result, err := DecodeResponseCodeInterpreterCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallInterpretingEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{}],"type":"files"}],"status":"in_progress","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.interpreting"}`)
+		result, err := DecodeResponseCodeInterpreterCallInterpretingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.completed"}`)
+		result, err := DecodeResponseCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseContentPartAddedEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.added"}`)
+		result, err := DecodeResponseContentPartAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseContentPartDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.done"}`)
+		result, err := DecodeResponseContentPartDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCreatedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.created"}`)
+		result, err := DecodeResponseCreatedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseErrorEvent", func(t *testing.T) {
+		data := []byte(`{"code":"example","message":"example","param":"example","type":"error"}`)
+		result, err := DecodeResponseErrorEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFailedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.failed"}`)
+		result, err := DecodeResponseFailedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.completed"}`)
+		result, err := DecodeResponseFileSearchCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.in_progress"}`)
+		result, err := DecodeResponseFileSearchCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallSearchingEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.searching"}`)
+		result, err := DecodeResponseFileSearchCallSearchingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFunctionCallArgumentsDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.delta"}`)
+		result, err := DecodeResponseFunctionCallArgumentsDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFunctionCallArgumentsDoneEvent", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.done"}`)
+		result, err := DecodeResponseFunctionCallArgumentsDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.in_progress"}`)
+		result, err := DecodeResponseInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseIncompleteEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.incomplete"}`)
+		result, err := DecodeResponseIncompleteEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseItemList", func(t *testing.T) {
+		data := []byte(`{"data":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"first_id":"example","has_more":true,"last_id":"example","object":"list"}`)
+		result, err := DecodeResponseItemList(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseOutputItemAddedEvent", func(t *testing.T) {
+		data := []byte(`{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.added"}`)
+		result, err := DecodeResponseOutputItemAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseOutputItemDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.done"}`)
+		result, err := DecodeResponseOutputItemDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponsePropertiesToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeResponsePropertiesToolChoice(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ResponsePropertiesText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeResponsePropertiesText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseProperties", func(t *testing.T) {
+		data := []byte(`{"instructions":"example","max_output_tokens":1,"model":"gpt-4.1","previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"truncation":"auto"}`)
+		result, err := DecodeResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartAddedEventPart", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"example"}`)
+		result, err := DecodeResponseReasoningSummaryPartAddedEventPart(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartAddedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"part":{"text":"example","type":"example"},"summary_index":1,"type":"response.reasoning_summary_part.added"}`)
+		result, err := DecodeResponseReasoningSummaryPartAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartDoneEventPart", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"example"}`)
+		result, err := DecodeResponseReasoningSummaryPartDoneEventPart(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"part":{"text":"example","type":"example"},"summary_index":1,"type":"response.reasoning_summary_part.done"}`)
+		result, err := DecodeResponseReasoningSummaryPartDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryTextDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","item_id":"example","output_index":1,"summary_index":1,"type":"response.reasoning_summary_text.delta"}`)
+		result, err := DecodeResponseReasoningSummaryTextDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryTextDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"summary_index":1,"text":"example","type":"response.reasoning_summary_text.done"}`)
+		result, err := DecodeResponseReasoningSummaryTextDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseRefusalDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.refusal.delta"}`)
+		result, err := DecodeResponseRefusalDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseRefusalDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"refusal":"example","type":"response.refusal.done"}`)
+		result, err := DecodeResponseRefusalDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextAnnotationDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"annotation":{"file_id":"example","index":1,"type":"file_citation"},"annotation_index":1,"content_index":1,"item_id":"example","output_index":1,"type":"response.output_text.annotation.added"}`)
+		result, err := DecodeResponseTextAnnotationDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.output_text.delta"}`)
+		result, err := DecodeResponseTextDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"text":"example","type":"response.output_text.done"}`)
+		result, err := DecodeResponseTextDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.completed"}`)
+		result, err := DecodeResponseWebSearchCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.in_progress"}`)
+		result, err := DecodeResponseWebSearchCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallSearchingEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.searching"}`)
+		result, err := DecodeResponseWebSearchCallSearchingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseStreamEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.delta"}`)
+		result, err := DecodeResponseStreamEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("VectorStoreFileAttributes", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
 }
 

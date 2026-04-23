@@ -16,12 +16,12 @@ type Annotation interface {
 }
 
 func (*FileCitationBody) isAnnotation() {}
-func (*UrlCitationBody) isAnnotation() {}
-func (*FilePath) isAnnotation() {}
+func (*UrlCitationBody) isAnnotation()  {}
+func (*FilePath) isAnnotation()         {}
 
 func (x *FileCitationBody) DiscriminatorValue() string { return string(x.Type) }
-func (x *UrlCitationBody) DiscriminatorValue() string { return string(x.Type) }
-func (x *FilePath) DiscriminatorValue() string { return string(x.Type) }
+func (x *UrlCitationBody) DiscriminatorValue() string  { return string(x.Type) }
+func (x *FilePath) DiscriminatorValue() string         { return string(x.Type) }
 
 // AnnotationFromFileCitationBody wraps a *FileCitationBody as a Annotation union value.
 func AnnotationFromFileCitationBody(v *FileCitationBody) Annotation {
@@ -71,7 +71,6 @@ func UnmarshalAnnotation(data []byte) (Annotation, error) {
 	}
 }
 
-
 type ApproximateLocation struct {
 	// The type of location approximation. Always 'approximate'.
 	Type ApproximateLocationType `json:"type" jsonschema:"description=The type of location approximation. Always 'approximate'."`
@@ -98,8 +97,8 @@ type Click struct {
 	X int64 `json:"x" jsonschema:"description=The x-coordinate where the click occurred."`
 	// The y-coordinate where the click occurred.
 	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the click occurred."`
-	// Specifies the event type. For a click action, this property is 
-// always set to 'click'.
+	// Specifies the event type. For a click action, this property is
+	// always set to 'click'.
 	Type ClickType `json:"type" jsonschema:"description=Specifies the event type. For a click action, this property is always set to 'click'."`
 	// Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'.
 	Button ClickButton `json:"button" jsonschema:"description=Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'."`
@@ -109,14 +108,14 @@ type Click struct {
 type ClickButton string
 
 const (
-	ClickButtonLeft ClickButton = "left"
-	ClickButtonRight ClickButton = "right"
-	ClickButtonWheel ClickButton = "wheel"
-	ClickButtonBack ClickButton = "back"
+	ClickButtonLeft    ClickButton = "left"
+	ClickButtonRight   ClickButton = "right"
+	ClickButtonWheel   ClickButton = "wheel"
+	ClickButtonBack    ClickButton = "back"
 	ClickButtonForward ClickButton = "forward"
 )
 
-// ClickType Specifies the event type. For a click action, this property is 
+// ClickType Specifies the event type. For a click action, this property is
 // always set to 'click'.
 type ClickType string
 
@@ -127,8 +126,8 @@ const (
 // CodeInterpreterFileOutput The output of a code interpreter tool call that is a file.
 type CodeInterpreterFileOutput struct {
 	// The type of the code interpreter file output. Always 'files'.
-	Type CodeInterpreterFileOutputType `json:"type" jsonschema:"description=The type of the code interpreter file output. Always 'files'."`
-	Files []any `json:"files"`
+	Type  CodeInterpreterFileOutputType `json:"type" jsonschema:"description=The type of the code interpreter file output. Always 'files'."`
+	Files []any                         `json:"files"`
 }
 
 // CodeInterpreterFileOutputType The type of the code interpreter file output. Always 'files'.
@@ -171,9 +170,9 @@ type CodeInterpreterToolCall struct {
 type CodeInterpreterToolCallStatus string
 
 const (
-	CodeInterpreterToolCallStatusInProgress CodeInterpreterToolCallStatus = "in_progress"
+	CodeInterpreterToolCallStatusInProgress   CodeInterpreterToolCallStatus = "in_progress"
 	CodeInterpreterToolCallStatusInterpreting CodeInterpreterToolCallStatus = "interpreting"
-	CodeInterpreterToolCallStatusCompleted CodeInterpreterToolCallStatus = "completed"
+	CodeInterpreterToolCallStatusCompleted    CodeInterpreterToolCallStatus = "completed"
 )
 
 // CodeInterpreterToolCallType The type of the code interpreter tool call. Always 'code_interpreter_call'.
@@ -234,16 +233,15 @@ func UnmarshalCodeInterpreterToolOutput(data []byte) (CodeInterpreterToolOutput,
 	}
 }
 
-
 // ComparisonFilter A filter used to compare a specified attribute key to a given value using a defined comparison operation.
 type ComparisonFilter struct {
 	// Specifies the comparison operator: 'eq', 'ne', 'gt', 'gte', 'lt', 'lte'.
-// - 'eq': equals
-// - 'ne': not equal
-// - 'gt': greater than
-// - 'gte': greater than or equal
-// - 'lt': less than
-// - 'lte': less than or equal
+	// - 'eq': equals
+	// - 'ne': not equal
+	// - 'gt': greater than
+	// - 'gte': greater than or equal
+	// - 'lt': less than
+	// - 'lte': less than or equal
 	Type ComparisonFilterType `json:"type" jsonschema:"description=Specifies the comparison operator: 'eq', 'ne', 'gt', 'gte', 'lt', 'lte'. - 'eq': equals - 'ne': not equal - 'gt': greater than - 'gte': greater than or equal - 'lt': less than - 'lte': less than or equal"`
 	// The key to compare against the value.
 	Key string `json:"key" jsonschema:"description=The key to compare against the value."`
@@ -261,11 +259,11 @@ type ComparisonFilter struct {
 type ComparisonFilterType string
 
 const (
-	ComparisonFilterTypeEq ComparisonFilterType = "eq"
-	ComparisonFilterTypeNe ComparisonFilterType = "ne"
-	ComparisonFilterTypeGt ComparisonFilterType = "gt"
+	ComparisonFilterTypeEq  ComparisonFilterType = "eq"
+	ComparisonFilterTypeNe  ComparisonFilterType = "ne"
+	ComparisonFilterTypeGt  ComparisonFilterType = "gt"
 	ComparisonFilterTypeGte ComparisonFilterType = "gte"
-	ComparisonFilterTypeLt ComparisonFilterType = "lt"
+	ComparisonFilterTypeLt  ComparisonFilterType = "lt"
 	ComparisonFilterTypeLte ComparisonFilterType = "lte"
 )
 
@@ -276,17 +274,19 @@ type ComparisonFilterValue interface {
 	isComparisonFilterValue()
 }
 
-
 // ComparisonFilterValueString wraps a string value as a ComparisonFilterValue variant.
-type ComparisonFilterValueString struct { Value string }
+type ComparisonFilterValueString struct{ Value string }
+
 func (*ComparisonFilterValueString) isComparisonFilterValue() {}
 
 // ComparisonFilterValueFloat64 wraps a float64 value as a ComparisonFilterValue variant.
-type ComparisonFilterValueFloat64 struct { Value float64 }
+type ComparisonFilterValueFloat64 struct{ Value float64 }
+
 func (*ComparisonFilterValueFloat64) isComparisonFilterValue() {}
 
 // ComparisonFilterValueBool wraps a bool value as a ComparisonFilterValue variant.
-type ComparisonFilterValueBool struct { Value bool }
+type ComparisonFilterValueBool struct{ Value bool }
+
 func (*ComparisonFilterValueBool) isComparisonFilterValue() {}
 
 func (w ComparisonFilterValueString) MarshalJSON() ([]byte, error) {
@@ -351,7 +351,6 @@ func UnmarshalComparisonFilterValue(data []byte) (ComparisonFilterValue, error) 
 	return nil, fmt.Errorf("no matching variant for ComparisonFilterValue")
 }
 
-
 // CompoundFilter Combine multiple filters using 'and' or 'or'.
 type CompoundFilter struct {
 	// Array of filters to combine. Items can be 'ComparisonFilter' or 'CompoundFilter'.
@@ -365,7 +364,7 @@ type CompoundFilterType string
 
 const (
 	CompoundFilterTypeAnd CompoundFilterType = "and"
-	CompoundFilterTypeOr CompoundFilterType = "or"
+	CompoundFilterTypeOr  CompoundFilterType = "or"
 )
 
 // Discriminated by "type" field.
@@ -376,25 +375,25 @@ type ComputerAction interface {
 	DiscriminatorValue() string
 }
 
-func (*Click) isComputerAction() {}
+func (*Click) isComputerAction()       {}
 func (*DoubleClick) isComputerAction() {}
-func (*Drag) isComputerAction() {}
-func (*KeyPress) isComputerAction() {}
-func (*Move) isComputerAction() {}
-func (*Screenshot) isComputerAction() {}
-func (*Scroll) isComputerAction() {}
-func (*Type) isComputerAction() {}
-func (*Wait) isComputerAction() {}
+func (*Drag) isComputerAction()        {}
+func (*KeyPress) isComputerAction()    {}
+func (*Move) isComputerAction()        {}
+func (*Screenshot) isComputerAction()  {}
+func (*Scroll) isComputerAction()      {}
+func (*Type) isComputerAction()        {}
+func (*Wait) isComputerAction()        {}
 
-func (x *Click) DiscriminatorValue() string { return string(x.Type) }
+func (x *Click) DiscriminatorValue() string       { return string(x.Type) }
 func (x *DoubleClick) DiscriminatorValue() string { return string(x.Type) }
-func (x *Drag) DiscriminatorValue() string { return string(x.Type) }
-func (x *KeyPress) DiscriminatorValue() string { return string(x.Type) }
-func (x *Move) DiscriminatorValue() string { return string(x.Type) }
-func (x *Screenshot) DiscriminatorValue() string { return string(x.Type) }
-func (x *Scroll) DiscriminatorValue() string { return string(x.Type) }
-func (x *Type) DiscriminatorValue() string { return string(x.Type) }
-func (x *Wait) DiscriminatorValue() string { return string(x.Type) }
+func (x *Drag) DiscriminatorValue() string        { return string(x.Type) }
+func (x *KeyPress) DiscriminatorValue() string    { return string(x.Type) }
+func (x *Move) DiscriminatorValue() string        { return string(x.Type) }
+func (x *Screenshot) DiscriminatorValue() string  { return string(x.Type) }
+func (x *Scroll) DiscriminatorValue() string      { return string(x.Type) }
+func (x *Type) DiscriminatorValue() string        { return string(x.Type) }
+func (x *Wait) DiscriminatorValue() string        { return string(x.Type) }
 
 // ComputerActionFromClick wraps a *Click as a ComputerAction union value.
 func ComputerActionFromClick(v *Click) ComputerAction {
@@ -510,7 +509,6 @@ func UnmarshalComputerAction(data []byte) (ComputerAction, error) {
 	}
 }
 
-
 // ComputerCallOutputItemParam The output of a computer tool call.
 type ComputerCallOutputItemParam struct {
 	// The ID of the computer tool call output.
@@ -518,8 +516,8 @@ type ComputerCallOutputItemParam struct {
 	// The ID of the computer tool call that produced the output.
 	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The ID of the computer tool call that produced the output."`
 	// The type of the computer tool call output. Always 'computer_call_output'.
-	Type ComputerCallOutputItemParamType `json:"type" jsonschema:"description=The type of the computer tool call output. Always 'computer_call_output'."`
-	Output ComputerScreenshotImage `json:"output"`
+	Type   ComputerCallOutputItemParamType `json:"type" jsonschema:"description=The type of the computer tool call output. Always 'computer_call_output'."`
+	Output ComputerScreenshotImage         `json:"output"`
 	// The safety checks reported by the API that have been acknowledged by the developer.
 	AcknowledgedSafetyChecks []ComputerCallSafetyCheckParam `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
 	// The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API.
@@ -531,7 +529,7 @@ type ComputerCallOutputItemParamStatus string
 
 const (
 	ComputerCallOutputItemParamStatusInProgress ComputerCallOutputItemParamStatus = "in_progress"
-	ComputerCallOutputItemParamStatusCompleted ComputerCallOutputItemParamStatus = "completed"
+	ComputerCallOutputItemParamStatusCompleted  ComputerCallOutputItemParamStatus = "completed"
 	ComputerCallOutputItemParamStatusIncomplete ComputerCallOutputItemParamStatus = "incomplete"
 )
 
@@ -554,8 +552,8 @@ type ComputerCallSafetyCheckParam struct {
 
 // ComputerScreenshotImage A computer screenshot image used with the computer use tool.
 type ComputerScreenshotImage struct {
-	// Specifies the event type. For a computer screenshot, this property is 
-// always set to 'computer_screenshot'.
+	// Specifies the event type. For a computer screenshot, this property is
+	// always set to 'computer_screenshot'.
 	Type ComputerScreenshotImageType `json:"type" jsonschema:"description=Specifies the event type. For a computer screenshot, this property is always set to 'computer_screenshot'."`
 	// The URL of the screenshot image.
 	ImageURL *string `json:"image_url,omitempty" jsonschema:"description=The URL of the screenshot image."`
@@ -563,7 +561,7 @@ type ComputerScreenshotImage struct {
 	FileID *string `json:"file_id,omitempty" jsonschema:"description=The identifier of an uploaded file that contains the screenshot."`
 }
 
-// ComputerScreenshotImageType Specifies the event type. For a computer screenshot, this property is 
+// ComputerScreenshotImageType Specifies the event type. For a computer screenshot, this property is
 // always set to 'computer_screenshot'.
 type ComputerScreenshotImageType string
 
@@ -571,18 +569,18 @@ const (
 	ComputerScreenshotImageTypeComputerScreenshot ComputerScreenshotImageType = "computer_screenshot"
 )
 
-// ComputerToolCall A tool call to a computer use tool. See the 
+// ComputerToolCall A tool call to a computer use tool. See the
 // [computer use guide](/docs/guides/tools-computer-use) for more information.
 type ComputerToolCall struct {
 	// The unique ID of the computer call.
 	ID string `json:"id" jsonschema:"description=The unique ID of the computer call."`
 	// An identifier used when responding to the tool call with output.
-	CallID string `json:"call_id" jsonschema:"description=An identifier used when responding to the tool call with output."`
+	CallID string         `json:"call_id" jsonschema:"description=An identifier used when responding to the tool call with output."`
 	Action ComputerAction `json:"action"`
 	// The pending safety checks for the computer call.
 	PendingSafetyChecks []ComputerToolCallSafetyCheck `json:"pending_safety_checks" jsonschema:"description=The pending safety checks for the computer call."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status ComputerToolCallStatus `json:"status" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	// The type of the computer call. Always 'computer_call'.
 	Type ComputerToolCallType `json:"type" jsonschema:"description=The type of the computer call. Always 'computer_call'."`
@@ -596,12 +594,12 @@ type ComputerToolCallOutput struct {
 	ID *string `json:"id,omitempty" jsonschema:"description=The ID of the computer tool call output."`
 	// The ID of the computer tool call that produced the output.
 	CallID string `json:"call_id" jsonschema:"description=The ID of the computer tool call that produced the output."`
-	// The safety checks reported by the API that have been acknowledged by the 
-// developer.
+	// The safety checks reported by the API that have been acknowledged by the
+	// developer.
 	AcknowledgedSafetyChecks []ComputerToolCallSafetyCheck `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
-	Output ComputerScreenshotImage `json:"output"`
+	Output                   ComputerScreenshotImage       `json:"output"`
 	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
+	// 'incomplete'. Populated when input items are returned via API.
 	Status *ComputerToolCallOutputStatus `json:"status,omitempty" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
 }
 
@@ -613,12 +611,12 @@ type ComputerToolCallOutputResource struct {
 	ID string `json:"id" jsonschema:"description=The ID of the computer tool call output."`
 	// The ID of the computer tool call that produced the output.
 	CallID string `json:"call_id" jsonschema:"description=The ID of the computer tool call that produced the output."`
-	// The safety checks reported by the API that have been acknowledged by the 
-// developer.
+	// The safety checks reported by the API that have been acknowledged by the
+	// developer.
 	AcknowledgedSafetyChecks []ComputerToolCallSafetyCheck `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
-	Output ComputerScreenshotImage `json:"output"`
+	Output                   ComputerScreenshotImage       `json:"output"`
 	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
+	// 'incomplete'. Populated when input items are returned via API.
 	Status *ComputerToolCallOutputResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
 }
 
@@ -628,7 +626,7 @@ type ComputerToolCallOutputResourceStatus string
 
 const (
 	ComputerToolCallOutputResourceStatusInProgress ComputerToolCallOutputResourceStatus = "in_progress"
-	ComputerToolCallOutputResourceStatusCompleted ComputerToolCallOutputResourceStatus = "completed"
+	ComputerToolCallOutputResourceStatusCompleted  ComputerToolCallOutputResourceStatus = "completed"
 	ComputerToolCallOutputResourceStatusIncomplete ComputerToolCallOutputResourceStatus = "incomplete"
 )
 
@@ -645,7 +643,7 @@ type ComputerToolCallOutputStatus string
 
 const (
 	ComputerToolCallOutputStatusInProgress ComputerToolCallOutputStatus = "in_progress"
-	ComputerToolCallOutputStatusCompleted ComputerToolCallOutputStatus = "completed"
+	ComputerToolCallOutputStatusCompleted  ComputerToolCallOutputStatus = "completed"
 	ComputerToolCallOutputStatusIncomplete ComputerToolCallOutputStatus = "incomplete"
 )
 
@@ -672,7 +670,7 @@ type ComputerToolCallStatus string
 
 const (
 	ComputerToolCallStatusInProgress ComputerToolCallStatus = "in_progress"
-	ComputerToolCallStatusCompleted ComputerToolCallStatus = "completed"
+	ComputerToolCallStatusCompleted  ComputerToolCallStatus = "completed"
 	ComputerToolCallStatusIncomplete ComputerToolCallStatus = "incomplete"
 )
 
@@ -700,9 +698,9 @@ type ComputerUsePreviewToolEnvironment string
 
 const (
 	ComputerUsePreviewToolEnvironmentWindows ComputerUsePreviewToolEnvironment = "windows"
-	ComputerUsePreviewToolEnvironmentMac ComputerUsePreviewToolEnvironment = "mac"
-	ComputerUsePreviewToolEnvironmentLinux ComputerUsePreviewToolEnvironment = "linux"
-	ComputerUsePreviewToolEnvironmentUbuntu ComputerUsePreviewToolEnvironment = "ubuntu"
+	ComputerUsePreviewToolEnvironmentMac     ComputerUsePreviewToolEnvironment = "mac"
+	ComputerUsePreviewToolEnvironmentLinux   ComputerUsePreviewToolEnvironment = "linux"
+	ComputerUsePreviewToolEnvironmentUbuntu  ComputerUsePreviewToolEnvironment = "ubuntu"
 	ComputerUsePreviewToolEnvironmentBrowser ComputerUsePreviewToolEnvironment = "browser"
 )
 
@@ -724,100 +722,100 @@ type Coordinate struct {
 type CreateModelResponseProperties struct {
 	Metadata *Metadata `json:"metadata,omitempty"`
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
+	// We generally recommend altering this or 'top_p' but not both.
 	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
 	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or 'temperature' but not both.
 	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
 	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
+	User        *string      `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
 	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
 }
 
 type CreateResponse struct {
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
+	// We generally recommend altering this or 'top_p' but not both.
 	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
 	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
-	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
+	// create multi-turn conversations. Learn more about
+	// [conversation state](/docs/guides/conversation-state).
+	PreviousResponseID *string    `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
+	Reasoning          *Reasoning `json:"reasoning,omitempty"`
 	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
 	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
 	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
+	//
+	// When using along with 'previous_response_id', the instructions from a previous
+	// response will not be carried over to the next response. This makes it simple
+	// to swap out system (or developer) messages in new responses.
 	Instructions *string `json:"instructions,omitempty" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
 	// Whether to store the generated model response for later retrieval via
-// API.
+	// API.
 	Store *bool `json:"store,omitempty" jsonschema:"description=Whether to store the generated model response for later retrieval via API."`
 	// If set to true, the model response data will be streamed to the client
-// as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
-// See the [Streaming section below](/docs/api-reference/responses-streaming)
-// for more information.
-	Stream *bool `json:"stream,omitempty" jsonschema:"description=If set to true, the model response data will be streamed to the client as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format). See the [Streaming section below](/docs/api-reference/responses-streaming) for more information."`
-	Model ModelIdsResponses `json:"model"`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
+	// as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
+	// See the [Streaming section below](/docs/api-reference/responses-streaming)
+	// for more information.
+	Stream *bool             `json:"stream,omitempty" jsonschema:"description=If set to true, the model response data will be streamed to the client as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format). See the [Streaming section below](/docs/api-reference/responses-streaming) for more information."`
+	Model  ModelIdsResponses `json:"model"`
+	// An array of tools the model may call while generating a response. You
+	// can specify which tool to use by setting the 'tool_choice' parameter.
+	//
+	// The two categories of tools you can provide the model are:
+	//
+	// - **Built-in tools**: Tools that are provided by OpenAI that extend the
+	//   model's capabilities, like [web search](/docs/guides/tools-web-search)
+	//   or [file search](/docs/guides/tools-file-search). Learn more about
+	//   [built-in tools](/docs/guides/tools).
+	// - **Function calls (custom tools)**: Functions that are defined by you,
+	//   enabling the model to call your own code. Learn more about
+	//   [function calling](/docs/guides/function-calling).
 	Tools []Tool `json:"tools,omitempty" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
 	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+	// - 'auto': If the context of this response and previous ones exceeds
+	//   the model's context window size, the model will truncate the
+	//   response to fit the context window by dropping input items in the
+	//   middle of the conversation.
+	// - 'disabled' (default): If a model response will exceed the context window
+	//   size for a model, the request will fail with a 400 error.
 	Truncation *CreateResponseTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
 	// Text, image, or file inputs to the model, used to generate a response.
-// 
-// Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Image inputs](/docs/guides/images)
-// - [File inputs](/docs/guides/pdf-files)
-// - [Conversation state](/docs/guides/conversation-state)
-// - [Function calling](/docs/guides/function-calling)
+	//
+	// Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Image inputs](/docs/guides/images)
+	// - [File inputs](/docs/guides/pdf-files)
+	// - [Conversation state](/docs/guides/conversation-state)
+	// - [Function calling](/docs/guides/function-calling)
 	Input CreateResponseInput `json:"input" jsonschema:"description=Text, image, or file inputs to the model, used to generate a response. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Image inputs](/docs/guides/images) - [File inputs](/docs/guides/pdf-files) - [Conversation state](/docs/guides/conversation-state) - [Function calling](/docs/guides/function-calling)"`
 	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-	ToolChoice CreateResponseToolChoice `json:"tool_choice,omitempty" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
-	Metadata *Metadata `json:"metadata,omitempty"`
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
+	// a response. See the 'tools' parameter to see how to specify which tools
+	// the model can call.
+	ToolChoice  CreateResponseToolChoice `json:"tool_choice,omitempty" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
+	Metadata    *Metadata                `json:"metadata,omitempty"`
+	ServiceTier *ServiceTier             `json:"service_tier,omitempty"`
 	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
+	// text or structured JSON data. Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Structured Outputs](/docs/guides/structured-outputs)
 	Text *CreateResponseText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
 	// Specify additional output data to include in the model response. Currently
-// supported values are:
-// - 'file_search_call.results': Include the search results of
-//   the file search tool call.
-// - 'message.input_image.image_url': Include image urls from the input message.
-// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
+	// supported values are:
+	// - 'file_search_call.results': Include the search results of
+	//   the file search tool call.
+	// - 'message.input_image.image_url': Include image urls from the input message.
+	// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
 	Include []Includable `json:"include,omitempty" jsonschema:"description=Specify additional output data to include in the model response. Currently supported values are: - 'file_search_call.results': Include the search results of the file search tool call. - 'message.input_image.image_url': Include image urls from the input message. - 'computer_call_output.output.image_url': Include image urls from the computer call output."`
 	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or 'temperature' but not both.
 	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
 	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
 	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
@@ -826,7 +824,7 @@ type CreateResponse struct {
 }
 
 // CreateResponseInput Text, image, or file inputs to the model, used to generate a response.
-// 
+//
 // Learn more:
 // - [Text inputs and outputs](/docs/guides/text)
 // - [Image inputs](/docs/guides/images)
@@ -839,13 +837,14 @@ type CreateResponseInput interface {
 	isCreateResponseInput()
 }
 
-
 // CreateResponseInputString wraps a string value as a CreateResponseInput variant.
-type CreateResponseInputString struct { Value string }
+type CreateResponseInputString struct{ Value string }
+
 func (*CreateResponseInputString) isCreateResponseInput() {}
 
 // CreateResponseInputSliceInputItem wraps a []InputItem value as a CreateResponseInput variant.
-type CreateResponseInputSliceInputItem struct { Value []InputItem }
+type CreateResponseInputSliceInputItem struct{ Value []InputItem }
+
 func (*CreateResponseInputSliceInputItem) isCreateResponseInput() {}
 
 func (w CreateResponseInputString) MarshalJSON() ([]byte, error) {
@@ -891,7 +890,6 @@ func UnmarshalCreateResponseInput(data []byte) (CreateResponseInput, error) {
 	return nil, fmt.Errorf("no matching variant for CreateResponseInput")
 }
 
-
 // CreateResponseText Configuration options for a text response from the model. Can be plain
 // text or structured JSON data. Learn more:
 // - [Text inputs and outputs](/docs/guides/text)
@@ -911,17 +909,19 @@ type CreateResponseToolChoice interface {
 	DiscriminatorValue() string
 }
 
-
 // CreateResponseToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a CreateResponseToolChoice variant.
-type CreateResponseToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
-func (*CreateResponseToolChoiceToolChoiceOptions) isCreateResponseToolChoice() {}
-func (*ToolChoiceTypes) isCreateResponseToolChoice() {}
-func (*ToolChoiceFunction) isCreateResponseToolChoice() {}
+type CreateResponseToolChoiceToolChoiceOptions struct{ Value ToolChoiceOptions }
 
-func (x *ToolChoiceTypes) DiscriminatorValue() string { return string(x.Type) }
+func (*CreateResponseToolChoiceToolChoiceOptions) isCreateResponseToolChoice() {}
+func (*ToolChoiceTypes) isCreateResponseToolChoice()                           {}
+func (*ToolChoiceFunction) isCreateResponseToolChoice()                        {}
+
+func (x *ToolChoiceTypes) DiscriminatorValue() string    { return string(x.Type) }
 func (x *ToolChoiceFunction) DiscriminatorValue() string { return string(x.Type) }
 
-func (w *CreateResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
+func (w *CreateResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string {
+	return fmt.Sprintf("%v", w.Value)
+}
 func (w CreateResponseToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(w.Value)
 }
@@ -972,25 +972,24 @@ func UnmarshalCreateResponseToolChoice(data []byte) (CreateResponseToolChoice, e
 	}
 }
 
-
 // CreateResponseTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+//   - 'auto': If the context of this response and previous ones exceeds
+//     the model's context window size, the model will truncate the
+//     response to fit the context window by dropping input items in the
+//     middle of the conversation.
+//   - 'disabled' (default): If a model response will exceed the context window
+//     size for a model, the request will fail with a 400 error.
 type CreateResponseTruncation string
 
 const (
-	CreateResponseTruncationAuto CreateResponseTruncation = "auto"
+	CreateResponseTruncationAuto     CreateResponseTruncation = "auto"
 	CreateResponseTruncationDisabled CreateResponseTruncation = "disabled"
 )
 
 // DoubleClick A double click action.
 type DoubleClick struct {
-	// Specifies the event type. For a double click action, this property is 
-// always set to 'double_click'.
+	// Specifies the event type. For a double click action, this property is
+	// always set to 'double_click'.
 	Type DoubleClickType `json:"type" jsonschema:"description=Specifies the event type. For a double click action, this property is always set to 'double_click'."`
 	// The x-coordinate where the double click occurred.
 	X int64 `json:"x" jsonschema:"description=The x-coordinate where the double click occurred."`
@@ -998,7 +997,7 @@ type DoubleClick struct {
 	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the double click occurred."`
 }
 
-// DoubleClickType Specifies the event type. For a double click action, this property is 
+// DoubleClickType Specifies the event type. For a double click action, this property is
 // always set to 'double_click'.
 type DoubleClickType string
 
@@ -1008,21 +1007,21 @@ const (
 
 // Drag A drag action.
 type Drag struct {
-	// Specifies the event type. For a drag action, this property is 
-// always set to 'drag'.
+	// Specifies the event type. For a drag action, this property is
+	// always set to 'drag'.
 	Type DragType `json:"type" jsonschema:"description=Specifies the event type. For a drag action, this property is always set to 'drag'."`
 	// An array of coordinates representing the path of the drag action. Coordinates will appear as an array
-// of objects, eg
-// '''
-// [
-//   { x: 100, y: 200 },
-//   { x: 200, y: 300 }
-// ]
-// '''
+	// of objects, eg
+	// '''
+	// [
+	//   { x: 100, y: 200 },
+	//   { x: 200, y: 300 }
+	// ]
+	// '''
 	Path []Coordinate `json:"path" jsonschema:"description=An array of coordinates representing the path of the drag action. Coordinates will appear as an array of objects, eg ''' [ { x: 100, y: 200 }, { x: 200, y: 300 } ] '''"`
 }
 
-// DragType Specifies the event type. For a drag action, this property is 
+// DragType Specifies the event type. For a drag action, this property is
 // always set to 'drag'.
 type DragType string
 
@@ -1037,12 +1036,12 @@ const (
 // interactions.
 type EasyInputMessage struct {
 	// Text, image, or audio input to the model, used to generate a response.
-// Can also contain previous assistant responses.
+	// Can also contain previous assistant responses.
 	Content EasyInputMessageContent `json:"content" jsonschema:"description=Text, image, or audio input to the model, used to generate a response. Can also contain previous assistant responses."`
 	// The type of the message input. Always 'message'.
 	Type *EasyInputMessageType `json:"type,omitempty" jsonschema:"description=The type of the message input. Always 'message'."`
 	// The role of the message input. One of 'user', 'assistant', 'system', or
-// 'developer'.
+	// 'developer'.
 	Role EasyInputMessageRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'assistant', 'system', or 'developer'."`
 }
 
@@ -1054,13 +1053,14 @@ type EasyInputMessageContent interface {
 	isEasyInputMessageContent()
 }
 
-
 // EasyInputMessageContentString wraps a string value as a EasyInputMessageContent variant.
-type EasyInputMessageContentString struct { Value string }
+type EasyInputMessageContentString struct{ Value string }
+
 func (*EasyInputMessageContentString) isEasyInputMessageContent() {}
 
 // EasyInputMessageContentInputMessageContentList wraps a InputMessageContentList value as a EasyInputMessageContent variant.
-type EasyInputMessageContentInputMessageContentList struct { Value InputMessageContentList }
+type EasyInputMessageContentInputMessageContentList struct{ Value InputMessageContentList }
+
 func (*EasyInputMessageContentInputMessageContentList) isEasyInputMessageContent() {}
 
 func (w EasyInputMessageContentString) MarshalJSON() ([]byte, error) {
@@ -1106,15 +1106,14 @@ func UnmarshalEasyInputMessageContent(data []byte) (EasyInputMessageContent, err
 	return nil, fmt.Errorf("no matching variant for EasyInputMessageContent")
 }
 
-
 // EasyInputMessageRole The role of the message input. One of 'user', 'assistant', 'system', or
 // 'developer'.
 type EasyInputMessageRole string
 
 const (
-	EasyInputMessageRoleUser EasyInputMessageRole = "user"
+	EasyInputMessageRoleUser      EasyInputMessageRole = "user"
 	EasyInputMessageRoleAssistant EasyInputMessageRole = "assistant"
-	EasyInputMessageRoleSystem EasyInputMessageRole = "system"
+	EasyInputMessageRoleSystem    EasyInputMessageRole = "system"
 	EasyInputMessageRoleDeveloper EasyInputMessageRole = "developer"
 )
 
@@ -1126,10 +1125,10 @@ const (
 )
 
 type Error struct {
-	Code *string `json:"code"`
-	Message string `json:"message"`
-	Param *string `json:"param"`
-	Type string `json:"type"`
+	Code    *string `json:"code"`
+	Message string  `json:"message"`
+	Param   *string `json:"param"`
+	Type    string  `json:"type"`
 }
 
 // FileCitationBody A citation to a file.
@@ -1173,20 +1172,20 @@ type FileSearchTool struct {
 	// The IDs of the vector stores to search.
 	VectorStoreIds []string `json:"vector_store_ids" jsonschema:"description=The IDs of the vector stores to search."`
 	// The maximum number of results to return. This number should be between 1 and 50 inclusive.
-	MaxNumResults *int64 `json:"max_num_results,omitempty" jsonschema:"description=The maximum number of results to return. This number should be between 1 and 50 inclusive."`
+	MaxNumResults  *int64          `json:"max_num_results,omitempty" jsonschema:"description=The maximum number of results to return. This number should be between 1 and 50 inclusive."`
 	RankingOptions *RankingOptions `json:"ranking_options,omitempty"`
-	Filters Filters `json:"filters,omitempty"`
+	Filters        Filters         `json:"filters,omitempty"`
 }
 
-// FileSearchToolCall The results of a file search tool call. See the 
+// FileSearchToolCall The results of a file search tool call. See the
 // [file search guide](/docs/guides/tools-file-search) for more information.
 type FileSearchToolCall struct {
 	// The unique ID of the file search tool call.
 	ID string `json:"id" jsonschema:"description=The unique ID of the file search tool call."`
 	// The type of the file search tool call. Always 'file_search_call'.
 	Type FileSearchToolCallType `json:"type" jsonschema:"description=The type of the file search tool call. Always 'file_search_call'."`
-	// The status of the file search tool call. One of 'in_progress', 
-// 'searching', 'incomplete' or 'failed',
+	// The status of the file search tool call. One of 'in_progress',
+	// 'searching', 'incomplete' or 'failed',
 	Status FileSearchToolCallStatus `json:"status" jsonschema:"description=The status of the file search tool call. One of 'in_progress', 'searching', 'incomplete' or 'failed',"`
 	// The queries used to search for files.
 	Queries []string `json:"queries" jsonschema:"description=The queries used to search for files."`
@@ -1194,16 +1193,16 @@ type FileSearchToolCall struct {
 	Results []any `json:"results,omitempty" jsonschema:"description=The results of the file search tool call."`
 }
 
-// FileSearchToolCallStatus The status of the file search tool call. One of 'in_progress', 
+// FileSearchToolCallStatus The status of the file search tool call. One of 'in_progress',
 // 'searching', 'incomplete' or 'failed',
 type FileSearchToolCallStatus string
 
 const (
 	FileSearchToolCallStatusInProgress FileSearchToolCallStatus = "in_progress"
-	FileSearchToolCallStatusSearching FileSearchToolCallStatus = "searching"
-	FileSearchToolCallStatusCompleted FileSearchToolCallStatus = "completed"
+	FileSearchToolCallStatusSearching  FileSearchToolCallStatus = "searching"
+	FileSearchToolCallStatusCompleted  FileSearchToolCallStatus = "completed"
 	FileSearchToolCallStatusIncomplete FileSearchToolCallStatus = "incomplete"
-	FileSearchToolCallStatusFailed FileSearchToolCallStatus = "failed"
+	FileSearchToolCallStatusFailed     FileSearchToolCallStatus = "failed"
 )
 
 // FileSearchToolCallType The type of the file search tool call. Always 'file_search_call'.
@@ -1229,10 +1228,10 @@ type Filters interface {
 }
 
 func (*ComparisonFilter) isFilters() {}
-func (*CompoundFilter) isFilters() {}
+func (*CompoundFilter) isFilters()   {}
 
 func (x *ComparisonFilter) DiscriminatorValue() string { return string(x.Type) }
-func (x *CompoundFilter) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompoundFilter) DiscriminatorValue() string   { return string(x.Type) }
 
 // FiltersFromComparisonFilter wraps a *ComparisonFilter as a Filters union value.
 func FiltersFromComparisonFilter(v *ComparisonFilter) Filters {
@@ -1271,7 +1270,6 @@ func UnmarshalFilters(data []byte) (Filters, error) {
 	}
 }
 
-
 // FunctionCallOutputItemParam The output of a function tool call.
 type FunctionCallOutputItemParam struct {
 	// A JSON string of the output of the function tool call.
@@ -1291,7 +1289,7 @@ type FunctionCallOutputItemParamStatus string
 
 const (
 	FunctionCallOutputItemParamStatusInProgress FunctionCallOutputItemParamStatus = "in_progress"
-	FunctionCallOutputItemParamStatusCompleted FunctionCallOutputItemParamStatus = "completed"
+	FunctionCallOutputItemParamStatusCompleted  FunctionCallOutputItemParamStatus = "completed"
 	FunctionCallOutputItemParamStatusIncomplete FunctionCallOutputItemParamStatus = "incomplete"
 )
 
@@ -1316,7 +1314,7 @@ type FunctionTool struct {
 	Strict *bool `json:"strict" jsonschema:"description=Whether to enforce strict parameter validation. Default 'true'."`
 }
 
-// FunctionToolCall A tool call to run a function. See the 
+// FunctionToolCall A tool call to run a function. See the
 // [function calling guide](/docs/guides/function-calling) for more information.
 type FunctionToolCall struct {
 	// The type of the function tool call. Always 'function_call'.
@@ -1328,7 +1326,7 @@ type FunctionToolCall struct {
 	// A JSON string of the arguments to pass to the function.
 	Arguments string `json:"arguments" jsonschema:"description=A JSON string of the arguments to pass to the function."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status *FunctionToolCallStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	// The unique ID of the function tool call.
 	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call."`
@@ -1341,10 +1339,10 @@ type FunctionToolCallOutput struct {
 	// A JSON string of the output of the function tool call.
 	Output string `json:"output" jsonschema:"description=A JSON string of the output of the function tool call."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status *FunctionToolCallOutputStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	// The unique ID of the function tool call output. Populated when this item
-// is returned via API.
+	// is returned via API.
 	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
 	// The type of the function tool call output. Always 'function_call_output'.
 	Type FunctionToolCallOutputType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
@@ -1355,10 +1353,10 @@ type FunctionToolCallOutputResource struct {
 	// A JSON string of the output of the function tool call.
 	Output string `json:"output" jsonschema:"description=A JSON string of the output of the function tool call."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status *FunctionToolCallOutputResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	// The unique ID of the function tool call output. Populated when this item
-// is returned via API.
+	// is returned via API.
 	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
 	// The type of the function tool call output. Always 'function_call_output'.
 	Type FunctionToolCallOutputResourceType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
@@ -1372,7 +1370,7 @@ type FunctionToolCallOutputResourceStatus string
 
 const (
 	FunctionToolCallOutputResourceStatusInProgress FunctionToolCallOutputResourceStatus = "in_progress"
-	FunctionToolCallOutputResourceStatusCompleted FunctionToolCallOutputResourceStatus = "completed"
+	FunctionToolCallOutputResourceStatusCompleted  FunctionToolCallOutputResourceStatus = "completed"
 	FunctionToolCallOutputResourceStatusIncomplete FunctionToolCallOutputResourceStatus = "incomplete"
 )
 
@@ -1389,7 +1387,7 @@ type FunctionToolCallOutputStatus string
 
 const (
 	FunctionToolCallOutputStatusInProgress FunctionToolCallOutputStatus = "in_progress"
-	FunctionToolCallOutputStatusCompleted FunctionToolCallOutputStatus = "completed"
+	FunctionToolCallOutputStatusCompleted  FunctionToolCallOutputStatus = "completed"
 	FunctionToolCallOutputStatusIncomplete FunctionToolCallOutputStatus = "incomplete"
 )
 
@@ -1400,7 +1398,7 @@ const (
 	FunctionToolCallOutputTypeFunctionCallOutput FunctionToolCallOutputType = "function_call_output"
 )
 
-// FunctionToolCallResource A tool call to run a function. See the 
+// FunctionToolCallResource A tool call to run a function. See the
 // [function calling guide](/docs/guides/function-calling) for more information.
 type FunctionToolCallResource struct {
 	// The type of the function tool call. Always 'function_call'.
@@ -1412,7 +1410,7 @@ type FunctionToolCallResource struct {
 	// A JSON string of the arguments to pass to the function.
 	Arguments string `json:"arguments" jsonschema:"description=A JSON string of the arguments to pass to the function."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status *FunctionToolCallResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	// The unique ID of the function tool call.
 	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call."`
@@ -1424,7 +1422,7 @@ type FunctionToolCallResourceStatus string
 
 const (
 	FunctionToolCallResourceStatusInProgress FunctionToolCallResourceStatus = "in_progress"
-	FunctionToolCallResourceStatusCompleted FunctionToolCallResourceStatus = "completed"
+	FunctionToolCallResourceStatusCompleted  FunctionToolCallResourceStatus = "completed"
 	FunctionToolCallResourceStatusIncomplete FunctionToolCallResourceStatus = "incomplete"
 )
 
@@ -1441,7 +1439,7 @@ type FunctionToolCallStatus string
 
 const (
 	FunctionToolCallStatusInProgress FunctionToolCallStatus = "in_progress"
-	FunctionToolCallStatusCompleted FunctionToolCallStatus = "completed"
+	FunctionToolCallStatusCompleted  FunctionToolCallStatus = "completed"
 	FunctionToolCallStatusIncomplete FunctionToolCallStatus = "incomplete"
 )
 
@@ -1461,15 +1459,15 @@ const (
 
 // Includable Specify additional output data to include in the model response. Currently
 // supported values are:
-// - 'file_search_call.results': Include the search results of
-//   the file search tool call.
-// - 'message.input_image.image_url': Include image urls from the input message.
-// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
+//   - 'file_search_call.results': Include the search results of
+//     the file search tool call.
+//   - 'message.input_image.image_url': Include image urls from the input message.
+//   - 'computer_call_output.output.image_url': Include image urls from the computer call output.
 type Includable string
 
 const (
-	IncludableFileSearchCallResults Includable = "file_search_call.results"
-	IncludableMessageInputImageImageURL Includable = "message.input_image.image_url"
+	IncludableFileSearchCallResults            Includable = "file_search_call.results"
+	IncludableMessageInputImageImageURL        Includable = "message.input_image.image_url"
 	IncludableComputerCallOutputOutputImageURL Includable = "computer_call_output.output.image_url"
 )
 
@@ -1481,13 +1479,13 @@ type InputContent interface {
 	DiscriminatorValue() string
 }
 
-func (*InputTextContent) isInputContent() {}
+func (*InputTextContent) isInputContent()  {}
 func (*InputImageContent) isInputContent() {}
-func (*InputFileContent) isInputContent() {}
+func (*InputFileContent) isInputContent()  {}
 
-func (x *InputTextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *InputTextContent) DiscriminatorValue() string  { return string(x.Type) }
 func (x *InputImageContent) DiscriminatorValue() string { return string(x.Type) }
-func (x *InputFileContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *InputFileContent) DiscriminatorValue() string  { return string(x.Type) }
 
 // InputContentFromInputTextContent wraps a *InputTextContent as a InputContent union value.
 func InputContentFromInputTextContent(v *InputTextContent) InputContent {
@@ -1537,7 +1535,6 @@ func UnmarshalInputContent(data []byte) (InputContent, error) {
 	}
 }
 
-
 // InputFileContent A file input to the model.
 type InputFileContent struct {
 	// The type of the input item. Always 'input_file'.
@@ -1573,7 +1570,7 @@ type InputImageContent struct {
 type InputImageContentDetail string
 
 const (
-	InputImageContentDetailLow InputImageContentDetail = "low"
+	InputImageContentDetailLow  InputImageContentDetail = "low"
 	InputImageContentDetailHigh InputImageContentDetail = "high"
 	InputImageContentDetailAuto InputImageContentDetail = "auto"
 )
@@ -1596,12 +1593,25 @@ type InputItem interface {
 func (*EasyInputMessage) isInputItem() {}
 
 // InputItemItem wraps a Item value as a InputItem variant.
-type InputItemItem struct { Value Item }
-func (*InputItemItem) isInputItem() {}
+type InputItemItem struct{ Value Item }
+
+func (*InputItemItem) isInputItem()      {}
 func (*ItemReferenceParam) isInputItem() {}
 
-func (x *EasyInputMessage) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-func (x *ItemReferenceParam) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
+func (x *EasyInputMessage) DiscriminatorValue() string {
+	if x.Type == nil {
+		var zero string
+		return zero
+	}
+	return string(*x.Type)
+}
+func (x *ItemReferenceParam) DiscriminatorValue() string {
+	if x.Type == nil {
+		var zero string
+		return zero
+	}
+	return string(*x.Type)
+}
 
 func (w *InputItemItem) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
 func (w InputItemItem) MarshalJSON() ([]byte, error) {
@@ -1654,7 +1664,6 @@ func UnmarshalInputItem(data []byte) (InputItem, error) {
 	}
 }
 
-
 // InputMessage A message input to the model with a role indicating instruction following
 // hierarchy. Instructions given with the 'developer' or 'system' role take
 // precedence over instructions given with the 'user' role.
@@ -1664,12 +1673,12 @@ type InputMessage struct {
 	// The role of the message input. One of 'user', 'system', or 'developer'.
 	Role InputMessageRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'system', or 'developer'."`
 	// The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *InputMessageStatus `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
+	// 'incomplete'. Populated when items are returned via API.
+	Status  *InputMessageStatus     `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 	Content InputMessageContentList `json:"content"`
 }
 
-// InputMessageContentList A list of one or many input items to the model, containing different content 
+// InputMessageContentList A list of one or many input items to the model, containing different content
 // types.
 type InputMessageContentList []InputContent
 
@@ -1680,9 +1689,9 @@ type InputMessageResource struct {
 	// The role of the message input. One of 'user', 'system', or 'developer'.
 	Role InputMessageResourceRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'system', or 'developer'."`
 	// The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *InputMessageResourceStatus `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	Content InputMessageContentList `json:"content"`
+	// 'incomplete'. Populated when items are returned via API.
+	Status  *InputMessageResourceStatus `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
+	Content InputMessageContentList     `json:"content"`
 	// The unique ID of the message input.
 	ID string `json:"id" jsonschema:"description=The unique ID of the message input."`
 	// The type of the message input. Always set to 'message'.
@@ -1693,8 +1702,8 @@ type InputMessageResource struct {
 type InputMessageResourceRole string
 
 const (
-	InputMessageResourceRoleUser InputMessageResourceRole = "user"
-	InputMessageResourceRoleSystem InputMessageResourceRole = "system"
+	InputMessageResourceRoleUser      InputMessageResourceRole = "user"
+	InputMessageResourceRoleSystem    InputMessageResourceRole = "system"
 	InputMessageResourceRoleDeveloper InputMessageResourceRole = "developer"
 )
 
@@ -1704,7 +1713,7 @@ type InputMessageResourceStatus string
 
 const (
 	InputMessageResourceStatusInProgress InputMessageResourceStatus = "in_progress"
-	InputMessageResourceStatusCompleted InputMessageResourceStatus = "completed"
+	InputMessageResourceStatusCompleted  InputMessageResourceStatus = "completed"
 	InputMessageResourceStatusIncomplete InputMessageResourceStatus = "incomplete"
 )
 
@@ -1719,8 +1728,8 @@ const (
 type InputMessageRole string
 
 const (
-	InputMessageRoleUser InputMessageRole = "user"
-	InputMessageRoleSystem InputMessageRole = "system"
+	InputMessageRoleUser      InputMessageRole = "user"
+	InputMessageRoleSystem    InputMessageRole = "system"
 	InputMessageRoleDeveloper InputMessageRole = "developer"
 )
 
@@ -1730,7 +1739,7 @@ type InputMessageStatus string
 
 const (
 	InputMessageStatusInProgress InputMessageStatus = "in_progress"
-	InputMessageStatusCompleted InputMessageStatus = "completed"
+	InputMessageStatusCompleted  InputMessageStatus = "completed"
 	InputMessageStatusIncomplete InputMessageStatus = "incomplete"
 )
 
@@ -1765,25 +1774,31 @@ type Item interface {
 	DiscriminatorValue() string
 }
 
-func (*InputMessage) isItem() {}
-func (*OutputMessage) isItem() {}
-func (*FileSearchToolCall) isItem() {}
-func (*ComputerToolCall) isItem() {}
+func (*InputMessage) isItem()                {}
+func (*OutputMessage) isItem()               {}
+func (*FileSearchToolCall) isItem()          {}
+func (*ComputerToolCall) isItem()            {}
 func (*ComputerCallOutputItemParam) isItem() {}
-func (*WebSearchToolCall) isItem() {}
-func (*FunctionToolCall) isItem() {}
+func (*WebSearchToolCall) isItem()           {}
+func (*FunctionToolCall) isItem()            {}
 func (*FunctionCallOutputItemParam) isItem() {}
-func (*ReasoningItem) isItem() {}
+func (*ReasoningItem) isItem()               {}
 
-func (x *InputMessage) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-func (x *OutputMessage) DiscriminatorValue() string { return string(x.Type) }
-func (x *FileSearchToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *ComputerToolCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *InputMessage) DiscriminatorValue() string {
+	if x.Type == nil {
+		var zero string
+		return zero
+	}
+	return string(*x.Type)
+}
+func (x *OutputMessage) DiscriminatorValue() string               { return string(x.Type) }
+func (x *FileSearchToolCall) DiscriminatorValue() string          { return string(x.Type) }
+func (x *ComputerToolCall) DiscriminatorValue() string            { return string(x.Type) }
 func (x *ComputerCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
-func (x *WebSearchToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionToolCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchToolCall) DiscriminatorValue() string           { return string(x.Type) }
+func (x *FunctionToolCall) DiscriminatorValue() string            { return string(x.Type) }
 func (x *FunctionCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
-func (x *ReasoningItem) DiscriminatorValue() string { return string(x.Type) }
+func (x *ReasoningItem) DiscriminatorValue() string               { return string(x.Type) }
 
 // ItemFromInputMessage wraps a *InputMessage as a Item union value.
 func ItemFromInputMessage(v *InputMessage) Item {
@@ -1887,7 +1902,6 @@ func UnmarshalItem(data []byte) (Item, error) {
 	}
 }
 
-
 // ItemReferenceParam An internal identifier for an item to reference.
 type ItemReferenceParam struct {
 	// The type of item to reference. Always 'item_reference'.
@@ -1912,18 +1926,24 @@ type ItemResource interface {
 	DiscriminatorValue() string
 }
 
-func (*InputMessageResource) isItemResource() {}
-func (*OutputMessage) isItemResource() {}
-func (*FileSearchToolCall) isItemResource() {}
-func (*ComputerToolCall) isItemResource() {}
+func (*InputMessageResource) isItemResource()           {}
+func (*OutputMessage) isItemResource()                  {}
+func (*FileSearchToolCall) isItemResource()             {}
+func (*ComputerToolCall) isItemResource()               {}
 func (*ComputerToolCallOutputResource) isItemResource() {}
-func (*WebSearchToolCall) isItemResource() {}
-func (*FunctionToolCallResource) isItemResource() {}
+func (*WebSearchToolCall) isItemResource()              {}
+func (*FunctionToolCallResource) isItemResource()       {}
 func (*FunctionToolCallOutputResource) isItemResource() {}
 
-func (x *InputMessageResource) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
+func (x *InputMessageResource) DiscriminatorValue() string {
+	if x.Type == nil {
+		var zero string
+		return zero
+	}
+	return string(*x.Type)
+}
 func (x *ComputerToolCallOutputResource) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionToolCallResource) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionToolCallResource) DiscriminatorValue() string       { return string(x.Type) }
 func (x *FunctionToolCallOutputResource) DiscriminatorValue() string { return string(x.Type) }
 
 // ItemResourceFromInputMessageResource wraps a *InputMessageResource as a ItemResource union value.
@@ -2023,18 +2043,17 @@ func UnmarshalItemResource(data []byte) (ItemResource, error) {
 	}
 }
 
-
 // KeyPress A collection of keypresses the model would like to perform.
 type KeyPress struct {
-	// Specifies the event type. For a keypress action, this property is 
-// always set to 'keypress'.
+	// Specifies the event type. For a keypress action, this property is
+	// always set to 'keypress'.
 	Type KeyPressType `json:"type" jsonschema:"description=Specifies the event type. For a keypress action, this property is always set to 'keypress'."`
 	// The combination of keys the model is requesting to be pressed. This is an
-// array of strings, each representing a key.
+	// array of strings, each representing a key.
 	Keys []string `json:"keys" jsonschema:"description=The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key."`
 }
 
-// KeyPressType Specifies the event type. For a keypress action, this property is 
+// KeyPressType Specifies the event type. For a keypress action, this property is
 // always set to 'keypress'.
 type KeyPressType string
 
@@ -2044,8 +2063,8 @@ const (
 
 // Metadata Set of 16 key-value pairs that can be attached to an object. This can be
 // useful for storing additional information about the object in a structured
-// format, and querying for objects via API or the dashboard. 
-// 
+// format, and querying for objects via API or the dashboard.
+//
 // Keys are strings with a maximum length of 64 characters. Values are strings
 // with a maximum length of 512 characters.
 type Metadata map[string]string
@@ -2053,137 +2072,137 @@ type Metadata map[string]string
 type ModelIdsResponses string
 
 const (
-	ModelIdsResponsesGpt41 ModelIdsResponses = "gpt-4.1"
-	ModelIdsResponsesGpt41Mini ModelIdsResponses = "gpt-4.1-mini"
-	ModelIdsResponsesGpt41Nano ModelIdsResponses = "gpt-4.1-nano"
-	ModelIdsResponsesGpt4120250414 ModelIdsResponses = "gpt-4.1-2025-04-14"
-	ModelIdsResponsesGpt41Mini20250414 ModelIdsResponses = "gpt-4.1-mini-2025-04-14"
-	ModelIdsResponsesGpt41Nano20250414 ModelIdsResponses = "gpt-4.1-nano-2025-04-14"
-	ModelIdsResponsesO4Mini ModelIdsResponses = "o4-mini"
-	ModelIdsResponsesO4Mini20250416 ModelIdsResponses = "o4-mini-2025-04-16"
-	ModelIdsResponsesO3 ModelIdsResponses = "o3"
-	ModelIdsResponsesO320250416 ModelIdsResponses = "o3-2025-04-16"
-	ModelIdsResponsesO3Mini ModelIdsResponses = "o3-mini"
-	ModelIdsResponsesO3Mini20250131 ModelIdsResponses = "o3-mini-2025-01-31"
-	ModelIdsResponsesO1 ModelIdsResponses = "o1"
-	ModelIdsResponsesO120241217 ModelIdsResponses = "o1-2024-12-17"
-	ModelIdsResponsesO1Preview ModelIdsResponses = "o1-preview"
-	ModelIdsResponsesO1Preview20240912 ModelIdsResponses = "o1-preview-2024-09-12"
-	ModelIdsResponsesO1Mini ModelIdsResponses = "o1-mini"
-	ModelIdsResponsesO1Mini20240912 ModelIdsResponses = "o1-mini-2024-09-12"
-	ModelIdsResponsesGpt4o ModelIdsResponses = "gpt-4o"
-	ModelIdsResponsesGpt4o20241120 ModelIdsResponses = "gpt-4o-2024-11-20"
-	ModelIdsResponsesGpt4o20240806 ModelIdsResponses = "gpt-4o-2024-08-06"
-	ModelIdsResponsesGpt4o20240513 ModelIdsResponses = "gpt-4o-2024-05-13"
-	ModelIdsResponsesGpt4oAudioPreview ModelIdsResponses = "gpt-4o-audio-preview"
-	ModelIdsResponsesGpt4oAudioPreview20241001 ModelIdsResponses = "gpt-4o-audio-preview-2024-10-01"
-	ModelIdsResponsesGpt4oAudioPreview20241217 ModelIdsResponses = "gpt-4o-audio-preview-2024-12-17"
-	ModelIdsResponsesGpt4oMiniAudioPreview ModelIdsResponses = "gpt-4o-mini-audio-preview"
-	ModelIdsResponsesGpt4oMiniAudioPreview20241217 ModelIdsResponses = "gpt-4o-mini-audio-preview-2024-12-17"
-	ModelIdsResponsesGpt4oSearchPreview ModelIdsResponses = "gpt-4o-search-preview"
-	ModelIdsResponsesGpt4oMiniSearchPreview ModelIdsResponses = "gpt-4o-mini-search-preview"
-	ModelIdsResponsesGpt4oSearchPreview20250311 ModelIdsResponses = "gpt-4o-search-preview-2025-03-11"
+	ModelIdsResponsesGpt41                          ModelIdsResponses = "gpt-4.1"
+	ModelIdsResponsesGpt41Mini                      ModelIdsResponses = "gpt-4.1-mini"
+	ModelIdsResponsesGpt41Nano                      ModelIdsResponses = "gpt-4.1-nano"
+	ModelIdsResponsesGpt4120250414                  ModelIdsResponses = "gpt-4.1-2025-04-14"
+	ModelIdsResponsesGpt41Mini20250414              ModelIdsResponses = "gpt-4.1-mini-2025-04-14"
+	ModelIdsResponsesGpt41Nano20250414              ModelIdsResponses = "gpt-4.1-nano-2025-04-14"
+	ModelIdsResponsesO4Mini                         ModelIdsResponses = "o4-mini"
+	ModelIdsResponsesO4Mini20250416                 ModelIdsResponses = "o4-mini-2025-04-16"
+	ModelIdsResponsesO3                             ModelIdsResponses = "o3"
+	ModelIdsResponsesO320250416                     ModelIdsResponses = "o3-2025-04-16"
+	ModelIdsResponsesO3Mini                         ModelIdsResponses = "o3-mini"
+	ModelIdsResponsesO3Mini20250131                 ModelIdsResponses = "o3-mini-2025-01-31"
+	ModelIdsResponsesO1                             ModelIdsResponses = "o1"
+	ModelIdsResponsesO120241217                     ModelIdsResponses = "o1-2024-12-17"
+	ModelIdsResponsesO1Preview                      ModelIdsResponses = "o1-preview"
+	ModelIdsResponsesO1Preview20240912              ModelIdsResponses = "o1-preview-2024-09-12"
+	ModelIdsResponsesO1Mini                         ModelIdsResponses = "o1-mini"
+	ModelIdsResponsesO1Mini20240912                 ModelIdsResponses = "o1-mini-2024-09-12"
+	ModelIdsResponsesGpt4o                          ModelIdsResponses = "gpt-4o"
+	ModelIdsResponsesGpt4o20241120                  ModelIdsResponses = "gpt-4o-2024-11-20"
+	ModelIdsResponsesGpt4o20240806                  ModelIdsResponses = "gpt-4o-2024-08-06"
+	ModelIdsResponsesGpt4o20240513                  ModelIdsResponses = "gpt-4o-2024-05-13"
+	ModelIdsResponsesGpt4oAudioPreview              ModelIdsResponses = "gpt-4o-audio-preview"
+	ModelIdsResponsesGpt4oAudioPreview20241001      ModelIdsResponses = "gpt-4o-audio-preview-2024-10-01"
+	ModelIdsResponsesGpt4oAudioPreview20241217      ModelIdsResponses = "gpt-4o-audio-preview-2024-12-17"
+	ModelIdsResponsesGpt4oMiniAudioPreview          ModelIdsResponses = "gpt-4o-mini-audio-preview"
+	ModelIdsResponsesGpt4oMiniAudioPreview20241217  ModelIdsResponses = "gpt-4o-mini-audio-preview-2024-12-17"
+	ModelIdsResponsesGpt4oSearchPreview             ModelIdsResponses = "gpt-4o-search-preview"
+	ModelIdsResponsesGpt4oMiniSearchPreview         ModelIdsResponses = "gpt-4o-mini-search-preview"
+	ModelIdsResponsesGpt4oSearchPreview20250311     ModelIdsResponses = "gpt-4o-search-preview-2025-03-11"
 	ModelIdsResponsesGpt4oMiniSearchPreview20250311 ModelIdsResponses = "gpt-4o-mini-search-preview-2025-03-11"
-	ModelIdsResponsesChatgpt4oLatest ModelIdsResponses = "chatgpt-4o-latest"
-	ModelIdsResponsesGpt4oMini ModelIdsResponses = "gpt-4o-mini"
-	ModelIdsResponsesGpt4oMini20240718 ModelIdsResponses = "gpt-4o-mini-2024-07-18"
-	ModelIdsResponsesGpt4Turbo ModelIdsResponses = "gpt-4-turbo"
-	ModelIdsResponsesGpt4Turbo20240409 ModelIdsResponses = "gpt-4-turbo-2024-04-09"
-	ModelIdsResponsesGpt40125Preview ModelIdsResponses = "gpt-4-0125-preview"
-	ModelIdsResponsesGpt4TurboPreview ModelIdsResponses = "gpt-4-turbo-preview"
-	ModelIdsResponsesGpt41106Preview ModelIdsResponses = "gpt-4-1106-preview"
-	ModelIdsResponsesGpt4VisionPreview ModelIdsResponses = "gpt-4-vision-preview"
-	ModelIdsResponsesGpt4 ModelIdsResponses = "gpt-4"
-	ModelIdsResponsesGpt40314 ModelIdsResponses = "gpt-4-0314"
-	ModelIdsResponsesGpt40613 ModelIdsResponses = "gpt-4-0613"
-	ModelIdsResponsesGpt432k ModelIdsResponses = "gpt-4-32k"
-	ModelIdsResponsesGpt432k0314 ModelIdsResponses = "gpt-4-32k-0314"
-	ModelIdsResponsesGpt432k0613 ModelIdsResponses = "gpt-4-32k-0613"
-	ModelIdsResponsesGpt35Turbo ModelIdsResponses = "gpt-3.5-turbo"
-	ModelIdsResponsesGpt35Turbo16k ModelIdsResponses = "gpt-3.5-turbo-16k"
-	ModelIdsResponsesGpt35Turbo0301 ModelIdsResponses = "gpt-3.5-turbo-0301"
-	ModelIdsResponsesGpt35Turbo0613 ModelIdsResponses = "gpt-3.5-turbo-0613"
-	ModelIdsResponsesGpt35Turbo1106 ModelIdsResponses = "gpt-3.5-turbo-1106"
-	ModelIdsResponsesGpt35Turbo0125 ModelIdsResponses = "gpt-3.5-turbo-0125"
-	ModelIdsResponsesGpt35Turbo16k0613 ModelIdsResponses = "gpt-3.5-turbo-16k-0613"
-	ModelIdsResponsesO1Pro ModelIdsResponses = "o1-pro"
-	ModelIdsResponsesO1Pro20250319 ModelIdsResponses = "o1-pro-2025-03-19"
-	ModelIdsResponsesComputerUsePreview ModelIdsResponses = "computer-use-preview"
-	ModelIdsResponsesComputerUsePreview20250311 ModelIdsResponses = "computer-use-preview-2025-03-11"
+	ModelIdsResponsesChatgpt4oLatest                ModelIdsResponses = "chatgpt-4o-latest"
+	ModelIdsResponsesGpt4oMini                      ModelIdsResponses = "gpt-4o-mini"
+	ModelIdsResponsesGpt4oMini20240718              ModelIdsResponses = "gpt-4o-mini-2024-07-18"
+	ModelIdsResponsesGpt4Turbo                      ModelIdsResponses = "gpt-4-turbo"
+	ModelIdsResponsesGpt4Turbo20240409              ModelIdsResponses = "gpt-4-turbo-2024-04-09"
+	ModelIdsResponsesGpt40125Preview                ModelIdsResponses = "gpt-4-0125-preview"
+	ModelIdsResponsesGpt4TurboPreview               ModelIdsResponses = "gpt-4-turbo-preview"
+	ModelIdsResponsesGpt41106Preview                ModelIdsResponses = "gpt-4-1106-preview"
+	ModelIdsResponsesGpt4VisionPreview              ModelIdsResponses = "gpt-4-vision-preview"
+	ModelIdsResponsesGpt4                           ModelIdsResponses = "gpt-4"
+	ModelIdsResponsesGpt40314                       ModelIdsResponses = "gpt-4-0314"
+	ModelIdsResponsesGpt40613                       ModelIdsResponses = "gpt-4-0613"
+	ModelIdsResponsesGpt432k                        ModelIdsResponses = "gpt-4-32k"
+	ModelIdsResponsesGpt432k0314                    ModelIdsResponses = "gpt-4-32k-0314"
+	ModelIdsResponsesGpt432k0613                    ModelIdsResponses = "gpt-4-32k-0613"
+	ModelIdsResponsesGpt35Turbo                     ModelIdsResponses = "gpt-3.5-turbo"
+	ModelIdsResponsesGpt35Turbo16k                  ModelIdsResponses = "gpt-3.5-turbo-16k"
+	ModelIdsResponsesGpt35Turbo0301                 ModelIdsResponses = "gpt-3.5-turbo-0301"
+	ModelIdsResponsesGpt35Turbo0613                 ModelIdsResponses = "gpt-3.5-turbo-0613"
+	ModelIdsResponsesGpt35Turbo1106                 ModelIdsResponses = "gpt-3.5-turbo-1106"
+	ModelIdsResponsesGpt35Turbo0125                 ModelIdsResponses = "gpt-3.5-turbo-0125"
+	ModelIdsResponsesGpt35Turbo16k0613              ModelIdsResponses = "gpt-3.5-turbo-16k-0613"
+	ModelIdsResponsesO1Pro                          ModelIdsResponses = "o1-pro"
+	ModelIdsResponsesO1Pro20250319                  ModelIdsResponses = "o1-pro-2025-03-19"
+	ModelIdsResponsesComputerUsePreview             ModelIdsResponses = "computer-use-preview"
+	ModelIdsResponsesComputerUsePreview20250311     ModelIdsResponses = "computer-use-preview-2025-03-11"
 )
 
 type ModelIdsShared string
 
 const (
-	ModelIdsSharedGpt41 ModelIdsShared = "gpt-4.1"
-	ModelIdsSharedGpt41Mini ModelIdsShared = "gpt-4.1-mini"
-	ModelIdsSharedGpt41Nano ModelIdsShared = "gpt-4.1-nano"
-	ModelIdsSharedGpt4120250414 ModelIdsShared = "gpt-4.1-2025-04-14"
-	ModelIdsSharedGpt41Mini20250414 ModelIdsShared = "gpt-4.1-mini-2025-04-14"
-	ModelIdsSharedGpt41Nano20250414 ModelIdsShared = "gpt-4.1-nano-2025-04-14"
-	ModelIdsSharedO4Mini ModelIdsShared = "o4-mini"
-	ModelIdsSharedO4Mini20250416 ModelIdsShared = "o4-mini-2025-04-16"
-	ModelIdsSharedO3 ModelIdsShared = "o3"
-	ModelIdsSharedO320250416 ModelIdsShared = "o3-2025-04-16"
-	ModelIdsSharedO3Mini ModelIdsShared = "o3-mini"
-	ModelIdsSharedO3Mini20250131 ModelIdsShared = "o3-mini-2025-01-31"
-	ModelIdsSharedO1 ModelIdsShared = "o1"
-	ModelIdsSharedO120241217 ModelIdsShared = "o1-2024-12-17"
-	ModelIdsSharedO1Preview ModelIdsShared = "o1-preview"
-	ModelIdsSharedO1Preview20240912 ModelIdsShared = "o1-preview-2024-09-12"
-	ModelIdsSharedO1Mini ModelIdsShared = "o1-mini"
-	ModelIdsSharedO1Mini20240912 ModelIdsShared = "o1-mini-2024-09-12"
-	ModelIdsSharedGpt4o ModelIdsShared = "gpt-4o"
-	ModelIdsSharedGpt4o20241120 ModelIdsShared = "gpt-4o-2024-11-20"
-	ModelIdsSharedGpt4o20240806 ModelIdsShared = "gpt-4o-2024-08-06"
-	ModelIdsSharedGpt4o20240513 ModelIdsShared = "gpt-4o-2024-05-13"
-	ModelIdsSharedGpt4oAudioPreview ModelIdsShared = "gpt-4o-audio-preview"
-	ModelIdsSharedGpt4oAudioPreview20241001 ModelIdsShared = "gpt-4o-audio-preview-2024-10-01"
-	ModelIdsSharedGpt4oAudioPreview20241217 ModelIdsShared = "gpt-4o-audio-preview-2024-12-17"
-	ModelIdsSharedGpt4oMiniAudioPreview ModelIdsShared = "gpt-4o-mini-audio-preview"
-	ModelIdsSharedGpt4oMiniAudioPreview20241217 ModelIdsShared = "gpt-4o-mini-audio-preview-2024-12-17"
-	ModelIdsSharedGpt4oSearchPreview ModelIdsShared = "gpt-4o-search-preview"
-	ModelIdsSharedGpt4oMiniSearchPreview ModelIdsShared = "gpt-4o-mini-search-preview"
-	ModelIdsSharedGpt4oSearchPreview20250311 ModelIdsShared = "gpt-4o-search-preview-2025-03-11"
+	ModelIdsSharedGpt41                          ModelIdsShared = "gpt-4.1"
+	ModelIdsSharedGpt41Mini                      ModelIdsShared = "gpt-4.1-mini"
+	ModelIdsSharedGpt41Nano                      ModelIdsShared = "gpt-4.1-nano"
+	ModelIdsSharedGpt4120250414                  ModelIdsShared = "gpt-4.1-2025-04-14"
+	ModelIdsSharedGpt41Mini20250414              ModelIdsShared = "gpt-4.1-mini-2025-04-14"
+	ModelIdsSharedGpt41Nano20250414              ModelIdsShared = "gpt-4.1-nano-2025-04-14"
+	ModelIdsSharedO4Mini                         ModelIdsShared = "o4-mini"
+	ModelIdsSharedO4Mini20250416                 ModelIdsShared = "o4-mini-2025-04-16"
+	ModelIdsSharedO3                             ModelIdsShared = "o3"
+	ModelIdsSharedO320250416                     ModelIdsShared = "o3-2025-04-16"
+	ModelIdsSharedO3Mini                         ModelIdsShared = "o3-mini"
+	ModelIdsSharedO3Mini20250131                 ModelIdsShared = "o3-mini-2025-01-31"
+	ModelIdsSharedO1                             ModelIdsShared = "o1"
+	ModelIdsSharedO120241217                     ModelIdsShared = "o1-2024-12-17"
+	ModelIdsSharedO1Preview                      ModelIdsShared = "o1-preview"
+	ModelIdsSharedO1Preview20240912              ModelIdsShared = "o1-preview-2024-09-12"
+	ModelIdsSharedO1Mini                         ModelIdsShared = "o1-mini"
+	ModelIdsSharedO1Mini20240912                 ModelIdsShared = "o1-mini-2024-09-12"
+	ModelIdsSharedGpt4o                          ModelIdsShared = "gpt-4o"
+	ModelIdsSharedGpt4o20241120                  ModelIdsShared = "gpt-4o-2024-11-20"
+	ModelIdsSharedGpt4o20240806                  ModelIdsShared = "gpt-4o-2024-08-06"
+	ModelIdsSharedGpt4o20240513                  ModelIdsShared = "gpt-4o-2024-05-13"
+	ModelIdsSharedGpt4oAudioPreview              ModelIdsShared = "gpt-4o-audio-preview"
+	ModelIdsSharedGpt4oAudioPreview20241001      ModelIdsShared = "gpt-4o-audio-preview-2024-10-01"
+	ModelIdsSharedGpt4oAudioPreview20241217      ModelIdsShared = "gpt-4o-audio-preview-2024-12-17"
+	ModelIdsSharedGpt4oMiniAudioPreview          ModelIdsShared = "gpt-4o-mini-audio-preview"
+	ModelIdsSharedGpt4oMiniAudioPreview20241217  ModelIdsShared = "gpt-4o-mini-audio-preview-2024-12-17"
+	ModelIdsSharedGpt4oSearchPreview             ModelIdsShared = "gpt-4o-search-preview"
+	ModelIdsSharedGpt4oMiniSearchPreview         ModelIdsShared = "gpt-4o-mini-search-preview"
+	ModelIdsSharedGpt4oSearchPreview20250311     ModelIdsShared = "gpt-4o-search-preview-2025-03-11"
 	ModelIdsSharedGpt4oMiniSearchPreview20250311 ModelIdsShared = "gpt-4o-mini-search-preview-2025-03-11"
-	ModelIdsSharedChatgpt4oLatest ModelIdsShared = "chatgpt-4o-latest"
-	ModelIdsSharedGpt4oMini ModelIdsShared = "gpt-4o-mini"
-	ModelIdsSharedGpt4oMini20240718 ModelIdsShared = "gpt-4o-mini-2024-07-18"
-	ModelIdsSharedGpt4Turbo ModelIdsShared = "gpt-4-turbo"
-	ModelIdsSharedGpt4Turbo20240409 ModelIdsShared = "gpt-4-turbo-2024-04-09"
-	ModelIdsSharedGpt40125Preview ModelIdsShared = "gpt-4-0125-preview"
-	ModelIdsSharedGpt4TurboPreview ModelIdsShared = "gpt-4-turbo-preview"
-	ModelIdsSharedGpt41106Preview ModelIdsShared = "gpt-4-1106-preview"
-	ModelIdsSharedGpt4VisionPreview ModelIdsShared = "gpt-4-vision-preview"
-	ModelIdsSharedGpt4 ModelIdsShared = "gpt-4"
-	ModelIdsSharedGpt40314 ModelIdsShared = "gpt-4-0314"
-	ModelIdsSharedGpt40613 ModelIdsShared = "gpt-4-0613"
-	ModelIdsSharedGpt432k ModelIdsShared = "gpt-4-32k"
-	ModelIdsSharedGpt432k0314 ModelIdsShared = "gpt-4-32k-0314"
-	ModelIdsSharedGpt432k0613 ModelIdsShared = "gpt-4-32k-0613"
-	ModelIdsSharedGpt35Turbo ModelIdsShared = "gpt-3.5-turbo"
-	ModelIdsSharedGpt35Turbo16k ModelIdsShared = "gpt-3.5-turbo-16k"
-	ModelIdsSharedGpt35Turbo0301 ModelIdsShared = "gpt-3.5-turbo-0301"
-	ModelIdsSharedGpt35Turbo0613 ModelIdsShared = "gpt-3.5-turbo-0613"
-	ModelIdsSharedGpt35Turbo1106 ModelIdsShared = "gpt-3.5-turbo-1106"
-	ModelIdsSharedGpt35Turbo0125 ModelIdsShared = "gpt-3.5-turbo-0125"
-	ModelIdsSharedGpt35Turbo16k0613 ModelIdsShared = "gpt-3.5-turbo-16k-0613"
+	ModelIdsSharedChatgpt4oLatest                ModelIdsShared = "chatgpt-4o-latest"
+	ModelIdsSharedGpt4oMini                      ModelIdsShared = "gpt-4o-mini"
+	ModelIdsSharedGpt4oMini20240718              ModelIdsShared = "gpt-4o-mini-2024-07-18"
+	ModelIdsSharedGpt4Turbo                      ModelIdsShared = "gpt-4-turbo"
+	ModelIdsSharedGpt4Turbo20240409              ModelIdsShared = "gpt-4-turbo-2024-04-09"
+	ModelIdsSharedGpt40125Preview                ModelIdsShared = "gpt-4-0125-preview"
+	ModelIdsSharedGpt4TurboPreview               ModelIdsShared = "gpt-4-turbo-preview"
+	ModelIdsSharedGpt41106Preview                ModelIdsShared = "gpt-4-1106-preview"
+	ModelIdsSharedGpt4VisionPreview              ModelIdsShared = "gpt-4-vision-preview"
+	ModelIdsSharedGpt4                           ModelIdsShared = "gpt-4"
+	ModelIdsSharedGpt40314                       ModelIdsShared = "gpt-4-0314"
+	ModelIdsSharedGpt40613                       ModelIdsShared = "gpt-4-0613"
+	ModelIdsSharedGpt432k                        ModelIdsShared = "gpt-4-32k"
+	ModelIdsSharedGpt432k0314                    ModelIdsShared = "gpt-4-32k-0314"
+	ModelIdsSharedGpt432k0613                    ModelIdsShared = "gpt-4-32k-0613"
+	ModelIdsSharedGpt35Turbo                     ModelIdsShared = "gpt-3.5-turbo"
+	ModelIdsSharedGpt35Turbo16k                  ModelIdsShared = "gpt-3.5-turbo-16k"
+	ModelIdsSharedGpt35Turbo0301                 ModelIdsShared = "gpt-3.5-turbo-0301"
+	ModelIdsSharedGpt35Turbo0613                 ModelIdsShared = "gpt-3.5-turbo-0613"
+	ModelIdsSharedGpt35Turbo1106                 ModelIdsShared = "gpt-3.5-turbo-1106"
+	ModelIdsSharedGpt35Turbo0125                 ModelIdsShared = "gpt-3.5-turbo-0125"
+	ModelIdsSharedGpt35Turbo16k0613              ModelIdsShared = "gpt-3.5-turbo-16k-0613"
 )
 
 type ModelResponseProperties struct {
 	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or 'temperature' but not both.
 	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
 	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
+	User        *string      `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
 	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-	Metadata *Metadata `json:"metadata,omitempty"`
+	Metadata    *Metadata    `json:"metadata,omitempty"`
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
+	// We generally recommend altering this or 'top_p' but not both.
 	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
 }
 
@@ -2191,14 +2210,14 @@ type ModelResponseProperties struct {
 type Move struct {
 	// The y-coordinate to move to.
 	Y int64 `json:"y" jsonschema:"description=The y-coordinate to move to."`
-	// Specifies the event type. For a move action, this property is 
-// always set to 'move'.
+	// Specifies the event type. For a move action, this property is
+	// always set to 'move'.
 	Type MoveType `json:"type" jsonschema:"description=Specifies the event type. For a move action, this property is always set to 'move'."`
 	// The x-coordinate to move to.
 	X int64 `json:"x" jsonschema:"description=The x-coordinate to move to."`
 }
 
-// MoveType Specifies the event type. For a move action, this property is 
+// MoveType Specifies the event type. For a move action, this property is
 // always set to 'move'.
 type MoveType string
 
@@ -2215,10 +2234,10 @@ type OutputContent interface {
 }
 
 func (*OutputTextContent) isOutputContent() {}
-func (*RefusalContent) isOutputContent() {}
+func (*RefusalContent) isOutputContent()    {}
 
 func (x *OutputTextContent) DiscriminatorValue() string { return string(x.Type) }
-func (x *RefusalContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *RefusalContent) DiscriminatorValue() string    { return string(x.Type) }
 
 // OutputContentFromOutputTextContent wraps a *OutputTextContent as a OutputContent union value.
 func OutputContentFromOutputTextContent(v *OutputTextContent) OutputContent {
@@ -2257,7 +2276,6 @@ func UnmarshalOutputContent(data []byte) (OutputContent, error) {
 	}
 }
 
-
 // Discriminated by "type" field.
 //
 //compschema:generate
@@ -2266,13 +2284,12 @@ type OutputItem interface {
 	DiscriminatorValue() string
 }
 
-func (*OutputMessage) isOutputItem() {}
+func (*OutputMessage) isOutputItem()      {}
 func (*FileSearchToolCall) isOutputItem() {}
-func (*FunctionToolCall) isOutputItem() {}
-func (*WebSearchToolCall) isOutputItem() {}
-func (*ComputerToolCall) isOutputItem() {}
-func (*ReasoningItem) isOutputItem() {}
-
+func (*FunctionToolCall) isOutputItem()   {}
+func (*WebSearchToolCall) isOutputItem()  {}
+func (*ComputerToolCall) isOutputItem()   {}
+func (*ReasoningItem) isOutputItem()      {}
 
 // OutputItemFromOutputMessage wraps a *OutputMessage as a OutputItem union value.
 func OutputItemFromOutputMessage(v *OutputMessage) OutputItem {
@@ -2343,11 +2360,10 @@ func UnmarshalOutputItem(data []byte) (OutputItem, error) {
 	}
 }
 
-
 // OutputMessage An output message from the model.
 type OutputMessage struct {
 	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
+	// 'incomplete'. Populated when input items are returned via API.
 	Status OutputMessageStatus `json:"status" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
 	// The unique ID of the output message.
 	ID string `json:"id" jsonschema:"description=The unique ID of the output message."`
@@ -2372,7 +2388,7 @@ type OutputMessageStatus string
 
 const (
 	OutputMessageStatusInProgress OutputMessageStatus = "in_progress"
-	OutputMessageStatusCompleted OutputMessageStatus = "completed"
+	OutputMessageStatusCompleted  OutputMessageStatus = "completed"
 	OutputMessageStatusIncomplete OutputMessageStatus = "incomplete"
 )
 
@@ -2411,31 +2427,31 @@ type RankingOptions struct {
 type RankingOptionsRanker string
 
 const (
-	RankingOptionsRankerAuto RankingOptionsRanker = "auto"
+	RankingOptionsRankerAuto            RankingOptionsRanker = "auto"
 	RankingOptionsRankerDefault20241115 RankingOptionsRanker = "default-2024-11-15"
 )
 
 // Reasoning **o-series models only**
-// 
-// Configuration options for 
+//
+// Configuration options for
 // [reasoning models](https://platform.openai.com/docs/guides/reasoning).
 type Reasoning struct {
 	Effort *ReasoningEffort `json:"effort,omitempty"`
 	// A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
+	// useful for debugging and understanding the model's reasoning process.
+	// One of 'auto', 'concise', or 'detailed'.
 	Summary *ReasoningSummary `json:"summary,omitempty" jsonschema:"description=A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of 'auto', 'concise', or 'detailed'."`
 	// **Deprecated:** use 'summary' instead.
-// 
-// A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
+	//
+	// A summary of the reasoning performed by the model. This can be
+	// useful for debugging and understanding the model's reasoning process.
+	// One of 'auto', 'concise', or 'detailed'.
 	GenerateSummary *ReasoningGenerateSummary `json:"generate_summary,omitempty" jsonschema:"description=**Deprecated:** use 'summary' instead. A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of 'auto', 'concise', or 'detailed'."`
 }
 
-// ReasoningEffort **o-series models only** 
-// 
-// Constrains effort on reasoning for 
+// ReasoningEffort **o-series models only**
+//
+// Constrains effort on reasoning for
 // [reasoning models](https://platform.openai.com/docs/guides/reasoning).
 // Currently supported values are 'low', 'medium', and 'high'. Reducing
 // reasoning effort can result in faster responses and fewer tokens used
@@ -2443,21 +2459,21 @@ type Reasoning struct {
 type ReasoningEffort string
 
 const (
-	ReasoningEffortLow ReasoningEffort = "low"
+	ReasoningEffortLow    ReasoningEffort = "low"
 	ReasoningEffortMedium ReasoningEffort = "medium"
-	ReasoningEffortHigh ReasoningEffort = "high"
+	ReasoningEffortHigh   ReasoningEffort = "high"
 )
 
 // ReasoningGenerateSummary **Deprecated:** use 'summary' instead.
-// 
+//
 // A summary of the reasoning performed by the model. This can be
 // useful for debugging and understanding the model's reasoning process.
 // One of 'auto', 'concise', or 'detailed'.
 type ReasoningGenerateSummary string
 
 const (
-	ReasoningGenerateSummaryAuto ReasoningGenerateSummary = "auto"
-	ReasoningGenerateSummaryConcise ReasoningGenerateSummary = "concise"
+	ReasoningGenerateSummaryAuto     ReasoningGenerateSummary = "auto"
+	ReasoningGenerateSummaryConcise  ReasoningGenerateSummary = "concise"
 	ReasoningGenerateSummaryDetailed ReasoningGenerateSummary = "detailed"
 )
 
@@ -2471,7 +2487,7 @@ type ReasoningItem struct {
 	// Reasoning text contents.
 	Summary []any `json:"summary" jsonschema:"description=Reasoning text contents."`
 	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
+	// 'incomplete'. Populated when items are returned via API.
 	Status *ReasoningItemStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
 }
 
@@ -2481,7 +2497,7 @@ type ReasoningItemStatus string
 
 const (
 	ReasoningItemStatusInProgress ReasoningItemStatus = "in_progress"
-	ReasoningItemStatusCompleted ReasoningItemStatus = "completed"
+	ReasoningItemStatusCompleted  ReasoningItemStatus = "completed"
 	ReasoningItemStatusIncomplete ReasoningItemStatus = "incomplete"
 )
 
@@ -2498,8 +2514,8 @@ const (
 type ReasoningSummary string
 
 const (
-	ReasoningSummaryAuto ReasoningSummary = "auto"
-	ReasoningSummaryConcise ReasoningSummary = "concise"
+	ReasoningSummaryAuto     ReasoningSummary = "auto"
+	ReasoningSummaryConcise  ReasoningSummary = "concise"
 	ReasoningSummaryDetailed ReasoningSummary = "detailed"
 )
 
@@ -2521,89 +2537,89 @@ const (
 type Response struct {
 	// Unique identifier for this Response.
 	ID string `json:"id" jsonschema:"description=Unique identifier for this Response."`
-	// The status of the response generation. One of 'completed', 'failed', 
-// 'in_progress', or 'incomplete'.
+	// The status of the response generation. One of 'completed', 'failed',
+	// 'in_progress', or 'incomplete'.
 	Status *ResponseStatus `json:"status,omitempty" jsonschema:"description=The status of the response generation. One of 'completed', 'failed', 'in_progress', or 'incomplete'."`
 	// Whether to allow the model to run tool calls in parallel.
 	ParallelToolCalls bool `json:"parallel_tool_calls" jsonschema:"description=Whether to allow the model to run tool calls in parallel."`
 	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
-	TopP *float64 `json:"top_p" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-	Model ModelIdsResponses `json:"model"`
+	// where the model considers the results of the tokens with top_p probability
+	// mass. So 0.1 means only the tokens comprising the top 10% probability mass
+	// are considered.
+	//
+	// We generally recommend altering this or 'temperature' but not both.
+	TopP        *float64          `json:"top_p" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
+	ServiceTier *ServiceTier      `json:"service_tier,omitempty"`
+	Model       ModelIdsResponses `json:"model"`
 	// The object type of this resource - always set to 'response'.
 	Object ResponseObject `json:"object" jsonschema:"description=The object type of this resource - always set to 'response'."`
-	Error ResponseError `json:"error"`
+	Error  ResponseError  `json:"error"`
 	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
-	Temperature *float64 `json:"temperature" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
+	// We generally recommend altering this or 'top_p' but not both.
+	Temperature *float64   `json:"temperature" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
+	Reasoning   *Reasoning `json:"reasoning,omitempty"`
 	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
 	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
-	// SDK-only convenience property that contains the aggregated text output 
-// from all 'output_text' items in the 'output' array, if any are present. 
-// Supported in the Python and JavaScript SDKs.
+	// SDK-only convenience property that contains the aggregated text output
+	// from all 'output_text' items in the 'output' array, if any are present.
+	// Supported in the Python and JavaScript SDKs.
 	OutputText *string `json:"output_text,omitempty" jsonschema:"description=SDK-only convenience property that contains the aggregated text output from all 'output_text' items in the 'output' array, if any are present. Supported in the Python and JavaScript SDKs."`
 	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
+	// create multi-turn conversations. Learn more about
+	// [conversation state](/docs/guides/conversation-state).
 	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
 	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
+	//
+	// When using along with 'previous_response_id', the instructions from a previous
+	// response will not be carried over to the next response. This makes it simple
+	// to swap out system (or developer) messages in new responses.
 	Instructions *string `json:"instructions" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
 	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
+	// text or structured JSON data. Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Structured Outputs](/docs/guides/structured-outputs)
 	Text *ResponseText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
 	// Unix timestamp (in seconds) of when this Response was created.
 	CreatedAt float64 `json:"created_at" jsonschema:"description=Unix timestamp (in seconds) of when this Response was created."`
 	// Details about why the response is incomplete.
 	IncompleteDetails ResponseIncompleteDetails `json:"incomplete_details" jsonschema:"description=Details about why the response is incomplete."`
 	// An array of content items generated by the model.
-// 
-// - The length and order of items in the 'output' array is dependent
-//   on the model's response.
-// - Rather than accessing the first item in the 'output' array and 
-//   assuming it's an 'assistant' message with the content generated by
-//   the model, you might consider using the 'output_text' property where
-//   supported in SDKs.
-	Output []OutputItem `json:"output" jsonschema:"description=An array of content items generated by the model. - The length and order of items in the 'output' array is dependent on the model's response. - Rather than accessing the first item in the 'output' array and assuming it's an 'assistant' message with the content generated by the model, you might consider using the 'output_text' property where supported in SDKs."`
-	Usage *ResponseUsage `json:"usage,omitempty"`
-	Metadata Metadata `json:"metadata"`
+	//
+	// - The length and order of items in the 'output' array is dependent
+	//   on the model's response.
+	// - Rather than accessing the first item in the 'output' array and
+	//   assuming it's an 'assistant' message with the content generated by
+	//   the model, you might consider using the 'output_text' property where
+	//   supported in SDKs.
+	Output   []OutputItem   `json:"output" jsonschema:"description=An array of content items generated by the model. - The length and order of items in the 'output' array is dependent on the model's response. - Rather than accessing the first item in the 'output' array and assuming it's an 'assistant' message with the content generated by the model, you might consider using the 'output_text' property where supported in SDKs."`
+	Usage    *ResponseUsage `json:"usage,omitempty"`
+	Metadata Metadata       `json:"metadata"`
 	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
 	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
+	// An array of tools the model may call while generating a response. You
+	// can specify which tool to use by setting the 'tool_choice' parameter.
+	//
+	// The two categories of tools you can provide the model are:
+	//
+	// - **Built-in tools**: Tools that are provided by OpenAI that extend the
+	//   model's capabilities, like [web search](/docs/guides/tools-web-search)
+	//   or [file search](/docs/guides/tools-file-search). Learn more about
+	//   [built-in tools](/docs/guides/tools).
+	// - **Function calls (custom tools)**: Functions that are defined by you,
+	//   enabling the model to call your own code. Learn more about
+	//   [function calling](/docs/guides/function-calling).
 	Tools []Tool `json:"tools" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
 	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
+	// a response. See the 'tools' parameter to see how to specify which tools
+	// the model can call.
 	ToolChoice ResponseToolChoice `json:"tool_choice" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
 	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+	// - 'auto': If the context of this response and previous ones exceeds
+	//   the model's context window size, the model will truncate the
+	//   response to fit the context window by dropping input items in the
+	//   middle of the conversation.
+	// - 'disabled' (default): If a model response will exceed the context window
+	//   size for a model, the request will fail with a 400 error.
 	Truncation *ResponseTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
 }
 
@@ -2702,7 +2718,7 @@ type ResponseCodeInterpreterCallCompletedEvent struct {
 	// The type of the event. Always 'response.code_interpreter_call.completed'.
 	Type ResponseCodeInterpreterCallCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.completed'."`
 	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
+	OutputIndex         int64                   `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
 	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
 }
 
@@ -2716,7 +2732,7 @@ const (
 // ResponseCodeInterpreterCallInProgressEvent Emitted when a code interpreter call is in progress.
 type ResponseCodeInterpreterCallInProgressEvent struct {
 	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
+	OutputIndex         int64                   `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
 	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
 	// The type of the event. Always 'response.code_interpreter_call.in_progress'.
 	Type ResponseCodeInterpreterCallInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.in_progress'."`
@@ -2734,7 +2750,7 @@ type ResponseCodeInterpreterCallInterpretingEvent struct {
 	// The type of the event. Always 'response.code_interpreter_call.interpreting'.
 	Type ResponseCodeInterpreterCallInterpretingEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.interpreting'."`
 	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
+	OutputIndex         int64                   `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
 	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
 }
 
@@ -2748,8 +2764,8 @@ const (
 // ResponseCompletedEvent Emitted when the model response is complete.
 type ResponseCompletedEvent struct {
 	// The type of the event. Always 'response.completed'.
-	Type ResponseCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.completed'."`
-	Response Response `json:"response"`
+	Type     ResponseCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.completed'."`
+	Response Response                   `json:"response"`
 }
 
 // ResponseCompletedEventType The type of the event. Always 'response.completed'.
@@ -2788,8 +2804,8 @@ type ResponseContentPartDoneEvent struct {
 	// The index of the output item that the content part was added to.
 	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the content part was added to."`
 	// The index of the content part that is done.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that is done."`
-	Part OutputContent `json:"part"`
+	ContentIndex int64         `json:"content_index" jsonschema:"description=The index of the content part that is done."`
+	Part         OutputContent `json:"part"`
 }
 
 // ResponseContentPartDoneEventType The type of the event. Always 'response.content_part.done'.
@@ -2802,8 +2818,8 @@ const (
 // ResponseCreatedEvent An event that is emitted when a response is created.
 type ResponseCreatedEvent struct {
 	// The type of the event. Always 'response.created'.
-	Type ResponseCreatedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.created'."`
-	Response Response `json:"response"`
+	Type     ResponseCreatedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.created'."`
+	Response Response                 `json:"response"`
 }
 
 // ResponseCreatedEventType The type of the event. Always 'response.created'.
@@ -2824,24 +2840,24 @@ type ResponseError struct {
 type ResponseErrorCode string
 
 const (
-	ResponseErrorCodeServerError ResponseErrorCode = "server_error"
-	ResponseErrorCodeRateLimitExceeded ResponseErrorCode = "rate_limit_exceeded"
-	ResponseErrorCodeInvalidPrompt ResponseErrorCode = "invalid_prompt"
-	ResponseErrorCodeVectorStoreTimeout ResponseErrorCode = "vector_store_timeout"
-	ResponseErrorCodeInvalidImage ResponseErrorCode = "invalid_image"
-	ResponseErrorCodeInvalidImageFormat ResponseErrorCode = "invalid_image_format"
-	ResponseErrorCodeInvalidBase64Image ResponseErrorCode = "invalid_base64_image"
-	ResponseErrorCodeInvalidImageURL ResponseErrorCode = "invalid_image_url"
-	ResponseErrorCodeImageTooLarge ResponseErrorCode = "image_too_large"
-	ResponseErrorCodeImageTooSmall ResponseErrorCode = "image_too_small"
-	ResponseErrorCodeImageParseError ResponseErrorCode = "image_parse_error"
+	ResponseErrorCodeServerError                 ResponseErrorCode = "server_error"
+	ResponseErrorCodeRateLimitExceeded           ResponseErrorCode = "rate_limit_exceeded"
+	ResponseErrorCodeInvalidPrompt               ResponseErrorCode = "invalid_prompt"
+	ResponseErrorCodeVectorStoreTimeout          ResponseErrorCode = "vector_store_timeout"
+	ResponseErrorCodeInvalidImage                ResponseErrorCode = "invalid_image"
+	ResponseErrorCodeInvalidImageFormat          ResponseErrorCode = "invalid_image_format"
+	ResponseErrorCodeInvalidBase64Image          ResponseErrorCode = "invalid_base64_image"
+	ResponseErrorCodeInvalidImageURL             ResponseErrorCode = "invalid_image_url"
+	ResponseErrorCodeImageTooLarge               ResponseErrorCode = "image_too_large"
+	ResponseErrorCodeImageTooSmall               ResponseErrorCode = "image_too_small"
+	ResponseErrorCodeImageParseError             ResponseErrorCode = "image_parse_error"
 	ResponseErrorCodeImageContentPolicyViolation ResponseErrorCode = "image_content_policy_violation"
-	ResponseErrorCodeInvalidImageMode ResponseErrorCode = "invalid_image_mode"
-	ResponseErrorCodeImageFileTooLarge ResponseErrorCode = "image_file_too_large"
-	ResponseErrorCodeUnsupportedImageMediaType ResponseErrorCode = "unsupported_image_media_type"
-	ResponseErrorCodeEmptyImageFile ResponseErrorCode = "empty_image_file"
-	ResponseErrorCodeFailedToDownloadImage ResponseErrorCode = "failed_to_download_image"
-	ResponseErrorCodeImageFileNotFound ResponseErrorCode = "image_file_not_found"
+	ResponseErrorCodeInvalidImageMode            ResponseErrorCode = "invalid_image_mode"
+	ResponseErrorCodeImageFileTooLarge           ResponseErrorCode = "image_file_too_large"
+	ResponseErrorCodeUnsupportedImageMediaType   ResponseErrorCode = "unsupported_image_media_type"
+	ResponseErrorCodeEmptyImageFile              ResponseErrorCode = "empty_image_file"
+	ResponseErrorCodeFailedToDownloadImage       ResponseErrorCode = "failed_to_download_image"
+	ResponseErrorCodeImageFileNotFound           ResponseErrorCode = "image_file_not_found"
 )
 
 // ResponseErrorEvent Emitted when an error occurs.
@@ -2866,8 +2882,8 @@ const (
 // ResponseFailedEvent An event that is emitted when a response fails.
 type ResponseFailedEvent struct {
 	// The type of the event. Always 'response.failed'.
-	Type ResponseFailedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.failed'."`
-	Response Response `json:"response"`
+	Type     ResponseFailedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.failed'."`
+	Response Response                `json:"response"`
 }
 
 // ResponseFailedEventType The type of the event. Always 'response.failed'.
@@ -3000,8 +3016,8 @@ const (
 // ResponseInProgressEvent Emitted when the response is in progress.
 type ResponseInProgressEvent struct {
 	// The type of the event. Always 'response.in_progress'.
-	Type ResponseInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.in_progress'."`
-	Response Response `json:"response"`
+	Type     ResponseInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.in_progress'."`
+	Response Response                    `json:"response"`
 }
 
 // ResponseInProgressEventType The type of the event. Always 'response.in_progress'.
@@ -3020,8 +3036,8 @@ type ResponseIncompleteDetails struct {
 // ResponseIncompleteEvent An event that is emitted when a response finishes as incomplete.
 type ResponseIncompleteEvent struct {
 	// The type of the event. Always 'response.incomplete'.
-	Type ResponseIncompleteEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.incomplete'."`
-	Response Response `json:"response"`
+	Type     ResponseIncompleteEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.incomplete'."`
+	Response Response                    `json:"response"`
 }
 
 // ResponseIncompleteEventType The type of the event. Always 'response.incomplete'.
@@ -3064,8 +3080,8 @@ type ResponseOutputItemAddedEvent struct {
 	// The type of the event. Always 'response.output_item.added'.
 	Type ResponseOutputItemAddedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_item.added'."`
 	// The index of the output item that was added.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that was added."`
-	Item OutputItem `json:"item"`
+	OutputIndex int64      `json:"output_index" jsonschema:"description=The index of the output item that was added."`
+	Item        OutputItem `json:"item"`
 }
 
 // ResponseOutputItemAddedEventType The type of the event. Always 'response.output_item.added'.
@@ -3080,8 +3096,8 @@ type ResponseOutputItemDoneEvent struct {
 	// The type of the event. Always 'response.output_item.done'.
 	Type ResponseOutputItemDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_item.done'."`
 	// The index of the output item that was marked done.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that was marked done."`
-	Item OutputItem `json:"item"`
+	OutputIndex int64      `json:"output_index" jsonschema:"description=The index of the output item that was marked done."`
+	Item        OutputItem `json:"item"`
 }
 
 // ResponseOutputItemDoneEventType The type of the event. Always 'response.output_item.done'.
@@ -3096,45 +3112,45 @@ type ResponseProperties struct {
 	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
 	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
 	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
+	//
+	// When using along with 'previous_response_id', the instructions from a previous
+	// response will not be carried over to the next response. This makes it simple
+	// to swap out system (or developer) messages in new responses.
 	Instructions *string `json:"instructions,omitempty" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
 	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
+	// a response. See the 'tools' parameter to see how to specify which tools
+	// the model can call.
 	ToolChoice ResponsePropertiesToolChoice `json:"tool_choice,omitempty" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
 	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+	// - 'auto': If the context of this response and previous ones exceeds
+	//   the model's context window size, the model will truncate the
+	//   response to fit the context window by dropping input items in the
+	//   middle of the conversation.
+	// - 'disabled' (default): If a model response will exceed the context window
+	//   size for a model, the request will fail with a 400 error.
 	Truncation *ResponsePropertiesTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
 	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
-	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
+	// create multi-turn conversations. Learn more about
+	// [conversation state](/docs/guides/conversation-state).
+	PreviousResponseID *string    `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
+	Reasoning          *Reasoning `json:"reasoning,omitempty"`
 	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
+	// text or structured JSON data. Learn more:
+	// - [Text inputs and outputs](/docs/guides/text)
+	// - [Structured Outputs](/docs/guides/structured-outputs)
 	Text *ResponsePropertiesText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
+	// An array of tools the model may call while generating a response. You
+	// can specify which tool to use by setting the 'tool_choice' parameter.
+	//
+	// The two categories of tools you can provide the model are:
+	//
+	// - **Built-in tools**: Tools that are provided by OpenAI that extend the
+	//   model's capabilities, like [web search](/docs/guides/tools-web-search)
+	//   or [file search](/docs/guides/tools-file-search). Learn more about
+	//   [built-in tools](/docs/guides/tools).
+	// - **Function calls (custom tools)**: Functions that are defined by you,
+	//   enabling the model to call your own code. Learn more about
+	//   [function calling](/docs/guides/function-calling).
 	Tools []Tool `json:"tools,omitempty" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
 }
 
@@ -3157,15 +3173,16 @@ type ResponsePropertiesToolChoice interface {
 	DiscriminatorValue() string
 }
 
-
 // ResponsePropertiesToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a ResponsePropertiesToolChoice variant.
-type ResponsePropertiesToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
+type ResponsePropertiesToolChoiceToolChoiceOptions struct{ Value ToolChoiceOptions }
+
 func (*ResponsePropertiesToolChoiceToolChoiceOptions) isResponsePropertiesToolChoice() {}
-func (*ToolChoiceTypes) isResponsePropertiesToolChoice() {}
-func (*ToolChoiceFunction) isResponsePropertiesToolChoice() {}
+func (*ToolChoiceTypes) isResponsePropertiesToolChoice()                               {}
+func (*ToolChoiceFunction) isResponsePropertiesToolChoice()                            {}
 
-
-func (w *ResponsePropertiesToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
+func (w *ResponsePropertiesToolChoiceToolChoiceOptions) DiscriminatorValue() string {
+	return fmt.Sprintf("%v", w.Value)
+}
 func (w ResponsePropertiesToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(w.Value)
 }
@@ -3216,18 +3233,17 @@ func UnmarshalResponsePropertiesToolChoice(data []byte) (ResponsePropertiesToolC
 	}
 }
 
-
 // ResponsePropertiesTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+//   - 'auto': If the context of this response and previous ones exceeds
+//     the model's context window size, the model will truncate the
+//     response to fit the context window by dropping input items in the
+//     middle of the conversation.
+//   - 'disabled' (default): If a model response will exceed the context window
+//     size for a model, the request will fail with a 400 error.
 type ResponsePropertiesTruncation string
 
 const (
-	ResponsePropertiesTruncationAuto ResponsePropertiesTruncation = "auto"
+	ResponsePropertiesTruncationAuto     ResponsePropertiesTruncation = "auto"
 	ResponsePropertiesTruncationDisabled ResponsePropertiesTruncation = "disabled"
 )
 
@@ -3373,13 +3389,13 @@ const (
 	ResponseRefusalDoneEventTypeResponseRefusalDone ResponseRefusalDoneEventType = "response.refusal.done"
 )
 
-// ResponseStatus The status of the response generation. One of 'completed', 'failed', 
+// ResponseStatus The status of the response generation. One of 'completed', 'failed',
 // 'in_progress', or 'incomplete'.
 type ResponseStatus string
 
 const (
-	ResponseStatusCompleted ResponseStatus = "completed"
-	ResponseStatusFailed ResponseStatus = "failed"
+	ResponseStatusCompleted  ResponseStatus = "completed"
+	ResponseStatusFailed     ResponseStatus = "failed"
 	ResponseStatusInProgress ResponseStatus = "in_progress"
 	ResponseStatusIncomplete ResponseStatus = "incomplete"
 )
@@ -3392,79 +3408,79 @@ type ResponseStreamEvent interface {
 	EventType() string
 }
 
-func (*ResponseAudioDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioDoneEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallInProgressEvent) isResponseStreamEvent() {}
+func (*ResponseAudioDeltaEvent) isResponseStreamEvent()                      {}
+func (*ResponseAudioDoneEvent) isResponseStreamEvent()                       {}
+func (*ResponseAudioTranscriptDeltaEvent) isResponseStreamEvent()            {}
+func (*ResponseAudioTranscriptDoneEvent) isResponseStreamEvent()             {}
+func (*ResponseCodeInterpreterCallCodeDeltaEvent) isResponseStreamEvent()    {}
+func (*ResponseCodeInterpreterCallCodeDoneEvent) isResponseStreamEvent()     {}
+func (*ResponseCodeInterpreterCallCompletedEvent) isResponseStreamEvent()    {}
+func (*ResponseCodeInterpreterCallInProgressEvent) isResponseStreamEvent()   {}
 func (*ResponseCodeInterpreterCallInterpretingEvent) isResponseStreamEvent() {}
-func (*ResponseCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCreatedEvent) isResponseStreamEvent() {}
-func (*ResponseErrorEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallSearchingEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDoneEvent) isResponseStreamEvent() {}
-func (*ResponseInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFailedEvent) isResponseStreamEvent() {}
-func (*ResponseIncompleteEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemAddedEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDoneEvent) isResponseStreamEvent() {}
-func (*ResponseTextAnnotationDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallSearchingEvent) isResponseStreamEvent() {}
+func (*ResponseCompletedEvent) isResponseStreamEvent()                       {}
+func (*ResponseContentPartAddedEvent) isResponseStreamEvent()                {}
+func (*ResponseContentPartDoneEvent) isResponseStreamEvent()                 {}
+func (*ResponseCreatedEvent) isResponseStreamEvent()                         {}
+func (*ResponseErrorEvent) isResponseStreamEvent()                           {}
+func (*ResponseFileSearchCallCompletedEvent) isResponseStreamEvent()         {}
+func (*ResponseFileSearchCallInProgressEvent) isResponseStreamEvent()        {}
+func (*ResponseFileSearchCallSearchingEvent) isResponseStreamEvent()         {}
+func (*ResponseFunctionCallArgumentsDeltaEvent) isResponseStreamEvent()      {}
+func (*ResponseFunctionCallArgumentsDoneEvent) isResponseStreamEvent()       {}
+func (*ResponseInProgressEvent) isResponseStreamEvent()                      {}
+func (*ResponseFailedEvent) isResponseStreamEvent()                          {}
+func (*ResponseIncompleteEvent) isResponseStreamEvent()                      {}
+func (*ResponseOutputItemAddedEvent) isResponseStreamEvent()                 {}
+func (*ResponseOutputItemDoneEvent) isResponseStreamEvent()                  {}
+func (*ResponseReasoningSummaryPartAddedEvent) isResponseStreamEvent()       {}
+func (*ResponseReasoningSummaryPartDoneEvent) isResponseStreamEvent()        {}
+func (*ResponseReasoningSummaryTextDeltaEvent) isResponseStreamEvent()       {}
+func (*ResponseReasoningSummaryTextDoneEvent) isResponseStreamEvent()        {}
+func (*ResponseRefusalDeltaEvent) isResponseStreamEvent()                    {}
+func (*ResponseRefusalDoneEvent) isResponseStreamEvent()                     {}
+func (*ResponseTextAnnotationDeltaEvent) isResponseStreamEvent()             {}
+func (*ResponseTextDeltaEvent) isResponseStreamEvent()                       {}
+func (*ResponseTextDoneEvent) isResponseStreamEvent()                        {}
+func (*ResponseWebSearchCallCompletedEvent) isResponseStreamEvent()          {}
+func (*ResponseWebSearchCallInProgressEvent) isResponseStreamEvent()         {}
+func (*ResponseWebSearchCallSearchingEvent) isResponseStreamEvent()          {}
 
-func (x *ResponseAudioDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioTranscriptDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioTranscriptDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCodeDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCodeDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallInProgressEvent) EventType() string { return string(x.Type) }
+func (x *ResponseAudioDeltaEvent) EventType() string                      { return string(x.Type) }
+func (x *ResponseAudioDoneEvent) EventType() string                       { return string(x.Type) }
+func (x *ResponseAudioTranscriptDeltaEvent) EventType() string            { return string(x.Type) }
+func (x *ResponseAudioTranscriptDoneEvent) EventType() string             { return string(x.Type) }
+func (x *ResponseCodeInterpreterCallCodeDeltaEvent) EventType() string    { return string(x.Type) }
+func (x *ResponseCodeInterpreterCallCodeDoneEvent) EventType() string     { return string(x.Type) }
+func (x *ResponseCodeInterpreterCallCompletedEvent) EventType() string    { return string(x.Type) }
+func (x *ResponseCodeInterpreterCallInProgressEvent) EventType() string   { return string(x.Type) }
 func (x *ResponseCodeInterpreterCallInterpretingEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseContentPartAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseContentPartDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCreatedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseErrorEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallSearchingEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFunctionCallArgumentsDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFunctionCallArgumentsDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFailedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseIncompleteEvent) EventType() string { return string(x.Type) }
-func (x *ResponseOutputItemAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseOutputItemDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryPartAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryPartDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryTextDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryTextDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseRefusalDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseRefusalDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextAnnotationDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallSearchingEvent) EventType() string { return string(x.Type) }
+func (x *ResponseCompletedEvent) EventType() string                       { return string(x.Type) }
+func (x *ResponseContentPartAddedEvent) EventType() string                { return string(x.Type) }
+func (x *ResponseContentPartDoneEvent) EventType() string                 { return string(x.Type) }
+func (x *ResponseCreatedEvent) EventType() string                         { return string(x.Type) }
+func (x *ResponseErrorEvent) EventType() string                           { return string(x.Type) }
+func (x *ResponseFileSearchCallCompletedEvent) EventType() string         { return string(x.Type) }
+func (x *ResponseFileSearchCallInProgressEvent) EventType() string        { return string(x.Type) }
+func (x *ResponseFileSearchCallSearchingEvent) EventType() string         { return string(x.Type) }
+func (x *ResponseFunctionCallArgumentsDeltaEvent) EventType() string      { return string(x.Type) }
+func (x *ResponseFunctionCallArgumentsDoneEvent) EventType() string       { return string(x.Type) }
+func (x *ResponseInProgressEvent) EventType() string                      { return string(x.Type) }
+func (x *ResponseFailedEvent) EventType() string                          { return string(x.Type) }
+func (x *ResponseIncompleteEvent) EventType() string                      { return string(x.Type) }
+func (x *ResponseOutputItemAddedEvent) EventType() string                 { return string(x.Type) }
+func (x *ResponseOutputItemDoneEvent) EventType() string                  { return string(x.Type) }
+func (x *ResponseReasoningSummaryPartAddedEvent) EventType() string       { return string(x.Type) }
+func (x *ResponseReasoningSummaryPartDoneEvent) EventType() string        { return string(x.Type) }
+func (x *ResponseReasoningSummaryTextDeltaEvent) EventType() string       { return string(x.Type) }
+func (x *ResponseReasoningSummaryTextDoneEvent) EventType() string        { return string(x.Type) }
+func (x *ResponseRefusalDeltaEvent) EventType() string                    { return string(x.Type) }
+func (x *ResponseRefusalDoneEvent) EventType() string                     { return string(x.Type) }
+func (x *ResponseTextAnnotationDeltaEvent) EventType() string             { return string(x.Type) }
+func (x *ResponseTextDeltaEvent) EventType() string                       { return string(x.Type) }
+func (x *ResponseTextDoneEvent) EventType() string                        { return string(x.Type) }
+func (x *ResponseWebSearchCallCompletedEvent) EventType() string          { return string(x.Type) }
+func (x *ResponseWebSearchCallInProgressEvent) EventType() string         { return string(x.Type) }
+func (x *ResponseWebSearchCallSearchingEvent) EventType() string          { return string(x.Type) }
 
 // ResponseStreamEventFromResponseAudioDeltaEvent wraps a *ResponseAudioDeltaEvent as a ResponseStreamEvent union value.
 func ResponseStreamEventFromResponseAudioDeltaEvent(v *ResponseAudioDeltaEvent) ResponseStreamEvent {
@@ -3877,7 +3893,6 @@ func UnmarshalResponseStreamEvent(data []byte) (ResponseStreamEvent, error) {
 	}
 }
 
-
 // ResponseText Configuration options for a text response from the model. Can be plain
 // text or structured JSON data. Learn more:
 // - [Text inputs and outputs](/docs/guides/text)
@@ -3897,8 +3912,8 @@ type ResponseTextAnnotationDeltaEvent struct {
 	// The index of the content part that the text annotation was added to.
 	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the text annotation was added to."`
 	// The index of the annotation that was added.
-	AnnotationIndex int64 `json:"annotation_index" jsonschema:"description=The index of the annotation that was added."`
-	Annotation Annotation `json:"annotation"`
+	AnnotationIndex int64      `json:"annotation_index" jsonschema:"description=The index of the annotation that was added."`
+	Annotation      Annotation `json:"annotation"`
 }
 
 // ResponseTextAnnotationDeltaEventType The type of the event. Always 'response.output_text.annotation.added'.
@@ -3961,15 +3976,16 @@ type ResponseToolChoice interface {
 	DiscriminatorValue() string
 }
 
-
 // ResponseToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a ResponseToolChoice variant.
-type ResponseToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
+type ResponseToolChoiceToolChoiceOptions struct{ Value ToolChoiceOptions }
+
 func (*ResponseToolChoiceToolChoiceOptions) isResponseToolChoice() {}
-func (*ToolChoiceTypes) isResponseToolChoice() {}
-func (*ToolChoiceFunction) isResponseToolChoice() {}
+func (*ToolChoiceTypes) isResponseToolChoice()                     {}
+func (*ToolChoiceFunction) isResponseToolChoice()                  {}
 
-
-func (w *ResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
+func (w *ResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string {
+	return fmt.Sprintf("%v", w.Value)
+}
 func (w ResponseToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(w.Value)
 }
@@ -4020,18 +4036,17 @@ func UnmarshalResponseToolChoice(data []byte) (ResponseToolChoice, error) {
 	}
 }
 
-
 // ResponseTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
+//   - 'auto': If the context of this response and previous ones exceeds
+//     the model's context window size, the model will truncate the
+//     response to fit the context window by dropping input items in the
+//     middle of the conversation.
+//   - 'disabled' (default): If a model response will exceed the context window
+//     size for a model, the request will fail with a 400 error.
 type ResponseTruncation string
 
 const (
-	ResponseTruncationAuto ResponseTruncation = "auto"
+	ResponseTruncationAuto     ResponseTruncation = "auto"
 	ResponseTruncationDisabled ResponseTruncation = "disabled"
 )
 
@@ -4052,8 +4067,8 @@ type ResponseUsage struct {
 
 // ResponseUsageInputTokensDetails A detailed breakdown of the input tokens.
 type ResponseUsageInputTokensDetails struct {
-	// The number of tokens that were retrieved from the cache. 
-// [More on prompt caching](/docs/guides/prompt-caching).
+	// The number of tokens that were retrieved from the cache.
+	// [More on prompt caching](/docs/guides/prompt-caching).
 	CachedTokens int64 `json:"cached_tokens" jsonschema:"description=The number of tokens that were retrieved from the cache. [More on prompt caching](/docs/guides/prompt-caching)."`
 }
 
@@ -4116,12 +4131,12 @@ const (
 
 // Screenshot A screenshot action.
 type Screenshot struct {
-	// Specifies the event type. For a screenshot action, this property is 
-// always set to 'screenshot'.
+	// Specifies the event type. For a screenshot action, this property is
+	// always set to 'screenshot'.
 	Type ScreenshotType `json:"type" jsonschema:"description=Specifies the event type. For a screenshot action, this property is always set to 'screenshot'."`
 }
 
-// ScreenshotType Specifies the event type. For a screenshot action, this property is 
+// ScreenshotType Specifies the event type. For a screenshot action, this property is
 // always set to 'screenshot'.
 type ScreenshotType string
 
@@ -4137,14 +4152,14 @@ type Scroll struct {
 	ScrollX int64 `json:"scroll_x" jsonschema:"description=The horizontal scroll distance."`
 	// The vertical scroll distance.
 	ScrollY int64 `json:"scroll_y" jsonschema:"description=The vertical scroll distance."`
-	// Specifies the event type. For a scroll action, this property is 
-// always set to 'scroll'.
+	// Specifies the event type. For a scroll action, this property is
+	// always set to 'scroll'.
 	Type ScrollType `json:"type" jsonschema:"description=Specifies the event type. For a scroll action, this property is always set to 'scroll'."`
 	// The x-coordinate where the scroll occurred.
 	X int64 `json:"x" jsonschema:"description=The x-coordinate where the scroll occurred."`
 }
 
-// ScrollType Specifies the event type. For a scroll action, this property is 
+// ScrollType Specifies the event type. For a scroll action, this property is
 // always set to 'scroll'.
 type ScrollType string
 
@@ -4153,32 +4168,37 @@ const (
 )
 
 // ServiceTier Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:
+//
 //   - If set to 'auto', and the Project is Scale tier enabled, the system
 //     will utilize scale tier credits until they are exhausted.
+//
 //   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
+//
 //   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
+//
 //   - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).
+//
 //   - When not set, the default behavior is 'auto'.
-// 
-//   When this parameter is set, the response body will include the 'service_tier' utilized.
+//
+//     When this parameter is set, the response body will include the 'service_tier' utilized.
 type ServiceTier string
 
 const (
-	ServiceTierAuto ServiceTier = "auto"
+	ServiceTierAuto    ServiceTier = "auto"
 	ServiceTierDefault ServiceTier = "default"
-	ServiceTierFlex ServiceTier = "flex"
+	ServiceTierFlex    ServiceTier = "flex"
 )
 
 // TextResponseFormatConfiguration An object specifying the format that the model must output.
-// 
-// Configuring '{ "type": "json_schema" }' enables Structured Outputs, 
-// which ensures the model will match your supplied JSON schema. Learn more in the 
+//
+// Configuring '{ "type": "json_schema" }' enables Structured Outputs,
+// which ensures the model will match your supplied JSON schema. Learn more in the
 // [Structured Outputs guide](/docs/guides/structured-outputs).
-// 
+//
 // The default format is '{ "type": "text" }' with no additional options.
-// 
+//
 // **Not recommended for gpt-4o and newer models:**
-// 
+//
 // Setting to '{ "type": "json_object" }' enables the older JSON mode, which
 // ensures the message the model generates is valid JSON. Using 'json_schema'
 // is preferred for models that support it.
@@ -4190,13 +4210,13 @@ type TextResponseFormatConfiguration interface {
 	DiscriminatorValue() string
 }
 
-func (*ResponseFormatText) isTextResponseFormatConfiguration() {}
+func (*ResponseFormatText) isTextResponseFormatConfiguration()           {}
 func (*TextResponseFormatJsonSchema) isTextResponseFormatConfiguration() {}
-func (*ResponseFormatJsonObject) isTextResponseFormatConfiguration() {}
+func (*ResponseFormatJsonObject) isTextResponseFormatConfiguration()     {}
 
-func (x *ResponseFormatText) DiscriminatorValue() string { return string(x.Type) }
+func (x *ResponseFormatText) DiscriminatorValue() string           { return string(x.Type) }
 func (x *TextResponseFormatJsonSchema) DiscriminatorValue() string { return string(x.Type) }
-func (x *ResponseFormatJsonObject) DiscriminatorValue() string { return string(x.Type) }
+func (x *ResponseFormatJsonObject) DiscriminatorValue() string     { return string(x.Type) }
 
 // TextResponseFormatConfigurationFromResponseFormatText wraps a *ResponseFormatText as a TextResponseFormatConfiguration union value.
 func TextResponseFormatConfigurationFromResponseFormatText(v *ResponseFormatText) TextResponseFormatConfiguration {
@@ -4246,24 +4266,23 @@ func UnmarshalTextResponseFormatConfiguration(data []byte) (TextResponseFormatCo
 	}
 }
 
-
 // TextResponseFormatJsonSchema JSON Schema response format. Used to generate structured JSON responses.
 // Learn more about [Structured Outputs](/docs/guides/structured-outputs).
 type TextResponseFormatJsonSchema struct {
 	// The type of response format being defined. Always 'json_schema'.
 	Type TextResponseFormatJsonSchemaType `json:"type" jsonschema:"description=The type of response format being defined. Always 'json_schema'."`
 	// A description of what the response format is for, used by the model to
-// determine how to respond in the format.
+	// determine how to respond in the format.
 	Description *string `json:"description,omitempty" jsonschema:"description=A description of what the response format is for, used by the model to determine how to respond in the format."`
 	// The name of the response format. Must be a-z, A-Z, 0-9, or contain
-// underscores and dashes, with a maximum length of 64.
-	Name string `json:"name" jsonschema:"description=The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."`
+	// underscores and dashes, with a maximum length of 64.
+	Name   string                         `json:"name" jsonschema:"description=The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."`
 	Schema ResponseFormatJsonSchemaSchema `json:"schema"`
 	// Whether to enable strict schema adherence when generating the output.
-// If set to true, the model will always follow the exact schema defined
-// in the 'schema' field. Only a subset of JSON Schema is supported when
-// 'strict' is 'true'. To learn more, read the [Structured Outputs
-// guide](/docs/guides/structured-outputs).
+	// If set to true, the model will always follow the exact schema defined
+	// in the 'schema' field. Only a subset of JSON Schema is supported when
+	// 'strict' is 'true'. To learn more, read the [Structured Outputs
+	// guide](/docs/guides/structured-outputs).
 	Strict *bool `json:"strict,omitempty" jsonschema:"description=Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the 'schema' field. Only a subset of JSON Schema is supported when 'strict' is 'true'. To learn more, read the [Structured Outputs guide](/docs/guides/structured-outputs)."`
 }
 
@@ -4282,14 +4301,14 @@ type Tool interface {
 	DiscriminatorValue() string
 }
 
-func (*FileSearchTool) isTool() {}
-func (*FunctionTool) isTool() {}
-func (*WebSearchPreviewTool) isTool() {}
+func (*FileSearchTool) isTool()         {}
+func (*FunctionTool) isTool()           {}
+func (*WebSearchPreviewTool) isTool()   {}
 func (*ComputerUsePreviewTool) isTool() {}
 
-func (x *FileSearchTool) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionTool) DiscriminatorValue() string { return string(x.Type) }
-func (x *WebSearchPreviewTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *FileSearchTool) DiscriminatorValue() string         { return string(x.Type) }
+func (x *FunctionTool) DiscriminatorValue() string           { return string(x.Type) }
+func (x *WebSearchPreviewTool) DiscriminatorValue() string   { return string(x.Type) }
 func (x *ComputerUsePreviewTool) DiscriminatorValue() string { return string(x.Type) }
 
 // ToolFromFileSearchTool wraps a *FileSearchTool as a Tool union value.
@@ -4351,7 +4370,6 @@ func UnmarshalTool(data []byte) (Tool, error) {
 	}
 }
 
-
 // ToolChoiceFunction Use this option to force the model to call a specific function.
 type ToolChoiceFunction struct {
 	// For function calling, the type is always 'function'.
@@ -4368,18 +4386,18 @@ const (
 )
 
 // ToolChoiceOptions Controls which (if any) tool is called by the model.
-// 
+//
 // 'none' means the model will not call any tool and instead generates a message.
-// 
+//
 // 'auto' means the model can pick between generating a message or calling one or
 // more tools.
-// 
+//
 // 'required' means the model must call one or more tools.
 type ToolChoiceOptions string
 
 const (
-	ToolChoiceOptionsNone ToolChoiceOptions = "none"
-	ToolChoiceOptionsAuto ToolChoiceOptions = "auto"
+	ToolChoiceOptionsNone     ToolChoiceOptions = "none"
+	ToolChoiceOptionsAuto     ToolChoiceOptions = "auto"
 	ToolChoiceOptionsRequired ToolChoiceOptions = "required"
 )
 
@@ -4387,18 +4405,18 @@ const (
 // [Learn more about built-in tools](/docs/guides/tools).
 type ToolChoiceTypes struct {
 	// The type of hosted tool the model should to use. Learn more about
-// [built-in tools](/docs/guides/tools).
-// 
-// Allowed values are:
-// - 'file_search'
-// - 'web_search_preview'
-// - 'computer_use_preview'
+	// [built-in tools](/docs/guides/tools).
+	//
+	// Allowed values are:
+	// - 'file_search'
+	// - 'web_search_preview'
+	// - 'computer_use_preview'
 	Type ToolChoiceTypesType `json:"type" jsonschema:"description=The type of hosted tool the model should to use. Learn more about [built-in tools](/docs/guides/tools). Allowed values are: - 'file_search' - 'web_search_preview' - 'computer_use_preview'"`
 }
 
 // ToolChoiceTypesType The type of hosted tool the model should to use. Learn more about
 // [built-in tools](/docs/guides/tools).
-// 
+//
 // Allowed values are:
 // - 'file_search'
 // - 'web_search_preview'
@@ -4406,22 +4424,22 @@ type ToolChoiceTypes struct {
 type ToolChoiceTypesType string
 
 const (
-	ToolChoiceTypesTypeFileSearch ToolChoiceTypesType = "file_search"
-	ToolChoiceTypesTypeWebSearchPreview ToolChoiceTypesType = "web_search_preview"
-	ToolChoiceTypesTypeComputerUsePreview ToolChoiceTypesType = "computer_use_preview"
+	ToolChoiceTypesTypeFileSearch               ToolChoiceTypesType = "file_search"
+	ToolChoiceTypesTypeWebSearchPreview         ToolChoiceTypesType = "web_search_preview"
+	ToolChoiceTypesTypeComputerUsePreview       ToolChoiceTypesType = "computer_use_preview"
 	ToolChoiceTypesTypeWebSearchPreview20250311 ToolChoiceTypesType = "web_search_preview_2025_03_11"
 )
 
 // Type An action to type in text.
 type Type struct {
-	// Specifies the event type. For a type action, this property is 
-// always set to 'type'.
+	// Specifies the event type. For a type action, this property is
+	// always set to 'type'.
 	Type TypeType `json:"type" jsonschema:"description=Specifies the event type. For a type action, this property is always set to 'type'."`
 	// The text to type.
 	Text string `json:"text" jsonschema:"description=The text to type."`
 }
 
-// TypeType Specifies the event type. For a type action, this property is 
+// TypeType Specifies the event type. For a type action, this property is
 // always set to 'type'.
 type TypeType string
 
@@ -4450,21 +4468,21 @@ const (
 	UrlCitationBodyTypeURLCitation UrlCitationBodyType = "url_citation"
 )
 
-// VectorStoreFileAttributes Set of 16 key-value pairs that can be attached to an object. This can be 
-// useful for storing additional information about the object in a structured 
-// format, and querying for objects via API or the dashboard. Keys are strings 
-// with a maximum length of 64 characters. Values are strings with a maximum 
+// VectorStoreFileAttributes Set of 16 key-value pairs that can be attached to an object. This can be
+// useful for storing additional information about the object in a structured
+// format, and querying for objects via API or the dashboard. Keys are strings
+// with a maximum length of 64 characters. Values are strings with a maximum
 // length of 512 characters, booleans, or numbers.
 type VectorStoreFileAttributes map[string]any
 
 // Wait A wait action.
 type Wait struct {
-	// Specifies the event type. For a wait action, this property is 
-// always set to 'wait'.
+	// Specifies the event type. For a wait action, this property is
+	// always set to 'wait'.
 	Type WaitType `json:"type" jsonschema:"description=Specifies the event type. For a wait action, this property is always set to 'wait'."`
 }
 
-// WaitType Specifies the event type. For a wait action, this property is 
+// WaitType Specifies the event type. For a wait action, this property is
 // always set to 'wait'.
 type WaitType string
 
@@ -4475,8 +4493,8 @@ const (
 // WebSearchPreviewTool This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
 type WebSearchPreviewTool struct {
 	// The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'.
-	Type WebSearchPreviewToolType `json:"type" jsonschema:"description=The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'."`
-	UserLocation *ApproximateLocation `json:"user_location,omitempty"`
+	Type         WebSearchPreviewToolType `json:"type" jsonschema:"description=The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'."`
+	UserLocation *ApproximateLocation     `json:"user_location,omitempty"`
 	// High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default.
 	SearchContextSize *WebSearchPreviewToolSearchContextSize `json:"search_context_size,omitempty" jsonschema:"description=High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default."`
 }
@@ -4485,20 +4503,20 @@ type WebSearchPreviewTool struct {
 type WebSearchPreviewToolSearchContextSize string
 
 const (
-	WebSearchPreviewToolSearchContextSizeLow WebSearchPreviewToolSearchContextSize = "low"
+	WebSearchPreviewToolSearchContextSizeLow    WebSearchPreviewToolSearchContextSize = "low"
 	WebSearchPreviewToolSearchContextSizeMedium WebSearchPreviewToolSearchContextSize = "medium"
-	WebSearchPreviewToolSearchContextSizeHigh WebSearchPreviewToolSearchContextSize = "high"
+	WebSearchPreviewToolSearchContextSizeHigh   WebSearchPreviewToolSearchContextSize = "high"
 )
 
 // WebSearchPreviewToolType The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'.
 type WebSearchPreviewToolType string
 
 const (
-	WebSearchPreviewToolTypeWebSearchPreview WebSearchPreviewToolType = "web_search_preview"
+	WebSearchPreviewToolTypeWebSearchPreview         WebSearchPreviewToolType = "web_search_preview"
 	WebSearchPreviewToolTypeWebSearchPreview20250311 WebSearchPreviewToolType = "web_search_preview_2025_03_11"
 )
 
-// WebSearchToolCall The results of a web search tool call. See the 
+// WebSearchToolCall The results of a web search tool call. See the
 // [web search guide](/docs/guides/tools-web-search) for more information.
 type WebSearchToolCall struct {
 	// The unique ID of the web search tool call.
@@ -4514,9 +4532,9 @@ type WebSearchToolCallStatus string
 
 const (
 	WebSearchToolCallStatusInProgress WebSearchToolCallStatus = "in_progress"
-	WebSearchToolCallStatusSearching WebSearchToolCallStatus = "searching"
-	WebSearchToolCallStatusCompleted WebSearchToolCallStatus = "completed"
-	WebSearchToolCallStatusFailed WebSearchToolCallStatus = "failed"
+	WebSearchToolCallStatusSearching  WebSearchToolCallStatus = "searching"
+	WebSearchToolCallStatusCompleted  WebSearchToolCallStatus = "completed"
+	WebSearchToolCallStatusFailed     WebSearchToolCallStatus = "failed"
 )
 
 // WebSearchToolCallType The type of the web search tool call. Always 'web_search_call'.
@@ -4525,6 +4543,7 @@ type WebSearchToolCallType string
 const (
 	WebSearchToolCallTypeWebSearchCall WebSearchToolCallType = "web_search_call"
 )
+
 func (v *CodeInterpreterToolCall) UnmarshalJSON(data []byte) error {
 	type Alias CodeInterpreterToolCall
 	var raw struct {
@@ -4589,9 +4608,9 @@ func (v *CreateResponse) UnmarshalJSON(data []byte) error {
 	type Alias CreateResponse
 	var raw struct {
 		Alias
-		Tools []json.RawMessage `json:"tools"`
-		Input json.RawMessage `json:"input"`
-		ToolChoice json.RawMessage `json:"tool_choice"`
+		Tools      []json.RawMessage `json:"tools"`
+		Input      json.RawMessage   `json:"input"`
+		ToolChoice json.RawMessage   `json:"tool_choice"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -4765,9 +4784,9 @@ func (v *Response) UnmarshalJSON(data []byte) error {
 	type Alias Response
 	var raw struct {
 		Alias
-		Output []json.RawMessage `json:"output"`
-		Tools []json.RawMessage `json:"tools"`
-		ToolChoice json.RawMessage `json:"tool_choice"`
+		Output     []json.RawMessage `json:"output"`
+		Tools      []json.RawMessage `json:"tools"`
+		ToolChoice json.RawMessage   `json:"tool_choice"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -4901,8 +4920,8 @@ func (v *ResponseProperties) UnmarshalJSON(data []byte) error {
 	type Alias ResponseProperties
 	var raw struct {
 		Alias
-		ToolChoice json.RawMessage `json:"tool_choice"`
-		Tools []json.RawMessage `json:"tools"`
+		ToolChoice json.RawMessage   `json:"tool_choice"`
+		Tools      []json.RawMessage `json:"tools"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
@@ -4984,4 +5003,3 @@ func (v *ResponseTextAnnotationDeltaEvent) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
-

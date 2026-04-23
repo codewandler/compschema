@@ -5,6 +5,13 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "file_id": "example",
+          "index": 1,
+          "type": "file_citation"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/FileCitationBody"
@@ -19,6 +26,15 @@
     },
     "ApproximateLocation": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "city": "example",
+          "country": "example",
+          "region": "example",
+          "timezone": "example",
+          "type": "approximate"
+        }
+      ],
       "properties": {
         "city": {
           "description": "Free text input for the city of the user, e.g. 'San Francisco'.",
@@ -53,6 +69,9 @@
           "enum": [
             "approximate"
           ],
+          "examples": [
+            "approximate"
+          ],
           "title": "ApproximateLocationType",
           "type": "string"
         }
@@ -66,6 +85,14 @@
     "Click": {
       "additionalProperties": false,
       "description": "A click action.",
+      "examples": [
+        {
+          "button": "left",
+          "type": "click",
+          "x": 1,
+          "y": 1
+        }
+      ],
       "properties": {
         "button": {
           "description": "Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'.",
@@ -76,12 +103,18 @@
             "back",
             "forward"
           ],
+          "examples": [
+            "left"
+          ],
           "title": "ClickButton",
           "type": "string"
         },
         "type": {
           "description": "Specifies the event type. For a click action, this property is always set to 'click'.",
           "enum": [
+            "click"
+          ],
+          "examples": [
             "click"
           ],
           "title": "ClickType",
@@ -108,6 +141,14 @@
     "CodeInterpreterFileOutput": {
       "additionalProperties": false,
       "description": "The output of a code interpreter tool call that is a file.",
+      "examples": [
+        {
+          "files": [
+            {}
+          ],
+          "type": "files"
+        }
+      ],
       "properties": {
         "files": {
           "items": {},
@@ -116,6 +157,9 @@
         "type": {
           "description": "The type of the code interpreter file output. Always 'files'.",
           "enum": [
+            "files"
+          ],
+          "examples": [
             "files"
           ],
           "title": "CodeInterpreterFileOutputType",
@@ -132,6 +176,12 @@
     "CodeInterpreterTextOutput": {
       "additionalProperties": false,
       "description": "The output of a code interpreter tool call that is text.",
+      "examples": [
+        {
+          "logs": "example",
+          "type": "logs"
+        }
+      ],
       "properties": {
         "logs": {
           "description": "The logs of the code interpreter tool call.",
@@ -140,6 +190,9 @@
         "type": {
           "description": "The type of the code interpreter text output. Always 'logs'.",
           "enum": [
+            "logs"
+          ],
+          "examples": [
             "logs"
           ],
           "title": "CodeInterpreterTextOutputType",
@@ -156,6 +209,22 @@
     "CodeInterpreterToolCall": {
       "additionalProperties": false,
       "description": "A tool call to run code.",
+      "examples": [
+        {
+          "code": "example",
+          "id": "example",
+          "results": [
+            {
+              "files": [
+                {}
+              ],
+              "type": "files"
+            }
+          ],
+          "status": "in_progress",
+          "type": "code_interpreter_call"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The code to run.",
@@ -179,12 +248,18 @@
             "interpreting",
             "completed"
           ],
+          "examples": [
+            "in_progress"
+          ],
           "title": "CodeInterpreterToolCallStatus",
           "type": "string"
         },
         "type": {
           "description": "The type of the code interpreter tool call. Always 'code_interpreter_call'.",
           "enum": [
+            "code_interpreter_call"
+          ],
+          "examples": [
             "code_interpreter_call"
           ],
           "title": "CodeInterpreterToolCallType",
@@ -206,6 +281,14 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "files": [
+            {}
+          ],
+          "type": "files"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/CodeInterpreterFileOutput"
@@ -218,6 +301,13 @@
     "ComparisonFilter": {
       "additionalProperties": false,
       "description": "A filter used to compare a specified attribute key to a given value using a defined comparison operation.",
+      "examples": [
+        {
+          "key": "example",
+          "type": "eq",
+          "value": true
+        }
+      ],
       "properties": {
         "key": {
           "description": "The key to compare against the value.",
@@ -232,6 +322,9 @@
             "gte",
             "lt",
             "lte"
+          ],
+          "examples": [
+            "eq"
           ],
           "title": "ComparisonFilterType",
           "type": "string"
@@ -251,6 +344,9 @@
     },
     "ComparisonFilterValue": {
       "description": "The value to compare against the attribute key; supports string, number, or boolean types.",
+      "examples": [
+        true
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComparisonFilterValueBool"
@@ -264,50 +360,40 @@
       ]
     },
     "ComparisonFilterValueBool": {
-      "additionalProperties": false,
       "description": "wraps a bool value as a ComparisonFilterValue variant.",
-      "properties": {
-        "Value": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "Value"
+      "examples": [
+        true
       ],
       "title": "ComparisonFilterValueBool",
-      "type": "object"
+      "type": "boolean"
     },
     "ComparisonFilterValueFloat64": {
-      "additionalProperties": false,
       "description": "wraps a float64 value as a ComparisonFilterValue variant.",
-      "properties": {
-        "Value": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "Value"
+      "examples": [
+        1
       ],
       "title": "ComparisonFilterValueFloat64",
-      "type": "object"
+      "type": "number"
     },
     "ComparisonFilterValueString": {
-      "additionalProperties": false,
       "description": "wraps a string value as a ComparisonFilterValue variant.",
-      "properties": {
-        "Value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "Value"
+      "examples": [
+        "example"
       ],
       "title": "ComparisonFilterValueString",
-      "type": "object"
+      "type": "string"
     },
     "CompoundFilter": {
       "additionalProperties": false,
       "description": "Combine multiple filters using 'and' or 'or'.",
+      "examples": [
+        {
+          "filters": [
+            {}
+          ],
+          "type": "and"
+        }
+      ],
       "properties": {
         "filters": {
           "description": "Array of filters to combine. Items can be 'ComparisonFilter' or 'CompoundFilter'.",
@@ -319,6 +405,9 @@
           "enum": [
             "and",
             "or"
+          ],
+          "examples": [
+            "and"
           ],
           "title": "CompoundFilterType",
           "type": "string"
@@ -336,6 +425,14 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "button": "left",
+          "type": "click",
+          "x": 1,
+          "y": 1
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/Click"
@@ -369,6 +466,26 @@
     "ComputerCallOutputItemParam": {
       "additionalProperties": false,
       "description": "The output of a computer tool call.",
+      "examples": [
+        {
+          "acknowledged_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "call_id": "id_abc123",
+          "id": "example",
+          "output": {
+            "file_id": "example",
+            "image_url": "example",
+            "type": "computer_screenshot"
+          },
+          "status": "in_progress",
+          "type": "computer_call_output"
+        }
+      ],
       "properties": {
         "acknowledged_safety_checks": {
           "description": "The safety checks reported by the API that have been acknowledged by the developer.",
@@ -403,6 +520,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "ComputerCallOutputItemParamStatus",
               "type": "string"
             },
@@ -414,6 +534,9 @@
         "type": {
           "description": "The type of the computer tool call output. Always 'computer_call_output'.",
           "enum": [
+            "computer_call_output"
+          ],
+          "examples": [
             "computer_call_output"
           ],
           "title": "ComputerCallOutputItemParamType",
@@ -431,6 +554,13 @@
     "ComputerCallSafetyCheckParam": {
       "additionalProperties": false,
       "description": "A pending safety check for the computer call.",
+      "examples": [
+        {
+          "code": "example",
+          "id": "example",
+          "message": "example"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The type of the pending safety check.",
@@ -460,6 +590,13 @@
     "ComputerScreenshotImage": {
       "additionalProperties": false,
       "description": "A computer screenshot image used with the computer use tool.",
+      "examples": [
+        {
+          "file_id": "example",
+          "image_url": "example",
+          "type": "computer_screenshot"
+        }
+      ],
       "properties": {
         "file_id": {
           "description": "The identifier of an uploaded file that contains the screenshot.",
@@ -480,6 +617,9 @@
           "enum": [
             "computer_screenshot"
           ],
+          "examples": [
+            "computer_screenshot"
+          ],
           "title": "ComputerScreenshotImageType",
           "type": "string"
         }
@@ -493,6 +633,27 @@
     "ComputerToolCall": {
       "additionalProperties": false,
       "description": "A tool call to a computer use tool. See the\n[computer use guide](/docs/guides/tools-computer-use) for more information.",
+      "examples": [
+        {
+          "action": {
+            "button": "left",
+            "type": "click",
+            "x": 1,
+            "y": 1
+          },
+          "call_id": "example",
+          "id": "example",
+          "pending_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "status": "in_progress",
+          "type": "computer_call"
+        }
+      ],
       "properties": {
         "action": {
           "$ref": "#/$defs/ComputerAction"
@@ -519,12 +680,18 @@
             "completed",
             "incomplete"
           ],
+          "examples": [
+            "in_progress"
+          ],
           "title": "ComputerToolCallStatus",
           "type": "string"
         },
         "type": {
           "description": "The type of the computer call. Always 'computer_call'.",
           "enum": [
+            "computer_call"
+          ],
+          "examples": [
             "computer_call"
           ],
           "title": "ComputerToolCallType",
@@ -545,6 +712,26 @@
     "ComputerToolCallOutput": {
       "additionalProperties": false,
       "description": "The output of a computer tool call.",
+      "examples": [
+        {
+          "acknowledged_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "call_id": "example",
+          "id": "example",
+          "output": {
+            "file_id": "example",
+            "image_url": "example",
+            "type": "computer_screenshot"
+          },
+          "status": "in_progress",
+          "type": "computer_call_output"
+        }
+      ],
       "properties": {
         "acknowledged_safety_checks": {
           "description": "The safety checks reported by the API that have been acknowledged by the developer.",
@@ -577,6 +764,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "ComputerToolCallOutputStatus",
               "type": "string"
             },
@@ -588,6 +778,9 @@
         "type": {
           "description": "The type of the computer tool call output. Always 'computer_call_output'.",
           "enum": [
+            "computer_call_output"
+          ],
+          "examples": [
             "computer_call_output"
           ],
           "title": "ComputerToolCallOutputType",
@@ -605,6 +798,26 @@
     "ComputerToolCallOutputResource": {
       "additionalProperties": false,
       "description": "The output of a computer tool call.",
+      "examples": [
+        {
+          "acknowledged_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "call_id": "example",
+          "id": "example",
+          "output": {
+            "file_id": "example",
+            "image_url": "example",
+            "type": "computer_screenshot"
+          },
+          "status": "in_progress",
+          "type": "computer_call_output"
+        }
+      ],
       "properties": {
         "acknowledged_safety_checks": {
           "description": "The safety checks reported by the API that have been acknowledged by the developer.",
@@ -634,6 +847,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "ComputerToolCallOutputResourceStatus",
               "type": "string"
             },
@@ -645,6 +861,9 @@
         "type": {
           "description": "The type of the computer tool call output. Always 'computer_call_output'.",
           "enum": [
+            "computer_call_output"
+          ],
+          "examples": [
             "computer_call_output"
           ],
           "title": "ComputerToolCallOutputResourceType",
@@ -663,6 +882,13 @@
     "ComputerToolCallSafetyCheck": {
       "additionalProperties": false,
       "description": "A pending safety check for the computer call.",
+      "examples": [
+        {
+          "code": "example",
+          "id": "example",
+          "message": "example"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The type of the pending safety check.",
@@ -688,6 +914,14 @@
     "ComputerUsePreviewTool": {
       "additionalProperties": false,
       "description": "A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).",
+      "examples": [
+        {
+          "display_height": 1,
+          "display_width": 1,
+          "environment": "windows",
+          "type": "computer_use_preview"
+        }
+      ],
       "properties": {
         "display_height": {
           "description": "The height of the computer display.",
@@ -706,12 +940,18 @@
             "ubuntu",
             "browser"
           ],
+          "examples": [
+            "windows"
+          ],
           "title": "ComputerUsePreviewToolEnvironment",
           "type": "string"
         },
         "type": {
           "description": "The type of the computer use tool. Always 'computer_use_preview'.",
           "enum": [
+            "computer_use_preview"
+          ],
+          "examples": [
             "computer_use_preview"
           ],
           "title": "ComputerUsePreviewToolType",
@@ -730,6 +970,12 @@
     "Coordinate": {
       "additionalProperties": false,
       "description": "An x/y coordinate pair, e.g. '{ x: 100, y: 200 }'.",
+      "examples": [
+        {
+          "x": 1,
+          "y": 1
+        }
+      ],
       "properties": {
         "x": {
           "description": "The x-coordinate.",
@@ -749,6 +995,17 @@
     },
     "CreateModelResponseProperties": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "metadata": {
+            "key1": "example"
+          },
+          "service_tier": "auto",
+          "temperature": 1,
+          "top_p": 1,
+          "user": "example"
+        }
+      ],
       "properties": {
         "metadata": {
           "oneOf": [
@@ -801,15 +1058,63 @@
     },
     "CreateResponse": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "include": [
+            "file_search_call.results"
+          ],
+          "input": "example",
+          "instructions": "example",
+          "max_output_tokens": 1,
+          "metadata": {
+            "key1": "example"
+          },
+          "model": "gpt-4.1",
+          "parallel_tool_calls": true,
+          "previous_response_id": "example",
+          "reasoning": {
+            "effort": "low",
+            "generate_summary": "auto",
+            "summary": "auto"
+          },
+          "service_tier": "auto",
+          "store": true,
+          "stream": true,
+          "temperature": 1,
+          "text": {
+            "format": {
+              "type": "json_object"
+            }
+          },
+          "tool_choice": {
+            "name": "example",
+            "type": "function"
+          },
+          "tools": [
+            {
+              "display_height": 1,
+              "display_width": 1,
+              "environment": "windows",
+              "type": "computer_use_preview"
+            }
+          ],
+          "top_p": 1,
+          "truncation": "auto",
+          "user": "example"
+        }
+      ],
       "properties": {
         "include": {
           "description": "Specify additional output data to include in the model response. Currently supported values are: - 'file_search_call.results': Include the search results of the file search tool call. - 'message.input_image.image_url': Include image urls from the input message. - 'computer_call_output.output.image_url': Include image urls from the computer call output.",
           "items": {
-            "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n- 'file_search_call.results': Include the search results of\n  the file search tool call.\n- 'message.input_image.image_url': Include image urls from the input message.\n- 'computer_call_output.output.image_url': Include image urls from the computer call output.",
+            "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n  - 'file_search_call.results': Include the search results of\n    the file search tool call.\n  - 'message.input_image.image_url': Include image urls from the input message.\n  - 'computer_call_output.output.image_url': Include image urls from the computer call output.",
             "enum": [
               "file_search_call.results",
               "message.input_image.image_url",
               "computer_call_output.output.image_url"
+            ],
+            "examples": [
+              "file_search_call.results"
             ],
             "title": "Includable",
             "type": "string"
@@ -939,10 +1244,13 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
+              ],
+              "examples": [
+                "auto"
               ],
               "title": "CreateResponseTruncation",
               "type": "string"
@@ -969,6 +1277,9 @@
     },
     "CreateResponseInput": {
       "description": "Text, image, or file inputs to the model, used to generate a response.\n\nLearn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Image inputs](/docs/guides/images)\n- [File inputs](/docs/guides/pdf-files)\n- [Conversation state](/docs/guides/conversation-state)\n- [Function calling](/docs/guides/function-calling)",
+      "examples": [
+        "example"
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/CreateResponseInputSliceInputItem"
@@ -996,22 +1307,23 @@
       "type": "object"
     },
     "CreateResponseInputString": {
-      "additionalProperties": false,
       "description": "wraps a string value as a CreateResponseInput variant.",
-      "properties": {
-        "Value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "Value"
+      "examples": [
+        "example"
       ],
       "title": "CreateResponseInputString",
-      "type": "object"
+      "type": "string"
     },
     "CreateResponseText": {
       "additionalProperties": false,
       "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "examples": [
+        {
+          "format": {
+            "type": "json_object"
+          }
+        }
+      ],
       "properties": {
         "format": {
           "$ref": "#/$defs/TextResponseFormatConfiguration"
@@ -1025,6 +1337,12 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "name": "example",
+          "type": "function"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/CreateResponseToolChoiceToolChoiceOptions"
@@ -1054,10 +1372,20 @@
     "DoubleClick": {
       "additionalProperties": false,
       "description": "A double click action.",
+      "examples": [
+        {
+          "type": "double_click",
+          "x": 1,
+          "y": 1
+        }
+      ],
       "properties": {
         "type": {
           "description": "Specifies the event type. For a double click action, this property is always set to 'double_click'.",
           "enum": [
+            "double_click"
+          ],
+          "examples": [
             "double_click"
           ],
           "title": "DoubleClickType",
@@ -1083,6 +1411,17 @@
     "Drag": {
       "additionalProperties": false,
       "description": "A drag action.",
+      "examples": [
+        {
+          "path": [
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "type": "drag"
+        }
+      ],
       "properties": {
         "path": {
           "description": "An array of coordinates representing the path of the drag action. Coordinates will appear as an array of objects, eg ''' [ { x: 100, y: 200 }, { x: 200, y: 300 } ] '''",
@@ -1094,6 +1433,9 @@
         "type": {
           "description": "Specifies the event type. For a drag action, this property is always set to 'drag'.",
           "enum": [
+            "drag"
+          ],
+          "examples": [
             "drag"
           ],
           "title": "DragType",
@@ -1110,6 +1452,13 @@
     "EasyInputMessage": {
       "additionalProperties": false,
       "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the 'developer' or 'system' role take\nprecedence over instructions given with the 'user' role. Messages with the\n'assistant' role are presumed to have been generated by the model in previous\ninteractions.",
+      "examples": [
+        {
+          "content": "example",
+          "role": "user",
+          "type": "message"
+        }
+      ],
       "properties": {
         "content": {
           "$ref": "#/$defs/EasyInputMessageContent",
@@ -1123,6 +1472,9 @@
             "system",
             "developer"
           ],
+          "examples": [
+            "user"
+          ],
           "title": "EasyInputMessageRole",
           "type": "string"
         },
@@ -1132,6 +1484,9 @@
             {
               "description": "The type of the message input. Always 'message'.",
               "enum": [
+                "message"
+              ],
+              "examples": [
                 "message"
               ],
               "title": "EasyInputMessageType",
@@ -1152,6 +1507,9 @@
     },
     "EasyInputMessageContent": {
       "description": "Text, image, or audio input to the model, used to generate a response.\nCan also contain previous assistant responses.",
+      "examples": [
+        "example"
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/EasyInputMessageContentInputMessageContentList"
@@ -1176,21 +1534,23 @@
       "type": "object"
     },
     "EasyInputMessageContentString": {
-      "additionalProperties": false,
       "description": "wraps a string value as a EasyInputMessageContent variant.",
-      "properties": {
-        "Value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "Value"
+      "examples": [
+        "example"
       ],
       "title": "EasyInputMessageContentString",
-      "type": "object"
+      "type": "string"
     },
     "Error": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "code": "example",
+          "message": "example",
+          "param": "example",
+          "type": "example"
+        }
+      ],
       "properties": {
         "code": {
           "type": [
@@ -1223,6 +1583,13 @@
     "FileCitationBody": {
       "additionalProperties": false,
       "description": "A citation to a file.",
+      "examples": [
+        {
+          "file_id": "example",
+          "index": 1,
+          "type": "file_citation"
+        }
+      ],
       "properties": {
         "file_id": {
           "description": "The ID of the file.",
@@ -1235,6 +1602,9 @@
         "type": {
           "description": "The type of the file citation. Always 'file_citation'.",
           "enum": [
+            "file_citation"
+          ],
+          "examples": [
             "file_citation"
           ],
           "title": "FileCitationBodyType",
@@ -1252,6 +1622,13 @@
     "FilePath": {
       "additionalProperties": false,
       "description": "A path to a file.",
+      "examples": [
+        {
+          "file_id": "example",
+          "index": 1,
+          "type": "file_path"
+        }
+      ],
       "properties": {
         "file_id": {
           "description": "The ID of the file.",
@@ -1264,6 +1641,9 @@
         "type": {
           "description": "The type of the file path. Always 'file_path'.",
           "enum": [
+            "file_path"
+          ],
+          "examples": [
             "file_path"
           ],
           "title": "FilePathType",
@@ -1281,6 +1661,24 @@
     "FileSearchTool": {
       "additionalProperties": false,
       "description": "A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).",
+      "examples": [
+        {
+          "filters": {
+            "key": "example",
+            "type": "eq",
+            "value": true
+          },
+          "max_num_results": 1,
+          "ranking_options": {
+            "ranker": "auto",
+            "score_threshold": 1
+          },
+          "type": "file_search",
+          "vector_store_ids": [
+            "example"
+          ]
+        }
+      ],
       "properties": {
         "filters": {
           "$ref": "#/$defs/Filters"
@@ -1307,6 +1705,9 @@
           "enum": [
             "file_search"
           ],
+          "examples": [
+            "file_search"
+          ],
           "title": "FileSearchToolType",
           "type": "string"
         },
@@ -1328,6 +1729,19 @@
     "FileSearchToolCall": {
       "additionalProperties": false,
       "description": "The results of a file search tool call. See the\n[file search guide](/docs/guides/tools-file-search) for more information.",
+      "examples": [
+        {
+          "id": "example",
+          "queries": [
+            "example"
+          ],
+          "results": [
+            {}
+          ],
+          "status": "in_progress",
+          "type": "file_search_call"
+        }
+      ],
       "properties": {
         "id": {
           "description": "The unique ID of the file search tool call.",
@@ -1354,12 +1768,18 @@
             "incomplete",
             "failed"
           ],
+          "examples": [
+            "in_progress"
+          ],
           "title": "FileSearchToolCallStatus",
           "type": "string"
         },
         "type": {
           "description": "The type of the file search tool call. Always 'file_search_call'.",
           "enum": [
+            "file_search_call"
+          ],
+          "examples": [
             "file_search_call"
           ],
           "title": "FileSearchToolCallType",
@@ -1380,6 +1800,13 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "key": "example",
+          "type": "eq",
+          "value": true
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComparisonFilter"
@@ -1392,6 +1819,15 @@
     "FunctionCallOutputItemParam": {
       "additionalProperties": false,
       "description": "The output of a function tool call.",
+      "examples": [
+        {
+          "call_id": "id_abc123",
+          "id": "example",
+          "output": "example",
+          "status": "in_progress",
+          "type": "function_call_output"
+        }
+      ],
       "properties": {
         "call_id": {
           "description": "The unique ID of the function tool call generated by the model.",
@@ -1421,6 +1857,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "FunctionCallOutputItemParamStatus",
               "type": "string"
             },
@@ -1432,6 +1871,9 @@
         "type": {
           "description": "The type of the function tool call output. Always 'function_call_output'.",
           "enum": [
+            "function_call_output"
+          ],
+          "examples": [
             "function_call_output"
           ],
           "title": "FunctionCallOutputItemParamType",
@@ -1449,6 +1891,23 @@
     "FunctionTool": {
       "additionalProperties": false,
       "description": "Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).",
+      "examples": [
+        {
+          "description": "example",
+          "name": "example",
+          "parameters": {
+            "key1": {
+              "description": "example",
+              "name": "example",
+              "parameters": {},
+              "strict": true,
+              "type": "function"
+            }
+          },
+          "strict": true,
+          "type": "function"
+        }
+      ],
       "properties": {
         "description": {
           "description": "A description of the function. Used by the model to determine whether or not to call the function.",
@@ -1480,6 +1939,9 @@
           "enum": [
             "function"
           ],
+          "examples": [
+            "function"
+          ],
           "title": "FunctionToolType",
           "type": "string"
         }
@@ -1496,6 +1958,16 @@
     "FunctionToolCall": {
       "additionalProperties": false,
       "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
+      "examples": [
+        {
+          "arguments": "example",
+          "call_id": "example",
+          "id": "example",
+          "name": "example",
+          "status": "in_progress",
+          "type": "function_call"
+        }
+      ],
       "properties": {
         "arguments": {
           "description": "A JSON string of the arguments to pass to the function.",
@@ -1526,6 +1998,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "FunctionToolCallStatus",
               "type": "string"
             },
@@ -1537,6 +2012,9 @@
         "type": {
           "description": "The type of the function tool call. Always 'function_call'.",
           "enum": [
+            "function_call"
+          ],
+          "examples": [
             "function_call"
           ],
           "title": "FunctionToolCallType",
@@ -1555,6 +2033,15 @@
     "FunctionToolCallOutput": {
       "additionalProperties": false,
       "description": "The output of a function tool call.",
+      "examples": [
+        {
+          "call_id": "example",
+          "id": "example",
+          "output": "example",
+          "status": "in_progress",
+          "type": "function_call_output"
+        }
+      ],
       "properties": {
         "call_id": {
           "description": "The unique ID of the function tool call generated by the model.",
@@ -1581,6 +2068,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "FunctionToolCallOutputStatus",
               "type": "string"
             },
@@ -1592,6 +2082,9 @@
         "type": {
           "description": "The type of the function tool call output. Always 'function_call_output'.",
           "enum": [
+            "function_call_output"
+          ],
+          "examples": [
             "function_call_output"
           ],
           "title": "FunctionToolCallOutputType",
@@ -1609,6 +2102,15 @@
     "FunctionToolCallOutputResource": {
       "additionalProperties": false,
       "description": "The output of a function tool call.",
+      "examples": [
+        {
+          "call_id": "example",
+          "id": "example",
+          "output": "example",
+          "status": "in_progress",
+          "type": "function_call_output"
+        }
+      ],
       "properties": {
         "call_id": {
           "description": "The unique ID of the function tool call generated by the model.",
@@ -1632,6 +2134,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "FunctionToolCallOutputResourceStatus",
               "type": "string"
             },
@@ -1643,6 +2148,9 @@
         "type": {
           "description": "The type of the function tool call output. Always 'function_call_output'.",
           "enum": [
+            "function_call_output"
+          ],
+          "examples": [
             "function_call_output"
           ],
           "title": "FunctionToolCallOutputResourceType",
@@ -1661,6 +2169,16 @@
     "FunctionToolCallResource": {
       "additionalProperties": false,
       "description": "A tool call to run a function. See the\n[function calling guide](/docs/guides/function-calling) for more information.",
+      "examples": [
+        {
+          "arguments": "example",
+          "call_id": "example",
+          "id": "example",
+          "name": "example",
+          "status": "in_progress",
+          "type": "function_call"
+        }
+      ],
       "properties": {
         "arguments": {
           "description": "A JSON string of the arguments to pass to the function.",
@@ -1688,6 +2206,9 @@
                 "completed",
                 "incomplete"
               ],
+              "examples": [
+                "in_progress"
+              ],
               "title": "FunctionToolCallResourceStatus",
               "type": "string"
             },
@@ -1699,6 +2220,9 @@
         "type": {
           "description": "The type of the function tool call. Always 'function_call'.",
           "enum": [
+            "function_call"
+          ],
+          "examples": [
             "function_call"
           ],
           "title": "FunctionToolCallResourceType",
@@ -1720,6 +2244,14 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "file_data": "example",
+          "file_id": "example",
+          "filename": "example",
+          "type": "input_file"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/InputFileContent"
@@ -1735,6 +2267,14 @@
     "InputFileContent": {
       "additionalProperties": false,
       "description": "A file input to the model.",
+      "examples": [
+        {
+          "file_data": "example",
+          "file_id": "example",
+          "filename": "example",
+          "type": "input_file"
+        }
+      ],
       "properties": {
         "file_data": {
           "description": "The content of the file to be sent to the model.",
@@ -1762,6 +2302,9 @@
           "enum": [
             "input_file"
           ],
+          "examples": [
+            "input_file"
+          ],
           "title": "InputFileContentType",
           "type": "string"
         }
@@ -1775,6 +2318,14 @@
     "InputImageContent": {
       "additionalProperties": false,
       "description": "An image input to the model. Learn about [image inputs](/docs/guides/vision).",
+      "examples": [
+        {
+          "detail": "low",
+          "file_id": "example",
+          "image_url": "example",
+          "type": "input_image"
+        }
+      ],
       "properties": {
         "detail": {
           "description": "The detail level of the image to be sent to the model. One of 'high', 'low', or 'auto'. Defaults to 'auto'.",
@@ -1782,6 +2333,9 @@
             "low",
             "high",
             "auto"
+          ],
+          "examples": [
+            "low"
           ],
           "title": "InputImageContentDetail",
           "type": "string"
@@ -1805,6 +2359,9 @@
           "enum": [
             "input_image"
           ],
+          "examples": [
+            "input_image"
+          ],
           "title": "InputImageContentType",
           "type": "string"
         }
@@ -1821,6 +2378,13 @@
       "discriminator": {
         "propertyName": "role"
       },
+      "examples": [
+        {
+          "content": "example",
+          "role": "user",
+          "type": "message"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/EasyInputMessage"
@@ -1850,6 +2414,21 @@
     "InputMessage": {
       "additionalProperties": false,
       "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the 'developer' or 'system' role take\nprecedence over instructions given with the 'user' role.",
+      "examples": [
+        {
+          "content": [
+            {
+              "file_data": "example",
+              "file_id": "example",
+              "filename": "example",
+              "type": "input_file"
+            }
+          ],
+          "role": "user",
+          "status": "in_progress",
+          "type": "message"
+        }
+      ],
       "properties": {
         "content": {
           "$ref": "#/$defs/InputMessageContentList"
@@ -1860,6 +2439,9 @@
             "user",
             "system",
             "developer"
+          ],
+          "examples": [
+            "user"
           ],
           "title": "InputMessageRole",
           "type": "string"
@@ -1873,6 +2455,9 @@
                 "in_progress",
                 "completed",
                 "incomplete"
+              ],
+              "examples": [
+                "in_progress"
               ],
               "title": "InputMessageStatus",
               "type": "string"
@@ -1888,6 +2473,9 @@
             {
               "description": "The type of the message input. Always set to 'message'.",
               "enum": [
+                "message"
+              ],
+              "examples": [
                 "message"
               ],
               "title": "InputMessageType",
@@ -1908,6 +2496,16 @@
     },
     "InputMessageContentList": {
       "description": "A list of one or many input items to the model, containing different content\ntypes.",
+      "examples": [
+        [
+          {
+            "file_data": "example",
+            "file_id": "example",
+            "filename": "example",
+            "type": "input_file"
+          }
+        ]
+      ],
       "items": {
         "$ref": "#/$defs/InputContent"
       },
@@ -1916,6 +2514,22 @@
     "InputMessageResource": {
       "additionalProperties": false,
       "description": "A message input to the model with a role indicating instruction following\nhierarchy. Instructions given with the 'developer' or 'system' role take\nprecedence over instructions given with the 'user' role.",
+      "examples": [
+        {
+          "content": [
+            {
+              "file_data": "example",
+              "file_id": "example",
+              "filename": "example",
+              "type": "input_file"
+            }
+          ],
+          "id": "example",
+          "role": "user",
+          "status": "in_progress",
+          "type": "message"
+        }
+      ],
       "properties": {
         "content": {
           "$ref": "#/$defs/InputMessageContentList"
@@ -1931,6 +2545,9 @@
             "system",
             "developer"
           ],
+          "examples": [
+            "user"
+          ],
           "title": "InputMessageResourceRole",
           "type": "string"
         },
@@ -1943,6 +2560,9 @@
                 "in_progress",
                 "completed",
                 "incomplete"
+              ],
+              "examples": [
+                "in_progress"
               ],
               "title": "InputMessageResourceStatus",
               "type": "string"
@@ -1958,6 +2578,9 @@
             {
               "description": "The type of the message input. Always set to 'message'.",
               "enum": [
+                "message"
+              ],
+              "examples": [
                 "message"
               ],
               "title": "InputMessageResourceType",
@@ -1980,6 +2603,12 @@
     "InputTextContent": {
       "additionalProperties": false,
       "description": "A text input to the model.",
+      "examples": [
+        {
+          "text": "example",
+          "type": "input_text"
+        }
+      ],
       "properties": {
         "text": {
           "description": "The text input to the model.",
@@ -1988,6 +2617,9 @@
         "type": {
           "description": "The type of the input item. Always 'input_text'.",
           "enum": [
+            "input_text"
+          ],
+          "examples": [
             "input_text"
           ],
           "title": "InputTextContentType",
@@ -2006,6 +2638,26 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "acknowledged_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "call_id": "id_abc123",
+          "id": "example",
+          "output": {
+            "file_id": "example",
+            "image_url": "example",
+            "type": "computer_screenshot"
+          },
+          "status": "in_progress",
+          "type": "computer_call_output"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerCallOutputItemParam"
@@ -2039,6 +2691,12 @@
     "ItemReferenceParam": {
       "additionalProperties": false,
       "description": "An internal identifier for an item to reference.",
+      "examples": [
+        {
+          "id": "example",
+          "type": "item_reference"
+        }
+      ],
       "properties": {
         "id": {
           "description": "The ID of the item to reference.",
@@ -2050,6 +2708,9 @@
             {
               "description": "The type of item to reference. Always 'item_reference'.",
               "enum": [
+                "item_reference"
+              ],
+              "examples": [
                 "item_reference"
               ],
               "title": "ItemReferenceParamType",
@@ -2072,6 +2733,27 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "action": {
+            "button": "left",
+            "type": "click",
+            "x": 1,
+            "y": 1
+          },
+          "call_id": "example",
+          "id": "example",
+          "pending_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "status": "in_progress",
+          "type": "computer_call"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"
@@ -2102,6 +2784,14 @@
     "KeyPress": {
       "additionalProperties": false,
       "description": "A collection of keypresses the model would like to perform.",
+      "examples": [
+        {
+          "keys": [
+            "example"
+          ],
+          "type": "keypress"
+        }
+      ],
       "properties": {
         "keys": {
           "description": "The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key.",
@@ -2113,6 +2803,9 @@
         "type": {
           "description": "Specifies the event type. For a keypress action, this property is always set to 'keypress'.",
           "enum": [
+            "keypress"
+          ],
+          "examples": [
             "keypress"
           ],
           "title": "KeyPressType",
@@ -2131,6 +2824,11 @@
         "type": "string"
       },
       "description": "Set of 16 key-value pairs that can be attached to an object. This can be\nuseful for storing additional information about the object in a structured\nformat, and querying for objects via API or the dashboard.\n\nKeys are strings with a maximum length of 64 characters. Values are strings\nwith a maximum length of 512 characters.",
+      "examples": [
+        {
+          "key1": "example"
+        }
+      ],
       "type": "object"
     },
     "ModelIdsResponses": {
@@ -2193,6 +2891,9 @@
         "computer-use-preview",
         "computer-use-preview-2025-03-11"
       ],
+      "examples": [
+        "gpt-4.1"
+      ],
       "title": "ModelIdsResponses",
       "type": "string"
     },
@@ -2252,11 +2953,25 @@
         "gpt-3.5-turbo-0125",
         "gpt-3.5-turbo-16k-0613"
       ],
+      "examples": [
+        "gpt-4.1"
+      ],
       "title": "ModelIdsShared",
       "type": "string"
     },
     "ModelResponseProperties": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "metadata": {
+            "key1": "example"
+          },
+          "service_tier": "auto",
+          "temperature": 1,
+          "top_p": 1,
+          "user": "example"
+        }
+      ],
       "properties": {
         "metadata": {
           "oneOf": [
@@ -2310,10 +3025,20 @@
     "Move": {
       "additionalProperties": false,
       "description": "A mouse move action.",
+      "examples": [
+        {
+          "type": "move",
+          "x": 1,
+          "y": 1
+        }
+      ],
       "properties": {
         "type": {
           "description": "Specifies the event type. For a move action, this property is always set to 'move'.",
           "enum": [
+            "move"
+          ],
+          "examples": [
             "move"
           ],
           "title": "MoveType",
@@ -2341,6 +3066,19 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "annotations": [
+            {
+              "file_id": "example",
+              "index": 1,
+              "type": "file_citation"
+            }
+          ],
+          "text": "example",
+          "type": "output_text"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/OutputTextContent"
@@ -2355,6 +3093,27 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "action": {
+            "button": "left",
+            "type": "click",
+            "x": 1,
+            "y": 1
+          },
+          "call_id": "example",
+          "id": "example",
+          "pending_safety_checks": [
+            {
+              "code": "example",
+              "id": "example",
+              "message": "example"
+            }
+          ],
+          "status": "in_progress",
+          "type": "computer_call"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerToolCall"
@@ -2379,6 +3138,27 @@
     "OutputMessage": {
       "additionalProperties": false,
       "description": "An output message from the model.",
+      "examples": [
+        {
+          "content": [
+            {
+              "annotations": [
+                {
+                  "file_id": "example",
+                  "index": 1,
+                  "type": "file_citation"
+                }
+              ],
+              "text": "example",
+              "type": "output_text"
+            }
+          ],
+          "id": "example",
+          "role": "assistant",
+          "status": "in_progress",
+          "type": "message"
+        }
+      ],
       "properties": {
         "content": {
           "description": "The content of the output message.",
@@ -2396,6 +3176,9 @@
           "enum": [
             "assistant"
           ],
+          "examples": [
+            "assistant"
+          ],
           "title": "OutputMessageRole",
           "type": "string"
         },
@@ -2406,12 +3189,18 @@
             "completed",
             "incomplete"
           ],
+          "examples": [
+            "in_progress"
+          ],
           "title": "OutputMessageStatus",
           "type": "string"
         },
         "type": {
           "description": "The type of the output message. Always 'message'.",
           "enum": [
+            "message"
+          ],
+          "examples": [
             "message"
           ],
           "title": "OutputMessageType",
@@ -2431,6 +3220,19 @@
     "OutputTextContent": {
       "additionalProperties": false,
       "description": "A text output from the model.",
+      "examples": [
+        {
+          "annotations": [
+            {
+              "file_id": "example",
+              "index": 1,
+              "type": "file_citation"
+            }
+          ],
+          "text": "example",
+          "type": "output_text"
+        }
+      ],
       "properties": {
         "annotations": {
           "description": "The annotations of the text output.",
@@ -2448,6 +3250,9 @@
           "enum": [
             "output_text"
           ],
+          "examples": [
+            "output_text"
+          ],
           "title": "OutputTextContentType",
           "type": "string"
         }
@@ -2462,6 +3267,12 @@
     },
     "RankingOptions": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "ranker": "auto",
+          "score_threshold": 1
+        }
+      ],
       "properties": {
         "ranker": {
           "description": "The ranker to use for the file search.",
@@ -2471,6 +3282,9 @@
               "enum": [
                 "auto",
                 "default-2024-11-15"
+              ],
+              "examples": [
+                "auto"
               ],
               "title": "RankingOptionsRanker",
               "type": "string"
@@ -2494,6 +3308,13 @@
     "Reasoning": {
       "additionalProperties": false,
       "description": "**o-series models only**\n\nConfiguration options for\n[reasoning models](https://platform.openai.com/docs/guides/reasoning).",
+      "examples": [
+        {
+          "effort": "low",
+          "generate_summary": "auto",
+          "summary": "auto"
+        }
+      ],
       "properties": {
         "effort": {
           "oneOf": [
@@ -2503,6 +3324,9 @@
                 "low",
                 "medium",
                 "high"
+              ],
+              "examples": [
+                "low"
               ],
               "title": "ReasoningEffort",
               "type": "string"
@@ -2522,6 +3346,9 @@
                 "concise",
                 "detailed"
               ],
+              "examples": [
+                "auto"
+              ],
               "title": "ReasoningGenerateSummary",
               "type": "string"
             },
@@ -2540,6 +3367,9 @@
                 "concise",
                 "detailed"
               ],
+              "examples": [
+                "auto"
+              ],
               "title": "ReasoningSummary",
               "type": "string"
             },
@@ -2555,6 +3385,16 @@
     "ReasoningItem": {
       "additionalProperties": false,
       "description": "A description of the chain of thought used by a reasoning model while generating\na response.",
+      "examples": [
+        {
+          "id": "example",
+          "status": "in_progress",
+          "summary": [
+            {}
+          ],
+          "type": "reasoning"
+        }
+      ],
       "properties": {
         "id": {
           "description": "The unique identifier of the reasoning content.",
@@ -2569,6 +3409,9 @@
                 "in_progress",
                 "completed",
                 "incomplete"
+              ],
+              "examples": [
+                "in_progress"
               ],
               "title": "ReasoningItemStatus",
               "type": "string"
@@ -2588,6 +3431,9 @@
           "enum": [
             "reasoning"
           ],
+          "examples": [
+            "reasoning"
+          ],
           "title": "ReasoningItemType",
           "type": "string"
         }
@@ -2603,6 +3449,12 @@
     "RefusalContent": {
       "additionalProperties": false,
       "description": "A refusal from the model.",
+      "examples": [
+        {
+          "refusal": "example",
+          "type": "refusal"
+        }
+      ],
       "properties": {
         "refusal": {
           "description": "The refusal explanationfrom the model.",
@@ -2611,6 +3463,9 @@
         "type": {
           "description": "The type of the refusal. Always 'refusal'.",
           "enum": [
+            "refusal"
+          ],
+          "examples": [
             "refusal"
           ],
           "title": "RefusalContentType",
@@ -2626,6 +3481,89 @@
     },
     "Response": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "created_at": 1,
+          "error": {
+            "code": "server_error",
+            "message": "example"
+          },
+          "id": "example",
+          "incomplete_details": {
+            "reason": "example"
+          },
+          "instructions": "example",
+          "max_output_tokens": 1,
+          "metadata": {
+            "key1": "example"
+          },
+          "model": "gpt-4.1",
+          "object": "response",
+          "output": [
+            {
+              "action": {
+                "button": "left",
+                "type": "click",
+                "x": 1,
+                "y": 1
+              },
+              "call_id": "example",
+              "id": "example",
+              "pending_safety_checks": [
+                {
+                  "code": "example",
+                  "id": "example",
+                  "message": "example"
+                }
+              ],
+              "status": "in_progress",
+              "type": "computer_call"
+            }
+          ],
+          "output_text": "example",
+          "parallel_tool_calls": true,
+          "previous_response_id": "example",
+          "reasoning": {
+            "effort": "low",
+            "generate_summary": "auto",
+            "summary": "auto"
+          },
+          "service_tier": "auto",
+          "status": "completed",
+          "temperature": 1,
+          "text": {
+            "format": {
+              "type": "json_object"
+            }
+          },
+          "tool_choice": {
+            "name": "example",
+            "type": "function"
+          },
+          "tools": [
+            {
+              "display_height": 1,
+              "display_width": 1,
+              "environment": "windows",
+              "type": "computer_use_preview"
+            }
+          ],
+          "top_p": 1,
+          "truncation": "auto",
+          "usage": {
+            "input_tokens": 1,
+            "input_tokens_details": {
+              "cached_tokens": 1
+            },
+            "output_tokens": 1,
+            "output_tokens_details": {
+              "reasoning_tokens": 1
+            },
+            "total_tokens": 1
+          },
+          "user": "example"
+        }
+      ],
       "properties": {
         "created_at": {
           "description": "Unix timestamp (in seconds) of when this Response was created.",
@@ -2665,6 +3603,9 @@
         "object": {
           "description": "The object type of this resource - always set to 'response'.",
           "enum": [
+            "response"
+          ],
+          "examples": [
             "response"
           ],
           "title": "ResponseObject",
@@ -2726,6 +3667,9 @@
                 "in_progress",
                 "incomplete"
               ],
+              "examples": [
+                "completed"
+              ],
               "title": "ResponseStatus",
               "type": "string"
             },
@@ -2778,10 +3722,13 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
+              ],
+              "examples": [
+                "auto"
               ],
               "title": "ResponseTruncation",
               "type": "string"
@@ -2831,6 +3778,12 @@
     "ResponseAudioDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when there is a partial audio response.",
+      "examples": [
+        {
+          "delta": "example",
+          "type": "response.audio.delta"
+        }
+      ],
       "properties": {
         "delta": {
           "description": "A chunk of Base64 encoded response audio bytes.",
@@ -2839,6 +3792,9 @@
         "type": {
           "description": "The type of the event. Always 'response.audio.delta'.",
           "enum": [
+            "response.audio.delta"
+          ],
+          "examples": [
             "response.audio.delta"
           ],
           "title": "ResponseAudioDeltaEventType",
@@ -2855,10 +3811,18 @@
     "ResponseAudioDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when the audio response is complete.",
+      "examples": [
+        {
+          "type": "response.audio.done"
+        }
+      ],
       "properties": {
         "type": {
           "description": "The type of the event. Always 'response.audio.done'.",
           "enum": [
+            "response.audio.done"
+          ],
+          "examples": [
             "response.audio.done"
           ],
           "title": "ResponseAudioDoneEventType",
@@ -2874,6 +3838,12 @@
     "ResponseAudioTranscriptDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when there is a partial transcript of audio.",
+      "examples": [
+        {
+          "delta": "example",
+          "type": "response.audio.transcript.delta"
+        }
+      ],
       "properties": {
         "delta": {
           "description": "The partial transcript of the audio response.",
@@ -2882,6 +3852,9 @@
         "type": {
           "description": "The type of the event. Always 'response.audio.transcript.delta'.",
           "enum": [
+            "response.audio.transcript.delta"
+          ],
+          "examples": [
             "response.audio.transcript.delta"
           ],
           "title": "ResponseAudioTranscriptDeltaEventType",
@@ -2898,10 +3871,18 @@
     "ResponseAudioTranscriptDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when the full audio transcript is completed.",
+      "examples": [
+        {
+          "type": "response.audio.transcript.done"
+        }
+      ],
       "properties": {
         "type": {
           "description": "The type of the event. Always 'response.audio.transcript.done'.",
           "enum": [
+            "response.audio.transcript.done"
+          ],
+          "examples": [
             "response.audio.transcript.done"
           ],
           "title": "ResponseAudioTranscriptDoneEventType",
@@ -2917,6 +3898,13 @@
     "ResponseCodeInterpreterCallCodeDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when a partial code snippet is added by the code interpreter.",
+      "examples": [
+        {
+          "delta": "example",
+          "output_index": 1,
+          "type": "response.code_interpreter_call.code.delta"
+        }
+      ],
       "properties": {
         "delta": {
           "description": "The partial code snippet added by the code interpreter.",
@@ -2929,6 +3917,9 @@
         "type": {
           "description": "The type of the event. Always 'response.code_interpreter_call.code.delta'.",
           "enum": [
+            "response.code_interpreter_call.code.delta"
+          ],
+          "examples": [
             "response.code_interpreter_call.code.delta"
           ],
           "title": "ResponseCodeInterpreterCallCodeDeltaEventType",
@@ -2946,6 +3937,13 @@
     "ResponseCodeInterpreterCallCodeDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when code snippet output is finalized by the code interpreter.",
+      "examples": [
+        {
+          "code": "example",
+          "output_index": 1,
+          "type": "response.code_interpreter_call.code.done"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The final code snippet output by the code interpreter.",
@@ -2958,6 +3956,9 @@
         "type": {
           "description": "The type of the event. Always 'response.code_interpreter_call.code.done'.",
           "enum": [
+            "response.code_interpreter_call.code.done"
+          ],
+          "examples": [
             "response.code_interpreter_call.code.done"
           ],
           "title": "ResponseCodeInterpreterCallCodeDoneEventType",
@@ -2975,6 +3976,26 @@
     "ResponseCodeInterpreterCallCompletedEvent": {
       "additionalProperties": false,
       "description": "Emitted when the code interpreter call is completed.",
+      "examples": [
+        {
+          "code_interpreter_call": {
+            "code": "example",
+            "id": "example",
+            "results": [
+              {
+                "files": [
+                  {}
+                ],
+                "type": "files"
+              }
+            ],
+            "status": "in_progress",
+            "type": "code_interpreter_call"
+          },
+          "output_index": 1,
+          "type": "response.code_interpreter_call.completed"
+        }
+      ],
       "properties": {
         "code_interpreter_call": {
           "$ref": "#/$defs/CodeInterpreterToolCall"
@@ -2986,6 +4007,9 @@
         "type": {
           "description": "The type of the event. Always 'response.code_interpreter_call.completed'.",
           "enum": [
+            "response.code_interpreter_call.completed"
+          ],
+          "examples": [
             "response.code_interpreter_call.completed"
           ],
           "title": "ResponseCodeInterpreterCallCompletedEventType",
@@ -3003,6 +4027,26 @@
     "ResponseCodeInterpreterCallInProgressEvent": {
       "additionalProperties": false,
       "description": "Emitted when a code interpreter call is in progress.",
+      "examples": [
+        {
+          "code_interpreter_call": {
+            "code": "example",
+            "id": "example",
+            "results": [
+              {
+                "files": [
+                  {}
+                ],
+                "type": "files"
+              }
+            ],
+            "status": "in_progress",
+            "type": "code_interpreter_call"
+          },
+          "output_index": 1,
+          "type": "response.code_interpreter_call.in_progress"
+        }
+      ],
       "properties": {
         "code_interpreter_call": {
           "$ref": "#/$defs/CodeInterpreterToolCall"
@@ -3014,6 +4058,9 @@
         "type": {
           "description": "The type of the event. Always 'response.code_interpreter_call.in_progress'.",
           "enum": [
+            "response.code_interpreter_call.in_progress"
+          ],
+          "examples": [
             "response.code_interpreter_call.in_progress"
           ],
           "title": "ResponseCodeInterpreterCallInProgressEventType",
@@ -3031,6 +4078,26 @@
     "ResponseCodeInterpreterCallInterpretingEvent": {
       "additionalProperties": false,
       "description": "Emitted when the code interpreter is actively interpreting the code snippet.",
+      "examples": [
+        {
+          "code_interpreter_call": {
+            "code": "example",
+            "id": "example",
+            "results": [
+              {
+                "files": [
+                  {}
+                ],
+                "type": "files"
+              }
+            ],
+            "status": "in_progress",
+            "type": "code_interpreter_call"
+          },
+          "output_index": 1,
+          "type": "response.code_interpreter_call.interpreting"
+        }
+      ],
       "properties": {
         "code_interpreter_call": {
           "$ref": "#/$defs/CodeInterpreterToolCall"
@@ -3042,6 +4109,9 @@
         "type": {
           "description": "The type of the event. Always 'response.code_interpreter_call.interpreting'.",
           "enum": [
+            "response.code_interpreter_call.interpreting"
+          ],
+          "examples": [
             "response.code_interpreter_call.interpreting"
           ],
           "title": "ResponseCodeInterpreterCallInterpretingEventType",
@@ -3059,6 +4129,92 @@
     "ResponseCompletedEvent": {
       "additionalProperties": false,
       "description": "Emitted when the model response is complete.",
+      "examples": [
+        {
+          "response": {
+            "created_at": 1,
+            "error": {
+              "code": "server_error",
+              "message": "example"
+            },
+            "id": "example",
+            "incomplete_details": {
+              "reason": "example"
+            },
+            "instructions": "example",
+            "max_output_tokens": 1,
+            "metadata": {
+              "key1": "example"
+            },
+            "model": "gpt-4.1",
+            "object": "response",
+            "output": [
+              {
+                "action": {
+                  "button": "left",
+                  "type": "click",
+                  "x": 1,
+                  "y": 1
+                },
+                "call_id": "example",
+                "id": "example",
+                "pending_safety_checks": [
+                  {
+                    "code": "example",
+                    "id": "example",
+                    "message": "example"
+                  }
+                ],
+                "status": "in_progress",
+                "type": "computer_call"
+              }
+            ],
+            "output_text": "example",
+            "parallel_tool_calls": true,
+            "previous_response_id": "example",
+            "reasoning": {
+              "effort": "low",
+              "generate_summary": "auto",
+              "summary": "auto"
+            },
+            "service_tier": "auto",
+            "status": "completed",
+            "temperature": 1,
+            "text": {
+              "format": {
+                "type": "json_object"
+              }
+            },
+            "tool_choice": {
+              "name": "example",
+              "type": "function"
+            },
+            "tools": [
+              {
+                "display_height": 1,
+                "display_width": 1,
+                "environment": "windows",
+                "type": "computer_use_preview"
+              }
+            ],
+            "top_p": 1,
+            "truncation": "auto",
+            "usage": {
+              "input_tokens": 1,
+              "input_tokens_details": {
+                "cached_tokens": 1
+              },
+              "output_tokens": 1,
+              "output_tokens_details": {
+                "reasoning_tokens": 1
+              },
+              "total_tokens": 1
+            },
+            "user": "example"
+          },
+          "type": "response.completed"
+        }
+      ],
       "properties": {
         "response": {
           "$ref": "#/$defs/Response"
@@ -3066,6 +4222,9 @@
         "type": {
           "description": "The type of the event. Always 'response.completed'.",
           "enum": [
+            "response.completed"
+          ],
+          "examples": [
             "response.completed"
           ],
           "title": "ResponseCompletedEventType",
@@ -3082,6 +4241,25 @@
     "ResponseContentPartAddedEvent": {
       "additionalProperties": false,
       "description": "Emitted when a new content part is added.",
+      "examples": [
+        {
+          "content_index": 1,
+          "item_id": "example",
+          "output_index": 1,
+          "part": {
+            "annotations": [
+              {
+                "file_id": "example",
+                "index": 1,
+                "type": "file_citation"
+              }
+            ],
+            "text": "example",
+            "type": "output_text"
+          },
+          "type": "response.content_part.added"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that was added.",
@@ -3103,6 +4281,9 @@
           "enum": [
             "response.content_part.added"
           ],
+          "examples": [
+            "response.content_part.added"
+          ],
           "title": "ResponseContentPartAddedEventType",
           "type": "string"
         }
@@ -3120,6 +4301,25 @@
     "ResponseContentPartDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when a content part is done.",
+      "examples": [
+        {
+          "content_index": 1,
+          "item_id": "example",
+          "output_index": 1,
+          "part": {
+            "annotations": [
+              {
+                "file_id": "example",
+                "index": 1,
+                "type": "file_citation"
+              }
+            ],
+            "text": "example",
+            "type": "output_text"
+          },
+          "type": "response.content_part.done"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that is done.",
@@ -3141,6 +4341,9 @@
           "enum": [
             "response.content_part.done"
           ],
+          "examples": [
+            "response.content_part.done"
+          ],
           "title": "ResponseContentPartDoneEventType",
           "type": "string"
         }
@@ -3158,6 +4361,92 @@
     "ResponseCreatedEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response is created.",
+      "examples": [
+        {
+          "response": {
+            "created_at": 1,
+            "error": {
+              "code": "server_error",
+              "message": "example"
+            },
+            "id": "example",
+            "incomplete_details": {
+              "reason": "example"
+            },
+            "instructions": "example",
+            "max_output_tokens": 1,
+            "metadata": {
+              "key1": "example"
+            },
+            "model": "gpt-4.1",
+            "object": "response",
+            "output": [
+              {
+                "action": {
+                  "button": "left",
+                  "type": "click",
+                  "x": 1,
+                  "y": 1
+                },
+                "call_id": "example",
+                "id": "example",
+                "pending_safety_checks": [
+                  {
+                    "code": "example",
+                    "id": "example",
+                    "message": "example"
+                  }
+                ],
+                "status": "in_progress",
+                "type": "computer_call"
+              }
+            ],
+            "output_text": "example",
+            "parallel_tool_calls": true,
+            "previous_response_id": "example",
+            "reasoning": {
+              "effort": "low",
+              "generate_summary": "auto",
+              "summary": "auto"
+            },
+            "service_tier": "auto",
+            "status": "completed",
+            "temperature": 1,
+            "text": {
+              "format": {
+                "type": "json_object"
+              }
+            },
+            "tool_choice": {
+              "name": "example",
+              "type": "function"
+            },
+            "tools": [
+              {
+                "display_height": 1,
+                "display_width": 1,
+                "environment": "windows",
+                "type": "computer_use_preview"
+              }
+            ],
+            "top_p": 1,
+            "truncation": "auto",
+            "usage": {
+              "input_tokens": 1,
+              "input_tokens_details": {
+                "cached_tokens": 1
+              },
+              "output_tokens": 1,
+              "output_tokens_details": {
+                "reasoning_tokens": 1
+              },
+              "total_tokens": 1
+            },
+            "user": "example"
+          },
+          "type": "response.created"
+        }
+      ],
       "properties": {
         "response": {
           "$ref": "#/$defs/Response"
@@ -3165,6 +4454,9 @@
         "type": {
           "description": "The type of the event. Always 'response.created'.",
           "enum": [
+            "response.created"
+          ],
+          "examples": [
             "response.created"
           ],
           "title": "ResponseCreatedEventType",
@@ -3181,6 +4473,12 @@
     "ResponseError": {
       "additionalProperties": false,
       "description": "An error object returned when the model fails to generate a Response.",
+      "examples": [
+        {
+          "code": "server_error",
+          "message": "example"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The error code for the response.",
@@ -3204,6 +4502,9 @@
             "failed_to_download_image",
             "image_file_not_found"
           ],
+          "examples": [
+            "server_error"
+          ],
           "title": "ResponseErrorCode",
           "type": "string"
         },
@@ -3222,6 +4523,14 @@
     "ResponseErrorEvent": {
       "additionalProperties": false,
       "description": "Emitted when an error occurs.",
+      "examples": [
+        {
+          "code": "example",
+          "message": "example",
+          "param": "example",
+          "type": "error"
+        }
+      ],
       "properties": {
         "code": {
           "description": "The error code.",
@@ -3246,6 +4555,9 @@
           "enum": [
             "error"
           ],
+          "examples": [
+            "error"
+          ],
           "title": "ResponseErrorEventType",
           "type": "string"
         }
@@ -3262,6 +4574,92 @@
     "ResponseFailedEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response fails.",
+      "examples": [
+        {
+          "response": {
+            "created_at": 1,
+            "error": {
+              "code": "server_error",
+              "message": "example"
+            },
+            "id": "example",
+            "incomplete_details": {
+              "reason": "example"
+            },
+            "instructions": "example",
+            "max_output_tokens": 1,
+            "metadata": {
+              "key1": "example"
+            },
+            "model": "gpt-4.1",
+            "object": "response",
+            "output": [
+              {
+                "action": {
+                  "button": "left",
+                  "type": "click",
+                  "x": 1,
+                  "y": 1
+                },
+                "call_id": "example",
+                "id": "example",
+                "pending_safety_checks": [
+                  {
+                    "code": "example",
+                    "id": "example",
+                    "message": "example"
+                  }
+                ],
+                "status": "in_progress",
+                "type": "computer_call"
+              }
+            ],
+            "output_text": "example",
+            "parallel_tool_calls": true,
+            "previous_response_id": "example",
+            "reasoning": {
+              "effort": "low",
+              "generate_summary": "auto",
+              "summary": "auto"
+            },
+            "service_tier": "auto",
+            "status": "completed",
+            "temperature": 1,
+            "text": {
+              "format": {
+                "type": "json_object"
+              }
+            },
+            "tool_choice": {
+              "name": "example",
+              "type": "function"
+            },
+            "tools": [
+              {
+                "display_height": 1,
+                "display_width": 1,
+                "environment": "windows",
+                "type": "computer_use_preview"
+              }
+            ],
+            "top_p": 1,
+            "truncation": "auto",
+            "usage": {
+              "input_tokens": 1,
+              "input_tokens_details": {
+                "cached_tokens": 1
+              },
+              "output_tokens": 1,
+              "output_tokens_details": {
+                "reasoning_tokens": 1
+              },
+              "total_tokens": 1
+            },
+            "user": "example"
+          },
+          "type": "response.failed"
+        }
+      ],
       "properties": {
         "response": {
           "$ref": "#/$defs/Response"
@@ -3269,6 +4667,9 @@
         "type": {
           "description": "The type of the event. Always 'response.failed'.",
           "enum": [
+            "response.failed"
+          ],
+          "examples": [
             "response.failed"
           ],
           "title": "ResponseFailedEventType",
@@ -3285,6 +4686,13 @@
     "ResponseFileSearchCallCompletedEvent": {
       "additionalProperties": false,
       "description": "Emitted when a file search call is completed (results found).",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.file_search_call.completed"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the output item that the file search call is initiated.",
@@ -3297,6 +4705,9 @@
         "type": {
           "description": "The type of the event. Always 'response.file_search_call.completed'.",
           "enum": [
+            "response.file_search_call.completed"
+          ],
+          "examples": [
             "response.file_search_call.completed"
           ],
           "title": "ResponseFileSearchCallCompletedEventType",
@@ -3314,6 +4725,13 @@
     "ResponseFileSearchCallInProgressEvent": {
       "additionalProperties": false,
       "description": "Emitted when a file search call is initiated.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.file_search_call.in_progress"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the output item that the file search call is initiated.",
@@ -3326,6 +4744,9 @@
         "type": {
           "description": "The type of the event. Always 'response.file_search_call.in_progress'.",
           "enum": [
+            "response.file_search_call.in_progress"
+          ],
+          "examples": [
             "response.file_search_call.in_progress"
           ],
           "title": "ResponseFileSearchCallInProgressEventType",
@@ -3343,6 +4764,13 @@
     "ResponseFileSearchCallSearchingEvent": {
       "additionalProperties": false,
       "description": "Emitted when a file search is currently searching.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.file_search_call.searching"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the output item that the file search call is initiated.",
@@ -3355,6 +4783,9 @@
         "type": {
           "description": "The type of the event. Always 'response.file_search_call.searching'.",
           "enum": [
+            "response.file_search_call.searching"
+          ],
+          "examples": [
             "response.file_search_call.searching"
           ],
           "title": "ResponseFileSearchCallSearchingEventType",
@@ -3372,10 +4803,18 @@
     "ResponseFormatJsonObject": {
       "additionalProperties": false,
       "description": "JSON object response format. An older method of generating JSON responses.\nUsing 'json_schema' is recommended for models that support it. Note that the\nmodel will not generate JSON without a system or user message instructing it\nto do so.",
+      "examples": [
+        {
+          "type": "json_object"
+        }
+      ],
       "properties": {
         "type": {
           "description": "The type of response format being defined. Always 'json_object'.",
           "enum": [
+            "json_object"
+          ],
+          "examples": [
             "json_object"
           ],
           "title": "ResponseFormatJsonObjectType",
@@ -3391,15 +4830,28 @@
     "ResponseFormatJsonSchemaSchema": {
       "additionalProperties": {},
       "description": "The schema for the response format, described as a JSON Schema object.\nLearn how to build JSON schemas [here](https://json-schema.org/).",
+      "examples": [
+        {
+          "key1": "example"
+        }
+      ],
       "type": "object"
     },
     "ResponseFormatText": {
       "additionalProperties": false,
       "description": "Default response format. Used to generate text responses.",
+      "examples": [
+        {
+          "type": "text"
+        }
+      ],
       "properties": {
         "type": {
           "description": "The type of response format being defined. Always 'text'.",
           "enum": [
+            "text"
+          ],
+          "examples": [
             "text"
           ],
           "title": "ResponseFormatTextType",
@@ -3415,6 +4867,14 @@
     "ResponseFunctionCallArgumentsDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when there is a partial function-call arguments delta.",
+      "examples": [
+        {
+          "delta": "example",
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.function_call_arguments.delta"
+        }
+      ],
       "properties": {
         "delta": {
           "description": "The function-call arguments delta that is added.",
@@ -3433,6 +4893,9 @@
           "enum": [
             "response.function_call_arguments.delta"
           ],
+          "examples": [
+            "response.function_call_arguments.delta"
+          ],
           "title": "ResponseFunctionCallArgumentsDeltaEventType",
           "type": "string"
         }
@@ -3449,6 +4912,14 @@
     "ResponseFunctionCallArgumentsDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when function-call arguments are finalized.",
+      "examples": [
+        {
+          "arguments": "example",
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.function_call_arguments.done"
+        }
+      ],
       "properties": {
         "arguments": {
           "description": "The function-call arguments.",
@@ -3464,6 +4935,9 @@
         },
         "type": {
           "enum": [
+            "response.function_call_arguments.done"
+          ],
+          "examples": [
             "response.function_call_arguments.done"
           ],
           "title": "ResponseFunctionCallArgumentsDoneEventType",
@@ -3482,6 +4956,92 @@
     "ResponseInProgressEvent": {
       "additionalProperties": false,
       "description": "Emitted when the response is in progress.",
+      "examples": [
+        {
+          "response": {
+            "created_at": 1,
+            "error": {
+              "code": "server_error",
+              "message": "example"
+            },
+            "id": "example",
+            "incomplete_details": {
+              "reason": "example"
+            },
+            "instructions": "example",
+            "max_output_tokens": 1,
+            "metadata": {
+              "key1": "example"
+            },
+            "model": "gpt-4.1",
+            "object": "response",
+            "output": [
+              {
+                "action": {
+                  "button": "left",
+                  "type": "click",
+                  "x": 1,
+                  "y": 1
+                },
+                "call_id": "example",
+                "id": "example",
+                "pending_safety_checks": [
+                  {
+                    "code": "example",
+                    "id": "example",
+                    "message": "example"
+                  }
+                ],
+                "status": "in_progress",
+                "type": "computer_call"
+              }
+            ],
+            "output_text": "example",
+            "parallel_tool_calls": true,
+            "previous_response_id": "example",
+            "reasoning": {
+              "effort": "low",
+              "generate_summary": "auto",
+              "summary": "auto"
+            },
+            "service_tier": "auto",
+            "status": "completed",
+            "temperature": 1,
+            "text": {
+              "format": {
+                "type": "json_object"
+              }
+            },
+            "tool_choice": {
+              "name": "example",
+              "type": "function"
+            },
+            "tools": [
+              {
+                "display_height": 1,
+                "display_width": 1,
+                "environment": "windows",
+                "type": "computer_use_preview"
+              }
+            ],
+            "top_p": 1,
+            "truncation": "auto",
+            "usage": {
+              "input_tokens": 1,
+              "input_tokens_details": {
+                "cached_tokens": 1
+              },
+              "output_tokens": 1,
+              "output_tokens_details": {
+                "reasoning_tokens": 1
+              },
+              "total_tokens": 1
+            },
+            "user": "example"
+          },
+          "type": "response.in_progress"
+        }
+      ],
       "properties": {
         "response": {
           "$ref": "#/$defs/Response"
@@ -3489,6 +5049,9 @@
         "type": {
           "description": "The type of the event. Always 'response.in_progress'.",
           "enum": [
+            "response.in_progress"
+          ],
+          "examples": [
             "response.in_progress"
           ],
           "title": "ResponseInProgressEventType",
@@ -3505,6 +5068,11 @@
     "ResponseIncompleteDetails": {
       "additionalProperties": false,
       "description": "Details about why the response is incomplete.",
+      "examples": [
+        {
+          "reason": "example"
+        }
+      ],
       "properties": {
         "reason": {
           "description": "The reason why the response is incomplete.",
@@ -3520,6 +5088,92 @@
     "ResponseIncompleteEvent": {
       "additionalProperties": false,
       "description": "An event that is emitted when a response finishes as incomplete.",
+      "examples": [
+        {
+          "response": {
+            "created_at": 1,
+            "error": {
+              "code": "server_error",
+              "message": "example"
+            },
+            "id": "example",
+            "incomplete_details": {
+              "reason": "example"
+            },
+            "instructions": "example",
+            "max_output_tokens": 1,
+            "metadata": {
+              "key1": "example"
+            },
+            "model": "gpt-4.1",
+            "object": "response",
+            "output": [
+              {
+                "action": {
+                  "button": "left",
+                  "type": "click",
+                  "x": 1,
+                  "y": 1
+                },
+                "call_id": "example",
+                "id": "example",
+                "pending_safety_checks": [
+                  {
+                    "code": "example",
+                    "id": "example",
+                    "message": "example"
+                  }
+                ],
+                "status": "in_progress",
+                "type": "computer_call"
+              }
+            ],
+            "output_text": "example",
+            "parallel_tool_calls": true,
+            "previous_response_id": "example",
+            "reasoning": {
+              "effort": "low",
+              "generate_summary": "auto",
+              "summary": "auto"
+            },
+            "service_tier": "auto",
+            "status": "completed",
+            "temperature": 1,
+            "text": {
+              "format": {
+                "type": "json_object"
+              }
+            },
+            "tool_choice": {
+              "name": "example",
+              "type": "function"
+            },
+            "tools": [
+              {
+                "display_height": 1,
+                "display_width": 1,
+                "environment": "windows",
+                "type": "computer_use_preview"
+              }
+            ],
+            "top_p": 1,
+            "truncation": "auto",
+            "usage": {
+              "input_tokens": 1,
+              "input_tokens_details": {
+                "cached_tokens": 1
+              },
+              "output_tokens": 1,
+              "output_tokens_details": {
+                "reasoning_tokens": 1
+              },
+              "total_tokens": 1
+            },
+            "user": "example"
+          },
+          "type": "response.incomplete"
+        }
+      ],
       "properties": {
         "response": {
           "$ref": "#/$defs/Response"
@@ -3527,6 +5181,9 @@
         "type": {
           "description": "The type of the event. Always 'response.incomplete'.",
           "enum": [
+            "response.incomplete"
+          ],
+          "examples": [
             "response.incomplete"
           ],
           "title": "ResponseIncompleteEventType",
@@ -3543,6 +5200,35 @@
     "ResponseItemList": {
       "additionalProperties": false,
       "description": "A list of Response items.",
+      "examples": [
+        {
+          "data": [
+            {
+              "action": {
+                "button": "left",
+                "type": "click",
+                "x": 1,
+                "y": 1
+              },
+              "call_id": "example",
+              "id": "example",
+              "pending_safety_checks": [
+                {
+                  "code": "example",
+                  "id": "example",
+                  "message": "example"
+                }
+              ],
+              "status": "in_progress",
+              "type": "computer_call"
+            }
+          ],
+          "first_id": "example",
+          "has_more": true,
+          "last_id": "example",
+          "object": "list"
+        }
+      ],
       "properties": {
         "data": {
           "description": "A list of items used to generate this response.",
@@ -3568,6 +5254,9 @@
           "enum": [
             "list"
           ],
+          "examples": [
+            "list"
+          ],
           "title": "ResponseItemListObject",
           "type": "string"
         }
@@ -3585,6 +5274,31 @@
     "ResponseOutputItemAddedEvent": {
       "additionalProperties": false,
       "description": "Emitted when a new output item is added.",
+      "examples": [
+        {
+          "item": {
+            "action": {
+              "button": "left",
+              "type": "click",
+              "x": 1,
+              "y": 1
+            },
+            "call_id": "example",
+            "id": "example",
+            "pending_safety_checks": [
+              {
+                "code": "example",
+                "id": "example",
+                "message": "example"
+              }
+            ],
+            "status": "in_progress",
+            "type": "computer_call"
+          },
+          "output_index": 1,
+          "type": "response.output_item.added"
+        }
+      ],
       "properties": {
         "item": {
           "$ref": "#/$defs/OutputItem"
@@ -3596,6 +5310,9 @@
         "type": {
           "description": "The type of the event. Always 'response.output_item.added'.",
           "enum": [
+            "response.output_item.added"
+          ],
+          "examples": [
             "response.output_item.added"
           ],
           "title": "ResponseOutputItemAddedEventType",
@@ -3613,6 +5330,31 @@
     "ResponseOutputItemDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when an output item is marked done.",
+      "examples": [
+        {
+          "item": {
+            "action": {
+              "button": "left",
+              "type": "click",
+              "x": 1,
+              "y": 1
+            },
+            "call_id": "example",
+            "id": "example",
+            "pending_safety_checks": [
+              {
+                "code": "example",
+                "id": "example",
+                "message": "example"
+              }
+            ],
+            "status": "in_progress",
+            "type": "computer_call"
+          },
+          "output_index": 1,
+          "type": "response.output_item.done"
+        }
+      ],
       "properties": {
         "item": {
           "$ref": "#/$defs/OutputItem"
@@ -3624,6 +5366,9 @@
         "type": {
           "description": "The type of the event. Always 'response.output_item.done'.",
           "enum": [
+            "response.output_item.done"
+          ],
+          "examples": [
             "response.output_item.done"
           ],
           "title": "ResponseOutputItemDoneEventType",
@@ -3640,6 +5385,37 @@
     },
     "ResponseProperties": {
       "additionalProperties": false,
+      "examples": [
+        {
+          "instructions": "example",
+          "max_output_tokens": 1,
+          "model": "gpt-4.1",
+          "previous_response_id": "example",
+          "reasoning": {
+            "effort": "low",
+            "generate_summary": "auto",
+            "summary": "auto"
+          },
+          "text": {
+            "format": {
+              "type": "json_object"
+            }
+          },
+          "tool_choice": {
+            "name": "example",
+            "type": "function"
+          },
+          "tools": [
+            {
+              "display_height": 1,
+              "display_width": 1,
+              "environment": "windows",
+              "type": "computer_use_preview"
+            }
+          ],
+          "truncation": "auto"
+        }
+      ],
       "properties": {
         "instructions": {
           "description": "Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses.",
@@ -3708,10 +5484,13 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
+              ],
+              "examples": [
+                "auto"
               ],
               "title": "ResponsePropertiesTruncation",
               "type": "string"
@@ -3728,6 +5507,13 @@
     "ResponsePropertiesText": {
       "additionalProperties": false,
       "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "examples": [
+        {
+          "format": {
+            "type": "json_object"
+          }
+        }
+      ],
       "properties": {
         "format": {
           "$ref": "#/$defs/TextResponseFormatConfiguration"
@@ -3741,6 +5527,12 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "name": "example",
+          "type": "function"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ResponsePropertiesToolChoiceToolChoiceOptions"
@@ -3770,6 +5562,18 @@
     "ResponseReasoningSummaryPartAddedEvent": {
       "additionalProperties": false,
       "description": "Emitted when a new reasoning summary part is added.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "part": {
+            "text": "example",
+            "type": "example"
+          },
+          "summary_index": 1,
+          "type": "response.reasoning_summary_part.added"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the item this summary part is associated with.",
@@ -3792,6 +5596,9 @@
           "enum": [
             "response.reasoning_summary_part.added"
           ],
+          "examples": [
+            "response.reasoning_summary_part.added"
+          ],
           "title": "ResponseReasoningSummaryPartAddedEventType",
           "type": "string"
         }
@@ -3809,6 +5616,12 @@
     "ResponseReasoningSummaryPartAddedEventPart": {
       "additionalProperties": false,
       "description": "The summary part that was added.",
+      "examples": [
+        {
+          "text": "example",
+          "type": "example"
+        }
+      ],
       "properties": {
         "text": {
           "description": "The text of the summary part.",
@@ -3829,6 +5642,18 @@
     "ResponseReasoningSummaryPartDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when a reasoning summary part is completed.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "part": {
+            "text": "example",
+            "type": "example"
+          },
+          "summary_index": 1,
+          "type": "response.reasoning_summary_part.done"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the item this summary part is associated with.",
@@ -3851,6 +5676,9 @@
           "enum": [
             "response.reasoning_summary_part.done"
           ],
+          "examples": [
+            "response.reasoning_summary_part.done"
+          ],
           "title": "ResponseReasoningSummaryPartDoneEventType",
           "type": "string"
         }
@@ -3868,6 +5696,12 @@
     "ResponseReasoningSummaryPartDoneEventPart": {
       "additionalProperties": false,
       "description": "The completed summary part.",
+      "examples": [
+        {
+          "text": "example",
+          "type": "example"
+        }
+      ],
       "properties": {
         "text": {
           "description": "The text of the summary part.",
@@ -3888,6 +5722,15 @@
     "ResponseReasoningSummaryTextDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when a delta is added to a reasoning summary text.",
+      "examples": [
+        {
+          "delta": "example",
+          "item_id": "example",
+          "output_index": 1,
+          "summary_index": 1,
+          "type": "response.reasoning_summary_text.delta"
+        }
+      ],
       "properties": {
         "delta": {
           "description": "The text delta that was added to the summary.",
@@ -3910,6 +5753,9 @@
           "enum": [
             "response.reasoning_summary_text.delta"
           ],
+          "examples": [
+            "response.reasoning_summary_text.delta"
+          ],
           "title": "ResponseReasoningSummaryTextDeltaEventType",
           "type": "string"
         }
@@ -3927,6 +5773,15 @@
     "ResponseReasoningSummaryTextDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when a reasoning summary text is completed.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "summary_index": 1,
+          "text": "example",
+          "type": "response.reasoning_summary_text.done"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "The ID of the item this summary text is associated with.",
@@ -3949,6 +5804,9 @@
           "enum": [
             "response.reasoning_summary_text.done"
           ],
+          "examples": [
+            "response.reasoning_summary_text.done"
+          ],
           "title": "ResponseReasoningSummaryTextDoneEventType",
           "type": "string"
         }
@@ -3966,6 +5824,15 @@
     "ResponseRefusalDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when there is a partial refusal text.",
+      "examples": [
+        {
+          "content_index": 1,
+          "delta": "example",
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.refusal.delta"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that the refusal text is added to.",
@@ -3988,6 +5855,9 @@
           "enum": [
             "response.refusal.delta"
           ],
+          "examples": [
+            "response.refusal.delta"
+          ],
           "title": "ResponseRefusalDeltaEventType",
           "type": "string"
         }
@@ -4005,6 +5875,15 @@
     "ResponseRefusalDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when refusal text is finalized.",
+      "examples": [
+        {
+          "content_index": 1,
+          "item_id": "example",
+          "output_index": 1,
+          "refusal": "example",
+          "type": "response.refusal.done"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that the refusal text is finalized.",
@@ -4027,6 +5906,9 @@
           "enum": [
             "response.refusal.done"
           ],
+          "examples": [
+            "response.refusal.done"
+          ],
           "title": "ResponseRefusalDoneEventType",
           "type": "string"
         }
@@ -4046,6 +5928,12 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "delta": "example",
+          "type": "response.audio.delta"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ResponseAudioDeltaEvent"
@@ -4160,6 +6048,13 @@
     "ResponseText": {
       "additionalProperties": false,
       "description": "Configuration options for a text response from the model. Can be plain\ntext or structured JSON data. Learn more:\n- [Text inputs and outputs](/docs/guides/text)\n- [Structured Outputs](/docs/guides/structured-outputs)",
+      "examples": [
+        {
+          "format": {
+            "type": "json_object"
+          }
+        }
+      ],
       "properties": {
         "format": {
           "$ref": "#/$defs/TextResponseFormatConfiguration"
@@ -4171,6 +6066,20 @@
     "ResponseTextAnnotationDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when a text annotation is added.",
+      "examples": [
+        {
+          "annotation": {
+            "file_id": "example",
+            "index": 1,
+            "type": "file_citation"
+          },
+          "annotation_index": 1,
+          "content_index": 1,
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.output_text.annotation.added"
+        }
+      ],
       "properties": {
         "annotation": {
           "$ref": "#/$defs/Annotation"
@@ -4196,6 +6105,9 @@
           "enum": [
             "response.output_text.annotation.added"
           ],
+          "examples": [
+            "response.output_text.annotation.added"
+          ],
           "title": "ResponseTextAnnotationDeltaEventType",
           "type": "string"
         }
@@ -4214,6 +6126,15 @@
     "ResponseTextDeltaEvent": {
       "additionalProperties": false,
       "description": "Emitted when there is an additional text delta.",
+      "examples": [
+        {
+          "content_index": 1,
+          "delta": "example",
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.output_text.delta"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that the text delta was added to.",
@@ -4236,6 +6157,9 @@
           "enum": [
             "response.output_text.delta"
           ],
+          "examples": [
+            "response.output_text.delta"
+          ],
           "title": "ResponseTextDeltaEventType",
           "type": "string"
         }
@@ -4253,6 +6177,15 @@
     "ResponseTextDoneEvent": {
       "additionalProperties": false,
       "description": "Emitted when text content is finalized.",
+      "examples": [
+        {
+          "content_index": 1,
+          "item_id": "example",
+          "output_index": 1,
+          "text": "example",
+          "type": "response.output_text.done"
+        }
+      ],
       "properties": {
         "content_index": {
           "description": "The index of the content part that the text content is finalized.",
@@ -4275,6 +6208,9 @@
           "enum": [
             "response.output_text.done"
           ],
+          "examples": [
+            "response.output_text.done"
+          ],
           "title": "ResponseTextDoneEventType",
           "type": "string"
         }
@@ -4294,6 +6230,12 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "name": "example",
+          "type": "function"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ResponseToolChoiceToolChoiceOptions"
@@ -4323,6 +6265,19 @@
     "ResponseUsage": {
       "additionalProperties": false,
       "description": "Represents token usage details including input tokens, output tokens,\na breakdown of output tokens, and the total tokens used.",
+      "examples": [
+        {
+          "input_tokens": 1,
+          "input_tokens_details": {
+            "cached_tokens": 1
+          },
+          "output_tokens": 1,
+          "output_tokens_details": {
+            "reasoning_tokens": 1
+          },
+          "total_tokens": 1
+        }
+      ],
       "properties": {
         "input_tokens": {
           "description": "The number of input tokens.",
@@ -4358,6 +6313,11 @@
     "ResponseUsageInputTokensDetails": {
       "additionalProperties": false,
       "description": "A detailed breakdown of the input tokens.",
+      "examples": [
+        {
+          "cached_tokens": 1
+        }
+      ],
       "properties": {
         "cached_tokens": {
           "description": "The number of tokens that were retrieved from the cache. [More on prompt caching](/docs/guides/prompt-caching).",
@@ -4373,6 +6333,11 @@
     "ResponseUsageOutputTokensDetails": {
       "additionalProperties": false,
       "description": "A detailed breakdown of the output tokens.",
+      "examples": [
+        {
+          "reasoning_tokens": 1
+        }
+      ],
       "properties": {
         "reasoning_tokens": {
           "description": "The number of reasoning tokens.",
@@ -4388,6 +6353,13 @@
     "ResponseWebSearchCallCompletedEvent": {
       "additionalProperties": false,
       "description": "Emitted when a web search call is completed.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.web_search_call.completed"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "Unique ID for the output item associated with the web search call.",
@@ -4400,6 +6372,9 @@
         "type": {
           "description": "The type of the event. Always 'response.web_search_call.completed'.",
           "enum": [
+            "response.web_search_call.completed"
+          ],
+          "examples": [
             "response.web_search_call.completed"
           ],
           "title": "ResponseWebSearchCallCompletedEventType",
@@ -4417,6 +6392,13 @@
     "ResponseWebSearchCallInProgressEvent": {
       "additionalProperties": false,
       "description": "Emitted when a web search call is initiated.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.web_search_call.in_progress"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "Unique ID for the output item associated with the web search call.",
@@ -4429,6 +6411,9 @@
         "type": {
           "description": "The type of the event. Always 'response.web_search_call.in_progress'.",
           "enum": [
+            "response.web_search_call.in_progress"
+          ],
+          "examples": [
             "response.web_search_call.in_progress"
           ],
           "title": "ResponseWebSearchCallInProgressEventType",
@@ -4446,6 +6431,13 @@
     "ResponseWebSearchCallSearchingEvent": {
       "additionalProperties": false,
       "description": "Emitted when a web search call is executing.",
+      "examples": [
+        {
+          "item_id": "example",
+          "output_index": 1,
+          "type": "response.web_search_call.searching"
+        }
+      ],
       "properties": {
         "item_id": {
           "description": "Unique ID for the output item associated with the web search call.",
@@ -4458,6 +6450,9 @@
         "type": {
           "description": "The type of the event. Always 'response.web_search_call.searching'.",
           "enum": [
+            "response.web_search_call.searching"
+          ],
+          "examples": [
             "response.web_search_call.searching"
           ],
           "title": "ResponseWebSearchCallSearchingEventType",
@@ -4475,10 +6470,18 @@
     "Screenshot": {
       "additionalProperties": false,
       "description": "A screenshot action.",
+      "examples": [
+        {
+          "type": "screenshot"
+        }
+      ],
       "properties": {
         "type": {
           "description": "Specifies the event type. For a screenshot action, this property is always set to 'screenshot'.",
           "enum": [
+            "screenshot"
+          ],
+          "examples": [
             "screenshot"
           ],
           "title": "ScreenshotType",
@@ -4494,6 +6497,15 @@
     "Scroll": {
       "additionalProperties": false,
       "description": "A scroll action.",
+      "examples": [
+        {
+          "scroll_x": 1,
+          "scroll_y": 1,
+          "type": "scroll",
+          "x": 1,
+          "y": 1
+        }
+      ],
       "properties": {
         "scroll_x": {
           "description": "The horizontal scroll distance.",
@@ -4506,6 +6518,9 @@
         "type": {
           "description": "Specifies the event type. For a scroll action, this property is always set to 'scroll'.",
           "enum": [
+            "scroll"
+          ],
+          "examples": [
             "scroll"
           ],
           "title": "ScrollType",
@@ -4531,11 +6546,14 @@
       "type": "object"
     },
     "ServiceTier": {
-      "description": "Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:\n  - If set to 'auto', and the Project is Scale tier enabled, the system\n    will utilize scale tier credits until they are exhausted.\n  - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n  - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n  - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).\n  - When not set, the default behavior is 'auto'.\n\n  When this parameter is set, the response body will include the 'service_tier' utilized.",
+      "description": "Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:\n\n  - If set to 'auto', and the Project is Scale tier enabled, the system\n    will utilize scale tier credits until they are exhausted.\n\n  - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n\n  - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n\n  - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).\n\n  - When not set, the default behavior is 'auto'.\n\n    When this parameter is set, the response body will include the 'service_tier' utilized.",
       "enum": [
         "auto",
         "default",
         "flex"
+      ],
+      "examples": [
+        "auto"
       ],
       "title": "ServiceTier",
       "type": "string"
@@ -4545,6 +6563,11 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "type": "json_object"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ResponseFormatJsonObject"
@@ -4560,6 +6583,17 @@
     "TextResponseFormatJsonSchema": {
       "additionalProperties": false,
       "description": "JSON Schema response format. Used to generate structured JSON responses.\nLearn more about [Structured Outputs](/docs/guides/structured-outputs).",
+      "examples": [
+        {
+          "description": "example",
+          "name": "example",
+          "schema": {
+            "key1": "example"
+          },
+          "strict": true,
+          "type": "json_schema"
+        }
+      ],
       "properties": {
         "description": {
           "description": "A description of what the response format is for, used by the model to determine how to respond in the format.",
@@ -4587,6 +6621,9 @@
           "enum": [
             "json_schema"
           ],
+          "examples": [
+            "json_schema"
+          ],
           "title": "TextResponseFormatJsonSchemaType",
           "type": "string"
         }
@@ -4604,6 +6641,14 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "display_height": 1,
+          "display_width": 1,
+          "environment": "windows",
+          "type": "computer_use_preview"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/ComputerUsePreviewTool"
@@ -4622,6 +6667,12 @@
     "ToolChoiceFunction": {
       "additionalProperties": false,
       "description": "Use this option to force the model to call a specific function.",
+      "examples": [
+        {
+          "name": "example",
+          "type": "function"
+        }
+      ],
       "properties": {
         "name": {
           "description": "The name of the function to call.",
@@ -4630,6 +6681,9 @@
         "type": {
           "description": "For function calling, the type is always 'function'.",
           "enum": [
+            "function"
+          ],
+          "examples": [
             "function"
           ],
           "title": "ToolChoiceFunctionType",
@@ -4650,12 +6704,20 @@
         "auto",
         "required"
       ],
+      "examples": [
+        "none"
+      ],
       "title": "ToolChoiceOptions",
       "type": "string"
     },
     "ToolChoiceTypes": {
       "additionalProperties": false,
       "description": "Indicates that the model should use a built-in tool to generate a response.\n[Learn more about built-in tools](/docs/guides/tools).",
+      "examples": [
+        {
+          "type": "file_search"
+        }
+      ],
       "properties": {
         "type": {
           "description": "The type of hosted tool the model should to use. Learn more about [built-in tools](/docs/guides/tools). Allowed values are: - 'file_search' - 'web_search_preview' - 'computer_use_preview'",
@@ -4664,6 +6726,9 @@
             "web_search_preview",
             "computer_use_preview",
             "web_search_preview_2025_03_11"
+          ],
+          "examples": [
+            "file_search"
           ],
           "title": "ToolChoiceTypesType",
           "type": "string"
@@ -4678,6 +6743,12 @@
     "Type": {
       "additionalProperties": false,
       "description": "An action to type in text.",
+      "examples": [
+        {
+          "text": "example",
+          "type": "type"
+        }
+      ],
       "properties": {
         "text": {
           "description": "The text to type.",
@@ -4686,6 +6757,9 @@
         "type": {
           "description": "Specifies the event type. For a type action, this property is always set to 'type'.",
           "enum": [
+            "type"
+          ],
+          "examples": [
             "type"
           ],
           "title": "TypeType",
@@ -4702,6 +6776,15 @@
     "UrlCitationBody": {
       "additionalProperties": false,
       "description": "A citation for a web resource used to generate a model response.",
+      "examples": [
+        {
+          "end_index": 1,
+          "start_index": 1,
+          "title": "example",
+          "type": "url_citation",
+          "url": "example"
+        }
+      ],
       "properties": {
         "end_index": {
           "description": "The index of the last character of the URL citation in the message.",
@@ -4718,6 +6801,9 @@
         "type": {
           "description": "The type of the URL citation. Always 'url_citation'.",
           "enum": [
+            "url_citation"
+          ],
+          "examples": [
             "url_citation"
           ],
           "title": "UrlCitationBodyType",
@@ -4741,15 +6827,28 @@
     "VectorStoreFileAttributes": {
       "additionalProperties": {},
       "description": "Set of 16 key-value pairs that can be attached to an object. This can be\nuseful for storing additional information about the object in a structured\nformat, and querying for objects via API or the dashboard. Keys are strings\nwith a maximum length of 64 characters. Values are strings with a maximum\nlength of 512 characters, booleans, or numbers.",
+      "examples": [
+        {
+          "key1": "example"
+        }
+      ],
       "type": "object"
     },
     "Wait": {
       "additionalProperties": false,
       "description": "A wait action.",
+      "examples": [
+        {
+          "type": "wait"
+        }
+      ],
       "properties": {
         "type": {
           "description": "Specifies the event type. For a wait action, this property is always set to 'wait'.",
           "enum": [
+            "wait"
+          ],
+          "examples": [
             "wait"
           ],
           "title": "WaitType",
@@ -4765,6 +6864,19 @@
     "WebSearchPreviewTool": {
       "additionalProperties": false,
       "description": "This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).",
+      "examples": [
+        {
+          "search_context_size": "low",
+          "type": "web_search_preview",
+          "user_location": {
+            "city": "example",
+            "country": "example",
+            "region": "example",
+            "timezone": "example",
+            "type": "approximate"
+          }
+        }
+      ],
       "properties": {
         "search_context_size": {
           "description": "High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default.",
@@ -4775,6 +6887,9 @@
                 "low",
                 "medium",
                 "high"
+              ],
+              "examples": [
+                "low"
               ],
               "title": "WebSearchPreviewToolSearchContextSize",
               "type": "string"
@@ -4789,6 +6904,9 @@
           "enum": [
             "web_search_preview",
             "web_search_preview_2025_03_11"
+          ],
+          "examples": [
+            "web_search_preview"
           ],
           "title": "WebSearchPreviewToolType",
           "type": "string"
@@ -4813,6 +6931,13 @@
     "WebSearchToolCall": {
       "additionalProperties": false,
       "description": "The results of a web search tool call. See the\n[web search guide](/docs/guides/tools-web-search) for more information.",
+      "examples": [
+        {
+          "id": "example",
+          "status": "in_progress",
+          "type": "web_search_call"
+        }
+      ],
       "properties": {
         "id": {
           "description": "The unique ID of the web search tool call.",
@@ -4826,12 +6951,18 @@
             "completed",
             "failed"
           ],
+          "examples": [
+            "in_progress"
+          ],
           "title": "WebSearchToolCallStatus",
           "type": "string"
         },
         "type": {
           "description": "The type of the web search tool call. Always 'web_search_call'.",
           "enum": [
+            "web_search_call"
+          ],
+          "examples": [
             "web_search_call"
           ],
           "title": "WebSearchToolCallType",
