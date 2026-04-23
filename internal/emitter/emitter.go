@@ -28,6 +28,24 @@ func isWrapperType(t *ir.Type) bool {
 	return t.Fields[0].JSONName == "Value" || t.Fields[0].JSONName == "value"
 }
 
+// isScalarWrapper returns true if the wrapper type wraps a scalar (string, number,
+// boolean, integer) rather than a complex type (struct, union, list, map).
+func isScalarWrapper(t *ir.Type) bool {
+	if !isWrapperType(t) {
+		return false
+	}
+	f := t.Fields[0]
+	if f.Type.Inline != nil {
+		k := f.Type.Inline.Kind
+		return k == ir.KindScalar || k == ir.KindEnum
+	}
+	// Named type reference — not a scalar wrapper (could be a struct, union, etc.).
+	// A named scalar type (e.g., type MyString string) would be KindScalar or KindEnum
+	// in the IR, but its reference here is by name, so we can't determine the kind
+	// without looking it up. Conservative: return false.
+	return false
+}
+
 // codegenResolver implements uniongen.TypeResolver for the codegen path.
 // In the codegen path, IR type names ARE Go names (from go/types analysis),
 // but JSON field names need conversion to Go field names.
@@ -236,6 +254,19 @@ func typeToSchema(t *ir.Type, topLevel bool) map[string]any {
 
 	switch t.Kind {
 	case ir.KindStruct:
+		// Wrapper types (single "Value" field) that wrap scalars marshal as their
+		// inner value, not as a JSON object. Emit the inner type's schema directly.
+		if isWrapperType(t) && isScalarWrapper(t) {
+			f := t.Fields[0]
+			inner := typeRefToSchema(f.Type)
+			if t.Description != "" && topLevel {
+				inner["description"] = t.Description
+			}
+			if topLevel && t.Name != "" {
+				inner["title"] = t.Name
+			}
+			return inner
+		}
 		s["type"] = "object"
 		if topLevel && t.Name != "" {
 			s["title"] = t.Name
@@ -1113,6 +1144,9 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 			continue
 		}
 
+		// Scalar wrapper types emit as their inner scalar type, not as objects.
+		scalarWrap := isWrapperType(t) && isScalarWrapper(t)
+
 		// Validate rejects invalid JSON.
 		b.WriteString(fmt.Sprintf("func TestCompschema_%s_ValidateRejectsInvalidJSON(t *testing.T) {\n", name))
 		b.WriteString(fmt.Sprintf("\terr := (%s{}).Validate([]byte(`{not json}`))\n", name))
@@ -1121,16 +1155,18 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 		b.WriteString("\t}\n")
 		b.WriteString("}\n\n")
 
-		// Validate rejects wrong type.
-		b.WriteString(fmt.Sprintf("func TestCompschema_%s_ValidateRejectsWrongType(t *testing.T) {\n", name))
-		b.WriteString(fmt.Sprintf("\terr := (%s{}).Validate([]byte(`\"a string\"`))\n", name))
-		b.WriteString("\tif err == nil {\n")
-		b.WriteString(fmt.Sprintf("\t\tt.Fatal(\"%s.Validate should reject a string for an object type\")\n", name))
-		b.WriteString("\t}\n")
-		b.WriteString("}\n\n")
+		// Validate rejects wrong type (skip for scalar wrappers — they ARE scalars).
+		if !scalarWrap {
+			b.WriteString(fmt.Sprintf("func TestCompschema_%s_ValidateRejectsWrongType(t *testing.T) {\n", name))
+			b.WriteString(fmt.Sprintf("\terr := (%s{}).Validate([]byte(`\"a string\"`))\n", name))
+			b.WriteString("\tif err == nil {\n")
+			b.WriteString(fmt.Sprintf("\t\tt.Fatal(\"%s.Validate should reject a string for an object type\")\n", name))
+			b.WriteString("\t}\n")
+			b.WriteString("}\n\n")
+		}
 
-		// Validate rejects empty object (if type has required fields).
-		if t.HasRequired() {
+		// Validate rejects empty object (if type has required fields, non-scalar-wrapper).
+		if t.HasRequired() && !scalarWrap {
 			b.WriteString(fmt.Sprintf("func TestCompschema_%s_ValidateRejectsEmpty(t *testing.T) {\n", name))
 			b.WriteString(fmt.Sprintf("\terr := (%s{}).Validate([]byte(`{}`))\n", name))
 			b.WriteString("\tif err == nil {\n")

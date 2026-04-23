@@ -51,6 +51,16 @@ func exampleValue(t *ir.Type, pkg *ir.Package, visiting map[string]bool) (any, b
 
 	switch t.Kind {
 	case ir.KindStruct:
+		if isWrapperType(t) && isScalarWrapper(t) {
+			// Scalar wrapper types serialize as their inner value (not an object).
+			// Generate an example of the inner scalar type.
+			f := t.Fields[0]
+			val, ok := exampleField(f, pkg, visiting)
+			if ok {
+				return val, true
+			}
+			return nil, false
+		}
 		if isWrapperType(t) {
 			return nil, false
 		}

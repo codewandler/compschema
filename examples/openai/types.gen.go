@@ -4340,7 +4340,7 @@ func UnmarshalTool(data []byte) (Tool, error) {
 			return nil, err
 		}
 		return &val, nil
-	case "windows", "mac", "linux", "ubuntu", "browser":
+	case "computer_use_preview":
 		var val ComputerUsePreviewTool
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
