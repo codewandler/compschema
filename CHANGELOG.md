@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.4.3] - 2026-04-24
+
+### Fixed
+- **Recursive HTTP OpenAPI reference resolution** — `compschema run openai` and other extract flows now resolve relative external `$ref` targets for HTTP-fetched OpenAPI specs by preserving the original source origin and configuring `libopenapi` with the correct `BaseURL`. This fixes exploded specs such as the OpenResponses root document referencing `paths/responses.json` and deeper nested component files.
+- **Source-aware extract pipeline loading** — pipeline extract now passes fetched spec bytes together with the original source origin into the OpenAPI converter, instead of relying on temp-file paths that break external reference resolution context.
+- **Temp file extension preservation for fetched specs** — fetched pipeline sources now retain a matching filename extension in temp files, improving downstream format inference and tooling behavior.
+- **Empty schema handling in OpenAPI conversion** — legitimate empty schemas like `{}` are no longer rewritten into self-referential `$ref` values during conversion. This fixes invalid recursive output such as `FileSearchResult.attributes -> FileSearchResult`.
+- **`propertyNames: {}` conversion** — unconstrained `propertyNames` schemas now emit as `true`, matching JSON Schema semantics instead of producing misleading recursive structures.
+- **Generated examples honor upper-bound constraints** — example generation now respects constraints such as `maxItems`, `maxLength`, and `maximum`, fixing invalid generated examples like `ReasoningItemParam.content` violating `maxItems: 0`.
+- **Constructor tests use schema-valid fixtures** — generated constructor tests now build inputs from decoded schema-valid examples instead of naive zero-value nested structs. This fixes validation failures in generated tests for nested required structs, nullable object fields, and discriminator-bearing children such as `LogProb`, `FunctionShellCallOutput`, `ReasoningItemParam`, `MCPRequireApprovalFilterField`, and `WebSearchPreviewTool`.
+- **Go literal emission for generated tests** — codegen test helpers now correctly emit composite Go literals for `nil`, slices, and maps used in generated fixtures.
+
+### Added
+- **HTTP external ref regression test** — added converter coverage for recursive HTTP-based OpenAPI reference resolution across nested relative refs.
 
 ## [3.4.2] - 2026-04-24
 

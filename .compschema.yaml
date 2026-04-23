@@ -1,7 +1,7 @@
 pipelines:
   openai:
     - action: extract
-      source: https://raw.githubusercontent.com/openai/openai-openapi/refs/heads/manual_spec/openapi.yaml
+      source: https://raw.githubusercontent.com/openresponses/openresponses/refs/heads/main/schema/openapi.json
       path: /responses
       validate: true
       out: examples/openai/responses.schema.json

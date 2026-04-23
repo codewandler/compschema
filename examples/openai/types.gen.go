@@ -7,6 +7,34 @@ import (
 	"fmt"
 )
 
+type AllowedToolChoice struct {
+	Type AllowedToolChoiceType `json:"type"`
+	Tools []any `json:"tools"`
+	Mode ToolChoiceValueEnum `json:"mode"`
+}
+
+type AllowedToolChoiceType string
+
+const (
+	AllowedToolChoiceTypeAllowedTools AllowedToolChoiceType = "allowed_tools"
+)
+
+type AllowedToolsParam struct {
+	// The tool choice type. Always 'allowed_tools'.
+	Type AllowedToolsParamType `json:"type" jsonschema:"description=The tool choice type. Always 'allowed_tools'."`
+	// The list of tools that are permitted for this request.
+	Tools []SpecificToolChoiceParam `json:"tools" jsonschema:"minItems=1,maxItems=128,description=The list of tools that are permitted for this request."`
+	Mode *ToolChoiceValueEnum `json:"mode,omitempty"`
+}
+
+// AllowedToolsParamType The tool choice type. Always 'allowed_tools'.
+type AllowedToolsParamType string
+
+const (
+	AllowedToolsParamTypeAllowedTools AllowedToolsParamType = "allowed_tools"
+)
+
+// Annotation An annotation that applies to a span of output text.
 // Discriminated by "type" field.
 //
 //compschema:generate
@@ -17,11 +45,11 @@ type Annotation interface {
 
 func (*FileCitationBody) isAnnotation() {}
 func (*UrlCitationBody) isAnnotation() {}
-func (*FilePath) isAnnotation() {}
+func (*ContainerFileCitationBody) isAnnotation() {}
 
 func (x *FileCitationBody) DiscriminatorValue() string { return string(x.Type) }
 func (x *UrlCitationBody) DiscriminatorValue() string { return string(x.Type) }
-func (x *FilePath) DiscriminatorValue() string { return string(x.Type) }
+func (x *ContainerFileCitationBody) DiscriminatorValue() string { return string(x.Type) }
 
 // AnnotationFromFileCitationBody wraps a *FileCitationBody as a Annotation union value.
 func AnnotationFromFileCitationBody(v *FileCitationBody) Annotation {
@@ -33,8 +61,8 @@ func AnnotationFromUrlCitationBody(v *UrlCitationBody) Annotation {
 	return v
 }
 
-// AnnotationFromFilePath wraps a *FilePath as a Annotation union value.
-func AnnotationFromFilePath(v *FilePath) Annotation {
+// AnnotationFromContainerFileCitationBody wraps a *ContainerFileCitationBody as a Annotation union value.
+func AnnotationFromContainerFileCitationBody(v *ContainerFileCitationBody) Annotation {
 	return v
 }
 
@@ -60,8 +88,8 @@ func UnmarshalAnnotation(data []byte) (Annotation, error) {
 			return nil, err
 		}
 		return &val, nil
-	case "file_path":
-		var val FilePath
+	case "container_file_citation":
+		var val ContainerFileCitationBody
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -72,18 +100,435 @@ func UnmarshalAnnotation(data []byte) (Annotation, error) {
 }
 
 
+type ApiSourceParam struct {
+	// The source type. Always 'api'.
+	Type ApiSourceParamType `json:"type" jsonschema:"description=The source type. Always 'api'."`
+	// The name of the API source.
+	Name string `json:"name" jsonschema:"description=The name of the API source."`
+}
+
+// ApiSourceParamType The source type. Always 'api'.
+type ApiSourceParamType string
+
+const (
+	ApiSourceParamTypeAPI ApiSourceParamType = "api"
+)
+
+type ApplyPatchCallOutputStatus string
+
+const (
+	ApplyPatchCallOutputStatusCompleted ApplyPatchCallOutputStatus = "completed"
+	ApplyPatchCallOutputStatusFailed ApplyPatchCallOutputStatus = "failed"
+)
+
+// ApplyPatchCallOutputStatusParam Outcome values reported for apply_patch tool call outputs.
+type ApplyPatchCallOutputStatusParam string
+
+const (
+	ApplyPatchCallOutputStatusParamCompleted ApplyPatchCallOutputStatusParam = "completed"
+	ApplyPatchCallOutputStatusParamFailed ApplyPatchCallOutputStatusParam = "failed"
+)
+
+type ApplyPatchCallStatus string
+
+const (
+	ApplyPatchCallStatusInProgress ApplyPatchCallStatus = "in_progress"
+	ApplyPatchCallStatusCompleted ApplyPatchCallStatus = "completed"
+)
+
+// ApplyPatchCallStatusParam Status values reported for apply_patch tool calls.
+type ApplyPatchCallStatusParam string
+
+const (
+	ApplyPatchCallStatusParamInProgress ApplyPatchCallStatusParam = "in_progress"
+	ApplyPatchCallStatusParamCompleted ApplyPatchCallStatusParam = "completed"
+)
+
+// ApplyPatchCreateFileOperation Instruction describing how to create a file via the apply_patch tool.
+type ApplyPatchCreateFileOperation struct {
+	// Create a new file with the provided diff.
+	Type ApplyPatchCreateFileOperationType `json:"type" jsonschema:"description=Create a new file with the provided diff."`
+	// Path of the file to create.
+	Path string `json:"path" jsonschema:"description=Path of the file to create."`
+	// Diff to apply.
+	Diff string `json:"diff" jsonschema:"description=Diff to apply."`
+}
+
+// ApplyPatchCreateFileOperationParam Instruction for creating a new file via the apply_patch tool.
+type ApplyPatchCreateFileOperationParam struct {
+	// The operation type. Always 'create_file'.
+	Type ApplyPatchCreateFileOperationParamType `json:"type" jsonschema:"description=The operation type. Always 'create_file'."`
+	// Path of the file to create relative to the workspace root.
+	Path string `json:"path" jsonschema:"minLength=1,description=Path of the file to create relative to the workspace root."`
+	// Unified diff content to apply when creating the file.
+	Diff string `json:"diff" jsonschema:"maxLength=10485760,description=Unified diff content to apply when creating the file."`
+}
+
+// ApplyPatchCreateFileOperationParamType The operation type. Always 'create_file'.
+type ApplyPatchCreateFileOperationParamType string
+
+const (
+	ApplyPatchCreateFileOperationParamTypeCreateFile ApplyPatchCreateFileOperationParamType = "create_file"
+)
+
+// ApplyPatchCreateFileOperationType Create a new file with the provided diff.
+type ApplyPatchCreateFileOperationType string
+
+const (
+	ApplyPatchCreateFileOperationTypeCreateFile ApplyPatchCreateFileOperationType = "create_file"
+)
+
+// ApplyPatchDeleteFileOperation Instruction describing how to delete a file via the apply_patch tool.
+type ApplyPatchDeleteFileOperation struct {
+	// Delete the specified file.
+	Type ApplyPatchDeleteFileOperationType `json:"type" jsonschema:"description=Delete the specified file."`
+	// Path of the file to delete.
+	Path string `json:"path" jsonschema:"description=Path of the file to delete."`
+}
+
+// ApplyPatchDeleteFileOperationParam Instruction for deleting an existing file via the apply_patch tool.
+type ApplyPatchDeleteFileOperationParam struct {
+	// The operation type. Always 'delete_file'.
+	Type ApplyPatchDeleteFileOperationParamType `json:"type" jsonschema:"description=The operation type. Always 'delete_file'."`
+	// Path of the file to delete relative to the workspace root.
+	Path string `json:"path" jsonschema:"minLength=1,description=Path of the file to delete relative to the workspace root."`
+}
+
+// ApplyPatchDeleteFileOperationParamType The operation type. Always 'delete_file'.
+type ApplyPatchDeleteFileOperationParamType string
+
+const (
+	ApplyPatchDeleteFileOperationParamTypeDeleteFile ApplyPatchDeleteFileOperationParamType = "delete_file"
+)
+
+// ApplyPatchDeleteFileOperationType Delete the specified file.
+type ApplyPatchDeleteFileOperationType string
+
+const (
+	ApplyPatchDeleteFileOperationTypeDeleteFile ApplyPatchDeleteFileOperationType = "delete_file"
+)
+
+// ApplyPatchOperationParam One of the create_file, delete_file, or update_file operations supplied to the apply_patch tool.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type ApplyPatchOperationParam interface {
+	isApplyPatchOperationParam()
+	DiscriminatorValue() string
+}
+
+func (*ApplyPatchCreateFileOperationParam) isApplyPatchOperationParam() {}
+func (*ApplyPatchDeleteFileOperationParam) isApplyPatchOperationParam() {}
+func (*ApplyPatchUpdateFileOperationParam) isApplyPatchOperationParam() {}
+
+func (x *ApplyPatchCreateFileOperationParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchDeleteFileOperationParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchUpdateFileOperationParam) DiscriminatorValue() string { return string(x.Type) }
+
+// ApplyPatchOperationParamFromApplyPatchCreateFileOperationParam wraps a *ApplyPatchCreateFileOperationParam as a ApplyPatchOperationParam union value.
+func ApplyPatchOperationParamFromApplyPatchCreateFileOperationParam(v *ApplyPatchCreateFileOperationParam) ApplyPatchOperationParam {
+	return v
+}
+
+// ApplyPatchOperationParamFromApplyPatchDeleteFileOperationParam wraps a *ApplyPatchDeleteFileOperationParam as a ApplyPatchOperationParam union value.
+func ApplyPatchOperationParamFromApplyPatchDeleteFileOperationParam(v *ApplyPatchDeleteFileOperationParam) ApplyPatchOperationParam {
+	return v
+}
+
+// ApplyPatchOperationParamFromApplyPatchUpdateFileOperationParam wraps a *ApplyPatchUpdateFileOperationParam as a ApplyPatchOperationParam union value.
+func ApplyPatchOperationParamFromApplyPatchUpdateFileOperationParam(v *ApplyPatchUpdateFileOperationParam) ApplyPatchOperationParam {
+	return v
+}
+
+// UnmarshalApplyPatchOperationParam unmarshals JSON into the correct ApplyPatchOperationParam variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalApplyPatchOperationParam(data []byte) (ApplyPatchOperationParam, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "create_file":
+		var val ApplyPatchCreateFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "delete_file":
+		var val ApplyPatchDeleteFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "update_file":
+		var val ApplyPatchUpdateFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ApplyPatchOperationParam", disc.D)
+	}
+}
+
+
+// ApplyPatchTool A tool that lets the assistant create, delete, or update files by applying textual diffs.
+type ApplyPatchTool struct {
+	// The type of the tool. Always 'apply_patch'.
+	Type ApplyPatchToolType `json:"type" jsonschema:"description=The type of the tool. Always 'apply_patch'."`
+}
+
+// ApplyPatchToolCall A tool call that applies file diffs by creating, deleting, or updating files.
+type ApplyPatchToolCall struct {
+	// The type of the item. Always 'apply_patch_call'.
+	Type ApplyPatchToolCallType `json:"type" jsonschema:"description=The type of the item. Always 'apply_patch_call'."`
+	// The unique ID of the apply patch tool call. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the apply patch tool call. Populated when this item is returned via API."`
+	// The unique ID of the apply patch tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the apply patch tool call generated by the model."`
+	Status ApplyPatchCallStatus `json:"status"`
+	// One of the create_file, delete_file, or update_file operations applied via apply_patch.
+	Operation ApplyPatchToolCallOperation `json:"operation" jsonschema:"description=One of the create_file, delete_file, or update_file operations applied via apply_patch."`
+	// The ID of the entity that created this tool call.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The ID of the entity that created this tool call."`
+}
+
+// ApplyPatchToolCallItemParam A tool call representing a request to create, delete, or update files using diff patches.
+type ApplyPatchToolCallItemParam struct {
+	// The type of the item. Always 'apply_patch_call'.
+	Type ApplyPatchToolCallItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'apply_patch_call'."`
+	// The unique ID of the apply patch tool call. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the apply patch tool call. Populated when this item is returned via API."`
+	// The unique ID of the apply patch tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the apply patch tool call generated by the model."`
+	Status ApplyPatchCallStatusParam `json:"status"`
+	Operation ApplyPatchOperationParam `json:"operation"`
+}
+
+// ApplyPatchToolCallItemParamType The type of the item. Always 'apply_patch_call'.
+type ApplyPatchToolCallItemParamType string
+
+const (
+	ApplyPatchToolCallItemParamTypeApplyPatchCall ApplyPatchToolCallItemParamType = "apply_patch_call"
+)
+
+// ApplyPatchToolCallOperation One of the create_file, delete_file, or update_file operations applied via apply_patch.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type ApplyPatchToolCallOperation interface {
+	isApplyPatchToolCallOperation()
+	DiscriminatorValue() string
+}
+
+func (*ApplyPatchCreateFileOperation) isApplyPatchToolCallOperation() {}
+func (*ApplyPatchDeleteFileOperation) isApplyPatchToolCallOperation() {}
+func (*ApplyPatchUpdateFileOperation) isApplyPatchToolCallOperation() {}
+
+func (x *ApplyPatchCreateFileOperation) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchDeleteFileOperation) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchUpdateFileOperation) DiscriminatorValue() string { return string(x.Type) }
+
+// ApplyPatchToolCallOperationFromApplyPatchCreateFileOperation wraps a *ApplyPatchCreateFileOperation as a ApplyPatchToolCallOperation union value.
+func ApplyPatchToolCallOperationFromApplyPatchCreateFileOperation(v *ApplyPatchCreateFileOperation) ApplyPatchToolCallOperation {
+	return v
+}
+
+// ApplyPatchToolCallOperationFromApplyPatchDeleteFileOperation wraps a *ApplyPatchDeleteFileOperation as a ApplyPatchToolCallOperation union value.
+func ApplyPatchToolCallOperationFromApplyPatchDeleteFileOperation(v *ApplyPatchDeleteFileOperation) ApplyPatchToolCallOperation {
+	return v
+}
+
+// ApplyPatchToolCallOperationFromApplyPatchUpdateFileOperation wraps a *ApplyPatchUpdateFileOperation as a ApplyPatchToolCallOperation union value.
+func ApplyPatchToolCallOperationFromApplyPatchUpdateFileOperation(v *ApplyPatchUpdateFileOperation) ApplyPatchToolCallOperation {
+	return v
+}
+
+// UnmarshalApplyPatchToolCallOperation unmarshals JSON into the correct ApplyPatchToolCallOperation variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalApplyPatchToolCallOperation(data []byte) (ApplyPatchToolCallOperation, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "create_file":
+		var val ApplyPatchCreateFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "delete_file":
+		var val ApplyPatchDeleteFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "update_file":
+		var val ApplyPatchUpdateFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ApplyPatchToolCallOperation", disc.D)
+	}
+}
+
+
+// ApplyPatchToolCallOutput The output emitted by an apply patch tool call.
+type ApplyPatchToolCallOutput struct {
+	// The type of the item. Always 'apply_patch_call_output'.
+	Type ApplyPatchToolCallOutputType `json:"type" jsonschema:"description=The type of the item. Always 'apply_patch_call_output'."`
+	// The unique ID of the apply patch tool call output. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the apply patch tool call output. Populated when this item is returned via API."`
+	// The unique ID of the apply patch tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the apply patch tool call generated by the model."`
+	Status ApplyPatchCallOutputStatus `json:"status"`
+	// Optional textual output returned by the apply patch tool.
+	Output *string `json:"output,omitempty" jsonschema:"description=Optional textual output returned by the apply patch tool."`
+	// The ID of the entity that created this tool call output.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The ID of the entity that created this tool call output."`
+}
+
+// ApplyPatchToolCallOutputItemParam The streamed output emitted by an apply patch tool call.
+type ApplyPatchToolCallOutputItemParam struct {
+	// The unique ID of the apply patch tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the apply patch tool call generated by the model."`
+	Status ApplyPatchCallOutputStatusParam `json:"status"`
+	// Optional human-readable log text from the apply patch tool (e.g., patch results or errors).
+	Output *string `json:"output,omitempty" jsonschema:"maxLength=10485760,description=Optional human-readable log text from the apply patch tool (e.g., patch results or errors)."`
+	// The type of the item. Always 'apply_patch_call_output'.
+	Type ApplyPatchToolCallOutputItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'apply_patch_call_output'."`
+	// The unique ID of the apply patch tool call output. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the apply patch tool call output. Populated when this item is returned via API."`
+}
+
+// ApplyPatchToolCallOutputItemParamType The type of the item. Always 'apply_patch_call_output'.
+type ApplyPatchToolCallOutputItemParamType string
+
+const (
+	ApplyPatchToolCallOutputItemParamTypeApplyPatchCallOutput ApplyPatchToolCallOutputItemParamType = "apply_patch_call_output"
+)
+
+// ApplyPatchToolCallOutputType The type of the item. Always 'apply_patch_call_output'.
+type ApplyPatchToolCallOutputType string
+
+const (
+	ApplyPatchToolCallOutputTypeApplyPatchCallOutput ApplyPatchToolCallOutputType = "apply_patch_call_output"
+)
+
+// ApplyPatchToolCallType The type of the item. Always 'apply_patch_call'.
+type ApplyPatchToolCallType string
+
+const (
+	ApplyPatchToolCallTypeApplyPatchCall ApplyPatchToolCallType = "apply_patch_call"
+)
+
+// ApplyPatchToolChoice Require the assistant to call the apply_patch tool.
+type ApplyPatchToolChoice struct {
+	// The selected tool. Always 'apply_patch'.
+	Type ApplyPatchToolChoiceType `json:"type" jsonschema:"description=The selected tool. Always 'apply_patch'."`
+}
+
+// ApplyPatchToolChoiceType The selected tool. Always 'apply_patch'.
+type ApplyPatchToolChoiceType string
+
+const (
+	ApplyPatchToolChoiceTypeApplyPatch ApplyPatchToolChoiceType = "apply_patch"
+)
+
+// ApplyPatchToolParam Allows the assistant to create, delete, or update files using unified diffs.
+type ApplyPatchToolParam struct {
+	// The type of the tool. Always 'apply_patch'.
+	Type ApplyPatchToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'apply_patch'."`
+}
+
+// ApplyPatchToolParamType The type of the tool. Always 'apply_patch'.
+type ApplyPatchToolParamType string
+
+const (
+	ApplyPatchToolParamTypeApplyPatch ApplyPatchToolParamType = "apply_patch"
+)
+
+// ApplyPatchToolType The type of the tool. Always 'apply_patch'.
+type ApplyPatchToolType string
+
+const (
+	ApplyPatchToolTypeApplyPatch ApplyPatchToolType = "apply_patch"
+)
+
+// ApplyPatchUpdateFileOperation Instruction describing how to update a file via the apply_patch tool.
+type ApplyPatchUpdateFileOperation struct {
+	// Update an existing file with the provided diff.
+	Type ApplyPatchUpdateFileOperationType `json:"type" jsonschema:"description=Update an existing file with the provided diff."`
+	// Path of the file to update.
+	Path string `json:"path" jsonschema:"description=Path of the file to update."`
+	// Diff to apply.
+	Diff string `json:"diff" jsonschema:"description=Diff to apply."`
+}
+
+// ApplyPatchUpdateFileOperationParam Instruction for updating an existing file via the apply_patch tool.
+type ApplyPatchUpdateFileOperationParam struct {
+	// Unified diff content to apply to the existing file.
+	Diff string `json:"diff" jsonschema:"maxLength=10485760,description=Unified diff content to apply to the existing file."`
+	// The operation type. Always 'update_file'.
+	Type ApplyPatchUpdateFileOperationParamType `json:"type" jsonschema:"description=The operation type. Always 'update_file'."`
+	// Path of the file to update relative to the workspace root.
+	Path string `json:"path" jsonschema:"minLength=1,description=Path of the file to update relative to the workspace root."`
+}
+
+// ApplyPatchUpdateFileOperationParamType The operation type. Always 'update_file'.
+type ApplyPatchUpdateFileOperationParamType string
+
+const (
+	ApplyPatchUpdateFileOperationParamTypeUpdateFile ApplyPatchUpdateFileOperationParamType = "update_file"
+)
+
+// ApplyPatchUpdateFileOperationType Update an existing file with the provided diff.
+type ApplyPatchUpdateFileOperationType string
+
+const (
+	ApplyPatchUpdateFileOperationTypeUpdateFile ApplyPatchUpdateFileOperationType = "update_file"
+)
+
 type ApproximateLocation struct {
 	// The type of location approximation. Always 'approximate'.
 	Type ApproximateLocationType `json:"type" jsonschema:"description=The type of location approximation. Always 'approximate'."`
 	// The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user, e.g. 'US'.
-	Country *string `json:"country,omitempty" jsonschema:"description=The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user, e.g. 'US'."`
+	Country *string `json:"country" jsonschema:"description=The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of the user, e.g. 'US'."`
 	// Free text input for the region of the user, e.g. 'California'.
-	Region *string `json:"region,omitempty" jsonschema:"description=Free text input for the region of the user, e.g. 'California'."`
+	Region *string `json:"region" jsonschema:"description=Free text input for the region of the user, e.g. 'California'."`
 	// Free text input for the city of the user, e.g. 'San Francisco'.
-	City *string `json:"city,omitempty" jsonschema:"description=Free text input for the city of the user, e.g. 'San Francisco'."`
+	City *string `json:"city" jsonschema:"description=Free text input for the city of the user, e.g. 'San Francisco'."`
 	// The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g. 'America/Los_Angeles'.
-	Timezone *string `json:"timezone,omitempty" jsonschema:"description=The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g. 'America/Los_Angeles'."`
+	Timezone *string `json:"timezone" jsonschema:"description=The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user, e.g. 'America/Los_Angeles'."`
 }
+
+// ApproximateLocationParam An approximate user location to bias web search results.
+type ApproximateLocationParam struct {
+	// The city for the approximate user location.
+	City *string `json:"city,omitempty" jsonschema:"description=The city for the approximate user location."`
+	// The IANA time zone name for the approximate user location.
+	Timezone *string `json:"timezone,omitempty" jsonschema:"description=The IANA time zone name for the approximate user location."`
+	// The location type. Always 'approximate'.
+	Type ApproximateLocationParamType `json:"type" jsonschema:"description=The location type. Always 'approximate'."`
+	// The country for the approximate user location.
+	Country *string `json:"country,omitempty" jsonschema:"description=The country for the approximate user location."`
+	// The region or state for the approximate user location.
+	Region *string `json:"region,omitempty" jsonschema:"description=The region or state for the approximate user location."`
+}
+
+// ApproximateLocationParamType The location type. Always 'approximate'.
+type ApproximateLocationParamType string
+
+const (
+	ApproximateLocationParamTypeApproximate ApproximateLocationParamType = "approximate"
+)
 
 // ApproximateLocationType The type of location approximation. Always 'approximate'.
 type ApproximateLocationType string
@@ -92,358 +537,2421 @@ const (
 	ApproximateLocationTypeApproximate ApproximateLocationType = "approximate"
 )
 
-// Click A click action.
-type Click struct {
-	// Specifies the event type. For a click action, this property is 
-// always set to 'click'.
-	Type ClickType `json:"type" jsonschema:"description=Specifies the event type. For a click action, this property is always set to 'click'."`
-	// Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'.
-	Button ClickButton `json:"button" jsonschema:"description=Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'."`
+type AssistantMessageItemParam struct {
+	// The unique ID of this message item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this message item."`
+	// The item type. Always 'message'.
+	Type AssistantMessageItemParamType `json:"type" jsonschema:"description=The item type. Always 'message'."`
+	// The role of the message author. Always 'assistant'.
+	Role AssistantMessageItemParamRole `json:"role" jsonschema:"description=The role of the message author. Always 'assistant'."`
+	// The message content, as an array of content parts.
+	Content AssistantMessageItemParamContent `json:"content" jsonschema:"description=The message content, as an array of content parts."`
+	// The status of the message item.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the message item."`
+}
+
+// AssistantMessageItemParamContent The message content, as an array of content parts.
+//
+//compschema:generate
+type AssistantMessageItemParamContent interface {
+	isAssistantMessageItemParamContent()
+}
+
+
+// AssistantMessageItemParamContentSliceany wraps a []any value as a AssistantMessageItemParamContent variant.
+type AssistantMessageItemParamContentSliceany struct { Value []any }
+func (*AssistantMessageItemParamContentSliceany) isAssistantMessageItemParamContent() {}
+
+// AssistantMessageItemParamContentString wraps a string value as a AssistantMessageItemParamContent variant.
+type AssistantMessageItemParamContentString struct { Value string }
+func (*AssistantMessageItemParamContentString) isAssistantMessageItemParamContent() {}
+
+func (w AssistantMessageItemParamContentSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *AssistantMessageItemParamContentSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w AssistantMessageItemParamContentString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *AssistantMessageItemParamContentString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewAssistantMessageItemParamContentSliceany creates a AssistantMessageItemParamContent from a []any value.
+func NewAssistantMessageItemParamContentSliceany(v []any) AssistantMessageItemParamContent {
+	return &AssistantMessageItemParamContentSliceany{Value: v}
+}
+
+// NewAssistantMessageItemParamContentString creates a AssistantMessageItemParamContent from a string value.
+func NewAssistantMessageItemParamContentString(v string) AssistantMessageItemParamContent {
+	return &AssistantMessageItemParamContentString{Value: v}
+}
+
+// UnmarshalAssistantMessageItemParamContent unmarshals JSON into the correct AssistantMessageItemParamContent variant.
+func UnmarshalAssistantMessageItemParamContent(data []byte) (AssistantMessageItemParamContent, error) {
+	{
+		var val AssistantMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val AssistantMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for AssistantMessageItemParamContent")
+}
+
+
+// AssistantMessageItemParamRole The role of the message author. Always 'assistant'.
+type AssistantMessageItemParamRole string
+
+const (
+	AssistantMessageItemParamRoleAssistant AssistantMessageItemParamRole = "assistant"
+)
+
+// AssistantMessageItemParamType The item type. Always 'message'.
+type AssistantMessageItemParamType string
+
+const (
+	AssistantMessageItemParamTypeMessage AssistantMessageItemParamType = "message"
+)
+
+// AutoCodeInterpreterToolParam Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
+type AutoCodeInterpreterToolParam struct {
+	// Always 'auto'.
+	Type AutoCodeInterpreterToolParamType `json:"type" jsonschema:"description=Always 'auto'."`
+	// An optional list of uploaded files to make available to your code.
+	FileIds []string `json:"file_ids,omitempty" jsonschema:"maxItems=50,description=An optional list of uploaded files to make available to your code."`
+	MemoryLimit *ContainerMemoryLimit `json:"memory_limit,omitempty"`
+}
+
+// AutoCodeInterpreterToolParamType Always 'auto'.
+type AutoCodeInterpreterToolParamType string
+
+const (
+	AutoCodeInterpreterToolParamTypeAuto AutoCodeInterpreterToolParamType = "auto"
+)
+
+// Billing Billing information that was recorded for the response.
+type Billing struct {
+	Payer Payer `json:"payer"`
+}
+
+// ClickAction A click action that was requested by the model.
+type ClickAction struct {
+	// The mouse button that was clicked.
+	Button string `json:"button" jsonschema:"description=The mouse button that was clicked."`
+	// The x-coordinate that was clicked.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate that was clicked."`
+	// The y-coordinate that was clicked.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate that was clicked."`
+	// The type of the action. Always 'click'.
+	Type ClickActionType `json:"type" jsonschema:"description=The type of the action. Always 'click'."`
+}
+
+// ClickActionType The type of the action. Always 'click'.
+type ClickActionType string
+
+const (
+	ClickActionTypeClick ClickActionType = "click"
+)
+
+type ClickButtonType string
+
+const (
+	ClickButtonTypeLeft ClickButtonType = "left"
+	ClickButtonTypeRight ClickButtonType = "right"
+	ClickButtonTypeWheel ClickButtonType = "wheel"
+	ClickButtonTypeBack ClickButtonType = "back"
+	ClickButtonTypeForward ClickButtonType = "forward"
+)
+
+// ClickParam A click action.
+type ClickParam struct {
+	// Specifies the event type. For a click action, this property is always 'click'.
+	Type ClickParamType `json:"type" jsonschema:"description=Specifies the event type. For a click action, this property is always 'click'."`
+	Button ClickButtonType `json:"button"`
 	// The x-coordinate where the click occurred.
 	X int64 `json:"x" jsonschema:"description=The x-coordinate where the click occurred."`
 	// The y-coordinate where the click occurred.
 	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the click occurred."`
 }
 
-// ClickButton Indicates which mouse button was pressed during the click. One of 'left', 'right', 'wheel', 'back', or 'forward'.
-type ClickButton string
+// ClickParamType Specifies the event type. For a click action, this property is always 'click'.
+type ClickParamType string
 
 const (
-	ClickButtonLeft ClickButton = "left"
-	ClickButtonRight ClickButton = "right"
-	ClickButtonWheel ClickButton = "wheel"
-	ClickButtonBack ClickButton = "back"
-	ClickButtonForward ClickButton = "forward"
+	ClickParamTypeClick ClickParamType = "click"
 )
 
-// ClickType Specifies the event type. For a click action, this property is 
-// always set to 'click'.
-type ClickType string
-
-const (
-	ClickTypeClick ClickType = "click"
-)
-
-// CodeInterpreterFileOutput The output of a code interpreter tool call that is a file.
-type CodeInterpreterFileOutput struct {
-	// The type of the code interpreter file output. Always 'files'.
-	Type CodeInterpreterFileOutputType `json:"type" jsonschema:"description=The type of the code interpreter file output. Always 'files'."`
-	Files []any `json:"files"`
+type CodeInterpreterCall struct {
+	Type CodeInterpreterCallType `json:"type"`
+	ID string `json:"id"`
+	Status CodeInterpreterCallStatus `json:"status"`
+	CreatedBy *string `json:"created_by,omitempty"`
+	ContainerID string `json:"container_id"`
+	Code *string `json:"code"`
+	Outputs []any `json:"outputs"`
 }
 
-// CodeInterpreterFileOutputType The type of the code interpreter file output. Always 'files'.
-type CodeInterpreterFileOutputType string
-
-const (
-	CodeInterpreterFileOutputTypeFiles CodeInterpreterFileOutputType = "files"
-)
-
-// CodeInterpreterTextOutput The output of a code interpreter tool call that is text.
-type CodeInterpreterTextOutput struct {
-	// The logs of the code interpreter tool call.
-	Logs string `json:"logs" jsonschema:"description=The logs of the code interpreter tool call."`
-	// The type of the code interpreter text output. Always 'logs'.
-	Type CodeInterpreterTextOutputType `json:"type" jsonschema:"description=The type of the code interpreter text output. Always 'logs'."`
-}
-
-// CodeInterpreterTextOutputType The type of the code interpreter text output. Always 'logs'.
-type CodeInterpreterTextOutputType string
-
-const (
-	CodeInterpreterTextOutputTypeLogs CodeInterpreterTextOutputType = "logs"
-)
-
-// CodeInterpreterToolCall A tool call to run code.
-type CodeInterpreterToolCall struct {
-	// The results of the code interpreter tool call.
-	Results []CodeInterpreterToolOutput `json:"results" jsonschema:"description=The results of the code interpreter tool call."`
-	// The unique ID of the code interpreter tool call.
-	ID string `json:"id" jsonschema:"description=The unique ID of the code interpreter tool call."`
-	// The type of the code interpreter tool call. Always 'code_interpreter_call'.
-	Type CodeInterpreterToolCallType `json:"type" jsonschema:"description=The type of the code interpreter tool call. Always 'code_interpreter_call'."`
-	// The code to run.
-	Code string `json:"code" jsonschema:"description=The code to run."`
+type CodeInterpreterCallItemParam struct {
+	// The unique ID of this code interpreter tool call.
+	ID string `json:"id" jsonschema:"description=The unique ID of this code interpreter tool call."`
+	// The item type. Always 'code_interpreter_call'.
+	Type CodeInterpreterCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'code_interpreter_call'."`
+	// The ID of the container used for code execution.
+	ContainerID string `json:"container_id" jsonschema:"description=The ID of the container used for code execution."`
+	// The code that was executed.
+	Code string `json:"code" jsonschema:"description=The code that was executed."`
+	// Outputs produced by the code interpreter tool call.
+	Outputs []any `json:"outputs,omitempty" jsonschema:"description=Outputs produced by the code interpreter tool call."`
 	// The status of the code interpreter tool call.
-	Status CodeInterpreterToolCallStatus `json:"status" jsonschema:"description=The status of the code interpreter tool call."`
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the code interpreter tool call."`
 }
 
-// CodeInterpreterToolCallStatus The status of the code interpreter tool call.
-type CodeInterpreterToolCallStatus string
+// CodeInterpreterCallItemParamType The item type. Always 'code_interpreter_call'.
+type CodeInterpreterCallItemParamType string
 
 const (
-	CodeInterpreterToolCallStatusInProgress CodeInterpreterToolCallStatus = "in_progress"
-	CodeInterpreterToolCallStatusInterpreting CodeInterpreterToolCallStatus = "interpreting"
-	CodeInterpreterToolCallStatusCompleted CodeInterpreterToolCallStatus = "completed"
+	CodeInterpreterCallItemParamTypeCodeInterpreterCall CodeInterpreterCallItemParamType = "code_interpreter_call"
 )
 
-// CodeInterpreterToolCallType The type of the code interpreter tool call. Always 'code_interpreter_call'.
-type CodeInterpreterToolCallType string
+type CodeInterpreterCallStatus string
 
 const (
-	CodeInterpreterToolCallTypeCodeInterpreterCall CodeInterpreterToolCallType = "code_interpreter_call"
+	CodeInterpreterCallStatusInProgress CodeInterpreterCallStatus = "in_progress"
+	CodeInterpreterCallStatusCompleted CodeInterpreterCallStatus = "completed"
+	CodeInterpreterCallStatusIncomplete CodeInterpreterCallStatus = "incomplete"
+	CodeInterpreterCallStatusInterpreting CodeInterpreterCallStatus = "interpreting"
+	CodeInterpreterCallStatusFailed CodeInterpreterCallStatus = "failed"
 )
+
+type CodeInterpreterCallType string
+
+const (
+	CodeInterpreterCallTypeCodeInterpreterCall CodeInterpreterCallType = "code_interpreter_call"
+)
+
+// CodeInterpreterOutputImage The image output from the code interpreter.
+type CodeInterpreterOutputImage struct {
+	// The type of the output. Always 'image'.
+	Type CodeInterpreterOutputImageType `json:"type" jsonschema:"description=The type of the output. Always 'image'."`
+	// The URL of the image output from the code interpreter.
+	URL string `json:"url" jsonschema:"description=The URL of the image output from the code interpreter."`
+}
+
+// CodeInterpreterOutputImageType The type of the output. Always 'image'.
+type CodeInterpreterOutputImageType string
+
+const (
+	CodeInterpreterOutputImageTypeImage CodeInterpreterOutputImageType = "image"
+)
+
+// CodeInterpreterOutputLogs The logs output from the code interpreter.
+type CodeInterpreterOutputLogs struct {
+	// The type of the output. Always 'logs'.
+	Type CodeInterpreterOutputLogsType `json:"type" jsonschema:"description=The type of the output. Always 'logs'."`
+	// The logs output from the code interpreter.
+	Logs string `json:"logs" jsonschema:"description=The logs output from the code interpreter."`
+}
+
+// CodeInterpreterOutputLogsType The type of the output. Always 'logs'.
+type CodeInterpreterOutputLogsType string
+
+const (
+	CodeInterpreterOutputLogsTypeLogs CodeInterpreterOutputLogsType = "logs"
+)
+
+type CodeInterpreterToolCallOutputImageParam struct {
+	// The output type. Always 'image'.
+	Type CodeInterpreterToolCallOutputImageParamType `json:"type" jsonschema:"description=The output type. Always 'image'."`
+	// The URL of the generated image.
+	URL string `json:"url" jsonschema:"description=The URL of the generated image."`
+}
+
+// CodeInterpreterToolCallOutputImageParamType The output type. Always 'image'.
+type CodeInterpreterToolCallOutputImageParamType string
+
+const (
+	CodeInterpreterToolCallOutputImageParamTypeImage CodeInterpreterToolCallOutputImageParamType = "image"
+)
+
+type CodeInterpreterToolCallOutputLogsParam struct {
+	// The output type. Always 'logs'.
+	Type CodeInterpreterToolCallOutputLogsParamType `json:"type" jsonschema:"description=The output type. Always 'logs'."`
+	// Captured logs from code execution.
+	Logs string `json:"logs" jsonschema:"description=Captured logs from code execution."`
+}
+
+// CodeInterpreterToolCallOutputLogsParamType The output type. Always 'logs'.
+type CodeInterpreterToolCallOutputLogsParamType string
+
+const (
+	CodeInterpreterToolCallOutputLogsParamTypeLogs CodeInterpreterToolCallOutputLogsParamType = "logs"
+)
+
+type CodeInterpreterToolChoice struct {
+	Type CodeInterpreterToolChoiceType `json:"type"`
+}
+
+type CodeInterpreterToolChoiceType string
+
+const (
+	CodeInterpreterToolChoiceTypeCodeInterpreter CodeInterpreterToolChoiceType = "code_interpreter"
+)
+
+type CodeInterpreterToolParam struct {
+	// The type of the tool. Always 'code_interpreter'.
+	Type CodeInterpreterToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'code_interpreter'."`
+	// The container to run code in, either by ID or as an auto-created container configuration.
+	Container CodeInterpreterToolParamContainer `json:"container" jsonschema:"description=The container to run code in, either by ID or as an auto-created container configuration."`
+}
+
+// CodeInterpreterToolParamContainer The container to run code in, either by ID or as an auto-created container configuration.
+//
+//compschema:generate
+type CodeInterpreterToolParamContainer interface {
+	isCodeInterpreterToolParamContainer()
+}
+
+
+// CodeInterpreterToolParamContainerString wraps a string value as a CodeInterpreterToolParamContainer variant.
+type CodeInterpreterToolParamContainerString struct { Value string }
+func (*CodeInterpreterToolParamContainerString) isCodeInterpreterToolParamContainer() {}
+func (*AutoCodeInterpreterToolParam) isCodeInterpreterToolParamContainer() {}
+
+func (w CodeInterpreterToolParamContainerString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *CodeInterpreterToolParamContainerString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewCodeInterpreterToolParamContainerString creates a CodeInterpreterToolParamContainer from a string value.
+func NewCodeInterpreterToolParamContainerString(v string) CodeInterpreterToolParamContainer {
+	return &CodeInterpreterToolParamContainerString{Value: v}
+}
+
+// CodeInterpreterToolParamContainerFromAutoCodeInterpreterToolParam wraps a *AutoCodeInterpreterToolParam as a CodeInterpreterToolParamContainer union value.
+func CodeInterpreterToolParamContainerFromAutoCodeInterpreterToolParam(v *AutoCodeInterpreterToolParam) CodeInterpreterToolParamContainer {
+	return v
+}
+
+// UnmarshalCodeInterpreterToolParamContainer unmarshals JSON into the correct CodeInterpreterToolParamContainer variant.
+func UnmarshalCodeInterpreterToolParamContainer(data []byte) (CodeInterpreterToolParamContainer, error) {
+	{
+		var val AutoCodeInterpreterToolParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CodeInterpreterToolParamContainerString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CodeInterpreterToolParamContainer")
+}
+
+
+// CodeInterpreterToolParamType The type of the tool. Always 'code_interpreter'.
+type CodeInterpreterToolParamType string
+
+const (
+	CodeInterpreterToolParamTypeCodeInterpreter CodeInterpreterToolParamType = "code_interpreter"
+)
+
+// CompactionBody A compaction item generated by the ['v1/responses/compact' API](/docs/api-reference/responses/compact).
+type CompactionBody struct {
+	// The type of the item. Always 'compaction'.
+	Type CompactionBodyType `json:"type" jsonschema:"description=The type of the item. Always 'compaction'."`
+	// The unique ID of the compaction item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the compaction item."`
+	// The encrypted content that was produced by compaction.
+	EncryptedContent string `json:"encrypted_content" jsonschema:"description=The encrypted content that was produced by compaction."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+}
+
+// CompactionBodyType The type of the item. Always 'compaction'.
+type CompactionBodyType string
+
+const (
+	CompactionBodyTypeCompaction CompactionBodyType = "compaction"
+)
+
+// CompactionSummaryItemParam A compaction item generated by the ['v1/responses/compact' API](/docs/api-reference/responses/compact).
+type CompactionSummaryItemParam struct {
+	// The ID of the compaction item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The ID of the compaction item."`
+	// The type of the item. Always 'compaction'.
+	Type CompactionSummaryItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'compaction'."`
+	// The encrypted content of the compaction summary.
+	EncryptedContent string `json:"encrypted_content" jsonschema:"maxLength=10485760,description=The encrypted content of the compaction summary."`
+}
+
+// CompactionSummaryItemParamType The type of the item. Always 'compaction'.
+type CompactionSummaryItemParamType string
+
+const (
+	CompactionSummaryItemParamTypeCompaction CompactionSummaryItemParamType = "compaction"
+)
+
+type ComparisonFilterFieldCONTAINS struct {
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldCONTAINSType `json:"type"`
+	Key string `json:"key"`
+}
+
+type ComparisonFilterFieldCONTAINSANY struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldCONTAINSANYType `json:"type"`
+}
+
+type ComparisonFilterFieldCONTAINSANYType string
+
+const (
+	ComparisonFilterFieldCONTAINSANYTypeContainsany ComparisonFilterFieldCONTAINSANYType = "containsany"
+)
+
+type ComparisonFilterFieldCONTAINSType string
+
+const (
+	ComparisonFilterFieldCONTAINSTypeContains ComparisonFilterFieldCONTAINSType = "contains"
+)
+
+type ComparisonFilterFieldEQ struct {
+	Type ComparisonFilterFieldEQType `json:"type"`
+	Key string `json:"key"`
+	Value *any `json:"value"`
+}
+
+type ComparisonFilterFieldEQType string
+
+const (
+	ComparisonFilterFieldEQTypeEq ComparisonFilterFieldEQType = "eq"
+)
+
+type ComparisonFilterFieldGT struct {
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldGTType `json:"type"`
+	Key string `json:"key"`
+}
+
+type ComparisonFilterFieldGTE struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldGTEType `json:"type"`
+}
+
+type ComparisonFilterFieldGTEType string
+
+const (
+	ComparisonFilterFieldGTETypeGte ComparisonFilterFieldGTEType = "gte"
+)
+
+type ComparisonFilterFieldGTType string
+
+const (
+	ComparisonFilterFieldGTTypeGt ComparisonFilterFieldGTType = "gt"
+)
+
+type ComparisonFilterFieldIN struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldINType `json:"type"`
+}
+
+type ComparisonFilterFieldINType string
+
+const (
+	ComparisonFilterFieldINTypeIn ComparisonFilterFieldINType = "in"
+)
+
+type ComparisonFilterFieldLT struct {
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldLTType `json:"type"`
+	Key string `json:"key"`
+}
+
+type ComparisonFilterFieldLTE struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldLTEType `json:"type"`
+}
+
+type ComparisonFilterFieldLTEType string
+
+const (
+	ComparisonFilterFieldLTETypeLte ComparisonFilterFieldLTEType = "lte"
+)
+
+type ComparisonFilterFieldLTType string
+
+const (
+	ComparisonFilterFieldLTTypeLt ComparisonFilterFieldLTType = "lt"
+)
+
+type ComparisonFilterFieldNCONTAINS struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldNCONTAINSType `json:"type"`
+}
+
+type ComparisonFilterFieldNCONTAINSANY struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldNCONTAINSANYType `json:"type"`
+}
+
+type ComparisonFilterFieldNCONTAINSANYType string
+
+const (
+	ComparisonFilterFieldNCONTAINSANYTypeNcontainsany ComparisonFilterFieldNCONTAINSANYType = "ncontainsany"
+)
+
+type ComparisonFilterFieldNCONTAINSType string
+
+const (
+	ComparisonFilterFieldNCONTAINSTypeNcontains ComparisonFilterFieldNCONTAINSType = "ncontains"
+)
+
+type ComparisonFilterFieldNE struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldNEType `json:"type"`
+}
+
+type ComparisonFilterFieldNEType string
+
+const (
+	ComparisonFilterFieldNETypeNe ComparisonFilterFieldNEType = "ne"
+)
+
+type ComparisonFilterFieldNIN struct {
+	Key string `json:"key"`
+	Value *any `json:"value"`
+	Type ComparisonFilterFieldNINType `json:"type"`
+}
+
+type ComparisonFilterFieldNINType string
+
+const (
+	ComparisonFilterFieldNINTypeNin ComparisonFilterFieldNINType = "nin"
+)
+
+type ComparisonFilterParamContainsAnyParam struct {
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamContainsAnyParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'containsany'.
+	Type ComparisonFilterParamContainsAnyParamType `json:"type" jsonschema:"description=The filter type. Always 'containsany'."`
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+}
+
+// ComparisonFilterParamContainsAnyParamType The filter type. Always 'containsany'.
+type ComparisonFilterParamContainsAnyParamType string
+
+const (
+	ComparisonFilterParamContainsAnyParamTypeContainsany ComparisonFilterParamContainsAnyParamType = "containsany"
+)
+
+// ComparisonFilterParamContainsAnyParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamContainsAnyParamValue interface {
+	isComparisonFilterParamContainsAnyParamValue()
+}
+
+
+// ComparisonFilterParamContainsAnyParamValueString wraps a string value as a ComparisonFilterParamContainsAnyParamValue variant.
+type ComparisonFilterParamContainsAnyParamValueString struct { Value string }
+func (*ComparisonFilterParamContainsAnyParamValueString) isComparisonFilterParamContainsAnyParamValue() {}
+
+// ComparisonFilterParamContainsAnyParamValueInt64 wraps a int64 value as a ComparisonFilterParamContainsAnyParamValue variant.
+type ComparisonFilterParamContainsAnyParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamContainsAnyParamValueInt64) isComparisonFilterParamContainsAnyParamValue() {}
+
+// ComparisonFilterParamContainsAnyParamValueFloat64 wraps a float64 value as a ComparisonFilterParamContainsAnyParamValue variant.
+type ComparisonFilterParamContainsAnyParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamContainsAnyParamValueFloat64) isComparisonFilterParamContainsAnyParamValue() {}
+
+// ComparisonFilterParamContainsAnyParamValueBool wraps a bool value as a ComparisonFilterParamContainsAnyParamValue variant.
+type ComparisonFilterParamContainsAnyParamValueBool struct { Value bool }
+func (*ComparisonFilterParamContainsAnyParamValueBool) isComparisonFilterParamContainsAnyParamValue() {}
+
+// ComparisonFilterParamContainsAnyParamValueSliceany wraps a []any value as a ComparisonFilterParamContainsAnyParamValue variant.
+type ComparisonFilterParamContainsAnyParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamContainsAnyParamValueSliceany) isComparisonFilterParamContainsAnyParamValue() {}
+
+func (w ComparisonFilterParamContainsAnyParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsAnyParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsAnyParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsAnyParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsAnyParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsAnyParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsAnyParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsAnyParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsAnyParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsAnyParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamContainsAnyParamValueFloat64 creates a ComparisonFilterParamContainsAnyParamValue from a float64 value.
+func NewComparisonFilterParamContainsAnyParamValueFloat64(v float64) ComparisonFilterParamContainsAnyParamValue {
+	return &ComparisonFilterParamContainsAnyParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamContainsAnyParamValueBool creates a ComparisonFilterParamContainsAnyParamValue from a bool value.
+func NewComparisonFilterParamContainsAnyParamValueBool(v bool) ComparisonFilterParamContainsAnyParamValue {
+	return &ComparisonFilterParamContainsAnyParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamContainsAnyParamValueSliceany creates a ComparisonFilterParamContainsAnyParamValue from a []any value.
+func NewComparisonFilterParamContainsAnyParamValueSliceany(v []any) ComparisonFilterParamContainsAnyParamValue {
+	return &ComparisonFilterParamContainsAnyParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamContainsAnyParamValueString creates a ComparisonFilterParamContainsAnyParamValue from a string value.
+func NewComparisonFilterParamContainsAnyParamValueString(v string) ComparisonFilterParamContainsAnyParamValue {
+	return &ComparisonFilterParamContainsAnyParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamContainsAnyParamValueInt64 creates a ComparisonFilterParamContainsAnyParamValue from a int64 value.
+func NewComparisonFilterParamContainsAnyParamValueInt64(v int64) ComparisonFilterParamContainsAnyParamValue {
+	return &ComparisonFilterParamContainsAnyParamValueInt64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamContainsAnyParamValue unmarshals JSON into the correct ComparisonFilterParamContainsAnyParamValue variant.
+func UnmarshalComparisonFilterParamContainsAnyParamValue(data []byte) (ComparisonFilterParamContainsAnyParamValue, error) {
+	{
+		var val ComparisonFilterParamContainsAnyParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsAnyParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsAnyParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsAnyParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsAnyParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamContainsAnyParamValue")
+}
+
+
+type ComparisonFilterParamContainsParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamContainsParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'contains'.
+	Type ComparisonFilterParamContainsParamType `json:"type" jsonschema:"description=The filter type. Always 'contains'."`
+}
+
+// ComparisonFilterParamContainsParamType The filter type. Always 'contains'.
+type ComparisonFilterParamContainsParamType string
+
+const (
+	ComparisonFilterParamContainsParamTypeContains ComparisonFilterParamContainsParamType = "contains"
+)
+
+// ComparisonFilterParamContainsParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamContainsParamValue interface {
+	isComparisonFilterParamContainsParamValue()
+}
+
+
+// ComparisonFilterParamContainsParamValueString wraps a string value as a ComparisonFilterParamContainsParamValue variant.
+type ComparisonFilterParamContainsParamValueString struct { Value string }
+func (*ComparisonFilterParamContainsParamValueString) isComparisonFilterParamContainsParamValue() {}
+
+// ComparisonFilterParamContainsParamValueInt64 wraps a int64 value as a ComparisonFilterParamContainsParamValue variant.
+type ComparisonFilterParamContainsParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamContainsParamValueInt64) isComparisonFilterParamContainsParamValue() {}
+
+// ComparisonFilterParamContainsParamValueFloat64 wraps a float64 value as a ComparisonFilterParamContainsParamValue variant.
+type ComparisonFilterParamContainsParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamContainsParamValueFloat64) isComparisonFilterParamContainsParamValue() {}
+
+// ComparisonFilterParamContainsParamValueBool wraps a bool value as a ComparisonFilterParamContainsParamValue variant.
+type ComparisonFilterParamContainsParamValueBool struct { Value bool }
+func (*ComparisonFilterParamContainsParamValueBool) isComparisonFilterParamContainsParamValue() {}
+
+// ComparisonFilterParamContainsParamValueSliceany wraps a []any value as a ComparisonFilterParamContainsParamValue variant.
+type ComparisonFilterParamContainsParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamContainsParamValueSliceany) isComparisonFilterParamContainsParamValue() {}
+
+func (w ComparisonFilterParamContainsParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamContainsParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamContainsParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamContainsParamValueString creates a ComparisonFilterParamContainsParamValue from a string value.
+func NewComparisonFilterParamContainsParamValueString(v string) ComparisonFilterParamContainsParamValue {
+	return &ComparisonFilterParamContainsParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamContainsParamValueInt64 creates a ComparisonFilterParamContainsParamValue from a int64 value.
+func NewComparisonFilterParamContainsParamValueInt64(v int64) ComparisonFilterParamContainsParamValue {
+	return &ComparisonFilterParamContainsParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamContainsParamValueFloat64 creates a ComparisonFilterParamContainsParamValue from a float64 value.
+func NewComparisonFilterParamContainsParamValueFloat64(v float64) ComparisonFilterParamContainsParamValue {
+	return &ComparisonFilterParamContainsParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamContainsParamValueBool creates a ComparisonFilterParamContainsParamValue from a bool value.
+func NewComparisonFilterParamContainsParamValueBool(v bool) ComparisonFilterParamContainsParamValue {
+	return &ComparisonFilterParamContainsParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamContainsParamValueSliceany creates a ComparisonFilterParamContainsParamValue from a []any value.
+func NewComparisonFilterParamContainsParamValueSliceany(v []any) ComparisonFilterParamContainsParamValue {
+	return &ComparisonFilterParamContainsParamValueSliceany{Value: v}
+}
+
+// UnmarshalComparisonFilterParamContainsParamValue unmarshals JSON into the correct ComparisonFilterParamContainsParamValue variant.
+func UnmarshalComparisonFilterParamContainsParamValue(data []byte) (ComparisonFilterParamContainsParamValue, error) {
+	{
+		var val ComparisonFilterParamContainsParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamContainsParamValue")
+}
+
+
+type ComparisonFilterParamEQParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamEQParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'eq'.
+	Type ComparisonFilterParamEQParamType `json:"type" jsonschema:"description=The filter type. Always 'eq'."`
+}
+
+// ComparisonFilterParamEQParamType The filter type. Always 'eq'.
+type ComparisonFilterParamEQParamType string
+
+const (
+	ComparisonFilterParamEQParamTypeEq ComparisonFilterParamEQParamType = "eq"
+)
+
+// ComparisonFilterParamEQParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamEQParamValue interface {
+	isComparisonFilterParamEQParamValue()
+}
+
+
+// ComparisonFilterParamEQParamValueString wraps a string value as a ComparisonFilterParamEQParamValue variant.
+type ComparisonFilterParamEQParamValueString struct { Value string }
+func (*ComparisonFilterParamEQParamValueString) isComparisonFilterParamEQParamValue() {}
+
+// ComparisonFilterParamEQParamValueInt64 wraps a int64 value as a ComparisonFilterParamEQParamValue variant.
+type ComparisonFilterParamEQParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamEQParamValueInt64) isComparisonFilterParamEQParamValue() {}
+
+// ComparisonFilterParamEQParamValueFloat64 wraps a float64 value as a ComparisonFilterParamEQParamValue variant.
+type ComparisonFilterParamEQParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamEQParamValueFloat64) isComparisonFilterParamEQParamValue() {}
+
+// ComparisonFilterParamEQParamValueBool wraps a bool value as a ComparisonFilterParamEQParamValue variant.
+type ComparisonFilterParamEQParamValueBool struct { Value bool }
+func (*ComparisonFilterParamEQParamValueBool) isComparisonFilterParamEQParamValue() {}
+
+// ComparisonFilterParamEQParamValueSliceany wraps a []any value as a ComparisonFilterParamEQParamValue variant.
+type ComparisonFilterParamEQParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamEQParamValueSliceany) isComparisonFilterParamEQParamValue() {}
+
+func (w ComparisonFilterParamEQParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamEQParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamEQParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamEQParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamEQParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamEQParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamEQParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamEQParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamEQParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamEQParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamEQParamValueString creates a ComparisonFilterParamEQParamValue from a string value.
+func NewComparisonFilterParamEQParamValueString(v string) ComparisonFilterParamEQParamValue {
+	return &ComparisonFilterParamEQParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamEQParamValueInt64 creates a ComparisonFilterParamEQParamValue from a int64 value.
+func NewComparisonFilterParamEQParamValueInt64(v int64) ComparisonFilterParamEQParamValue {
+	return &ComparisonFilterParamEQParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamEQParamValueFloat64 creates a ComparisonFilterParamEQParamValue from a float64 value.
+func NewComparisonFilterParamEQParamValueFloat64(v float64) ComparisonFilterParamEQParamValue {
+	return &ComparisonFilterParamEQParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamEQParamValueBool creates a ComparisonFilterParamEQParamValue from a bool value.
+func NewComparisonFilterParamEQParamValueBool(v bool) ComparisonFilterParamEQParamValue {
+	return &ComparisonFilterParamEQParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamEQParamValueSliceany creates a ComparisonFilterParamEQParamValue from a []any value.
+func NewComparisonFilterParamEQParamValueSliceany(v []any) ComparisonFilterParamEQParamValue {
+	return &ComparisonFilterParamEQParamValueSliceany{Value: v}
+}
+
+// UnmarshalComparisonFilterParamEQParamValue unmarshals JSON into the correct ComparisonFilterParamEQParamValue variant.
+func UnmarshalComparisonFilterParamEQParamValue(data []byte) (ComparisonFilterParamEQParamValue, error) {
+	{
+		var val ComparisonFilterParamEQParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamEQParamValue")
+}
+
+
+type ComparisonFilterParamGTEParam struct {
+	// The filter type. Always 'gte'.
+	Type ComparisonFilterParamGTEParamType `json:"type" jsonschema:"description=The filter type. Always 'gte'."`
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamGTEParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+}
+
+// ComparisonFilterParamGTEParamType The filter type. Always 'gte'.
+type ComparisonFilterParamGTEParamType string
+
+const (
+	ComparisonFilterParamGTEParamTypeGte ComparisonFilterParamGTEParamType = "gte"
+)
+
+// ComparisonFilterParamGTEParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamGTEParamValue interface {
+	isComparisonFilterParamGTEParamValue()
+}
+
+
+// ComparisonFilterParamGTEParamValueString wraps a string value as a ComparisonFilterParamGTEParamValue variant.
+type ComparisonFilterParamGTEParamValueString struct { Value string }
+func (*ComparisonFilterParamGTEParamValueString) isComparisonFilterParamGTEParamValue() {}
+
+// ComparisonFilterParamGTEParamValueInt64 wraps a int64 value as a ComparisonFilterParamGTEParamValue variant.
+type ComparisonFilterParamGTEParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamGTEParamValueInt64) isComparisonFilterParamGTEParamValue() {}
+
+// ComparisonFilterParamGTEParamValueFloat64 wraps a float64 value as a ComparisonFilterParamGTEParamValue variant.
+type ComparisonFilterParamGTEParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamGTEParamValueFloat64) isComparisonFilterParamGTEParamValue() {}
+
+// ComparisonFilterParamGTEParamValueBool wraps a bool value as a ComparisonFilterParamGTEParamValue variant.
+type ComparisonFilterParamGTEParamValueBool struct { Value bool }
+func (*ComparisonFilterParamGTEParamValueBool) isComparisonFilterParamGTEParamValue() {}
+
+// ComparisonFilterParamGTEParamValueSliceany wraps a []any value as a ComparisonFilterParamGTEParamValue variant.
+type ComparisonFilterParamGTEParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamGTEParamValueSliceany) isComparisonFilterParamGTEParamValue() {}
+
+func (w ComparisonFilterParamGTEParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTEParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTEParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTEParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTEParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTEParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTEParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTEParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTEParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTEParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamGTEParamValueBool creates a ComparisonFilterParamGTEParamValue from a bool value.
+func NewComparisonFilterParamGTEParamValueBool(v bool) ComparisonFilterParamGTEParamValue {
+	return &ComparisonFilterParamGTEParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamGTEParamValueSliceany creates a ComparisonFilterParamGTEParamValue from a []any value.
+func NewComparisonFilterParamGTEParamValueSliceany(v []any) ComparisonFilterParamGTEParamValue {
+	return &ComparisonFilterParamGTEParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamGTEParamValueString creates a ComparisonFilterParamGTEParamValue from a string value.
+func NewComparisonFilterParamGTEParamValueString(v string) ComparisonFilterParamGTEParamValue {
+	return &ComparisonFilterParamGTEParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamGTEParamValueInt64 creates a ComparisonFilterParamGTEParamValue from a int64 value.
+func NewComparisonFilterParamGTEParamValueInt64(v int64) ComparisonFilterParamGTEParamValue {
+	return &ComparisonFilterParamGTEParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamGTEParamValueFloat64 creates a ComparisonFilterParamGTEParamValue from a float64 value.
+func NewComparisonFilterParamGTEParamValueFloat64(v float64) ComparisonFilterParamGTEParamValue {
+	return &ComparisonFilterParamGTEParamValueFloat64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamGTEParamValue unmarshals JSON into the correct ComparisonFilterParamGTEParamValue variant.
+func UnmarshalComparisonFilterParamGTEParamValue(data []byte) (ComparisonFilterParamGTEParamValue, error) {
+	{
+		var val ComparisonFilterParamGTEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamGTEParamValue")
+}
+
+
+type ComparisonFilterParamGTParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamGTParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'gt'.
+	Type ComparisonFilterParamGTParamType `json:"type" jsonschema:"description=The filter type. Always 'gt'."`
+}
+
+// ComparisonFilterParamGTParamType The filter type. Always 'gt'.
+type ComparisonFilterParamGTParamType string
+
+const (
+	ComparisonFilterParamGTParamTypeGt ComparisonFilterParamGTParamType = "gt"
+)
+
+// ComparisonFilterParamGTParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamGTParamValue interface {
+	isComparisonFilterParamGTParamValue()
+}
+
+
+// ComparisonFilterParamGTParamValueString wraps a string value as a ComparisonFilterParamGTParamValue variant.
+type ComparisonFilterParamGTParamValueString struct { Value string }
+func (*ComparisonFilterParamGTParamValueString) isComparisonFilterParamGTParamValue() {}
+
+// ComparisonFilterParamGTParamValueInt64 wraps a int64 value as a ComparisonFilterParamGTParamValue variant.
+type ComparisonFilterParamGTParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamGTParamValueInt64) isComparisonFilterParamGTParamValue() {}
+
+// ComparisonFilterParamGTParamValueFloat64 wraps a float64 value as a ComparisonFilterParamGTParamValue variant.
+type ComparisonFilterParamGTParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamGTParamValueFloat64) isComparisonFilterParamGTParamValue() {}
+
+// ComparisonFilterParamGTParamValueBool wraps a bool value as a ComparisonFilterParamGTParamValue variant.
+type ComparisonFilterParamGTParamValueBool struct { Value bool }
+func (*ComparisonFilterParamGTParamValueBool) isComparisonFilterParamGTParamValue() {}
+
+// ComparisonFilterParamGTParamValueSliceany wraps a []any value as a ComparisonFilterParamGTParamValue variant.
+type ComparisonFilterParamGTParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamGTParamValueSliceany) isComparisonFilterParamGTParamValue() {}
+
+func (w ComparisonFilterParamGTParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamGTParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamGTParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamGTParamValueFloat64 creates a ComparisonFilterParamGTParamValue from a float64 value.
+func NewComparisonFilterParamGTParamValueFloat64(v float64) ComparisonFilterParamGTParamValue {
+	return &ComparisonFilterParamGTParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamGTParamValueBool creates a ComparisonFilterParamGTParamValue from a bool value.
+func NewComparisonFilterParamGTParamValueBool(v bool) ComparisonFilterParamGTParamValue {
+	return &ComparisonFilterParamGTParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamGTParamValueSliceany creates a ComparisonFilterParamGTParamValue from a []any value.
+func NewComparisonFilterParamGTParamValueSliceany(v []any) ComparisonFilterParamGTParamValue {
+	return &ComparisonFilterParamGTParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamGTParamValueString creates a ComparisonFilterParamGTParamValue from a string value.
+func NewComparisonFilterParamGTParamValueString(v string) ComparisonFilterParamGTParamValue {
+	return &ComparisonFilterParamGTParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamGTParamValueInt64 creates a ComparisonFilterParamGTParamValue from a int64 value.
+func NewComparisonFilterParamGTParamValueInt64(v int64) ComparisonFilterParamGTParamValue {
+	return &ComparisonFilterParamGTParamValueInt64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamGTParamValue unmarshals JSON into the correct ComparisonFilterParamGTParamValue variant.
+func UnmarshalComparisonFilterParamGTParamValue(data []byte) (ComparisonFilterParamGTParamValue, error) {
+	{
+		var val ComparisonFilterParamGTParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamGTParamValue")
+}
+
+
+type ComparisonFilterParamINParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamINParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'in'.
+	Type ComparisonFilterParamINParamType `json:"type" jsonschema:"description=The filter type. Always 'in'."`
+}
+
+// ComparisonFilterParamINParamType The filter type. Always 'in'.
+type ComparisonFilterParamINParamType string
+
+const (
+	ComparisonFilterParamINParamTypeIn ComparisonFilterParamINParamType = "in"
+)
+
+// ComparisonFilterParamINParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamINParamValue interface {
+	isComparisonFilterParamINParamValue()
+}
+
+
+// ComparisonFilterParamINParamValueString wraps a string value as a ComparisonFilterParamINParamValue variant.
+type ComparisonFilterParamINParamValueString struct { Value string }
+func (*ComparisonFilterParamINParamValueString) isComparisonFilterParamINParamValue() {}
+
+// ComparisonFilterParamINParamValueInt64 wraps a int64 value as a ComparisonFilterParamINParamValue variant.
+type ComparisonFilterParamINParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamINParamValueInt64) isComparisonFilterParamINParamValue() {}
+
+// ComparisonFilterParamINParamValueFloat64 wraps a float64 value as a ComparisonFilterParamINParamValue variant.
+type ComparisonFilterParamINParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamINParamValueFloat64) isComparisonFilterParamINParamValue() {}
+
+// ComparisonFilterParamINParamValueBool wraps a bool value as a ComparisonFilterParamINParamValue variant.
+type ComparisonFilterParamINParamValueBool struct { Value bool }
+func (*ComparisonFilterParamINParamValueBool) isComparisonFilterParamINParamValue() {}
+
+// ComparisonFilterParamINParamValueSliceany wraps a []any value as a ComparisonFilterParamINParamValue variant.
+type ComparisonFilterParamINParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamINParamValueSliceany) isComparisonFilterParamINParamValue() {}
+
+func (w ComparisonFilterParamINParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamINParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamINParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamINParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamINParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamINParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamINParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamINParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamINParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamINParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamINParamValueBool creates a ComparisonFilterParamINParamValue from a bool value.
+func NewComparisonFilterParamINParamValueBool(v bool) ComparisonFilterParamINParamValue {
+	return &ComparisonFilterParamINParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamINParamValueSliceany creates a ComparisonFilterParamINParamValue from a []any value.
+func NewComparisonFilterParamINParamValueSliceany(v []any) ComparisonFilterParamINParamValue {
+	return &ComparisonFilterParamINParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamINParamValueString creates a ComparisonFilterParamINParamValue from a string value.
+func NewComparisonFilterParamINParamValueString(v string) ComparisonFilterParamINParamValue {
+	return &ComparisonFilterParamINParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamINParamValueInt64 creates a ComparisonFilterParamINParamValue from a int64 value.
+func NewComparisonFilterParamINParamValueInt64(v int64) ComparisonFilterParamINParamValue {
+	return &ComparisonFilterParamINParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamINParamValueFloat64 creates a ComparisonFilterParamINParamValue from a float64 value.
+func NewComparisonFilterParamINParamValueFloat64(v float64) ComparisonFilterParamINParamValue {
+	return &ComparisonFilterParamINParamValueFloat64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamINParamValue unmarshals JSON into the correct ComparisonFilterParamINParamValue variant.
+func UnmarshalComparisonFilterParamINParamValue(data []byte) (ComparisonFilterParamINParamValue, error) {
+	{
+		var val ComparisonFilterParamINParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamINParamValue")
+}
+
+
+type ComparisonFilterParamLTEParam struct {
+	// The filter type. Always 'lte'.
+	Type ComparisonFilterParamLTEParamType `json:"type" jsonschema:"description=The filter type. Always 'lte'."`
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamLTEParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+}
+
+// ComparisonFilterParamLTEParamType The filter type. Always 'lte'.
+type ComparisonFilterParamLTEParamType string
+
+const (
+	ComparisonFilterParamLTEParamTypeLte ComparisonFilterParamLTEParamType = "lte"
+)
+
+// ComparisonFilterParamLTEParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamLTEParamValue interface {
+	isComparisonFilterParamLTEParamValue()
+}
+
+
+// ComparisonFilterParamLTEParamValueString wraps a string value as a ComparisonFilterParamLTEParamValue variant.
+type ComparisonFilterParamLTEParamValueString struct { Value string }
+func (*ComparisonFilterParamLTEParamValueString) isComparisonFilterParamLTEParamValue() {}
+
+// ComparisonFilterParamLTEParamValueInt64 wraps a int64 value as a ComparisonFilterParamLTEParamValue variant.
+type ComparisonFilterParamLTEParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamLTEParamValueInt64) isComparisonFilterParamLTEParamValue() {}
+
+// ComparisonFilterParamLTEParamValueFloat64 wraps a float64 value as a ComparisonFilterParamLTEParamValue variant.
+type ComparisonFilterParamLTEParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamLTEParamValueFloat64) isComparisonFilterParamLTEParamValue() {}
+
+// ComparisonFilterParamLTEParamValueBool wraps a bool value as a ComparisonFilterParamLTEParamValue variant.
+type ComparisonFilterParamLTEParamValueBool struct { Value bool }
+func (*ComparisonFilterParamLTEParamValueBool) isComparisonFilterParamLTEParamValue() {}
+
+// ComparisonFilterParamLTEParamValueSliceany wraps a []any value as a ComparisonFilterParamLTEParamValue variant.
+type ComparisonFilterParamLTEParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamLTEParamValueSliceany) isComparisonFilterParamLTEParamValue() {}
+
+func (w ComparisonFilterParamLTEParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTEParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTEParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTEParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTEParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTEParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTEParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTEParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTEParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTEParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamLTEParamValueBool creates a ComparisonFilterParamLTEParamValue from a bool value.
+func NewComparisonFilterParamLTEParamValueBool(v bool) ComparisonFilterParamLTEParamValue {
+	return &ComparisonFilterParamLTEParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamLTEParamValueSliceany creates a ComparisonFilterParamLTEParamValue from a []any value.
+func NewComparisonFilterParamLTEParamValueSliceany(v []any) ComparisonFilterParamLTEParamValue {
+	return &ComparisonFilterParamLTEParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamLTEParamValueString creates a ComparisonFilterParamLTEParamValue from a string value.
+func NewComparisonFilterParamLTEParamValueString(v string) ComparisonFilterParamLTEParamValue {
+	return &ComparisonFilterParamLTEParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamLTEParamValueInt64 creates a ComparisonFilterParamLTEParamValue from a int64 value.
+func NewComparisonFilterParamLTEParamValueInt64(v int64) ComparisonFilterParamLTEParamValue {
+	return &ComparisonFilterParamLTEParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamLTEParamValueFloat64 creates a ComparisonFilterParamLTEParamValue from a float64 value.
+func NewComparisonFilterParamLTEParamValueFloat64(v float64) ComparisonFilterParamLTEParamValue {
+	return &ComparisonFilterParamLTEParamValueFloat64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamLTEParamValue unmarshals JSON into the correct ComparisonFilterParamLTEParamValue variant.
+func UnmarshalComparisonFilterParamLTEParamValue(data []byte) (ComparisonFilterParamLTEParamValue, error) {
+	{
+		var val ComparisonFilterParamLTEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamLTEParamValue")
+}
+
+
+type ComparisonFilterParamLTParam struct {
+	// The filter type. Always 'lt'.
+	Type ComparisonFilterParamLTParamType `json:"type" jsonschema:"description=The filter type. Always 'lt'."`
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamLTParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+}
+
+// ComparisonFilterParamLTParamType The filter type. Always 'lt'.
+type ComparisonFilterParamLTParamType string
+
+const (
+	ComparisonFilterParamLTParamTypeLt ComparisonFilterParamLTParamType = "lt"
+)
+
+// ComparisonFilterParamLTParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamLTParamValue interface {
+	isComparisonFilterParamLTParamValue()
+}
+
+
+// ComparisonFilterParamLTParamValueString wraps a string value as a ComparisonFilterParamLTParamValue variant.
+type ComparisonFilterParamLTParamValueString struct { Value string }
+func (*ComparisonFilterParamLTParamValueString) isComparisonFilterParamLTParamValue() {}
+
+// ComparisonFilterParamLTParamValueInt64 wraps a int64 value as a ComparisonFilterParamLTParamValue variant.
+type ComparisonFilterParamLTParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamLTParamValueInt64) isComparisonFilterParamLTParamValue() {}
+
+// ComparisonFilterParamLTParamValueFloat64 wraps a float64 value as a ComparisonFilterParamLTParamValue variant.
+type ComparisonFilterParamLTParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamLTParamValueFloat64) isComparisonFilterParamLTParamValue() {}
+
+// ComparisonFilterParamLTParamValueBool wraps a bool value as a ComparisonFilterParamLTParamValue variant.
+type ComparisonFilterParamLTParamValueBool struct { Value bool }
+func (*ComparisonFilterParamLTParamValueBool) isComparisonFilterParamLTParamValue() {}
+
+// ComparisonFilterParamLTParamValueSliceany wraps a []any value as a ComparisonFilterParamLTParamValue variant.
+type ComparisonFilterParamLTParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamLTParamValueSliceany) isComparisonFilterParamLTParamValue() {}
+
+func (w ComparisonFilterParamLTParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamLTParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamLTParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamLTParamValueString creates a ComparisonFilterParamLTParamValue from a string value.
+func NewComparisonFilterParamLTParamValueString(v string) ComparisonFilterParamLTParamValue {
+	return &ComparisonFilterParamLTParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamLTParamValueInt64 creates a ComparisonFilterParamLTParamValue from a int64 value.
+func NewComparisonFilterParamLTParamValueInt64(v int64) ComparisonFilterParamLTParamValue {
+	return &ComparisonFilterParamLTParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamLTParamValueFloat64 creates a ComparisonFilterParamLTParamValue from a float64 value.
+func NewComparisonFilterParamLTParamValueFloat64(v float64) ComparisonFilterParamLTParamValue {
+	return &ComparisonFilterParamLTParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamLTParamValueBool creates a ComparisonFilterParamLTParamValue from a bool value.
+func NewComparisonFilterParamLTParamValueBool(v bool) ComparisonFilterParamLTParamValue {
+	return &ComparisonFilterParamLTParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamLTParamValueSliceany creates a ComparisonFilterParamLTParamValue from a []any value.
+func NewComparisonFilterParamLTParamValueSliceany(v []any) ComparisonFilterParamLTParamValue {
+	return &ComparisonFilterParamLTParamValueSliceany{Value: v}
+}
+
+// UnmarshalComparisonFilterParamLTParamValue unmarshals JSON into the correct ComparisonFilterParamLTParamValue variant.
+func UnmarshalComparisonFilterParamLTParamValue(data []byte) (ComparisonFilterParamLTParamValue, error) {
+	{
+		var val ComparisonFilterParamLTParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamLTParamValue")
+}
+
+
+type ComparisonFilterParamNContainsAnyParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamNContainsAnyParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'ncontainsany'.
+	Type ComparisonFilterParamNContainsAnyParamType `json:"type" jsonschema:"description=The filter type. Always 'ncontainsany'."`
+}
+
+// ComparisonFilterParamNContainsAnyParamType The filter type. Always 'ncontainsany'.
+type ComparisonFilterParamNContainsAnyParamType string
+
+const (
+	ComparisonFilterParamNContainsAnyParamTypeNcontainsany ComparisonFilterParamNContainsAnyParamType = "ncontainsany"
+)
+
+// ComparisonFilterParamNContainsAnyParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamNContainsAnyParamValue interface {
+	isComparisonFilterParamNContainsAnyParamValue()
+}
+
+
+// ComparisonFilterParamNContainsAnyParamValueString wraps a string value as a ComparisonFilterParamNContainsAnyParamValue variant.
+type ComparisonFilterParamNContainsAnyParamValueString struct { Value string }
+func (*ComparisonFilterParamNContainsAnyParamValueString) isComparisonFilterParamNContainsAnyParamValue() {}
+
+// ComparisonFilterParamNContainsAnyParamValueInt64 wraps a int64 value as a ComparisonFilterParamNContainsAnyParamValue variant.
+type ComparisonFilterParamNContainsAnyParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamNContainsAnyParamValueInt64) isComparisonFilterParamNContainsAnyParamValue() {}
+
+// ComparisonFilterParamNContainsAnyParamValueFloat64 wraps a float64 value as a ComparisonFilterParamNContainsAnyParamValue variant.
+type ComparisonFilterParamNContainsAnyParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamNContainsAnyParamValueFloat64) isComparisonFilterParamNContainsAnyParamValue() {}
+
+// ComparisonFilterParamNContainsAnyParamValueBool wraps a bool value as a ComparisonFilterParamNContainsAnyParamValue variant.
+type ComparisonFilterParamNContainsAnyParamValueBool struct { Value bool }
+func (*ComparisonFilterParamNContainsAnyParamValueBool) isComparisonFilterParamNContainsAnyParamValue() {}
+
+// ComparisonFilterParamNContainsAnyParamValueSliceany wraps a []any value as a ComparisonFilterParamNContainsAnyParamValue variant.
+type ComparisonFilterParamNContainsAnyParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamNContainsAnyParamValueSliceany) isComparisonFilterParamNContainsAnyParamValue() {}
+
+func (w ComparisonFilterParamNContainsAnyParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsAnyParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsAnyParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsAnyParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsAnyParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsAnyParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsAnyParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsAnyParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsAnyParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsAnyParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamNContainsAnyParamValueBool creates a ComparisonFilterParamNContainsAnyParamValue from a bool value.
+func NewComparisonFilterParamNContainsAnyParamValueBool(v bool) ComparisonFilterParamNContainsAnyParamValue {
+	return &ComparisonFilterParamNContainsAnyParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamNContainsAnyParamValueSliceany creates a ComparisonFilterParamNContainsAnyParamValue from a []any value.
+func NewComparisonFilterParamNContainsAnyParamValueSliceany(v []any) ComparisonFilterParamNContainsAnyParamValue {
+	return &ComparisonFilterParamNContainsAnyParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamNContainsAnyParamValueString creates a ComparisonFilterParamNContainsAnyParamValue from a string value.
+func NewComparisonFilterParamNContainsAnyParamValueString(v string) ComparisonFilterParamNContainsAnyParamValue {
+	return &ComparisonFilterParamNContainsAnyParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamNContainsAnyParamValueInt64 creates a ComparisonFilterParamNContainsAnyParamValue from a int64 value.
+func NewComparisonFilterParamNContainsAnyParamValueInt64(v int64) ComparisonFilterParamNContainsAnyParamValue {
+	return &ComparisonFilterParamNContainsAnyParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamNContainsAnyParamValueFloat64 creates a ComparisonFilterParamNContainsAnyParamValue from a float64 value.
+func NewComparisonFilterParamNContainsAnyParamValueFloat64(v float64) ComparisonFilterParamNContainsAnyParamValue {
+	return &ComparisonFilterParamNContainsAnyParamValueFloat64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamNContainsAnyParamValue unmarshals JSON into the correct ComparisonFilterParamNContainsAnyParamValue variant.
+func UnmarshalComparisonFilterParamNContainsAnyParamValue(data []byte) (ComparisonFilterParamNContainsAnyParamValue, error) {
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNContainsAnyParamValue")
+}
+
+
+type ComparisonFilterParamNContainsParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamNContainsParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'ncontains'.
+	Type ComparisonFilterParamNContainsParamType `json:"type" jsonschema:"description=The filter type. Always 'ncontains'."`
+}
+
+// ComparisonFilterParamNContainsParamType The filter type. Always 'ncontains'.
+type ComparisonFilterParamNContainsParamType string
+
+const (
+	ComparisonFilterParamNContainsParamTypeNcontains ComparisonFilterParamNContainsParamType = "ncontains"
+)
+
+// ComparisonFilterParamNContainsParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamNContainsParamValue interface {
+	isComparisonFilterParamNContainsParamValue()
+}
+
+
+// ComparisonFilterParamNContainsParamValueString wraps a string value as a ComparisonFilterParamNContainsParamValue variant.
+type ComparisonFilterParamNContainsParamValueString struct { Value string }
+func (*ComparisonFilterParamNContainsParamValueString) isComparisonFilterParamNContainsParamValue() {}
+
+// ComparisonFilterParamNContainsParamValueInt64 wraps a int64 value as a ComparisonFilterParamNContainsParamValue variant.
+type ComparisonFilterParamNContainsParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamNContainsParamValueInt64) isComparisonFilterParamNContainsParamValue() {}
+
+// ComparisonFilterParamNContainsParamValueFloat64 wraps a float64 value as a ComparisonFilterParamNContainsParamValue variant.
+type ComparisonFilterParamNContainsParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamNContainsParamValueFloat64) isComparisonFilterParamNContainsParamValue() {}
+
+// ComparisonFilterParamNContainsParamValueBool wraps a bool value as a ComparisonFilterParamNContainsParamValue variant.
+type ComparisonFilterParamNContainsParamValueBool struct { Value bool }
+func (*ComparisonFilterParamNContainsParamValueBool) isComparisonFilterParamNContainsParamValue() {}
+
+// ComparisonFilterParamNContainsParamValueSliceany wraps a []any value as a ComparisonFilterParamNContainsParamValue variant.
+type ComparisonFilterParamNContainsParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamNContainsParamValueSliceany) isComparisonFilterParamNContainsParamValue() {}
+
+func (w ComparisonFilterParamNContainsParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNContainsParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNContainsParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamNContainsParamValueFloat64 creates a ComparisonFilterParamNContainsParamValue from a float64 value.
+func NewComparisonFilterParamNContainsParamValueFloat64(v float64) ComparisonFilterParamNContainsParamValue {
+	return &ComparisonFilterParamNContainsParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamNContainsParamValueBool creates a ComparisonFilterParamNContainsParamValue from a bool value.
+func NewComparisonFilterParamNContainsParamValueBool(v bool) ComparisonFilterParamNContainsParamValue {
+	return &ComparisonFilterParamNContainsParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamNContainsParamValueSliceany creates a ComparisonFilterParamNContainsParamValue from a []any value.
+func NewComparisonFilterParamNContainsParamValueSliceany(v []any) ComparisonFilterParamNContainsParamValue {
+	return &ComparisonFilterParamNContainsParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamNContainsParamValueString creates a ComparisonFilterParamNContainsParamValue from a string value.
+func NewComparisonFilterParamNContainsParamValueString(v string) ComparisonFilterParamNContainsParamValue {
+	return &ComparisonFilterParamNContainsParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamNContainsParamValueInt64 creates a ComparisonFilterParamNContainsParamValue from a int64 value.
+func NewComparisonFilterParamNContainsParamValueInt64(v int64) ComparisonFilterParamNContainsParamValue {
+	return &ComparisonFilterParamNContainsParamValueInt64{Value: v}
+}
+
+// UnmarshalComparisonFilterParamNContainsParamValue unmarshals JSON into the correct ComparisonFilterParamNContainsParamValue variant.
+func UnmarshalComparisonFilterParamNContainsParamValue(data []byte) (ComparisonFilterParamNContainsParamValue, error) {
+	{
+		var val ComparisonFilterParamNContainsParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNContainsParamValue")
+}
+
+
+type ComparisonFilterParamNEParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamNEParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'ne'.
+	Type ComparisonFilterParamNEParamType `json:"type" jsonschema:"description=The filter type. Always 'ne'."`
+}
+
+// ComparisonFilterParamNEParamType The filter type. Always 'ne'.
+type ComparisonFilterParamNEParamType string
+
+const (
+	ComparisonFilterParamNEParamTypeNe ComparisonFilterParamNEParamType = "ne"
+)
+
+// ComparisonFilterParamNEParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamNEParamValue interface {
+	isComparisonFilterParamNEParamValue()
+}
+
+
+// ComparisonFilterParamNEParamValueString wraps a string value as a ComparisonFilterParamNEParamValue variant.
+type ComparisonFilterParamNEParamValueString struct { Value string }
+func (*ComparisonFilterParamNEParamValueString) isComparisonFilterParamNEParamValue() {}
+
+// ComparisonFilterParamNEParamValueInt64 wraps a int64 value as a ComparisonFilterParamNEParamValue variant.
+type ComparisonFilterParamNEParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamNEParamValueInt64) isComparisonFilterParamNEParamValue() {}
+
+// ComparisonFilterParamNEParamValueFloat64 wraps a float64 value as a ComparisonFilterParamNEParamValue variant.
+type ComparisonFilterParamNEParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamNEParamValueFloat64) isComparisonFilterParamNEParamValue() {}
+
+// ComparisonFilterParamNEParamValueBool wraps a bool value as a ComparisonFilterParamNEParamValue variant.
+type ComparisonFilterParamNEParamValueBool struct { Value bool }
+func (*ComparisonFilterParamNEParamValueBool) isComparisonFilterParamNEParamValue() {}
+
+// ComparisonFilterParamNEParamValueSliceany wraps a []any value as a ComparisonFilterParamNEParamValue variant.
+type ComparisonFilterParamNEParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamNEParamValueSliceany) isComparisonFilterParamNEParamValue() {}
+
+func (w ComparisonFilterParamNEParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNEParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNEParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNEParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNEParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNEParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNEParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNEParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNEParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNEParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamNEParamValueString creates a ComparisonFilterParamNEParamValue from a string value.
+func NewComparisonFilterParamNEParamValueString(v string) ComparisonFilterParamNEParamValue {
+	return &ComparisonFilterParamNEParamValueString{Value: v}
+}
+
+// NewComparisonFilterParamNEParamValueInt64 creates a ComparisonFilterParamNEParamValue from a int64 value.
+func NewComparisonFilterParamNEParamValueInt64(v int64) ComparisonFilterParamNEParamValue {
+	return &ComparisonFilterParamNEParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamNEParamValueFloat64 creates a ComparisonFilterParamNEParamValue from a float64 value.
+func NewComparisonFilterParamNEParamValueFloat64(v float64) ComparisonFilterParamNEParamValue {
+	return &ComparisonFilterParamNEParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamNEParamValueBool creates a ComparisonFilterParamNEParamValue from a bool value.
+func NewComparisonFilterParamNEParamValueBool(v bool) ComparisonFilterParamNEParamValue {
+	return &ComparisonFilterParamNEParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamNEParamValueSliceany creates a ComparisonFilterParamNEParamValue from a []any value.
+func NewComparisonFilterParamNEParamValueSliceany(v []any) ComparisonFilterParamNEParamValue {
+	return &ComparisonFilterParamNEParamValueSliceany{Value: v}
+}
+
+// UnmarshalComparisonFilterParamNEParamValue unmarshals JSON into the correct ComparisonFilterParamNEParamValue variant.
+func UnmarshalComparisonFilterParamNEParamValue(data []byte) (ComparisonFilterParamNEParamValue, error) {
+	{
+		var val ComparisonFilterParamNEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNEParamValue")
+}
+
+
+type ComparisonFilterParamNINParam struct {
+	// The metadata key to filter on.
+	Key string `json:"key" jsonschema:"maxLength=64,description=The metadata key to filter on."`
+	// The value to compare the metadata key against.
+	Value ComparisonFilterParamNINParamValue `json:"value,omitempty" jsonschema:"description=The value to compare the metadata key against."`
+	// The filter type. Always 'nin'.
+	Type ComparisonFilterParamNINParamType `json:"type" jsonschema:"description=The filter type. Always 'nin'."`
+}
+
+// ComparisonFilterParamNINParamType The filter type. Always 'nin'.
+type ComparisonFilterParamNINParamType string
+
+const (
+	ComparisonFilterParamNINParamTypeNin ComparisonFilterParamNINParamType = "nin"
+)
+
+// ComparisonFilterParamNINParamValue The value to compare the metadata key against.
+//
+//compschema:generate
+type ComparisonFilterParamNINParamValue interface {
+	isComparisonFilterParamNINParamValue()
+}
+
+
+// ComparisonFilterParamNINParamValueString wraps a string value as a ComparisonFilterParamNINParamValue variant.
+type ComparisonFilterParamNINParamValueString struct { Value string }
+func (*ComparisonFilterParamNINParamValueString) isComparisonFilterParamNINParamValue() {}
+
+// ComparisonFilterParamNINParamValueInt64 wraps a int64 value as a ComparisonFilterParamNINParamValue variant.
+type ComparisonFilterParamNINParamValueInt64 struct { Value int64 }
+func (*ComparisonFilterParamNINParamValueInt64) isComparisonFilterParamNINParamValue() {}
+
+// ComparisonFilterParamNINParamValueFloat64 wraps a float64 value as a ComparisonFilterParamNINParamValue variant.
+type ComparisonFilterParamNINParamValueFloat64 struct { Value float64 }
+func (*ComparisonFilterParamNINParamValueFloat64) isComparisonFilterParamNINParamValue() {}
+
+// ComparisonFilterParamNINParamValueBool wraps a bool value as a ComparisonFilterParamNINParamValue variant.
+type ComparisonFilterParamNINParamValueBool struct { Value bool }
+func (*ComparisonFilterParamNINParamValueBool) isComparisonFilterParamNINParamValue() {}
+
+// ComparisonFilterParamNINParamValueSliceany wraps a []any value as a ComparisonFilterParamNINParamValue variant.
+type ComparisonFilterParamNINParamValueSliceany struct { Value []any }
+func (*ComparisonFilterParamNINParamValueSliceany) isComparisonFilterParamNINParamValue() {}
+
+func (w ComparisonFilterParamNINParamValueString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNINParamValueString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNINParamValueInt64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNINParamValueInt64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNINParamValueFloat64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNINParamValueFloat64) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNINParamValueBool) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNINParamValueBool) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ComparisonFilterParamNINParamValueSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComparisonFilterParamNINParamValueSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComparisonFilterParamNINParamValueInt64 creates a ComparisonFilterParamNINParamValue from a int64 value.
+func NewComparisonFilterParamNINParamValueInt64(v int64) ComparisonFilterParamNINParamValue {
+	return &ComparisonFilterParamNINParamValueInt64{Value: v}
+}
+
+// NewComparisonFilterParamNINParamValueFloat64 creates a ComparisonFilterParamNINParamValue from a float64 value.
+func NewComparisonFilterParamNINParamValueFloat64(v float64) ComparisonFilterParamNINParamValue {
+	return &ComparisonFilterParamNINParamValueFloat64{Value: v}
+}
+
+// NewComparisonFilterParamNINParamValueBool creates a ComparisonFilterParamNINParamValue from a bool value.
+func NewComparisonFilterParamNINParamValueBool(v bool) ComparisonFilterParamNINParamValue {
+	return &ComparisonFilterParamNINParamValueBool{Value: v}
+}
+
+// NewComparisonFilterParamNINParamValueSliceany creates a ComparisonFilterParamNINParamValue from a []any value.
+func NewComparisonFilterParamNINParamValueSliceany(v []any) ComparisonFilterParamNINParamValue {
+	return &ComparisonFilterParamNINParamValueSliceany{Value: v}
+}
+
+// NewComparisonFilterParamNINParamValueString creates a ComparisonFilterParamNINParamValue from a string value.
+func NewComparisonFilterParamNINParamValueString(v string) ComparisonFilterParamNINParamValue {
+	return &ComparisonFilterParamNINParamValueString{Value: v}
+}
+
+// UnmarshalComparisonFilterParamNINParamValue unmarshals JSON into the correct ComparisonFilterParamNINParamValue variant.
+func UnmarshalComparisonFilterParamNINParamValue(data []byte) (ComparisonFilterParamNINParamValue, error) {
+	{
+		var val ComparisonFilterParamNINParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNINParamValue")
+}
+
+
+type CompoundFilterFieldAND struct {
+	Filters []Filters `json:"filters"`
+	Type CompoundFilterFieldANDType `json:"type"`
+}
+
+type CompoundFilterFieldANDType string
+
+const (
+	CompoundFilterFieldANDTypeAnd CompoundFilterFieldANDType = "and"
+)
+
+type CompoundFilterFieldOR struct {
+	Filters []Filters `json:"filters"`
+	Type CompoundFilterFieldORType `json:"type"`
+}
+
+type CompoundFilterFieldORType string
+
+const (
+	CompoundFilterFieldORTypeOr CompoundFilterFieldORType = "or"
+)
+
+type CompoundFilterParamAndParam struct {
+	// The list of filters to combine.
+	Filters []any `json:"filters" jsonschema:"description=The list of filters to combine."`
+	// The filter type. Always 'and'.
+	Type CompoundFilterParamAndParamType `json:"type" jsonschema:"description=The filter type. Always 'and'."`
+}
+
+// CompoundFilterParamAndParamType The filter type. Always 'and'.
+type CompoundFilterParamAndParamType string
+
+const (
+	CompoundFilterParamAndParamTypeAnd CompoundFilterParamAndParamType = "and"
+)
+
+type CompoundFilterParamOrParam struct {
+	// The list of filters to combine.
+	Filters []any `json:"filters" jsonschema:"description=The list of filters to combine."`
+	// The filter type. Always 'or'.
+	Type CompoundFilterParamOrParamType `json:"type" jsonschema:"description=The filter type. Always 'or'."`
+}
+
+// CompoundFilterParamOrParamType The filter type. Always 'or'.
+type CompoundFilterParamOrParamType string
+
+const (
+	CompoundFilterParamOrParamTypeOr CompoundFilterParamOrParamType = "or"
+)
+
+// ComputerCall A computer tool call that was generated by the model.
+type ComputerCall struct {
+	// The status of the computer call item that was recorded.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the computer call item that was recorded."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+	// The type of the item. Always 'computer_call'.
+	Type ComputerCallType `json:"type" jsonschema:"description=The type of the item. Always 'computer_call'."`
+	// The unique ID of the computer call item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the computer call item."`
+	// The unique ID of the tool call that was generated.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the tool call that was generated."`
+	Action ComputerCallAction `json:"action,omitempty"`
+	// The safety checks that were pending for the computer tool call.
+	PendingSafetyChecks []SafetyCheck `json:"pending_safety_checks" jsonschema:"description=The safety checks that were pending for the computer tool call."`
+}
 
 // Discriminated by "type" field.
 //
 //compschema:generate
-type CodeInterpreterToolOutput interface {
-	isCodeInterpreterToolOutput()
+type ComputerCallAction interface {
+	isComputerCallAction()
 	DiscriminatorValue() string
 }
 
-func (*CodeInterpreterTextOutput) isCodeInterpreterToolOutput() {}
-func (*CodeInterpreterFileOutput) isCodeInterpreterToolOutput() {}
 
-func (x *CodeInterpreterTextOutput) DiscriminatorValue() string { return string(x.Type) }
-func (x *CodeInterpreterFileOutput) DiscriminatorValue() string { return string(x.Type) }
+// ComputerCallActionEmptyAction wraps a EmptyAction value as a ComputerCallAction variant.
+type ComputerCallActionEmptyAction struct { Value EmptyAction }
+func (*ComputerCallActionEmptyAction) isComputerCallAction() {}
+func (*ClickAction) isComputerCallAction() {}
+func (*DragAction) isComputerCallAction() {}
+func (*ScreenshotAction) isComputerCallAction() {}
+func (*DoubleClickAction) isComputerCallAction() {}
+func (*ScrollAction) isComputerCallAction() {}
+func (*TypeAction) isComputerCallAction() {}
+func (*WaitAction) isComputerCallAction() {}
+func (*KeyPressAction) isComputerCallAction() {}
+func (*MoveAction) isComputerCallAction() {}
 
-// CodeInterpreterToolOutputFromCodeInterpreterTextOutput wraps a *CodeInterpreterTextOutput as a CodeInterpreterToolOutput union value.
-func CodeInterpreterToolOutputFromCodeInterpreterTextOutput(v *CodeInterpreterTextOutput) CodeInterpreterToolOutput {
+func (x *ClickAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *DragAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *ScreenshotAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *DoubleClickAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *ScrollAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *TypeAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *WaitAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *KeyPressAction) DiscriminatorValue() string { return string(x.Type) }
+func (x *MoveAction) DiscriminatorValue() string { return string(x.Type) }
+
+func (w *ComputerCallActionEmptyAction) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
+func (w ComputerCallActionEmptyAction) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ComputerCallActionEmptyAction) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewComputerCallActionEmptyAction creates a ComputerCallAction from a EmptyAction value.
+func NewComputerCallActionEmptyAction(v EmptyAction) ComputerCallAction {
+	return &ComputerCallActionEmptyAction{Value: v}
+}
+
+// ComputerCallActionFromClickAction wraps a *ClickAction as a ComputerCallAction union value.
+func ComputerCallActionFromClickAction(v *ClickAction) ComputerCallAction {
 	return v
 }
 
-// CodeInterpreterToolOutputFromCodeInterpreterFileOutput wraps a *CodeInterpreterFileOutput as a CodeInterpreterToolOutput union value.
-func CodeInterpreterToolOutputFromCodeInterpreterFileOutput(v *CodeInterpreterFileOutput) CodeInterpreterToolOutput {
+// ComputerCallActionFromDragAction wraps a *DragAction as a ComputerCallAction union value.
+func ComputerCallActionFromDragAction(v *DragAction) ComputerCallAction {
 	return v
 }
 
-// UnmarshalCodeInterpreterToolOutput unmarshals JSON into the correct CodeInterpreterToolOutput variant.
+// ComputerCallActionFromScreenshotAction wraps a *ScreenshotAction as a ComputerCallAction union value.
+func ComputerCallActionFromScreenshotAction(v *ScreenshotAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromDoubleClickAction wraps a *DoubleClickAction as a ComputerCallAction union value.
+func ComputerCallActionFromDoubleClickAction(v *DoubleClickAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromScrollAction wraps a *ScrollAction as a ComputerCallAction union value.
+func ComputerCallActionFromScrollAction(v *ScrollAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromTypeAction wraps a *TypeAction as a ComputerCallAction union value.
+func ComputerCallActionFromTypeAction(v *TypeAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromWaitAction wraps a *WaitAction as a ComputerCallAction union value.
+func ComputerCallActionFromWaitAction(v *WaitAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromKeyPressAction wraps a *KeyPressAction as a ComputerCallAction union value.
+func ComputerCallActionFromKeyPressAction(v *KeyPressAction) ComputerCallAction {
+	return v
+}
+
+// ComputerCallActionFromMoveAction wraps a *MoveAction as a ComputerCallAction union value.
+func ComputerCallActionFromMoveAction(v *MoveAction) ComputerCallAction {
+	return v
+}
+
+// UnmarshalComputerCallAction unmarshals JSON into the correct ComputerCallAction variant.
 // Dispatches on the "type" discriminator field.
-func UnmarshalCodeInterpreterToolOutput(data []byte) (CodeInterpreterToolOutput, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "logs":
-		var val CodeInterpreterTextOutput
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "files":
-		var val CodeInterpreterFileOutput
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for CodeInterpreterToolOutput", disc.D)
-	}
-}
-
-
-// ComparisonFilter A filter used to compare a specified attribute key to a given value using a defined comparison operation.
-type ComparisonFilter struct {
-	// Specifies the comparison operator: 'eq', 'ne', 'gt', 'gte', 'lt', 'lte'.
-// - 'eq': equals
-// - 'ne': not equal
-// - 'gt': greater than
-// - 'gte': greater than or equal
-// - 'lt': less than
-// - 'lte': less than or equal
-	Type ComparisonFilterType `json:"type" jsonschema:"description=Specifies the comparison operator: 'eq', 'ne', 'gt', 'gte', 'lt', 'lte'. - 'eq': equals - 'ne': not equal - 'gt': greater than - 'gte': greater than or equal - 'lt': less than - 'lte': less than or equal"`
-	// The key to compare against the value.
-	Key string `json:"key" jsonschema:"description=The key to compare against the value."`
-	// The value to compare against the attribute key; supports string, number, or boolean types.
-	Value ComparisonFilterValue `json:"value" jsonschema:"description=The value to compare against the attribute key; supports string, number, or boolean types."`
-}
-
-// ComparisonFilterType Specifies the comparison operator: 'eq', 'ne', 'gt', 'gte', 'lt', 'lte'.
-// - 'eq': equals
-// - 'ne': not equal
-// - 'gt': greater than
-// - 'gte': greater than or equal
-// - 'lt': less than
-// - 'lte': less than or equal
-type ComparisonFilterType string
-
-const (
-	ComparisonFilterTypeEq ComparisonFilterType = "eq"
-	ComparisonFilterTypeNe ComparisonFilterType = "ne"
-	ComparisonFilterTypeGt ComparisonFilterType = "gt"
-	ComparisonFilterTypeGte ComparisonFilterType = "gte"
-	ComparisonFilterTypeLt ComparisonFilterType = "lt"
-	ComparisonFilterTypeLte ComparisonFilterType = "lte"
-)
-
-// ComparisonFilterValue The value to compare against the attribute key; supports string, number, or boolean types.
-//
-//compschema:generate
-type ComparisonFilterValue interface {
-	isComparisonFilterValue()
-}
-
-
-// ComparisonFilterValueString wraps a string value as a ComparisonFilterValue variant.
-type ComparisonFilterValueString struct { Value string }
-func (*ComparisonFilterValueString) isComparisonFilterValue() {}
-
-// ComparisonFilterValueFloat64 wraps a float64 value as a ComparisonFilterValue variant.
-type ComparisonFilterValueFloat64 struct { Value float64 }
-func (*ComparisonFilterValueFloat64) isComparisonFilterValue() {}
-
-// ComparisonFilterValueBool wraps a bool value as a ComparisonFilterValue variant.
-type ComparisonFilterValueBool struct { Value bool }
-func (*ComparisonFilterValueBool) isComparisonFilterValue() {}
-
-func (w ComparisonFilterValueString) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *ComparisonFilterValueString) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-func (w ComparisonFilterValueFloat64) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *ComparisonFilterValueFloat64) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-func (w ComparisonFilterValueBool) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *ComparisonFilterValueBool) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewComparisonFilterValueString creates a ComparisonFilterValue from a string value.
-func NewComparisonFilterValueString(v string) ComparisonFilterValue {
-	return &ComparisonFilterValueString{Value: v}
-}
-
-// NewComparisonFilterValueFloat64 creates a ComparisonFilterValue from a float64 value.
-func NewComparisonFilterValueFloat64(v float64) ComparisonFilterValue {
-	return &ComparisonFilterValueFloat64{Value: v}
-}
-
-// NewComparisonFilterValueBool creates a ComparisonFilterValue from a bool value.
-func NewComparisonFilterValueBool(v bool) ComparisonFilterValue {
-	return &ComparisonFilterValueBool{Value: v}
-}
-
-// UnmarshalComparisonFilterValue unmarshals JSON into the correct ComparisonFilterValue variant.
-func UnmarshalComparisonFilterValue(data []byte) (ComparisonFilterValue, error) {
-	{
-		var val ComparisonFilterValueFloat64
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val ComparisonFilterValueBool
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val ComparisonFilterValueString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for ComparisonFilterValue")
-}
-
-
-// CompoundFilter Combine multiple filters using 'and' or 'or'.
-type CompoundFilter struct {
-	// Type of operation: 'and' or 'or'.
-	Type CompoundFilterType `json:"type" jsonschema:"description=Type of operation: 'and' or 'or'."`
-	// Array of filters to combine. Items can be 'ComparisonFilter' or 'CompoundFilter'.
-	Filters []any `json:"filters" jsonschema:"description=Array of filters to combine. Items can be 'ComparisonFilter' or 'CompoundFilter'."`
-}
-
-// CompoundFilterType Type of operation: 'and' or 'or'.
-type CompoundFilterType string
-
-const (
-	CompoundFilterTypeAnd CompoundFilterType = "and"
-	CompoundFilterTypeOr CompoundFilterType = "or"
-)
-
-// Discriminated by "type" field.
-//
-//compschema:generate
-type ComputerAction interface {
-	isComputerAction()
-	DiscriminatorValue() string
-}
-
-func (*Click) isComputerAction() {}
-func (*DoubleClick) isComputerAction() {}
-func (*Drag) isComputerAction() {}
-func (*KeyPress) isComputerAction() {}
-func (*Move) isComputerAction() {}
-func (*Screenshot) isComputerAction() {}
-func (*Scroll) isComputerAction() {}
-func (*Type) isComputerAction() {}
-func (*Wait) isComputerAction() {}
-
-func (x *Click) DiscriminatorValue() string { return string(x.Type) }
-func (x *DoubleClick) DiscriminatorValue() string { return string(x.Type) }
-func (x *Drag) DiscriminatorValue() string { return string(x.Type) }
-func (x *KeyPress) DiscriminatorValue() string { return string(x.Type) }
-func (x *Move) DiscriminatorValue() string { return string(x.Type) }
-func (x *Screenshot) DiscriminatorValue() string { return string(x.Type) }
-func (x *Scroll) DiscriminatorValue() string { return string(x.Type) }
-func (x *Type) DiscriminatorValue() string { return string(x.Type) }
-func (x *Wait) DiscriminatorValue() string { return string(x.Type) }
-
-// ComputerActionFromClick wraps a *Click as a ComputerAction union value.
-func ComputerActionFromClick(v *Click) ComputerAction {
-	return v
-}
-
-// ComputerActionFromDoubleClick wraps a *DoubleClick as a ComputerAction union value.
-func ComputerActionFromDoubleClick(v *DoubleClick) ComputerAction {
-	return v
-}
-
-// ComputerActionFromDrag wraps a *Drag as a ComputerAction union value.
-func ComputerActionFromDrag(v *Drag) ComputerAction {
-	return v
-}
-
-// ComputerActionFromKeyPress wraps a *KeyPress as a ComputerAction union value.
-func ComputerActionFromKeyPress(v *KeyPress) ComputerAction {
-	return v
-}
-
-// ComputerActionFromMove wraps a *Move as a ComputerAction union value.
-func ComputerActionFromMove(v *Move) ComputerAction {
-	return v
-}
-
-// ComputerActionFromScreenshot wraps a *Screenshot as a ComputerAction union value.
-func ComputerActionFromScreenshot(v *Screenshot) ComputerAction {
-	return v
-}
-
-// ComputerActionFromScroll wraps a *Scroll as a ComputerAction union value.
-func ComputerActionFromScroll(v *Scroll) ComputerAction {
-	return v
-}
-
-// ComputerActionFromType wraps a *Type as a ComputerAction union value.
-func ComputerActionFromType(v *Type) ComputerAction {
-	return v
-}
-
-// ComputerActionFromWait wraps a *Wait as a ComputerAction union value.
-func ComputerActionFromWait(v *Wait) ComputerAction {
-	return v
-}
-
-// UnmarshalComputerAction unmarshals JSON into the correct ComputerAction variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalComputerAction(data []byte) (ComputerAction, error) {
+func UnmarshalComputerCallAction(data []byte) (ComputerCallAction, error) {
 	var disc struct {
 		D string `json:"type"`
 	}
@@ -452,88 +2960,261 @@ func UnmarshalComputerAction(data []byte) (ComputerAction, error) {
 	}
 	switch disc.D {
 	case "click":
-		var val Click
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "double_click":
-		var val DoubleClick
+		var val ClickAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "drag":
-		var val Drag
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "keypress":
-		var val KeyPress
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "move":
-		var val Move
+		var val DragAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "screenshot":
-		var val Screenshot
+		var val ScreenshotAction
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "double_click":
+		var val DoubleClickAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "scroll":
-		var val Scroll
+		var val ScrollAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "type":
-		var val Type
+		var val TypeAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "wait":
-		var val Wait
+		var val WaitAction
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "keypress":
+		var val KeyPressAction
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "move":
+		var val MoveAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for ComputerAction", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ComputerCallAction", disc.D)
 	}
 }
 
 
+type ComputerCallItemParam struct {
+	// The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
+	// The unique ID of the computer call.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the computer call."`
+	// An identifier used when responding to the tool call with output.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=An identifier used when responding to the tool call with output."`
+	// The type of the computer call. Always 'computer_call'.
+	Type ComputerCallItemParamType `json:"type" jsonschema:"description=The type of the computer call. Always 'computer_call'."`
+	// The action to perform with the computer tool.
+	Action ComputerCallItemParamAction `json:"action" jsonschema:"description=The action to perform with the computer tool."`
+	// The pending safety checks for the computer call.
+	PendingSafetyChecks []ComputerCallSafetyCheckParam `json:"pending_safety_checks,omitempty" jsonschema:"description=The pending safety checks for the computer call."`
+}
+
+// ComputerCallItemParamAction The action to perform with the computer tool.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type ComputerCallItemParamAction interface {
+	isComputerCallItemParamAction()
+	DiscriminatorValue() string
+}
+
+func (*ScreenshotParam) isComputerCallItemParamAction() {}
+func (*WaitParam) isComputerCallItemParamAction() {}
+func (*ClickParam) isComputerCallItemParamAction() {}
+func (*DoubleClickParam) isComputerCallItemParamAction() {}
+func (*ScrollParam) isComputerCallItemParamAction() {}
+func (*TypeParam) isComputerCallItemParamAction() {}
+func (*KeyPressParam) isComputerCallItemParamAction() {}
+func (*DragParam) isComputerCallItemParamAction() {}
+func (*MoveParam) isComputerCallItemParamAction() {}
+
+func (x *ScreenshotParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WaitParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ClickParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *DoubleClickParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ScrollParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *TypeParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *KeyPressParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *DragParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *MoveParam) DiscriminatorValue() string { return string(x.Type) }
+
+// ComputerCallItemParamActionFromScreenshotParam wraps a *ScreenshotParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromScreenshotParam(v *ScreenshotParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromWaitParam wraps a *WaitParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromWaitParam(v *WaitParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromClickParam wraps a *ClickParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromClickParam(v *ClickParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromDoubleClickParam wraps a *DoubleClickParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromDoubleClickParam(v *DoubleClickParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromScrollParam wraps a *ScrollParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromScrollParam(v *ScrollParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromTypeParam wraps a *TypeParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromTypeParam(v *TypeParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromKeyPressParam wraps a *KeyPressParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromKeyPressParam(v *KeyPressParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromDragParam wraps a *DragParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromDragParam(v *DragParam) ComputerCallItemParamAction {
+	return v
+}
+
+// ComputerCallItemParamActionFromMoveParam wraps a *MoveParam as a ComputerCallItemParamAction union value.
+func ComputerCallItemParamActionFromMoveParam(v *MoveParam) ComputerCallItemParamAction {
+	return v
+}
+
+// UnmarshalComputerCallItemParamAction unmarshals JSON into the correct ComputerCallItemParamAction variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalComputerCallItemParamAction(data []byte) (ComputerCallItemParamAction, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "screenshot":
+		var val ScreenshotParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "wait":
+		var val WaitParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "click":
+		var val ClickParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "double_click":
+		var val DoubleClickParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "scroll":
+		var val ScrollParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "type":
+		var val TypeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "keypress":
+		var val KeyPressParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "drag":
+		var val DragParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "move":
+		var val MoveParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ComputerCallItemParamAction", disc.D)
+	}
+}
+
+
+// ComputerCallItemParamType The type of the computer call. Always 'computer_call'.
+type ComputerCallItemParamType string
+
+const (
+	ComputerCallItemParamTypeComputerCall ComputerCallItemParamType = "computer_call"
+)
+
+// ComputerCallOutput A computer tool call output that was produced by the tool.
+type ComputerCallOutput struct {
+	// The type of the item. Always 'computer_call_output'.
+	Type ComputerCallOutputType `json:"type" jsonschema:"description=The type of the item. Always 'computer_call_output'."`
+	// The unique ID of the computer call output item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the computer call output item."`
+	// The unique ID of the tool call that was generated.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the tool call that was generated."`
+	// A content part that makes up an input or output item.
+	Output ComputerCallOutputOutput `json:"output" jsonschema:"description=A content part that makes up an input or output item."`
+	Status ComputerCallOutputStatus `json:"status"`
+	// The URL that was active at the time of the call.
+	CurrentURL *string `json:"current_url" jsonschema:"description=The URL that was active at the time of the call."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+}
+
 // ComputerCallOutputItemParam The output of a computer tool call.
 type ComputerCallOutputItemParam struct {
+	Status *FunctionCallItemStatus `json:"status,omitempty"`
 	// The ID of the computer tool call output.
 	ID *string `json:"id,omitempty" jsonschema:"description=The ID of the computer tool call output."`
 	// The ID of the computer tool call that produced the output.
 	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The ID of the computer tool call that produced the output."`
 	// The type of the computer tool call output. Always 'computer_call_output'.
 	Type ComputerCallOutputItemParamType `json:"type" jsonschema:"description=The type of the computer tool call output. Always 'computer_call_output'."`
-	Output ComputerScreenshotImage `json:"output"`
+	Output ComputerScreenshotParam `json:"output"`
 	// The safety checks reported by the API that have been acknowledged by the developer.
 	AcknowledgedSafetyChecks []ComputerCallSafetyCheckParam `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
-	// The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API.
-	Status *ComputerCallOutputItemParamStatus `json:"status,omitempty" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
 }
-
-// ComputerCallOutputItemParamStatus The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API.
-type ComputerCallOutputItemParamStatus string
-
-const (
-	ComputerCallOutputItemParamStatusInProgress ComputerCallOutputItemParamStatus = "in_progress"
-	ComputerCallOutputItemParamStatusCompleted ComputerCallOutputItemParamStatus = "completed"
-	ComputerCallOutputItemParamStatusIncomplete ComputerCallOutputItemParamStatus = "incomplete"
-)
 
 // ComputerCallOutputItemParamType The type of the computer tool call output. Always 'computer_call_output'.
 type ComputerCallOutputItemParamType string
@@ -542,971 +3223,83 @@ const (
 	ComputerCallOutputItemParamTypeComputerCallOutput ComputerCallOutputItemParamType = "computer_call_output"
 )
 
-// ComputerCallSafetyCheckParam A pending safety check for the computer call.
-type ComputerCallSafetyCheckParam struct {
-	// The ID of the pending safety check.
-	ID string `json:"id" jsonschema:"description=The ID of the pending safety check."`
-	// The type of the pending safety check.
-	Code *string `json:"code,omitempty" jsonschema:"description=The type of the pending safety check."`
-	// Details about the pending safety check.
-	Message *string `json:"message,omitempty" jsonschema:"description=Details about the pending safety check."`
-}
-
-// ComputerScreenshotImage A computer screenshot image used with the computer use tool.
-type ComputerScreenshotImage struct {
-	// Specifies the event type. For a computer screenshot, this property is 
-// always set to 'computer_screenshot'.
-	Type ComputerScreenshotImageType `json:"type" jsonschema:"description=Specifies the event type. For a computer screenshot, this property is always set to 'computer_screenshot'."`
-	// The URL of the screenshot image.
-	ImageURL *string `json:"image_url,omitempty" jsonschema:"description=The URL of the screenshot image."`
-	// The identifier of an uploaded file that contains the screenshot.
-	FileID *string `json:"file_id,omitempty" jsonschema:"description=The identifier of an uploaded file that contains the screenshot."`
-}
-
-// ComputerScreenshotImageType Specifies the event type. For a computer screenshot, this property is 
-// always set to 'computer_screenshot'.
-type ComputerScreenshotImageType string
-
-const (
-	ComputerScreenshotImageTypeComputerScreenshot ComputerScreenshotImageType = "computer_screenshot"
-)
-
-// ComputerToolCall A tool call to a computer use tool. See the 
-// [computer use guide](/docs/guides/tools-computer-use) for more information.
-type ComputerToolCall struct {
-	// The unique ID of the computer call.
-	ID string `json:"id" jsonschema:"description=The unique ID of the computer call."`
-	// An identifier used when responding to the tool call with output.
-	CallID string `json:"call_id" jsonschema:"description=An identifier used when responding to the tool call with output."`
-	Action ComputerAction `json:"action"`
-	// The pending safety checks for the computer call.
-	PendingSafetyChecks []ComputerToolCallSafetyCheck `json:"pending_safety_checks" jsonschema:"description=The pending safety checks for the computer call."`
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status ComputerToolCallStatus `json:"status" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	// The type of the computer call. Always 'computer_call'.
-	Type ComputerToolCallType `json:"type" jsonschema:"description=The type of the computer call. Always 'computer_call'."`
-}
-
-// ComputerToolCallOutput The output of a computer tool call.
-type ComputerToolCallOutput struct {
-	// The safety checks reported by the API that have been acknowledged by the 
-// developer.
-	AcknowledgedSafetyChecks []ComputerToolCallSafetyCheck `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
-	Output ComputerScreenshotImage `json:"output"`
-	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-	Status *ComputerToolCallOutputStatus `json:"status,omitempty" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
-	// The type of the computer tool call output. Always 'computer_call_output'.
-	Type ComputerToolCallOutputType `json:"type" jsonschema:"description=The type of the computer tool call output. Always 'computer_call_output'."`
-	// The ID of the computer tool call output.
-	ID *string `json:"id,omitempty" jsonschema:"description=The ID of the computer tool call output."`
-	// The ID of the computer tool call that produced the output.
-	CallID string `json:"call_id" jsonschema:"description=The ID of the computer tool call that produced the output."`
-}
-
-// ComputerToolCallOutputResource The output of a computer tool call.
-type ComputerToolCallOutputResource struct {
-	// The ID of the computer tool call that produced the output.
-	CallID string `json:"call_id" jsonschema:"description=The ID of the computer tool call that produced the output."`
-	// The safety checks reported by the API that have been acknowledged by the 
-// developer.
-	AcknowledgedSafetyChecks []ComputerToolCallSafetyCheck `json:"acknowledged_safety_checks,omitempty" jsonschema:"description=The safety checks reported by the API that have been acknowledged by the developer."`
-	Output ComputerScreenshotImage `json:"output"`
-	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-	Status *ComputerToolCallOutputResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
-	// The type of the computer tool call output. Always 'computer_call_output'.
-	Type ComputerToolCallOutputResourceType `json:"type" jsonschema:"description=The type of the computer tool call output. Always 'computer_call_output'."`
-	// The ID of the computer tool call output.
-	ID string `json:"id" jsonschema:"description=The ID of the computer tool call output."`
-}
-
-// ComputerToolCallOutputResourceStatus The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-type ComputerToolCallOutputResourceStatus string
-
-const (
-	ComputerToolCallOutputResourceStatusInProgress ComputerToolCallOutputResourceStatus = "in_progress"
-	ComputerToolCallOutputResourceStatusCompleted ComputerToolCallOutputResourceStatus = "completed"
-	ComputerToolCallOutputResourceStatusIncomplete ComputerToolCallOutputResourceStatus = "incomplete"
-)
-
-// ComputerToolCallOutputResourceType The type of the computer tool call output. Always 'computer_call_output'.
-type ComputerToolCallOutputResourceType string
-
-const (
-	ComputerToolCallOutputResourceTypeComputerCallOutput ComputerToolCallOutputResourceType = "computer_call_output"
-)
-
-// ComputerToolCallOutputStatus The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-type ComputerToolCallOutputStatus string
-
-const (
-	ComputerToolCallOutputStatusInProgress ComputerToolCallOutputStatus = "in_progress"
-	ComputerToolCallOutputStatusCompleted ComputerToolCallOutputStatus = "completed"
-	ComputerToolCallOutputStatusIncomplete ComputerToolCallOutputStatus = "incomplete"
-)
-
-// ComputerToolCallOutputType The type of the computer tool call output. Always 'computer_call_output'.
-type ComputerToolCallOutputType string
-
-const (
-	ComputerToolCallOutputTypeComputerCallOutput ComputerToolCallOutputType = "computer_call_output"
-)
-
-// ComputerToolCallSafetyCheck A pending safety check for the computer call.
-type ComputerToolCallSafetyCheck struct {
-	// Details about the pending safety check.
-	Message string `json:"message" jsonschema:"description=Details about the pending safety check."`
-	// The ID of the pending safety check.
-	ID string `json:"id" jsonschema:"description=The ID of the pending safety check."`
-	// The type of the pending safety check.
-	Code string `json:"code" jsonschema:"description=The type of the pending safety check."`
-}
-
-// ComputerToolCallStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type ComputerToolCallStatus string
-
-const (
-	ComputerToolCallStatusInProgress ComputerToolCallStatus = "in_progress"
-	ComputerToolCallStatusCompleted ComputerToolCallStatus = "completed"
-	ComputerToolCallStatusIncomplete ComputerToolCallStatus = "incomplete"
-)
-
-// ComputerToolCallType The type of the computer call. Always 'computer_call'.
-type ComputerToolCallType string
-
-const (
-	ComputerToolCallTypeComputerCall ComputerToolCallType = "computer_call"
-)
-
-// ComputerUsePreviewTool A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
-type ComputerUsePreviewTool struct {
-	// The type of the computer use tool. Always 'computer_use_preview'.
-	Type ComputerUsePreviewToolType `json:"type" jsonschema:"description=The type of the computer use tool. Always 'computer_use_preview'."`
-	// The type of computer environment to control.
-	Environment ComputerUsePreviewToolEnvironment `json:"environment" jsonschema:"description=The type of computer environment to control."`
-	// The width of the computer display.
-	DisplayWidth int64 `json:"display_width" jsonschema:"description=The width of the computer display."`
-	// The height of the computer display.
-	DisplayHeight int64 `json:"display_height" jsonschema:"description=The height of the computer display."`
-}
-
-// ComputerUsePreviewToolEnvironment The type of computer environment to control.
-type ComputerUsePreviewToolEnvironment string
-
-const (
-	ComputerUsePreviewToolEnvironmentWindows ComputerUsePreviewToolEnvironment = "windows"
-	ComputerUsePreviewToolEnvironmentMac ComputerUsePreviewToolEnvironment = "mac"
-	ComputerUsePreviewToolEnvironmentLinux ComputerUsePreviewToolEnvironment = "linux"
-	ComputerUsePreviewToolEnvironmentUbuntu ComputerUsePreviewToolEnvironment = "ubuntu"
-	ComputerUsePreviewToolEnvironmentBrowser ComputerUsePreviewToolEnvironment = "browser"
-)
-
-// ComputerUsePreviewToolType The type of the computer use tool. Always 'computer_use_preview'.
-type ComputerUsePreviewToolType string
-
-const (
-	ComputerUsePreviewToolTypeComputerUsePreview ComputerUsePreviewToolType = "computer_use_preview"
-)
-
-// Coordinate An x/y coordinate pair, e.g. '{ x: 100, y: 200 }'.
-type Coordinate struct {
-	// The x-coordinate.
-	X int64 `json:"x" jsonschema:"description=The x-coordinate."`
-	// The y-coordinate.
-	Y int64 `json:"y" jsonschema:"description=The y-coordinate."`
-}
-
-type CreateModelResponseProperties struct {
-	Metadata *Metadata `json:"metadata,omitempty"`
-	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
-	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
-	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
-	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
-	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-}
-
-type CreateResponse struct {
-	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-	Truncation *CreateResponseTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
-	// Whether to allow the model to run tool calls in parallel.
-	ParallelToolCalls *bool `json:"parallel_tool_calls,omitempty" jsonschema:"description=Whether to allow the model to run tool calls in parallel."`
-	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
-	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
-	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
-	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
-	// Specify additional output data to include in the model response. Currently
-// supported values are:
-// - 'file_search_call.results': Include the search results of
-//   the file search tool call.
-// - 'message.input_image.image_url': Include image urls from the input message.
-// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
-	Include []Includable `json:"include,omitempty" jsonschema:"description=Specify additional output data to include in the model response. Currently supported values are: - 'file_search_call.results': Include the search results of the file search tool call. - 'message.input_image.image_url': Include image urls from the input message. - 'computer_call_output.output.image_url': Include image urls from the computer call output."`
-	// If set to true, the model response data will be streamed to the client
-// as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format).
-// See the [Streaming section below](/docs/api-reference/responses-streaming)
-// for more information.
-	Stream *bool `json:"stream,omitempty" jsonschema:"description=If set to true, the model response data will be streamed to the client as it is generated using [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format). See the [Streaming section below](/docs/api-reference/responses-streaming) for more information."`
-	Metadata *Metadata `json:"metadata,omitempty"`
-	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
-	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
-	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
-	Instructions *string `json:"instructions,omitempty" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
-	Tools []Tool `json:"tools,omitempty" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
-	// Whether to store the generated model response for later retrieval via
-// API.
-	Store *bool `json:"store,omitempty" jsonschema:"description=Whether to store the generated model response for later retrieval via API."`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
-	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
-	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
-	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-	Text *CreateResponseText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
-	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-	ToolChoice CreateResponseToolChoice `json:"tool_choice,omitempty" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
-	// Text, image, or file inputs to the model, used to generate a response.
-// 
-// Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Image inputs](/docs/guides/images)
-// - [File inputs](/docs/guides/pdf-files)
-// - [Conversation state](/docs/guides/conversation-state)
-// - [Function calling](/docs/guides/function-calling)
-	Input CreateResponseInput `json:"input" jsonschema:"description=Text, image, or file inputs to the model, used to generate a response. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Image inputs](/docs/guides/images) - [File inputs](/docs/guides/pdf-files) - [Conversation state](/docs/guides/conversation-state) - [Function calling](/docs/guides/function-calling)"`
-	Model ModelIdsResponses `json:"model"`
-}
-
-// CreateResponseInput Text, image, or file inputs to the model, used to generate a response.
-// 
-// Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Image inputs](/docs/guides/images)
-// - [File inputs](/docs/guides/pdf-files)
-// - [Conversation state](/docs/guides/conversation-state)
-// - [Function calling](/docs/guides/function-calling)
-//
-//compschema:generate
-type CreateResponseInput interface {
-	isCreateResponseInput()
-}
-
-
-// CreateResponseInputString wraps a string value as a CreateResponseInput variant.
-type CreateResponseInputString struct { Value string }
-func (*CreateResponseInputString) isCreateResponseInput() {}
-
-// CreateResponseInputSliceInputItem wraps a []InputItem value as a CreateResponseInput variant.
-type CreateResponseInputSliceInputItem struct { Value []InputItem }
-func (*CreateResponseInputSliceInputItem) isCreateResponseInput() {}
-
-func (w CreateResponseInputString) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *CreateResponseInputString) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-func (w CreateResponseInputSliceInputItem) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *CreateResponseInputSliceInputItem) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewCreateResponseInputSliceInputItem creates a CreateResponseInput from a []InputItem value.
-func NewCreateResponseInputSliceInputItem(v []InputItem) CreateResponseInput {
-	return &CreateResponseInputSliceInputItem{Value: v}
-}
-
-// NewCreateResponseInputString creates a CreateResponseInput from a string value.
-func NewCreateResponseInputString(v string) CreateResponseInput {
-	return &CreateResponseInputString{Value: v}
-}
-
-// UnmarshalCreateResponseInput unmarshals JSON into the correct CreateResponseInput variant.
-func UnmarshalCreateResponseInput(data []byte) (CreateResponseInput, error) {
-	{
-		var val CreateResponseInputString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val CreateResponseInputSliceInputItem
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for CreateResponseInput")
-}
-
-
-// CreateResponseText Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-type CreateResponseText struct {
-	Format TextResponseFormatConfiguration `json:"format,omitempty"`
-}
-
-// CreateResponseToolChoice How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
+// ComputerCallOutputOutput A content part that makes up an input or output item.
 // Discriminated by "type" field.
 //
 //compschema:generate
-type CreateResponseToolChoice interface {
-	isCreateResponseToolChoice()
+type ComputerCallOutputOutput interface {
+	isComputerCallOutputOutput()
 	DiscriminatorValue() string
 }
 
-
-// CreateResponseToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a CreateResponseToolChoice variant.
-type CreateResponseToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
-func (*CreateResponseToolChoiceToolChoiceOptions) isCreateResponseToolChoice() {}
-func (*ToolChoiceTypes) isCreateResponseToolChoice() {}
-func (*ToolChoiceFunction) isCreateResponseToolChoice() {}
-
-func (x *ToolChoiceTypes) DiscriminatorValue() string { return string(x.Type) }
-func (x *ToolChoiceFunction) DiscriminatorValue() string { return string(x.Type) }
-
-func (w *CreateResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
-func (w CreateResponseToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *CreateResponseToolChoiceToolChoiceOptions) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewCreateResponseToolChoiceToolChoiceOptions creates a CreateResponseToolChoice from a ToolChoiceOptions value.
-func NewCreateResponseToolChoiceToolChoiceOptions(v ToolChoiceOptions) CreateResponseToolChoice {
-	return &CreateResponseToolChoiceToolChoiceOptions{Value: v}
-}
-
-// CreateResponseToolChoiceFromToolChoiceTypes wraps a *ToolChoiceTypes as a CreateResponseToolChoice union value.
-func CreateResponseToolChoiceFromToolChoiceTypes(v *ToolChoiceTypes) CreateResponseToolChoice {
-	return v
-}
-
-// CreateResponseToolChoiceFromToolChoiceFunction wraps a *ToolChoiceFunction as a CreateResponseToolChoice union value.
-func CreateResponseToolChoiceFromToolChoiceFunction(v *ToolChoiceFunction) CreateResponseToolChoice {
-	return v
-}
-
-// UnmarshalCreateResponseToolChoice unmarshals JSON into the correct CreateResponseToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalCreateResponseToolChoice(data []byte) (CreateResponseToolChoice, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "file_search", "web_search_preview", "computer_use_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for CreateResponseToolChoice", disc.D)
-	}
-}
-
-
-// CreateResponseTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-type CreateResponseTruncation string
-
-const (
-	CreateResponseTruncationAuto CreateResponseTruncation = "auto"
-	CreateResponseTruncationDisabled CreateResponseTruncation = "disabled"
-)
-
-// DoubleClick A double click action.
-type DoubleClick struct {
-	// Specifies the event type. For a double click action, this property is 
-// always set to 'double_click'.
-	Type DoubleClickType `json:"type" jsonschema:"description=Specifies the event type. For a double click action, this property is always set to 'double_click'."`
-	// The x-coordinate where the double click occurred.
-	X int64 `json:"x" jsonschema:"description=The x-coordinate where the double click occurred."`
-	// The y-coordinate where the double click occurred.
-	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the double click occurred."`
-}
-
-// DoubleClickType Specifies the event type. For a double click action, this property is 
-// always set to 'double_click'.
-type DoubleClickType string
-
-const (
-	DoubleClickTypeDoubleClick DoubleClickType = "double_click"
-)
-
-// Drag A drag action.
-type Drag struct {
-	// Specifies the event type. For a drag action, this property is 
-// always set to 'drag'.
-	Type DragType `json:"type" jsonschema:"description=Specifies the event type. For a drag action, this property is always set to 'drag'."`
-	// An array of coordinates representing the path of the drag action. Coordinates will appear as an array
-// of objects, eg
-// '''
-// [
-//   { x: 100, y: 200 },
-//   { x: 200, y: 300 }
-// ]
-// '''
-	Path []Coordinate `json:"path" jsonschema:"description=An array of coordinates representing the path of the drag action. Coordinates will appear as an array of objects, eg ''' [ { x: 100, y: 200 }, { x: 200, y: 300 } ] '''"`
-}
-
-// DragType Specifies the event type. For a drag action, this property is 
-// always set to 'drag'.
-type DragType string
-
-const (
-	DragTypeDrag DragType = "drag"
-)
-
-// EasyInputMessage A message input to the model with a role indicating instruction following
-// hierarchy. Instructions given with the 'developer' or 'system' role take
-// precedence over instructions given with the 'user' role. Messages with the
-// 'assistant' role are presumed to have been generated by the model in previous
-// interactions.
-type EasyInputMessage struct {
-	// The role of the message input. One of 'user', 'assistant', 'system', or
-// 'developer'.
-	Role EasyInputMessageRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'assistant', 'system', or 'developer'."`
-	// Text, image, or audio input to the model, used to generate a response.
-// Can also contain previous assistant responses.
-	Content EasyInputMessageContent `json:"content" jsonschema:"description=Text, image, or audio input to the model, used to generate a response. Can also contain previous assistant responses."`
-	// The type of the message input. Always 'message'.
-	Type *EasyInputMessageType `json:"type,omitempty" jsonschema:"description=The type of the message input. Always 'message'."`
-}
-
-// EasyInputMessageContent Text, image, or audio input to the model, used to generate a response.
-// Can also contain previous assistant responses.
-//
-//compschema:generate
-type EasyInputMessageContent interface {
-	isEasyInputMessageContent()
-}
-
-
-// EasyInputMessageContentString wraps a string value as a EasyInputMessageContent variant.
-type EasyInputMessageContentString struct { Value string }
-func (*EasyInputMessageContentString) isEasyInputMessageContent() {}
-
-// EasyInputMessageContentInputMessageContentList wraps a InputMessageContentList value as a EasyInputMessageContent variant.
-type EasyInputMessageContentInputMessageContentList struct { Value InputMessageContentList }
-func (*EasyInputMessageContentInputMessageContentList) isEasyInputMessageContent() {}
-
-func (w EasyInputMessageContentString) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *EasyInputMessageContentString) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-func (w EasyInputMessageContentInputMessageContentList) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *EasyInputMessageContentInputMessageContentList) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewEasyInputMessageContentInputMessageContentList creates a EasyInputMessageContent from a InputMessageContentList value.
-func NewEasyInputMessageContentInputMessageContentList(v InputMessageContentList) EasyInputMessageContent {
-	return &EasyInputMessageContentInputMessageContentList{Value: v}
-}
-
-// NewEasyInputMessageContentString creates a EasyInputMessageContent from a string value.
-func NewEasyInputMessageContentString(v string) EasyInputMessageContent {
-	return &EasyInputMessageContentString{Value: v}
-}
-
-// UnmarshalEasyInputMessageContent unmarshals JSON into the correct EasyInputMessageContent variant.
-func UnmarshalEasyInputMessageContent(data []byte) (EasyInputMessageContent, error) {
-	{
-		var val EasyInputMessageContentString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val EasyInputMessageContentInputMessageContentList
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for EasyInputMessageContent")
-}
-
-
-// EasyInputMessageRole The role of the message input. One of 'user', 'assistant', 'system', or
-// 'developer'.
-type EasyInputMessageRole string
-
-const (
-	EasyInputMessageRoleUser EasyInputMessageRole = "user"
-	EasyInputMessageRoleAssistant EasyInputMessageRole = "assistant"
-	EasyInputMessageRoleSystem EasyInputMessageRole = "system"
-	EasyInputMessageRoleDeveloper EasyInputMessageRole = "developer"
-)
-
-// EasyInputMessageType The type of the message input. Always 'message'.
-type EasyInputMessageType string
-
-const (
-	EasyInputMessageTypeMessage EasyInputMessageType = "message"
-)
-
-type Error struct {
-	Code *string `json:"code"`
-	Message string `json:"message"`
-	Param *string `json:"param"`
-	Type string `json:"type"`
-}
-
-// FileCitationBody A citation to a file.
-type FileCitationBody struct {
-	// The index of the file in the list of files.
-	Index int64 `json:"index" jsonschema:"description=The index of the file in the list of files."`
-	// The type of the file citation. Always 'file_citation'.
-	Type FileCitationBodyType `json:"type" jsonschema:"description=The type of the file citation. Always 'file_citation'."`
-	// The ID of the file.
-	FileID string `json:"file_id" jsonschema:"description=The ID of the file."`
-}
-
-// FileCitationBodyType The type of the file citation. Always 'file_citation'.
-type FileCitationBodyType string
-
-const (
-	FileCitationBodyTypeFileCitation FileCitationBodyType = "file_citation"
-)
-
-// FilePath A path to a file.
-type FilePath struct {
-	// The type of the file path. Always 'file_path'.
-	Type FilePathType `json:"type" jsonschema:"description=The type of the file path. Always 'file_path'."`
-	// The ID of the file.
-	FileID string `json:"file_id" jsonschema:"description=The ID of the file."`
-	// The index of the file in the list of files.
-	Index int64 `json:"index" jsonschema:"description=The index of the file in the list of files."`
-}
-
-// FilePathType The type of the file path. Always 'file_path'.
-type FilePathType string
-
-const (
-	FilePathTypeFilePath FilePathType = "file_path"
-)
-
-// FileSearchTool A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
-type FileSearchTool struct {
-	// The IDs of the vector stores to search.
-	VectorStoreIds []string `json:"vector_store_ids" jsonschema:"description=The IDs of the vector stores to search."`
-	// The maximum number of results to return. This number should be between 1 and 50 inclusive.
-	MaxNumResults *int64 `json:"max_num_results,omitempty" jsonschema:"description=The maximum number of results to return. This number should be between 1 and 50 inclusive."`
-	RankingOptions *RankingOptions `json:"ranking_options,omitempty"`
-	Filters Filters `json:"filters,omitempty"`
-	// The type of the file search tool. Always 'file_search'.
-	Type FileSearchToolType `json:"type" jsonschema:"description=The type of the file search tool. Always 'file_search'."`
-}
-
-// FileSearchToolCall The results of a file search tool call. See the 
-// [file search guide](/docs/guides/tools-file-search) for more information.
-type FileSearchToolCall struct {
-	// The unique ID of the file search tool call.
-	ID string `json:"id" jsonschema:"description=The unique ID of the file search tool call."`
-	// The type of the file search tool call. Always 'file_search_call'.
-	Type FileSearchToolCallType `json:"type" jsonschema:"description=The type of the file search tool call. Always 'file_search_call'."`
-	// The status of the file search tool call. One of 'in_progress', 
-// 'searching', 'incomplete' or 'failed',
-	Status FileSearchToolCallStatus `json:"status" jsonschema:"description=The status of the file search tool call. One of 'in_progress', 'searching', 'incomplete' or 'failed',"`
-	// The queries used to search for files.
-	Queries []string `json:"queries" jsonschema:"description=The queries used to search for files."`
-	// The results of the file search tool call.
-	Results []any `json:"results,omitempty" jsonschema:"description=The results of the file search tool call."`
-}
-
-// FileSearchToolCallStatus The status of the file search tool call. One of 'in_progress', 
-// 'searching', 'incomplete' or 'failed',
-type FileSearchToolCallStatus string
-
-const (
-	FileSearchToolCallStatusInProgress FileSearchToolCallStatus = "in_progress"
-	FileSearchToolCallStatusSearching FileSearchToolCallStatus = "searching"
-	FileSearchToolCallStatusCompleted FileSearchToolCallStatus = "completed"
-	FileSearchToolCallStatusIncomplete FileSearchToolCallStatus = "incomplete"
-	FileSearchToolCallStatusFailed FileSearchToolCallStatus = "failed"
-)
-
-// FileSearchToolCallType The type of the file search tool call. Always 'file_search_call'.
-type FileSearchToolCallType string
-
-const (
-	FileSearchToolCallTypeFileSearchCall FileSearchToolCallType = "file_search_call"
-)
-
-// FileSearchToolType The type of the file search tool. Always 'file_search'.
-type FileSearchToolType string
-
-const (
-	FileSearchToolTypeFileSearch FileSearchToolType = "file_search"
-)
-
-// Discriminated by "type" field.
-//
-//compschema:generate
-type Filters interface {
-	isFilters()
-	DiscriminatorValue() string
-}
-
-func (*ComparisonFilter) isFilters() {}
-func (*CompoundFilter) isFilters() {}
-
-func (x *ComparisonFilter) DiscriminatorValue() string { return string(x.Type) }
-func (x *CompoundFilter) DiscriminatorValue() string { return string(x.Type) }
-
-// FiltersFromComparisonFilter wraps a *ComparisonFilter as a Filters union value.
-func FiltersFromComparisonFilter(v *ComparisonFilter) Filters {
-	return v
-}
-
-// FiltersFromCompoundFilter wraps a *CompoundFilter as a Filters union value.
-func FiltersFromCompoundFilter(v *CompoundFilter) Filters {
-	return v
-}
-
-// UnmarshalFilters unmarshals JSON into the correct Filters variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalFilters(data []byte) (Filters, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "eq", "ne", "gt", "gte", "lt", "lte":
-		var val ComparisonFilter
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "and", "or":
-		var val CompoundFilter
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for Filters", disc.D)
-	}
-}
-
-
-// FunctionCallOutputItemParam The output of a function tool call.
-type FunctionCallOutputItemParam struct {
-	// The unique ID of the function tool call generated by the model.
-	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the function tool call generated by the model."`
-	// The type of the function tool call output. Always 'function_call_output'.
-	Type FunctionCallOutputItemParamType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
-	// A JSON string of the output of the function tool call.
-	Output string `json:"output" jsonschema:"maxLength=10485760,description=A JSON string of the output of the function tool call."`
-	// The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API.
-	Status *FunctionCallOutputItemParamStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	// The unique ID of the function tool call output. Populated when this item is returned via API.
-	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
-}
-
-// FunctionCallOutputItemParamStatus The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API.
-type FunctionCallOutputItemParamStatus string
-
-const (
-	FunctionCallOutputItemParamStatusInProgress FunctionCallOutputItemParamStatus = "in_progress"
-	FunctionCallOutputItemParamStatusCompleted FunctionCallOutputItemParamStatus = "completed"
-	FunctionCallOutputItemParamStatusIncomplete FunctionCallOutputItemParamStatus = "incomplete"
-)
-
-// FunctionCallOutputItemParamType The type of the function tool call output. Always 'function_call_output'.
-type FunctionCallOutputItemParamType string
-
-const (
-	FunctionCallOutputItemParamTypeFunctionCallOutput FunctionCallOutputItemParamType = "function_call_output"
-)
-
-// FunctionTool Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).
-type FunctionTool struct {
-	// The name of the function to call.
-	Name string `json:"name" jsonschema:"description=The name of the function to call."`
-	// A description of the function. Used by the model to determine whether or not to call the function.
-	Description *string `json:"description,omitempty" jsonschema:"description=A description of the function. Used by the model to determine whether or not to call the function."`
-	// A JSON schema object describing the parameters of the function.
-	Parameters map[string]FunctionTool `json:"parameters" jsonschema:"description=A JSON schema object describing the parameters of the function."`
-	// Whether to enforce strict parameter validation. Default 'true'.
-	Strict *bool `json:"strict" jsonschema:"description=Whether to enforce strict parameter validation. Default 'true'."`
-	// The type of the function tool. Always 'function'.
-	Type FunctionToolType `json:"type" jsonschema:"description=The type of the function tool. Always 'function'."`
-}
-
-// FunctionToolCall A tool call to run a function. See the 
-// [function calling guide](/docs/guides/function-calling) for more information.
-type FunctionToolCall struct {
-	// The unique ID of the function tool call.
-	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call."`
-	// The type of the function tool call. Always 'function_call'.
-	Type FunctionToolCallType `json:"type" jsonschema:"description=The type of the function tool call. Always 'function_call'."`
-	// The unique ID of the function tool call generated by the model.
-	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
-	// The name of the function to run.
-	Name string `json:"name" jsonschema:"description=The name of the function to run."`
-	// A JSON string of the arguments to pass to the function.
-	Arguments string `json:"arguments" jsonschema:"description=A JSON string of the arguments to pass to the function."`
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *FunctionToolCallStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-}
-
-// FunctionToolCallOutput The output of a function tool call.
-type FunctionToolCallOutput struct {
-	// The unique ID of the function tool call output. Populated when this item
-// is returned via API.
-	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
-	// The type of the function tool call output. Always 'function_call_output'.
-	Type FunctionToolCallOutputType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
-	// The unique ID of the function tool call generated by the model.
-	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
-	// A JSON string of the output of the function tool call.
-	Output string `json:"output" jsonschema:"description=A JSON string of the output of the function tool call."`
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *FunctionToolCallOutputStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-}
-
-// FunctionToolCallOutputResource The output of a function tool call.
-type FunctionToolCallOutputResource struct {
-	// The unique ID of the function tool call output. Populated when this item
-// is returned via API.
-	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
-	// The type of the function tool call output. Always 'function_call_output'.
-	Type FunctionToolCallOutputResourceType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
-	// The unique ID of the function tool call generated by the model.
-	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
-	// A JSON string of the output of the function tool call.
-	Output string `json:"output" jsonschema:"description=A JSON string of the output of the function tool call."`
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *FunctionToolCallOutputResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-}
-
-// FunctionToolCallOutputResourceStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type FunctionToolCallOutputResourceStatus string
-
-const (
-	FunctionToolCallOutputResourceStatusInProgress FunctionToolCallOutputResourceStatus = "in_progress"
-	FunctionToolCallOutputResourceStatusCompleted FunctionToolCallOutputResourceStatus = "completed"
-	FunctionToolCallOutputResourceStatusIncomplete FunctionToolCallOutputResourceStatus = "incomplete"
-)
-
-// FunctionToolCallOutputResourceType The type of the function tool call output. Always 'function_call_output'.
-type FunctionToolCallOutputResourceType string
-
-const (
-	FunctionToolCallOutputResourceTypeFunctionCallOutput FunctionToolCallOutputResourceType = "function_call_output"
-)
-
-// FunctionToolCallOutputStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type FunctionToolCallOutputStatus string
-
-const (
-	FunctionToolCallOutputStatusInProgress FunctionToolCallOutputStatus = "in_progress"
-	FunctionToolCallOutputStatusCompleted FunctionToolCallOutputStatus = "completed"
-	FunctionToolCallOutputStatusIncomplete FunctionToolCallOutputStatus = "incomplete"
-)
-
-// FunctionToolCallOutputType The type of the function tool call output. Always 'function_call_output'.
-type FunctionToolCallOutputType string
-
-const (
-	FunctionToolCallOutputTypeFunctionCallOutput FunctionToolCallOutputType = "function_call_output"
-)
-
-// FunctionToolCallResource A tool call to run a function. See the 
-// [function calling guide](/docs/guides/function-calling) for more information.
-type FunctionToolCallResource struct {
-	// The unique ID of the function tool call.
-	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call."`
-	// The type of the function tool call. Always 'function_call'.
-	Type FunctionToolCallResourceType `json:"type" jsonschema:"description=The type of the function tool call. Always 'function_call'."`
-	// The unique ID of the function tool call generated by the model.
-	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
-	// The name of the function to run.
-	Name string `json:"name" jsonschema:"description=The name of the function to run."`
-	// A JSON string of the arguments to pass to the function.
-	Arguments string `json:"arguments" jsonschema:"description=A JSON string of the arguments to pass to the function."`
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *FunctionToolCallResourceStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-}
-
-// FunctionToolCallResourceStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type FunctionToolCallResourceStatus string
-
-const (
-	FunctionToolCallResourceStatusInProgress FunctionToolCallResourceStatus = "in_progress"
-	FunctionToolCallResourceStatusCompleted FunctionToolCallResourceStatus = "completed"
-	FunctionToolCallResourceStatusIncomplete FunctionToolCallResourceStatus = "incomplete"
-)
-
-// FunctionToolCallResourceType The type of the function tool call. Always 'function_call'.
-type FunctionToolCallResourceType string
-
-const (
-	FunctionToolCallResourceTypeFunctionCall FunctionToolCallResourceType = "function_call"
-)
-
-// FunctionToolCallStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type FunctionToolCallStatus string
-
-const (
-	FunctionToolCallStatusInProgress FunctionToolCallStatus = "in_progress"
-	FunctionToolCallStatusCompleted FunctionToolCallStatus = "completed"
-	FunctionToolCallStatusIncomplete FunctionToolCallStatus = "incomplete"
-)
-
-// FunctionToolCallType The type of the function tool call. Always 'function_call'.
-type FunctionToolCallType string
-
-const (
-	FunctionToolCallTypeFunctionCall FunctionToolCallType = "function_call"
-)
-
-// FunctionToolType The type of the function tool. Always 'function'.
-type FunctionToolType string
-
-const (
-	FunctionToolTypeFunction FunctionToolType = "function"
-)
-
-// Includable Specify additional output data to include in the model response. Currently
-// supported values are:
-// - 'file_search_call.results': Include the search results of
-//   the file search tool call.
-// - 'message.input_image.image_url': Include image urls from the input message.
-// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
-type Includable string
-
-const (
-	IncludableFileSearchCallResults Includable = "file_search_call.results"
-	IncludableMessageInputImageImageURL Includable = "message.input_image.image_url"
-	IncludableComputerCallOutputOutputImageURL Includable = "computer_call_output.output.image_url"
-)
-
-// Discriminated by "type" field.
-//
-//compschema:generate
-type InputContent interface {
-	isInputContent()
-	DiscriminatorValue() string
-}
-
-func (*InputTextContent) isInputContent() {}
-func (*InputImageContent) isInputContent() {}
-func (*InputFileContent) isInputContent() {}
+func (*InputTextContent) isComputerCallOutputOutput() {}
+func (*OutputTextContent) isComputerCallOutputOutput() {}
+func (*TextContent) isComputerCallOutputOutput() {}
+func (*SummaryTextContent) isComputerCallOutputOutput() {}
+func (*ReasoningTextContent) isComputerCallOutputOutput() {}
+func (*RefusalContent) isComputerCallOutputOutput() {}
+func (*InputImageContent) isComputerCallOutputOutput() {}
+func (*ComputerScreenshotContent) isComputerCallOutputOutput() {}
+func (*InputFileContent) isComputerCallOutputOutput() {}
 
 func (x *InputTextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *OutputTextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *TextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *SummaryTextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *ReasoningTextContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *RefusalContent) DiscriminatorValue() string { return string(x.Type) }
 func (x *InputImageContent) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerScreenshotContent) DiscriminatorValue() string { return string(x.Type) }
 func (x *InputFileContent) DiscriminatorValue() string { return string(x.Type) }
 
-// InputContentFromInputTextContent wraps a *InputTextContent as a InputContent union value.
-func InputContentFromInputTextContent(v *InputTextContent) InputContent {
+// ComputerCallOutputOutputFromInputTextContent wraps a *InputTextContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromInputTextContent(v *InputTextContent) ComputerCallOutputOutput {
 	return v
 }
 
-// InputContentFromInputImageContent wraps a *InputImageContent as a InputContent union value.
-func InputContentFromInputImageContent(v *InputImageContent) InputContent {
+// ComputerCallOutputOutputFromOutputTextContent wraps a *OutputTextContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromOutputTextContent(v *OutputTextContent) ComputerCallOutputOutput {
 	return v
 }
 
-// InputContentFromInputFileContent wraps a *InputFileContent as a InputContent union value.
-func InputContentFromInputFileContent(v *InputFileContent) InputContent {
+// ComputerCallOutputOutputFromTextContent wraps a *TextContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromTextContent(v *TextContent) ComputerCallOutputOutput {
 	return v
 }
 
-// UnmarshalInputContent unmarshals JSON into the correct InputContent variant.
+// ComputerCallOutputOutputFromSummaryTextContent wraps a *SummaryTextContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromSummaryTextContent(v *SummaryTextContent) ComputerCallOutputOutput {
+	return v
+}
+
+// ComputerCallOutputOutputFromReasoningTextContent wraps a *ReasoningTextContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromReasoningTextContent(v *ReasoningTextContent) ComputerCallOutputOutput {
+	return v
+}
+
+// ComputerCallOutputOutputFromRefusalContent wraps a *RefusalContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromRefusalContent(v *RefusalContent) ComputerCallOutputOutput {
+	return v
+}
+
+// ComputerCallOutputOutputFromInputImageContent wraps a *InputImageContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromInputImageContent(v *InputImageContent) ComputerCallOutputOutput {
+	return v
+}
+
+// ComputerCallOutputOutputFromComputerScreenshotContent wraps a *ComputerScreenshotContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromComputerScreenshotContent(v *ComputerScreenshotContent) ComputerCallOutputOutput {
+	return v
+}
+
+// ComputerCallOutputOutputFromInputFileContent wraps a *InputFileContent as a ComputerCallOutputOutput union value.
+func ComputerCallOutputOutputFromInputFileContent(v *InputFileContent) ComputerCallOutputOutput {
+	return v
+}
+
+// UnmarshalComputerCallOutputOutput unmarshals JSON into the correct ComputerCallOutputOutput variant.
 // Dispatches on the "type" discriminator field.
-func UnmarshalInputContent(data []byte) (InputContent, error) {
+func UnmarshalComputerCallOutputOutput(data []byte) (ComputerCallOutputOutput, error) {
 	var disc struct {
 		D string `json:"type"`
 	}
@@ -1520,8 +3313,44 @@ func UnmarshalInputContent(data []byte) (InputContent, error) {
 			return nil, err
 		}
 		return &val, nil
+	case "output_text":
+		var val OutputTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val TextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "summary_text":
+		var val SummaryTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning_text":
+		var val ReasoningTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "refusal":
+		var val RefusalContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
 	case "input_image":
 		var val InputImageContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_screenshot":
+		var val ComputerScreenshotContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -1533,22 +3362,2380 @@ func UnmarshalInputContent(data []byte) (InputContent, error) {
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for InputContent", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ComputerCallOutputOutput", disc.D)
 	}
 }
 
+
+type ComputerCallOutputStatus string
+
+const (
+	ComputerCallOutputStatusCompleted ComputerCallOutputStatus = "completed"
+	ComputerCallOutputStatusIncomplete ComputerCallOutputStatus = "incomplete"
+	ComputerCallOutputStatusFailed ComputerCallOutputStatus = "failed"
+)
+
+// ComputerCallOutputType The type of the item. Always 'computer_call_output'.
+type ComputerCallOutputType string
+
+const (
+	ComputerCallOutputTypeComputerCallOutput ComputerCallOutputType = "computer_call_output"
+)
+
+// ComputerCallSafetyCheckParam A pending safety check for the computer call.
+type ComputerCallSafetyCheckParam struct {
+	// The ID of the pending safety check.
+	ID string `json:"id" jsonschema:"description=The ID of the pending safety check."`
+	// The type of the pending safety check.
+	Code *string `json:"code,omitempty" jsonschema:"description=The type of the pending safety check."`
+	// Details about the pending safety check.
+	Message *string `json:"message,omitempty" jsonschema:"description=Details about the pending safety check."`
+}
+
+// ComputerCallType The type of the item. Always 'computer_call'.
+type ComputerCallType string
+
+const (
+	ComputerCallTypeComputerCall ComputerCallType = "computer_call"
+)
+
+type ComputerEnvironment string
+
+const (
+	ComputerEnvironmentWindows ComputerEnvironment = "windows"
+	ComputerEnvironmentMac ComputerEnvironment = "mac"
+	ComputerEnvironmentLinux ComputerEnvironment = "linux"
+	ComputerEnvironmentBrowser ComputerEnvironment = "browser"
+)
+
+type ComputerEnvironment1 string
+
+const (
+	ComputerEnvironment1Windows ComputerEnvironment1 = "windows"
+	ComputerEnvironment1Mac ComputerEnvironment1 = "mac"
+	ComputerEnvironment1Linux ComputerEnvironment1 = "linux"
+	ComputerEnvironment1Ubuntu ComputerEnvironment1 = "ubuntu"
+	ComputerEnvironment1Browser ComputerEnvironment1 = "browser"
+)
+
+// ComputerScreenshotContent A screenshot of a computer.
+type ComputerScreenshotContent struct {
+	// Specifies the event type. For a computer screenshot, this property is always set to 'computer_screenshot'.
+	Type ComputerScreenshotContentType `json:"type" jsonschema:"description=Specifies the event type. For a computer screenshot, this property is always set to 'computer_screenshot'."`
+	// The URL of the screenshot image.
+	ImageURL *string `json:"image_url" jsonschema:"description=The URL of the screenshot image."`
+	// The identifier of an uploaded file that contains the screenshot.
+	FileID *string `json:"file_id" jsonschema:"description=The identifier of an uploaded file that contains the screenshot."`
+}
+
+// ComputerScreenshotContentType Specifies the event type. For a computer screenshot, this property is always set to 'computer_screenshot'.
+type ComputerScreenshotContentType string
+
+const (
+	ComputerScreenshotContentTypeComputerScreenshot ComputerScreenshotContentType = "computer_screenshot"
+)
+
+// ComputerScreenshotParam An image input to the model. Learn about [image inputs](/docs/guides/vision)
+type ComputerScreenshotParam struct {
+	// The URL of the screenshot image.
+	ImageURL *string `json:"image_url,omitempty" jsonschema:"maxLength=20971520,description=The URL of the screenshot image."`
+	// The ID of an uploaded screenshot image file.
+	FileID *string `json:"file_id,omitempty" jsonschema:"description=The ID of an uploaded screenshot image file."`
+	Detail *DetailEnum `json:"detail,omitempty"`
+	// The content type. Always 'computer_screenshot'.
+	Type ComputerScreenshotParamType `json:"type" jsonschema:"description=The content type. Always 'computer_screenshot'."`
+}
+
+// ComputerScreenshotParamType The content type. Always 'computer_screenshot'.
+type ComputerScreenshotParamType string
+
+const (
+	ComputerScreenshotParamTypeComputerScreenshot ComputerScreenshotParamType = "computer_screenshot"
+)
+
+type ComputerToolChoice struct {
+	Type ComputerToolChoiceType `json:"type"`
+}
+
+type ComputerToolChoiceType string
+
+const (
+	ComputerToolChoiceTypeComputerUsePreview ComputerToolChoiceType = "computer_use_preview"
+)
+
+type ComputerToolParam struct {
+	// The type of the tool. Always 'computer-preview'.
+	Type ComputerToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'computer-preview'."`
+	// The display width in pixels.
+	DisplayWidth int64 `json:"display_width" jsonschema:"minimum=1,description=The display width in pixels."`
+	// The display height in pixels.
+	DisplayHeight int64 `json:"display_height" jsonschema:"minimum=1,description=The display height in pixels."`
+	Environment ComputerEnvironment `json:"environment"`
+}
+
+// ComputerToolParamType The type of the tool. Always 'computer-preview'.
+type ComputerToolParamType string
+
+const (
+	ComputerToolParamTypeComputerPreview ComputerToolParamType = "computer-preview"
+)
+
+// ComputerUsePreviewTool A tool that controls a virtual computer. Learn more about the [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+type ComputerUsePreviewTool struct {
+	// The type of the computer use tool. Always 'computer_use_preview'.
+	Type ComputerUsePreviewToolType `json:"type" jsonschema:"description=The type of the computer use tool. Always 'computer_use_preview'."`
+	Environment ComputerEnvironment1 `json:"environment"`
+	// The width of the computer display.
+	DisplayWidth int64 `json:"display_width" jsonschema:"description=The width of the computer display."`
+	// The height of the computer display.
+	DisplayHeight int64 `json:"display_height" jsonschema:"description=The height of the computer display."`
+}
+
+type ComputerUsePreviewToolParam struct {
+	// The type of the tool. Always 'computer_use_preview'.
+	Type ComputerUsePreviewToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'computer_use_preview'."`
+	// The display width in pixels.
+	DisplayWidth int64 `json:"display_width" jsonschema:"minimum=1,description=The display width in pixels."`
+	// The display height in pixels.
+	DisplayHeight int64 `json:"display_height" jsonschema:"minimum=1,description=The display height in pixels."`
+	Environment ComputerEnvironment `json:"environment"`
+}
+
+// ComputerUsePreviewToolParamType The type of the tool. Always 'computer_use_preview'.
+type ComputerUsePreviewToolParamType string
+
+const (
+	ComputerUsePreviewToolParamTypeComputerUsePreview ComputerUsePreviewToolParamType = "computer_use_preview"
+)
+
+// ComputerUsePreviewToolType The type of the computer use tool. Always 'computer_use_preview'.
+type ComputerUsePreviewToolType string
+
+const (
+	ComputerUsePreviewToolTypeComputerUsePreview ComputerUsePreviewToolType = "computer_use_preview"
+)
+
+// ContainerFileCitationBody A citation for a container file used to generate a model response.
+type ContainerFileCitationBody struct {
+	// The index of the first character of the container file citation in the message.
+	StartIndex int64 `json:"start_index" jsonschema:"description=The index of the first character of the container file citation in the message."`
+	// The index of the last character of the container file citation in the message.
+	EndIndex int64 `json:"end_index" jsonschema:"description=The index of the last character of the container file citation in the message."`
+	// The filename of the container file cited.
+	Filename string `json:"filename" jsonschema:"description=The filename of the container file cited."`
+	// The type of the container file citation. Always 'container_file_citation'.
+	Type ContainerFileCitationBodyType `json:"type" jsonschema:"description=The type of the container file citation. Always 'container_file_citation'."`
+	// The ID of the container file.
+	ContainerID string `json:"container_id" jsonschema:"description=The ID of the container file."`
+	// The ID of the file.
+	FileID string `json:"file_id" jsonschema:"description=The ID of the file."`
+}
+
+// ContainerFileCitationBodyType The type of the container file citation. Always 'container_file_citation'.
+type ContainerFileCitationBodyType string
+
+const (
+	ContainerFileCitationBodyTypeContainerFileCitation ContainerFileCitationBodyType = "container_file_citation"
+)
+
+type ContainerFileCitationParam struct {
+	// The citation type. Always 'container_file_citation'.
+	Type ContainerFileCitationParamType `json:"type" jsonschema:"description=The citation type. Always 'container_file_citation'."`
+	// The index of the first character of the citation in the message.
+	StartIndex int64 `json:"start_index" jsonschema:"minimum=0,description=The index of the first character of the citation in the message."`
+	// The index of the last character of the citation in the message.
+	EndIndex int64 `json:"end_index" jsonschema:"minimum=0,description=The index of the last character of the citation in the message."`
+	// The ID of the container.
+	ContainerID string `json:"container_id" jsonschema:"description=The ID of the container."`
+	// The ID of the container file.
+	FileID string `json:"file_id" jsonschema:"description=The ID of the container file."`
+	// The filename of the container file cited.
+	Filename string `json:"filename" jsonschema:"description=The filename of the container file cited."`
+}
+
+// ContainerFileCitationParamType The citation type. Always 'container_file_citation'.
+type ContainerFileCitationParamType string
+
+const (
+	ContainerFileCitationParamTypeContainerFileCitation ContainerFileCitationParamType = "container_file_citation"
+)
+
+type ContainerMemoryLimit string
+
+const (
+	ContainerMemoryLimitN1g ContainerMemoryLimit = "1g"
+	ContainerMemoryLimitN4g ContainerMemoryLimit = "4g"
+	ContainerMemoryLimitN16g ContainerMemoryLimit = "16g"
+	ContainerMemoryLimitN64g ContainerMemoryLimit = "64g"
+)
+
+// ContextEdit A record of context management changes that were applied during response generation.
+type ContextEdit struct {
+	Details *ContextEditDetails `json:"details,omitempty"`
+	// The type of context management strategy that was applied.
+	Type string `json:"type" jsonschema:"description=The type of context management strategy that was applied."`
+	// A human-readable summary of the context edit that was provided.
+	Summary string `json:"summary" jsonschema:"description=A human-readable summary of the context edit that was provided."`
+}
+
+// ContextEditDetails Detailed counts for a context management edit that was applied.
+type ContextEditDetails struct {
+	// The number of input tokens that were removed from the context.
+	ClearedInputTokens *int64 `json:"cleared_input_tokens,omitempty" jsonschema:"description=The number of input tokens that were removed from the context."`
+	// The IDs of tool calls whose results were removed from the context.
+	ClearedToolCallIds []string `json:"cleared_tool_call_ids,omitempty" jsonschema:"description=The IDs of tool calls whose results were removed from the context."`
+}
+
+// Conversation The conversation that this response belonged to. Input items and output items from this response were automatically added to this conversation.
+type Conversation struct {
+	// The unique ID of the conversation that this response was associated with.
+	ID string `json:"id" jsonschema:"description=The unique ID of the conversation that this response was associated with."`
+}
+
+// ConversationParam The conversation that this response belongs to.
+type ConversationParam struct {
+	// The unique ID of the conversation.
+	ID string `json:"id" jsonschema:"description=The unique ID of the conversation."`
+}
+
+type CoordParam struct {
+	// The x-coordinate of this point in the drag path.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate of this point in the drag path."`
+	// The y-coordinate of this point in the drag path.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate of this point in the drag path."`
+}
+
+type CreateResponseBody struct {
+	// Nucleus sampling parameter, between 0 and 1. The model considers only the tokens with the top cumulative probability.
+	TopP *float64 `json:"top_p,omitempty" jsonschema:"description=Nucleus sampling parameter, between 0 and 1. The model considers only the tokens with the top cumulative probability."`
+	// Whether to store the response so it can be retrieved later.
+	Store *bool `json:"store,omitempty" jsonschema:"description=Whether to store the response so it can be retrieved later."`
+	// Penalizes new tokens based on whether they appear in the text so far.
+	PresencePenalty *float64 `json:"presence_penalty,omitempty" jsonschema:"description=Penalizes new tokens based on whether they appear in the text so far."`
+	StreamOptions *StreamOptionsParam `json:"stream_options,omitempty"`
+	// Additional instructions to guide the model for this request.
+	Instructions *string `json:"instructions,omitempty" jsonschema:"description=Additional instructions to guide the model for this request."`
+	ToolChoice ToolChoiceParam `json:"tool_choice,omitempty"`
+	// The maximum number of tool calls the model may make while generating the response.
+	MaxToolCalls *int64 `json:"max_tool_calls,omitempty" jsonschema:"minimum=1,description=The maximum number of tool calls the model may make while generating the response."`
+	// The ID of the response to use as the prior turn for this request.
+	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The ID of the response to use as the prior turn for this request."`
+	// A list of tools that the model may call while generating the response.
+	Tools []ResponsesToolParam `json:"tools,omitempty" jsonschema:"description=A list of tools that the model may call while generating the response."`
+	// Whether the model may call multiple tools in parallel.
+	ParallelToolCalls *bool `json:"parallel_tool_calls,omitempty" jsonschema:"description=Whether the model may call multiple tools in parallel."`
+	PromptCacheRetention *PromptCacheRetentionEnum `json:"prompt_cache_retention,omitempty"`
+	// The model to use for this request, e.g. 'gpt-5.2'.
+	Model *string `json:"model,omitempty" jsonschema:"description=The model to use for this request, e.g. 'gpt-5.2'."`
+	// The maximum number of tokens the model may generate for this response.
+	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"minimum=16,description=The maximum number of tokens the model may generate for this response."`
+	// A key to use when reading from or writing to the prompt cache.
+	PromptCacheKey *string `json:"prompt_cache_key,omitempty" jsonschema:"maxLength=64,description=A key to use when reading from or writing to the prompt cache."`
+	Include []IncludeEnum `json:"include,omitempty"`
+	Metadata *MetadataParam `json:"metadata,omitempty"`
+	Text *TextParam `json:"text,omitempty"`
+	// Penalizes new tokens based on their frequency in the text so far.
+	FrequencyPenalty *float64 `json:"frequency_penalty,omitempty" jsonschema:"description=Penalizes new tokens based on their frequency in the text so far."`
+	// A unique identifier representing your end user.
+	User *string `json:"user,omitempty" jsonschema:"maxLength=64,description=A unique identifier representing your end user."`
+	Conversation *any `json:"conversation,omitempty"`
+	Input *any `json:"input,omitempty"`
+	// Whether to run the request in the background and return immediately.
+	Background *bool `json:"background,omitempty" jsonschema:"description=Whether to run the request in the background and return immediately."`
+	Reasoning *ReasoningParam `json:"reasoning,omitempty"`
+	// A stable identifier used for safety monitoring and abuse detection.
+	SafetyIdentifier *string `json:"safety_identifier,omitempty" jsonschema:"maxLength=64,description=A stable identifier used for safety monitoring and abuse detection."`
+	Truncation *TruncationEnum `json:"truncation,omitempty"`
+	ServiceTier *ServiceTierEnum `json:"service_tier,omitempty"`
+	// The number of most likely tokens to return at each position, along with their log probabilities.
+	TopLogprobs *int64 `json:"top_logprobs,omitempty" jsonschema:"minimum=0,maximum=20,description=The number of most likely tokens to return at each position, along with their log probabilities."`
+	// Whether to stream response events as server-sent events.
+	Stream *bool `json:"stream,omitempty" jsonschema:"description=Whether to stream response events as server-sent events."`
+	// Sampling temperature to use, between 0 and 2. Higher values make the output more random.
+	Temperature *float64 `json:"temperature,omitempty" jsonschema:"description=Sampling temperature to use, between 0 and 2. Higher values make the output more random."`
+}
+
+// CustomGrammarFormatField A grammar defined by the user.
+type CustomGrammarFormatField struct {
+	Syntax GrammarSyntax1 `json:"syntax"`
+	// The grammar definition.
+	Definition string `json:"definition" jsonschema:"description=The grammar definition."`
+	// Grammar format. Always 'grammar'.
+	Type CustomGrammarFormatFieldType `json:"type" jsonschema:"description=Grammar format. Always 'grammar'."`
+}
+
+// CustomGrammarFormatFieldType Grammar format. Always 'grammar'.
+type CustomGrammarFormatFieldType string
+
+const (
+	CustomGrammarFormatFieldTypeGrammar CustomGrammarFormatFieldType = "grammar"
+)
+
+// CustomGrammarFormatParam A grammar defined by the user.
+type CustomGrammarFormatParam struct {
+	// Grammar format. Always 'grammar'.
+	Type CustomGrammarFormatParamType `json:"type" jsonschema:"description=Grammar format. Always 'grammar'."`
+	Syntax GrammarSyntax `json:"syntax"`
+	// The grammar definition.
+	Definition string `json:"definition" jsonschema:"description=The grammar definition."`
+}
+
+// CustomGrammarFormatParamType Grammar format. Always 'grammar'.
+type CustomGrammarFormatParamType string
+
+const (
+	CustomGrammarFormatParamTypeGrammar CustomGrammarFormatParamType = "grammar"
+)
+
+// CustomTextFormatField Unconstrained free-form text.
+type CustomTextFormatField struct {
+	// Unconstrained text format. Always 'text'.
+	Type CustomTextFormatFieldType `json:"type" jsonschema:"description=Unconstrained text format. Always 'text'."`
+}
+
+// CustomTextFormatFieldType Unconstrained text format. Always 'text'.
+type CustomTextFormatFieldType string
+
+const (
+	CustomTextFormatFieldTypeText CustomTextFormatFieldType = "text"
+)
+
+// CustomTextFormatParam Unconstrained free-form text.
+type CustomTextFormatParam struct {
+	// Unconstrained text format. Always 'text'.
+	Type CustomTextFormatParamType `json:"type" jsonschema:"description=Unconstrained text format. Always 'text'."`
+}
+
+// CustomTextFormatParamType Unconstrained text format. Always 'text'.
+type CustomTextFormatParamType string
+
+const (
+	CustomTextFormatParamTypeText CustomTextFormatParamType = "text"
+)
+
+// CustomTool A custom tool that processes input using a specified format. Learn more about [custom tools](/docs/guides/function-calling#custom-tools).
+type CustomTool struct {
+	// The type of the custom tool. Always 'custom'.
+	Type CustomToolType `json:"type" jsonschema:"description=The type of the custom tool. Always 'custom'."`
+	// The name of the custom tool, used to identify it in tool calls.
+	Name string `json:"name" jsonschema:"description=The name of the custom tool, used to identify it in tool calls."`
+	// Optional description of the custom tool, used to provide more context.
+	Description *string `json:"description" jsonschema:"description=Optional description of the custom tool, used to provide more context."`
+	Format CustomToolFormat `json:"format"`
+}
+
+// CustomToolCall A custom tool call that was generated by the model.
+type CustomToolCall struct {
+	// The input string that was generated for the tool.
+	Input string `json:"input" jsonschema:"description=The input string that was generated for the tool."`
+	Status FunctionCallStatus `json:"status"`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+	// The type of the item. Always 'custom_tool_call'.
+	Type CustomToolCallType `json:"type" jsonschema:"description=The type of the item. Always 'custom_tool_call'."`
+	// The unique ID of the custom tool call item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the custom tool call item."`
+	// The unique ID of the custom tool call that was generated.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the custom tool call that was generated."`
+	// The name of the custom tool that was called.
+	Name string `json:"name" jsonschema:"description=The name of the custom tool that was called."`
+}
+
+type CustomToolCallItemParam struct {
+	// The unique ID of this custom tool call.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this custom tool call."`
+	// The unique ID of the custom tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the custom tool call generated by the model."`
+	// The item type. Always 'custom_tool_call'.
+	Type CustomToolCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'custom_tool_call'."`
+	// The name of the custom tool to call.
+	Name string `json:"name" jsonschema:"minLength=1,maxLength=64,pattern=^[a-zA-Z0-9_-]+$,description=The name of the custom tool to call."`
+	// The input to the custom tool call.
+	Input string `json:"input" jsonschema:"description=The input to the custom tool call."`
+	Status *FunctionCallItemStatus `json:"status,omitempty"`
+}
+
+// CustomToolCallItemParamType The item type. Always 'custom_tool_call'.
+type CustomToolCallItemParamType string
+
+const (
+	CustomToolCallItemParamTypeCustomToolCall CustomToolCallItemParamType = "custom_tool_call"
+)
+
+// CustomToolCallOutput A custom tool call output that was returned by the tool.
+type CustomToolCallOutput struct {
+	// The unique ID of the function tool call output. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
+	// The unique ID of the function tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
+	Output CustomToolCallOutputOutput `json:"output"`
+	Status FunctionCallOutputStatusEnum `json:"status"`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+	// The type of the custom tool call output. Always 'custom_tool_call_output'.
+	Type CustomToolCallOutputType `json:"type" jsonschema:"description=The type of the custom tool call output. Always 'custom_tool_call_output'."`
+}
+
+type CustomToolCallOutputItemParam struct {
+	// The unique ID of this custom tool call output.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this custom tool call output."`
+	// The unique ID of the custom tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the custom tool call generated by the model."`
+	// The item type. Always 'custom_tool_call_output'.
+	Type CustomToolCallOutputItemParamType `json:"type" jsonschema:"description=The item type. Always 'custom_tool_call_output'."`
+	// Text, image, or file output of the custom tool call.
+	Output CustomToolCallOutputItemParamOutput `json:"output" jsonschema:"description=Text, image, or file output of the custom tool call."`
+	Status *FunctionCallItemStatus `json:"status,omitempty"`
+}
+
+// CustomToolCallOutputItemParamOutput Text, image, or file output of the custom tool call.
+//
+//compschema:generate
+type CustomToolCallOutputItemParamOutput interface {
+	isCustomToolCallOutputItemParamOutput()
+}
+
+
+// CustomToolCallOutputItemParamOutputString wraps a string value as a CustomToolCallOutputItemParamOutput variant.
+type CustomToolCallOutputItemParamOutputString struct { Value string }
+func (*CustomToolCallOutputItemParamOutputString) isCustomToolCallOutputItemParamOutput() {}
+
+// CustomToolCallOutputItemParamOutputSliceany wraps a []any value as a CustomToolCallOutputItemParamOutput variant.
+type CustomToolCallOutputItemParamOutputSliceany struct { Value []any }
+func (*CustomToolCallOutputItemParamOutputSliceany) isCustomToolCallOutputItemParamOutput() {}
+
+func (w CustomToolCallOutputItemParamOutputString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *CustomToolCallOutputItemParamOutputString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w CustomToolCallOutputItemParamOutputSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *CustomToolCallOutputItemParamOutputSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewCustomToolCallOutputItemParamOutputString creates a CustomToolCallOutputItemParamOutput from a string value.
+func NewCustomToolCallOutputItemParamOutputString(v string) CustomToolCallOutputItemParamOutput {
+	return &CustomToolCallOutputItemParamOutputString{Value: v}
+}
+
+// NewCustomToolCallOutputItemParamOutputSliceany creates a CustomToolCallOutputItemParamOutput from a []any value.
+func NewCustomToolCallOutputItemParamOutputSliceany(v []any) CustomToolCallOutputItemParamOutput {
+	return &CustomToolCallOutputItemParamOutputSliceany{Value: v}
+}
+
+// UnmarshalCustomToolCallOutputItemParamOutput unmarshals JSON into the correct CustomToolCallOutputItemParamOutput variant.
+func UnmarshalCustomToolCallOutputItemParamOutput(data []byte) (CustomToolCallOutputItemParamOutput, error) {
+	{
+		var val CustomToolCallOutputItemParamOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CustomToolCallOutputItemParamOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CustomToolCallOutputItemParamOutput")
+}
+
+
+// CustomToolCallOutputItemParamType The item type. Always 'custom_tool_call_output'.
+type CustomToolCallOutputItemParamType string
+
+const (
+	CustomToolCallOutputItemParamTypeCustomToolCallOutput CustomToolCallOutputItemParamType = "custom_tool_call_output"
+)
+
+//
+//compschema:generate
+type CustomToolCallOutputOutput interface {
+	isCustomToolCallOutputOutput()
+}
+
+
+// CustomToolCallOutputOutputString wraps a string value as a CustomToolCallOutputOutput variant.
+type CustomToolCallOutputOutputString struct { Value string }
+func (*CustomToolCallOutputOutputString) isCustomToolCallOutputOutput() {}
+
+// CustomToolCallOutputOutputSliceany wraps a []any value as a CustomToolCallOutputOutput variant.
+type CustomToolCallOutputOutputSliceany struct { Value []any }
+func (*CustomToolCallOutputOutputSliceany) isCustomToolCallOutputOutput() {}
+
+func (w CustomToolCallOutputOutputString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *CustomToolCallOutputOutputString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w CustomToolCallOutputOutputSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *CustomToolCallOutputOutputSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewCustomToolCallOutputOutputString creates a CustomToolCallOutputOutput from a string value.
+func NewCustomToolCallOutputOutputString(v string) CustomToolCallOutputOutput {
+	return &CustomToolCallOutputOutputString{Value: v}
+}
+
+// NewCustomToolCallOutputOutputSliceany creates a CustomToolCallOutputOutput from a []any value.
+func NewCustomToolCallOutputOutputSliceany(v []any) CustomToolCallOutputOutput {
+	return &CustomToolCallOutputOutputSliceany{Value: v}
+}
+
+// UnmarshalCustomToolCallOutputOutput unmarshals JSON into the correct CustomToolCallOutputOutput variant.
+func UnmarshalCustomToolCallOutputOutput(data []byte) (CustomToolCallOutputOutput, error) {
+	{
+		var val CustomToolCallOutputOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CustomToolCallOutputOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CustomToolCallOutputOutput")
+}
+
+
+// CustomToolCallOutputType The type of the custom tool call output. Always 'custom_tool_call_output'.
+type CustomToolCallOutputType string
+
+const (
+	CustomToolCallOutputTypeCustomToolCallOutput CustomToolCallOutputType = "custom_tool_call_output"
+)
+
+// CustomToolCallType The type of the item. Always 'custom_tool_call'.
+type CustomToolCallType string
+
+const (
+	CustomToolCallTypeCustomToolCall CustomToolCallType = "custom_tool_call"
+)
+
+type CustomToolChoice struct {
+	Type CustomToolChoiceType `json:"type"`
+	Name *string `json:"name,omitempty"`
+}
+
+type CustomToolChoiceType string
+
+const (
+	CustomToolChoiceTypeCustom CustomToolChoiceType = "custom"
+)
+
+// CustomToolFormat The input format for the custom tool. Default is unconstrained text.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type CustomToolFormat interface {
+	isCustomToolFormat()
+	DiscriminatorValue() string
+}
+
+func (*CustomTextFormatField) isCustomToolFormat() {}
+func (*CustomGrammarFormatField) isCustomToolFormat() {}
+
+func (x *CustomTextFormatField) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomGrammarFormatField) DiscriminatorValue() string { return string(x.Type) }
+
+// CustomToolFormatFromCustomTextFormatField wraps a *CustomTextFormatField as a CustomToolFormat union value.
+func CustomToolFormatFromCustomTextFormatField(v *CustomTextFormatField) CustomToolFormat {
+	return v
+}
+
+// CustomToolFormatFromCustomGrammarFormatField wraps a *CustomGrammarFormatField as a CustomToolFormat union value.
+func CustomToolFormatFromCustomGrammarFormatField(v *CustomGrammarFormatField) CustomToolFormat {
+	return v
+}
+
+// UnmarshalCustomToolFormat unmarshals JSON into the correct CustomToolFormat variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalCustomToolFormat(data []byte) (CustomToolFormat, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "text":
+		var val CustomTextFormatField
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "grammar":
+		var val CustomGrammarFormatField
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for CustomToolFormat", disc.D)
+	}
+}
+
+
+// CustomToolParam A custom tool that processes input using a specified format. Learn more about   [custom tools](/docs/guides/function-calling#custom-tools)
+type CustomToolParam struct {
+	// The input format for the custom tool. Default is unconstrained text.
+	Format CustomToolParamFormat `json:"format,omitempty" jsonschema:"description=The input format for the custom tool. Default is unconstrained text."`
+	// The type of the custom tool. Always 'custom'.
+	Type CustomToolParamType `json:"type" jsonschema:"description=The type of the custom tool. Always 'custom'."`
+	// The name of the custom tool, used to identify it in tool calls.
+	Name string `json:"name" jsonschema:"description=The name of the custom tool, used to identify it in tool calls."`
+	// Optional description of the custom tool, used to provide more context.
+	Description *string `json:"description,omitempty" jsonschema:"description=Optional description of the custom tool, used to provide more context."`
+}
+
+// CustomToolParamFormat The input format for the custom tool. Default is unconstrained text.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type CustomToolParamFormat interface {
+	isCustomToolParamFormat()
+	DiscriminatorValue() string
+}
+
+func (*CustomTextFormatParam) isCustomToolParamFormat() {}
+func (*CustomGrammarFormatParam) isCustomToolParamFormat() {}
+
+func (x *CustomTextFormatParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomGrammarFormatParam) DiscriminatorValue() string { return string(x.Type) }
+
+// CustomToolParamFormatFromCustomTextFormatParam wraps a *CustomTextFormatParam as a CustomToolParamFormat union value.
+func CustomToolParamFormatFromCustomTextFormatParam(v *CustomTextFormatParam) CustomToolParamFormat {
+	return v
+}
+
+// CustomToolParamFormatFromCustomGrammarFormatParam wraps a *CustomGrammarFormatParam as a CustomToolParamFormat union value.
+func CustomToolParamFormatFromCustomGrammarFormatParam(v *CustomGrammarFormatParam) CustomToolParamFormat {
+	return v
+}
+
+// UnmarshalCustomToolParamFormat unmarshals JSON into the correct CustomToolParamFormat variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalCustomToolParamFormat(data []byte) (CustomToolParamFormat, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "text":
+		var val CustomTextFormatParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "grammar":
+		var val CustomGrammarFormatParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for CustomToolParamFormat", disc.D)
+	}
+}
+
+
+// CustomToolParamType The type of the custom tool. Always 'custom'.
+type CustomToolParamType string
+
+const (
+	CustomToolParamTypeCustom CustomToolParamType = "custom"
+)
+
+// CustomToolType The type of the custom tool. Always 'custom'.
+type CustomToolType string
+
+const (
+	CustomToolTypeCustom CustomToolType = "custom"
+)
+
+type DetailEnum string
+
+const (
+	DetailEnumLow DetailEnum = "low"
+	DetailEnumHigh DetailEnum = "high"
+	DetailEnumAuto DetailEnum = "auto"
+)
+
+type DeveloperMessageItemParam struct {
+	// The unique ID of this message item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this message item."`
+	// The item type. Always 'message'.
+	Type DeveloperMessageItemParamType `json:"type" jsonschema:"description=The item type. Always 'message'."`
+	// The message role. Always 'developer'.
+	Role DeveloperMessageItemParamRole `json:"role" jsonschema:"description=The message role. Always 'developer'."`
+	// The message content, as an array of content parts.
+	Content DeveloperMessageItemParamContent `json:"content" jsonschema:"description=The message content, as an array of content parts."`
+	// The status of the message item.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the message item."`
+}
+
+// DeveloperMessageItemParamContent The message content, as an array of content parts.
+//
+//compschema:generate
+type DeveloperMessageItemParamContent interface {
+	isDeveloperMessageItemParamContent()
+}
+
+
+// DeveloperMessageItemParamContentSliceany wraps a []any value as a DeveloperMessageItemParamContent variant.
+type DeveloperMessageItemParamContentSliceany struct { Value []any }
+func (*DeveloperMessageItemParamContentSliceany) isDeveloperMessageItemParamContent() {}
+
+// DeveloperMessageItemParamContentString wraps a string value as a DeveloperMessageItemParamContent variant.
+type DeveloperMessageItemParamContentString struct { Value string }
+func (*DeveloperMessageItemParamContentString) isDeveloperMessageItemParamContent() {}
+
+func (w DeveloperMessageItemParamContentSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *DeveloperMessageItemParamContentSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w DeveloperMessageItemParamContentString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *DeveloperMessageItemParamContentString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewDeveloperMessageItemParamContentSliceany creates a DeveloperMessageItemParamContent from a []any value.
+func NewDeveloperMessageItemParamContentSliceany(v []any) DeveloperMessageItemParamContent {
+	return &DeveloperMessageItemParamContentSliceany{Value: v}
+}
+
+// NewDeveloperMessageItemParamContentString creates a DeveloperMessageItemParamContent from a string value.
+func NewDeveloperMessageItemParamContentString(v string) DeveloperMessageItemParamContent {
+	return &DeveloperMessageItemParamContentString{Value: v}
+}
+
+// UnmarshalDeveloperMessageItemParamContent unmarshals JSON into the correct DeveloperMessageItemParamContent variant.
+func UnmarshalDeveloperMessageItemParamContent(data []byte) (DeveloperMessageItemParamContent, error) {
+	{
+		var val DeveloperMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val DeveloperMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for DeveloperMessageItemParamContent")
+}
+
+
+// DeveloperMessageItemParamRole The message role. Always 'developer'.
+type DeveloperMessageItemParamRole string
+
+const (
+	DeveloperMessageItemParamRoleDeveloper DeveloperMessageItemParamRole = "developer"
+)
+
+// DeveloperMessageItemParamType The item type. Always 'message'.
+type DeveloperMessageItemParamType string
+
+const (
+	DeveloperMessageItemParamTypeMessage DeveloperMessageItemParamType = "message"
+)
+
+// DoubleClickAction A double click action.
+type DoubleClickAction struct {
+	// Specifies the event type. For a double click action, this property is always set to 'double_click'.
+	Type DoubleClickActionType `json:"type" jsonschema:"description=Specifies the event type. For a double click action, this property is always set to 'double_click'."`
+	// The x-coordinate where the double click occurred.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate where the double click occurred."`
+	// The y-coordinate where the double click occurred.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the double click occurred."`
+}
+
+// DoubleClickActionType Specifies the event type. For a double click action, this property is always set to 'double_click'.
+type DoubleClickActionType string
+
+const (
+	DoubleClickActionTypeDoubleClick DoubleClickActionType = "double_click"
+)
+
+type DoubleClickParam struct {
+	// Specifies the event type. Always 'double_click'.
+	Type DoubleClickParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'double_click'."`
+	// The x-coordinate where the double click occurred.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate where the double click occurred."`
+	// The y-coordinate where the double click occurred.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the double click occurred."`
+}
+
+// DoubleClickParamType Specifies the event type. Always 'double_click'.
+type DoubleClickParamType string
+
+const (
+	DoubleClickParamTypeDoubleClick DoubleClickParamType = "double_click"
+)
+
+// DragAction A drag action that was requested by the model.
+type DragAction struct {
+	// The type of the action. Always 'drag'.
+	Type DragActionType `json:"type" jsonschema:"description=The type of the action. Always 'drag'."`
+	// The path of coordinates that was dragged.
+	Path []DragPoint `json:"path" jsonschema:"description=The path of coordinates that was dragged."`
+}
+
+// DragActionType The type of the action. Always 'drag'.
+type DragActionType string
+
+const (
+	DragActionTypeDrag DragActionType = "drag"
+)
+
+type DragParam struct {
+	// Specifies the event type. Always 'drag'.
+	Type DragParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'drag'."`
+	// The path of the drag as a sequence of coordinates.
+	Path []CoordParam `json:"path" jsonschema:"description=The path of the drag as a sequence of coordinates."`
+}
+
+// DragParamType Specifies the event type. Always 'drag'.
+type DragParamType string
+
+const (
+	DragParamTypeDrag DragParamType = "drag"
+)
+
+// DragPoint An x/y coordinate pair, e.g. '{ x: 100, y: 200 }'.
+type DragPoint struct {
+	// The x-coordinate.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate."`
+	// The y-coordinate.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate."`
+}
+
+// EmptyAction An empty action that was emitted for actions without a discriminator.
+type EmptyAction any
+
+type EmptyModelParam any
+
+// Error An error that occurred while generating the response.
+type Error struct {
+	// A machine-readable error code that was returned.
+	Code string `json:"code" jsonschema:"description=A machine-readable error code that was returned."`
+	// A human-readable description of the error that was returned.
+	Message string `json:"message" jsonschema:"description=A human-readable description of the error that was returned."`
+}
+
+// FileCitationBody A citation to a file.
+type FileCitationBody struct {
+	// The index of the file in the list of files.
+	Index int64 `json:"index" jsonschema:"description=The index of the file in the list of files."`
+	// The filename of the file cited.
+	Filename string `json:"filename" jsonschema:"description=The filename of the file cited."`
+	// The type of the file citation. Always 'file_citation'.
+	Type FileCitationBodyType `json:"type" jsonschema:"description=The type of the file citation. Always 'file_citation'."`
+	// The ID of the file.
+	FileID string `json:"file_id" jsonschema:"description=The ID of the file."`
+}
+
+// FileCitationBodyType The type of the file citation. Always 'file_citation'.
+type FileCitationBodyType string
+
+const (
+	FileCitationBodyTypeFileCitation FileCitationBodyType = "file_citation"
+)
+
+type FileCitationParam struct {
+	// The citation type. Always 'file_citation'.
+	Type FileCitationParamType `json:"type" jsonschema:"description=The citation type. Always 'file_citation'."`
+	// The index of the file in the list of files.
+	Index int64 `json:"index" jsonschema:"minimum=0,description=The index of the file in the list of files."`
+	// The ID of the file.
+	FileID string `json:"file_id" jsonschema:"description=The ID of the file."`
+	// The filename of the file cited.
+	Filename string `json:"filename" jsonschema:"description=The filename of the file cited."`
+}
+
+// FileCitationParamType The citation type. Always 'file_citation'.
+type FileCitationParamType string
+
+const (
+	FileCitationParamTypeFileCitation FileCitationParamType = "file_citation"
+)
+
+type FileSearchCall struct {
+	Type FileSearchCallType `json:"type"`
+	ID string `json:"id"`
+	Status FileSearchToolCallStatusEnum `json:"status"`
+	Queries []string `json:"queries"`
+	Results []FileSearchResult `json:"results"`
+	CreatedBy *string `json:"created_by,omitempty"`
+}
+
+type FileSearchCallItemParam struct {
+	// The unique ID of this file search tool call.
+	ID string `json:"id" jsonschema:"description=The unique ID of this file search tool call."`
+	// The item type. Always 'file_search_call'.
+	Type FileSearchCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'file_search_call'."`
+	// The status of the file search tool call.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the file search tool call."`
+	// The search queries issued to the file search tool.
+	Queries []string `json:"queries" jsonschema:"description=The search queries issued to the file search tool."`
+	// Retrieved chunks returned by the file search tool.
+	Results []FileSearchRetrievedChunksParam `json:"results,omitempty" jsonschema:"description=Retrieved chunks returned by the file search tool."`
+}
+
+// FileSearchCallItemParamType The item type. Always 'file_search_call'.
+type FileSearchCallItemParamType string
+
+const (
+	FileSearchCallItemParamTypeFileSearchCall FileSearchCallItemParamType = "file_search_call"
+)
+
+type FileSearchCallType string
+
+const (
+	FileSearchCallTypeFileSearchCall FileSearchCallType = "file_search_call"
+)
+
+// FileSearchRankingOptionsParam Options that control ranking and filtering of file search results.
+type FileSearchRankingOptionsParam struct {
+	Ranker *RankerVersionType `json:"ranker,omitempty"`
+	// Minimum score a result must have to be included.
+	ScoreThreshold *float64 `json:"score_threshold,omitempty" jsonschema:"description=Minimum score a result must have to be included."`
+	HybridSearch *HybridSearchOptionsParam `json:"hybrid_search,omitempty"`
+}
+
+type FileSearchResult struct {
+	Text string `json:"text"`
+	Attributes any `json:"attributes"`
+	Score *float64 `json:"score"`
+	VectorStoreID *string `json:"vector_store_id"`
+	FileID string `json:"file_id"`
+	Filename string `json:"filename"`
+}
+
+type FileSearchRetrievedChunksParam struct {
+	// The retrieved text chunk.
+	Text string `json:"text" jsonschema:"description=The retrieved text chunk."`
+	// Additional attributes associated with this chunk.
+	Attributes any `json:"attributes" jsonschema:"description=Additional attributes associated with this chunk."`
+	// The relevance score for this chunk.
+	Score *float64 `json:"score,omitempty" jsonschema:"description=The relevance score for this chunk."`
+	// The vector store ID the chunk was retrieved from.
+	VectorStoreID *string `json:"vector_store_id,omitempty" jsonschema:"description=The vector store ID the chunk was retrieved from."`
+	// The ID of the retrieved file.
+	FileID string `json:"file_id" jsonschema:"description=The ID of the retrieved file."`
+	// The filename of the retrieved file.
+	Filename string `json:"filename" jsonschema:"description=The filename of the retrieved file."`
+}
+
+// FileSearchTool A tool that searches for relevant content from uploaded files. Learn more about the [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+type FileSearchTool struct {
+	RankingOptions RankingOptions `json:"ranking_options"`
+	Filters Filters `json:"filters"`
+	// The type of the file search tool. Always 'file_search'.
+	Type FileSearchToolType `json:"type" jsonschema:"description=The type of the file search tool. Always 'file_search'."`
+	// The IDs of the vector stores to search.
+	VectorStoreIds []string `json:"vector_store_ids" jsonschema:"description=The IDs of the vector stores to search."`
+	// The maximum number of results to return. This number should be between 1 and 50 inclusive.
+	MaxNumResults int64 `json:"max_num_results" jsonschema:"description=The maximum number of results to return. This number should be between 1 and 50 inclusive."`
+}
+
+type FileSearchToolCallStatusEnum string
+
+const (
+	FileSearchToolCallStatusEnumInProgress FileSearchToolCallStatusEnum = "in_progress"
+	FileSearchToolCallStatusEnumSearching FileSearchToolCallStatusEnum = "searching"
+	FileSearchToolCallStatusEnumCompleted FileSearchToolCallStatusEnum = "completed"
+	FileSearchToolCallStatusEnumIncomplete FileSearchToolCallStatusEnum = "incomplete"
+	FileSearchToolCallStatusEnumFailed FileSearchToolCallStatusEnum = "failed"
+)
+
+type FileSearchToolChoice struct {
+	Type FileSearchToolChoiceType `json:"type"`
+}
+
+type FileSearchToolChoiceType string
+
+const (
+	FileSearchToolChoiceTypeFileSearch FileSearchToolChoiceType = "file_search"
+)
+
+type FileSearchToolParam struct {
+	RankingOptions *FileSearchRankingOptionsParam `json:"ranking_options,omitempty"`
+	// A filter expression that can be a comparison or a compound logical filter.
+	Filters FileSearchToolParamFilters `json:"filters,omitempty" jsonschema:"description=A filter expression that can be a comparison or a compound logical filter."`
+	// The type of the tool. Always 'file_search'.
+	Type FileSearchToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'file_search'."`
+	// The vector store IDs to search over.
+	VectorStoreIds []string `json:"vector_store_ids" jsonschema:"minItems=1,maxItems=5,description=The vector store IDs to search over."`
+	// The maximum number of results to return.
+	MaxNumResults *int64 `json:"max_num_results,omitempty" jsonschema:"minimum=1,maximum=50,description=The maximum number of results to return."`
+}
+
+// FileSearchToolParamFilters A filter expression that can be a comparison or a compound logical filter.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type FileSearchToolParamFilters interface {
+	isFileSearchToolParamFilters()
+	DiscriminatorValue() string
+}
+
+func (*ComparisonFilterParamEQParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamNEParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamGTParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamGTEParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamLTParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamLTEParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamINParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamNINParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamContainsParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamNContainsParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamContainsAnyParam) isFileSearchToolParamFilters() {}
+func (*ComparisonFilterParamNContainsAnyParam) isFileSearchToolParamFilters() {}
+func (*CompoundFilterParamAndParam) isFileSearchToolParamFilters() {}
+func (*CompoundFilterParamOrParam) isFileSearchToolParamFilters() {}
+
+func (x *ComparisonFilterParamEQParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamNEParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamGTParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamGTEParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamLTParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamLTEParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamINParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamNINParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamContainsParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamNContainsParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamContainsAnyParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterParamNContainsAnyParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompoundFilterParamAndParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompoundFilterParamOrParam) DiscriminatorValue() string { return string(x.Type) }
+
+// FileSearchToolParamFiltersFromComparisonFilterParamEQParam wraps a *ComparisonFilterParamEQParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamEQParam(v *ComparisonFilterParamEQParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamNEParam wraps a *ComparisonFilterParamNEParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamNEParam(v *ComparisonFilterParamNEParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamGTParam wraps a *ComparisonFilterParamGTParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamGTParam(v *ComparisonFilterParamGTParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamGTEParam wraps a *ComparisonFilterParamGTEParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamGTEParam(v *ComparisonFilterParamGTEParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamLTParam wraps a *ComparisonFilterParamLTParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamLTParam(v *ComparisonFilterParamLTParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamLTEParam wraps a *ComparisonFilterParamLTEParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamLTEParam(v *ComparisonFilterParamLTEParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamINParam wraps a *ComparisonFilterParamINParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamINParam(v *ComparisonFilterParamINParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamNINParam wraps a *ComparisonFilterParamNINParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamNINParam(v *ComparisonFilterParamNINParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamContainsParam wraps a *ComparisonFilterParamContainsParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamContainsParam(v *ComparisonFilterParamContainsParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamNContainsParam wraps a *ComparisonFilterParamNContainsParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamNContainsParam(v *ComparisonFilterParamNContainsParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamContainsAnyParam wraps a *ComparisonFilterParamContainsAnyParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamContainsAnyParam(v *ComparisonFilterParamContainsAnyParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromComparisonFilterParamNContainsAnyParam wraps a *ComparisonFilterParamNContainsAnyParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromComparisonFilterParamNContainsAnyParam(v *ComparisonFilterParamNContainsAnyParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromCompoundFilterParamAndParam wraps a *CompoundFilterParamAndParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromCompoundFilterParamAndParam(v *CompoundFilterParamAndParam) FileSearchToolParamFilters {
+	return v
+}
+
+// FileSearchToolParamFiltersFromCompoundFilterParamOrParam wraps a *CompoundFilterParamOrParam as a FileSearchToolParamFilters union value.
+func FileSearchToolParamFiltersFromCompoundFilterParamOrParam(v *CompoundFilterParamOrParam) FileSearchToolParamFilters {
+	return v
+}
+
+// UnmarshalFileSearchToolParamFilters unmarshals JSON into the correct FileSearchToolParamFilters variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalFileSearchToolParamFilters(data []byte) (FileSearchToolParamFilters, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "eq":
+		var val ComparisonFilterParamEQParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ne":
+		var val ComparisonFilterParamNEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gt":
+		var val ComparisonFilterParamGTParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gte":
+		var val ComparisonFilterParamGTEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lt":
+		var val ComparisonFilterParamLTParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lte":
+		var val ComparisonFilterParamLTEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "in":
+		var val ComparisonFilterParamINParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "nin":
+		var val ComparisonFilterParamNINParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "contains":
+		var val ComparisonFilterParamContainsParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontains":
+		var val ComparisonFilterParamNContainsParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "containsany":
+		var val ComparisonFilterParamContainsAnyParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontainsany":
+		var val ComparisonFilterParamNContainsAnyParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "and":
+		var val CompoundFilterParamAndParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "or":
+		var val CompoundFilterParamOrParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FileSearchToolParamFilters", disc.D)
+	}
+}
+
+
+// FileSearchToolParamType The type of the tool. Always 'file_search'.
+type FileSearchToolParamType string
+
+const (
+	FileSearchToolParamTypeFileSearch FileSearchToolParamType = "file_search"
+)
+
+// FileSearchToolType The type of the file search tool. Always 'file_search'.
+type FileSearchToolType string
+
+const (
+	FileSearchToolTypeFileSearch FileSearchToolType = "file_search"
+)
+
+// Filters A filter to apply.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type Filters interface {
+	isFilters()
+	DiscriminatorValue() string
+}
+
+func (*ComparisonFilterFieldEQ) isFilters() {}
+func (*ComparisonFilterFieldNE) isFilters() {}
+func (*ComparisonFilterFieldGT) isFilters() {}
+func (*ComparisonFilterFieldGTE) isFilters() {}
+func (*ComparisonFilterFieldLT) isFilters() {}
+func (*ComparisonFilterFieldLTE) isFilters() {}
+func (*ComparisonFilterFieldIN) isFilters() {}
+func (*ComparisonFilterFieldNIN) isFilters() {}
+func (*ComparisonFilterFieldCONTAINS) isFilters() {}
+func (*ComparisonFilterFieldNCONTAINS) isFilters() {}
+func (*ComparisonFilterFieldCONTAINSANY) isFilters() {}
+func (*ComparisonFilterFieldNCONTAINSANY) isFilters() {}
+func (*CompoundFilterFieldAND) isFilters() {}
+func (*CompoundFilterFieldOR) isFilters() {}
+
+func (x *ComparisonFilterFieldEQ) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldNE) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldGT) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldGTE) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldLT) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldLTE) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldIN) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldNIN) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldCONTAINS) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldNCONTAINS) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldCONTAINSANY) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComparisonFilterFieldNCONTAINSANY) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompoundFilterFieldAND) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompoundFilterFieldOR) DiscriminatorValue() string { return string(x.Type) }
+
+// FiltersFromComparisonFilterFieldEQ wraps a *ComparisonFilterFieldEQ as a Filters union value.
+func FiltersFromComparisonFilterFieldEQ(v *ComparisonFilterFieldEQ) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldNE wraps a *ComparisonFilterFieldNE as a Filters union value.
+func FiltersFromComparisonFilterFieldNE(v *ComparisonFilterFieldNE) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldGT wraps a *ComparisonFilterFieldGT as a Filters union value.
+func FiltersFromComparisonFilterFieldGT(v *ComparisonFilterFieldGT) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldGTE wraps a *ComparisonFilterFieldGTE as a Filters union value.
+func FiltersFromComparisonFilterFieldGTE(v *ComparisonFilterFieldGTE) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldLT wraps a *ComparisonFilterFieldLT as a Filters union value.
+func FiltersFromComparisonFilterFieldLT(v *ComparisonFilterFieldLT) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldLTE wraps a *ComparisonFilterFieldLTE as a Filters union value.
+func FiltersFromComparisonFilterFieldLTE(v *ComparisonFilterFieldLTE) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldIN wraps a *ComparisonFilterFieldIN as a Filters union value.
+func FiltersFromComparisonFilterFieldIN(v *ComparisonFilterFieldIN) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldNIN wraps a *ComparisonFilterFieldNIN as a Filters union value.
+func FiltersFromComparisonFilterFieldNIN(v *ComparisonFilterFieldNIN) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldCONTAINS wraps a *ComparisonFilterFieldCONTAINS as a Filters union value.
+func FiltersFromComparisonFilterFieldCONTAINS(v *ComparisonFilterFieldCONTAINS) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldNCONTAINS wraps a *ComparisonFilterFieldNCONTAINS as a Filters union value.
+func FiltersFromComparisonFilterFieldNCONTAINS(v *ComparisonFilterFieldNCONTAINS) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldCONTAINSANY wraps a *ComparisonFilterFieldCONTAINSANY as a Filters union value.
+func FiltersFromComparisonFilterFieldCONTAINSANY(v *ComparisonFilterFieldCONTAINSANY) Filters {
+	return v
+}
+
+// FiltersFromComparisonFilterFieldNCONTAINSANY wraps a *ComparisonFilterFieldNCONTAINSANY as a Filters union value.
+func FiltersFromComparisonFilterFieldNCONTAINSANY(v *ComparisonFilterFieldNCONTAINSANY) Filters {
+	return v
+}
+
+// FiltersFromCompoundFilterFieldAND wraps a *CompoundFilterFieldAND as a Filters union value.
+func FiltersFromCompoundFilterFieldAND(v *CompoundFilterFieldAND) Filters {
+	return v
+}
+
+// FiltersFromCompoundFilterFieldOR wraps a *CompoundFilterFieldOR as a Filters union value.
+func FiltersFromCompoundFilterFieldOR(v *CompoundFilterFieldOR) Filters {
+	return v
+}
+
+// UnmarshalFilters unmarshals JSON into the correct Filters variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalFilters(data []byte) (Filters, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "eq":
+		var val ComparisonFilterFieldEQ
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ne":
+		var val ComparisonFilterFieldNE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gt":
+		var val ComparisonFilterFieldGT
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gte":
+		var val ComparisonFilterFieldGTE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lt":
+		var val ComparisonFilterFieldLT
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lte":
+		var val ComparisonFilterFieldLTE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "in":
+		var val ComparisonFilterFieldIN
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "nin":
+		var val ComparisonFilterFieldNIN
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "contains":
+		var val ComparisonFilterFieldCONTAINS
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontains":
+		var val ComparisonFilterFieldNCONTAINS
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "containsany":
+		var val ComparisonFilterFieldCONTAINSANY
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontainsany":
+		var val ComparisonFilterFieldNCONTAINSANY
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "and":
+		var val CompoundFilterFieldAND
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "or":
+		var val CompoundFilterFieldOR
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for Filters", disc.D)
+	}
+}
+
+
+// FunctionCall A function tool call that was generated by the model.
+type FunctionCall struct {
+	// The type of the item. Always 'function_call'.
+	Type FunctionCallType `json:"type" jsonschema:"description=The type of the item. Always 'function_call'."`
+	// The unique ID of the function call item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the function call item."`
+	// The unique ID of the function tool call that was generated.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call that was generated."`
+	// The name of the function that was called.
+	Name string `json:"name" jsonschema:"description=The name of the function that was called."`
+	// The arguments JSON string that was generated.
+	Arguments string `json:"arguments" jsonschema:"description=The arguments JSON string that was generated."`
+	Status FunctionCallStatus `json:"status"`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+}
+
+type FunctionCallItemParam struct {
+	// The item type. Always 'function_call'.
+	Type FunctionCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'function_call'."`
+	// The name of the function to call.
+	Name string `json:"name" jsonschema:"minLength=1,maxLength=64,pattern=^[a-zA-Z0-9_-]+$,description=The name of the function to call."`
+	// The function arguments as a JSON string.
+	Arguments string `json:"arguments" jsonschema:"description=The function arguments as a JSON string."`
+	Status *FunctionCallItemStatus `json:"status,omitempty"`
+	// The unique ID of this function tool call.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this function tool call."`
+	// The unique ID of the function tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the function tool call generated by the model."`
+}
+
+// FunctionCallItemParamType The item type. Always 'function_call'.
+type FunctionCallItemParamType string
+
+const (
+	FunctionCallItemParamTypeFunctionCall FunctionCallItemParamType = "function_call"
+)
+
+type FunctionCallItemStatus string
+
+const (
+	FunctionCallItemStatusInProgress FunctionCallItemStatus = "in_progress"
+	FunctionCallItemStatusCompleted FunctionCallItemStatus = "completed"
+	FunctionCallItemStatusIncomplete FunctionCallItemStatus = "incomplete"
+)
+
+// FunctionCallOutput A function tool call output that was returned by the tool.
+type FunctionCallOutput struct {
+	// The unique ID of the function tool call output. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
+	// The unique ID of the function tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the function tool call generated by the model."`
+	Output FunctionCallOutputOutput `json:"output"`
+	Status FunctionCallOutputStatusEnum `json:"status"`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+	// The type of the function tool call output. Always 'function_call_output'.
+	Type FunctionCallOutputType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
+}
+
+// FunctionCallOutputItemParam The output of a function tool call.
+type FunctionCallOutputItemParam struct {
+	// The unique ID of the function tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the function tool call generated by the model."`
+	// The type of the function tool call output. Always 'function_call_output'.
+	Type FunctionCallOutputItemParamType `json:"type" jsonschema:"description=The type of the function tool call output. Always 'function_call_output'."`
+	// Text, image, or file output of the function tool call.
+	Output FunctionCallOutputItemParamOutput `json:"output" jsonschema:"description=Text, image, or file output of the function tool call."`
+	Status *FunctionCallItemStatus `json:"status,omitempty"`
+	// The unique ID of the function tool call output. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the function tool call output. Populated when this item is returned via API."`
+}
+
+// FunctionCallOutputItemParamOutput Text, image, or file output of the function tool call.
+//
+//compschema:generate
+type FunctionCallOutputItemParamOutput interface {
+	isFunctionCallOutputItemParamOutput()
+}
+
+
+// FunctionCallOutputItemParamOutputString wraps a string value as a FunctionCallOutputItemParamOutput variant.
+type FunctionCallOutputItemParamOutputString struct { Value string }
+func (*FunctionCallOutputItemParamOutputString) isFunctionCallOutputItemParamOutput() {}
+
+// FunctionCallOutputItemParamOutputSliceany wraps a []any value as a FunctionCallOutputItemParamOutput variant.
+type FunctionCallOutputItemParamOutputSliceany struct { Value []any }
+func (*FunctionCallOutputItemParamOutputSliceany) isFunctionCallOutputItemParamOutput() {}
+
+func (w FunctionCallOutputItemParamOutputString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *FunctionCallOutputItemParamOutputString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w FunctionCallOutputItemParamOutputSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *FunctionCallOutputItemParamOutputSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewFunctionCallOutputItemParamOutputString creates a FunctionCallOutputItemParamOutput from a string value.
+func NewFunctionCallOutputItemParamOutputString(v string) FunctionCallOutputItemParamOutput {
+	return &FunctionCallOutputItemParamOutputString{Value: v}
+}
+
+// NewFunctionCallOutputItemParamOutputSliceany creates a FunctionCallOutputItemParamOutput from a []any value.
+func NewFunctionCallOutputItemParamOutputSliceany(v []any) FunctionCallOutputItemParamOutput {
+	return &FunctionCallOutputItemParamOutputSliceany{Value: v}
+}
+
+// UnmarshalFunctionCallOutputItemParamOutput unmarshals JSON into the correct FunctionCallOutputItemParamOutput variant.
+func UnmarshalFunctionCallOutputItemParamOutput(data []byte) (FunctionCallOutputItemParamOutput, error) {
+	{
+		var val FunctionCallOutputItemParamOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionCallOutputItemParamOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for FunctionCallOutputItemParamOutput")
+}
+
+
+// FunctionCallOutputItemParamType The type of the function tool call output. Always 'function_call_output'.
+type FunctionCallOutputItemParamType string
+
+const (
+	FunctionCallOutputItemParamTypeFunctionCallOutput FunctionCallOutputItemParamType = "function_call_output"
+)
+
+//
+//compschema:generate
+type FunctionCallOutputOutput interface {
+	isFunctionCallOutputOutput()
+}
+
+
+// FunctionCallOutputOutputString wraps a string value as a FunctionCallOutputOutput variant.
+type FunctionCallOutputOutputString struct { Value string }
+func (*FunctionCallOutputOutputString) isFunctionCallOutputOutput() {}
+
+// FunctionCallOutputOutputSliceany wraps a []any value as a FunctionCallOutputOutput variant.
+type FunctionCallOutputOutputSliceany struct { Value []any }
+func (*FunctionCallOutputOutputSliceany) isFunctionCallOutputOutput() {}
+
+func (w FunctionCallOutputOutputString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *FunctionCallOutputOutputString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w FunctionCallOutputOutputSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *FunctionCallOutputOutputSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewFunctionCallOutputOutputString creates a FunctionCallOutputOutput from a string value.
+func NewFunctionCallOutputOutputString(v string) FunctionCallOutputOutput {
+	return &FunctionCallOutputOutputString{Value: v}
+}
+
+// NewFunctionCallOutputOutputSliceany creates a FunctionCallOutputOutput from a []any value.
+func NewFunctionCallOutputOutputSliceany(v []any) FunctionCallOutputOutput {
+	return &FunctionCallOutputOutputSliceany{Value: v}
+}
+
+// UnmarshalFunctionCallOutputOutput unmarshals JSON into the correct FunctionCallOutputOutput variant.
+func UnmarshalFunctionCallOutputOutput(data []byte) (FunctionCallOutputOutput, error) {
+	{
+		var val FunctionCallOutputOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionCallOutputOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for FunctionCallOutputOutput")
+}
+
+
+type FunctionCallOutputStatusEnum string
+
+const (
+	FunctionCallOutputStatusEnumInProgress FunctionCallOutputStatusEnum = "in_progress"
+	FunctionCallOutputStatusEnumCompleted FunctionCallOutputStatusEnum = "completed"
+	FunctionCallOutputStatusEnumIncomplete FunctionCallOutputStatusEnum = "incomplete"
+)
+
+// FunctionCallOutputType The type of the function tool call output. Always 'function_call_output'.
+type FunctionCallOutputType string
+
+const (
+	FunctionCallOutputTypeFunctionCallOutput FunctionCallOutputType = "function_call_output"
+)
+
+type FunctionCallStatus string
+
+const (
+	FunctionCallStatusInProgress FunctionCallStatus = "in_progress"
+	FunctionCallStatusCompleted FunctionCallStatus = "completed"
+	FunctionCallStatusIncomplete FunctionCallStatus = "incomplete"
+)
+
+// FunctionCallType The type of the item. Always 'function_call'.
+type FunctionCallType string
+
+const (
+	FunctionCallTypeFunctionCall FunctionCallType = "function_call"
+)
+
+// FunctionShellAction Execute a shell command.
+type FunctionShellAction struct {
+	Commands []string `json:"commands"`
+	// Optional timeout in milliseconds for the commands.
+	TimeoutMs *int64 `json:"timeout_ms" jsonschema:"description=Optional timeout in milliseconds for the commands."`
+	// Optional maximum number of characters to return from each command.
+	MaxOutputLength *int64 `json:"max_output_length" jsonschema:"description=Optional maximum number of characters to return from each command."`
+}
+
+// FunctionShellActionParam Commands and limits describing how to run the shell tool call.
+type FunctionShellActionParam struct {
+	// Ordered shell commands for the execution environment to run.
+	Commands []string `json:"commands" jsonschema:"description=Ordered shell commands for the execution environment to run."`
+	// Maximum wall-clock time in milliseconds to allow the shell commands to run.
+	TimeoutMs *int64 `json:"timeout_ms,omitempty" jsonschema:"description=Maximum wall-clock time in milliseconds to allow the shell commands to run."`
+	// Maximum number of UTF-8 characters to capture from combined stdout and stderr output.
+	MaxOutputLength *int64 `json:"max_output_length,omitempty" jsonschema:"description=Maximum number of UTF-8 characters to capture from combined stdout and stderr output."`
+}
+
+// FunctionShellCall A tool call that executes one or more shell commands in a managed environment.
+type FunctionShellCall struct {
+	// The unique ID of the shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the shell tool call generated by the model."`
+	Action FunctionShellAction `json:"action"`
+	Status LocalShellCallStatus `json:"status"`
+	// The ID of the entity that created this tool call.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The ID of the entity that created this tool call."`
+	// The type of the item. Always 'shell_call'.
+	Type FunctionShellCallType `json:"type" jsonschema:"description=The type of the item. Always 'shell_call'."`
+	// The unique ID of the shell tool call. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the shell tool call. Populated when this item is returned via API."`
+}
+
+// FunctionShellCallItemParam A tool representing a request to execute one or more shell commands.
+type FunctionShellCallItemParam struct {
+	Action FunctionShellActionParam `json:"action"`
+	Status *FunctionShellCallItemStatus `json:"status,omitempty"`
+	// The unique ID of the shell tool call. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the shell tool call. Populated when this item is returned via API."`
+	// The unique ID of the shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the shell tool call generated by the model."`
+	// The type of the item. Always 'shell_call'.
+	Type FunctionShellCallItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'shell_call'."`
+}
+
+// FunctionShellCallItemParamType The type of the item. Always 'shell_call'.
+type FunctionShellCallItemParamType string
+
+const (
+	FunctionShellCallItemParamTypeShellCall FunctionShellCallItemParamType = "shell_call"
+)
+
+// FunctionShellCallItemStatus Status values reported for shell tool calls.
+type FunctionShellCallItemStatus string
+
+const (
+	FunctionShellCallItemStatusInProgress FunctionShellCallItemStatus = "in_progress"
+	FunctionShellCallItemStatusCompleted FunctionShellCallItemStatus = "completed"
+	FunctionShellCallItemStatusIncomplete FunctionShellCallItemStatus = "incomplete"
+)
+
+// FunctionShellCallOutput The output of a shell tool call that was emitted.
+type FunctionShellCallOutput struct {
+	// The type of the shell call output. Always 'shell_call_output'.
+	Type FunctionShellCallOutputType `json:"type" jsonschema:"description=The type of the shell call output. Always 'shell_call_output'."`
+	// The unique ID of the shell call output. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the shell call output. Populated when this item is returned via API."`
+	// The unique ID of the shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the shell tool call generated by the model."`
+	// An array of shell call output contents
+	Output []FunctionShellCallOutputContent `json:"output" jsonschema:"description=An array of shell call output contents"`
+	// The maximum length of the shell command output. This is generated by the model and should be passed back with the raw output.
+	MaxOutputLength *int64 `json:"max_output_length" jsonschema:"description=The maximum length of the shell command output. This is generated by the model and should be passed back with the raw output."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+}
+
+// FunctionShellCallOutputContent The content of a shell tool call output that was emitted.
+type FunctionShellCallOutputContent struct {
+	// The standard output that was captured.
+	Stdout string `json:"stdout" jsonschema:"description=The standard output that was captured."`
+	// The standard error output that was captured.
+	Stderr string `json:"stderr" jsonschema:"description=The standard error output that was captured."`
+	// Represents either an exit outcome (with an exit code) or a timeout outcome for a shell call output chunk.
+	Outcome FunctionShellCallOutputContentOutcome `json:"outcome" jsonschema:"description=Represents either an exit outcome (with an exit code) or a timeout outcome for a shell call output chunk."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+}
+
+// FunctionShellCallOutputContentOutcome Represents either an exit outcome (with an exit code) or a timeout outcome for a shell call output chunk.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type FunctionShellCallOutputContentOutcome interface {
+	isFunctionShellCallOutputContentOutcome()
+	DiscriminatorValue() string
+}
+
+func (*FunctionShellCallOutputTimeoutOutcome) isFunctionShellCallOutputContentOutcome() {}
+func (*FunctionShellCallOutputExitOutcome) isFunctionShellCallOutputContentOutcome() {}
+
+func (x *FunctionShellCallOutputTimeoutOutcome) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCallOutputExitOutcome) DiscriminatorValue() string { return string(x.Type) }
+
+// FunctionShellCallOutputContentOutcomeFromFunctionShellCallOutputTimeoutOutcome wraps a *FunctionShellCallOutputTimeoutOutcome as a FunctionShellCallOutputContentOutcome union value.
+func FunctionShellCallOutputContentOutcomeFromFunctionShellCallOutputTimeoutOutcome(v *FunctionShellCallOutputTimeoutOutcome) FunctionShellCallOutputContentOutcome {
+	return v
+}
+
+// FunctionShellCallOutputContentOutcomeFromFunctionShellCallOutputExitOutcome wraps a *FunctionShellCallOutputExitOutcome as a FunctionShellCallOutputContentOutcome union value.
+func FunctionShellCallOutputContentOutcomeFromFunctionShellCallOutputExitOutcome(v *FunctionShellCallOutputExitOutcome) FunctionShellCallOutputContentOutcome {
+	return v
+}
+
+// UnmarshalFunctionShellCallOutputContentOutcome unmarshals JSON into the correct FunctionShellCallOutputContentOutcome variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalFunctionShellCallOutputContentOutcome(data []byte) (FunctionShellCallOutputContentOutcome, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "timeout":
+		var val FunctionShellCallOutputTimeoutOutcome
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "exit":
+		var val FunctionShellCallOutputExitOutcome
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FunctionShellCallOutputContentOutcome", disc.D)
+	}
+}
+
+
+// FunctionShellCallOutputContentParam Captured stdout and stderr for a portion of a shell tool call output.
+type FunctionShellCallOutputContentParam struct {
+	// Captured stdout output for the shell call.
+	Stdout string `json:"stdout" jsonschema:"maxLength=10485760,description=Captured stdout output for the shell call."`
+	// Captured stderr output for the shell call.
+	Stderr string `json:"stderr" jsonschema:"maxLength=10485760,description=Captured stderr output for the shell call."`
+	Outcome FunctionShellCallOutputOutcomeParam `json:"outcome"`
+}
+
+// FunctionShellCallOutputExitOutcome Indicates that the shell commands finished and returned an exit code.
+type FunctionShellCallOutputExitOutcome struct {
+	// The outcome type. Always 'exit'.
+	Type FunctionShellCallOutputExitOutcomeType `json:"type" jsonschema:"description=The outcome type. Always 'exit'."`
+	// Exit code from the shell process.
+	ExitCode int64 `json:"exit_code" jsonschema:"description=Exit code from the shell process."`
+}
+
+// FunctionShellCallOutputExitOutcomeParam Indicates that the shell commands finished and returned an exit code.
+type FunctionShellCallOutputExitOutcomeParam struct {
+	// The outcome type. Always 'exit'.
+	Type FunctionShellCallOutputExitOutcomeParamType `json:"type" jsonschema:"description=The outcome type. Always 'exit'."`
+	// The exit code returned by the shell process.
+	ExitCode int64 `json:"exit_code" jsonschema:"description=The exit code returned by the shell process."`
+}
+
+// FunctionShellCallOutputExitOutcomeParamType The outcome type. Always 'exit'.
+type FunctionShellCallOutputExitOutcomeParamType string
+
+const (
+	FunctionShellCallOutputExitOutcomeParamTypeExit FunctionShellCallOutputExitOutcomeParamType = "exit"
+)
+
+// FunctionShellCallOutputExitOutcomeType The outcome type. Always 'exit'.
+type FunctionShellCallOutputExitOutcomeType string
+
+const (
+	FunctionShellCallOutputExitOutcomeTypeExit FunctionShellCallOutputExitOutcomeType = "exit"
+)
+
+// FunctionShellCallOutputItemParam The streamed output items emitted by a shell tool call.
+type FunctionShellCallOutputItemParam struct {
+	// The maximum number of UTF-8 characters captured for this shell call's combined output.
+	MaxOutputLength *int64 `json:"max_output_length,omitempty" jsonschema:"description=The maximum number of UTF-8 characters captured for this shell call's combined output."`
+	// The unique ID of the shell tool call output. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the shell tool call output. Populated when this item is returned via API."`
+	// The unique ID of the shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the shell tool call generated by the model."`
+	// The type of the item. Always 'shell_call_output'.
+	Type FunctionShellCallOutputItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'shell_call_output'."`
+	// Captured chunks of stdout and stderr output, along with their associated outcomes.
+	Output []FunctionShellCallOutputContentParam `json:"output" jsonschema:"description=Captured chunks of stdout and stderr output, along with their associated outcomes."`
+}
+
+// FunctionShellCallOutputItemParamType The type of the item. Always 'shell_call_output'.
+type FunctionShellCallOutputItemParamType string
+
+const (
+	FunctionShellCallOutputItemParamTypeShellCallOutput FunctionShellCallOutputItemParamType = "shell_call_output"
+)
+
+// FunctionShellCallOutputOutcomeParam The exit or timeout outcome associated with this shell call.
+// Discriminated by "type" field.
+//
+//compschema:generate
+type FunctionShellCallOutputOutcomeParam interface {
+	isFunctionShellCallOutputOutcomeParam()
+	DiscriminatorValue() string
+}
+
+func (*FunctionShellCallOutputTimeoutOutcomeParam) isFunctionShellCallOutputOutcomeParam() {}
+func (*FunctionShellCallOutputExitOutcomeParam) isFunctionShellCallOutputOutcomeParam() {}
+
+func (x *FunctionShellCallOutputTimeoutOutcomeParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCallOutputExitOutcomeParam) DiscriminatorValue() string { return string(x.Type) }
+
+// FunctionShellCallOutputOutcomeParamFromFunctionShellCallOutputTimeoutOutcomeParam wraps a *FunctionShellCallOutputTimeoutOutcomeParam as a FunctionShellCallOutputOutcomeParam union value.
+func FunctionShellCallOutputOutcomeParamFromFunctionShellCallOutputTimeoutOutcomeParam(v *FunctionShellCallOutputTimeoutOutcomeParam) FunctionShellCallOutputOutcomeParam {
+	return v
+}
+
+// FunctionShellCallOutputOutcomeParamFromFunctionShellCallOutputExitOutcomeParam wraps a *FunctionShellCallOutputExitOutcomeParam as a FunctionShellCallOutputOutcomeParam union value.
+func FunctionShellCallOutputOutcomeParamFromFunctionShellCallOutputExitOutcomeParam(v *FunctionShellCallOutputExitOutcomeParam) FunctionShellCallOutputOutcomeParam {
+	return v
+}
+
+// UnmarshalFunctionShellCallOutputOutcomeParam unmarshals JSON into the correct FunctionShellCallOutputOutcomeParam variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalFunctionShellCallOutputOutcomeParam(data []byte) (FunctionShellCallOutputOutcomeParam, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "timeout":
+		var val FunctionShellCallOutputTimeoutOutcomeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "exit":
+		var val FunctionShellCallOutputExitOutcomeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FunctionShellCallOutputOutcomeParam", disc.D)
+	}
+}
+
+
+// FunctionShellCallOutputTimeoutOutcome Indicates that the shell call exceeded its configured time limit.
+type FunctionShellCallOutputTimeoutOutcome struct {
+	// The outcome type. Always 'timeout'.
+	Type FunctionShellCallOutputTimeoutOutcomeType `json:"type" jsonschema:"description=The outcome type. Always 'timeout'."`
+}
+
+// FunctionShellCallOutputTimeoutOutcomeParam Indicates that the shell call exceeded its configured time limit.
+type FunctionShellCallOutputTimeoutOutcomeParam struct {
+	// The outcome type. Always 'timeout'.
+	Type FunctionShellCallOutputTimeoutOutcomeParamType `json:"type" jsonschema:"description=The outcome type. Always 'timeout'."`
+}
+
+// FunctionShellCallOutputTimeoutOutcomeParamType The outcome type. Always 'timeout'.
+type FunctionShellCallOutputTimeoutOutcomeParamType string
+
+const (
+	FunctionShellCallOutputTimeoutOutcomeParamTypeTimeout FunctionShellCallOutputTimeoutOutcomeParamType = "timeout"
+)
+
+// FunctionShellCallOutputTimeoutOutcomeType The outcome type. Always 'timeout'.
+type FunctionShellCallOutputTimeoutOutcomeType string
+
+const (
+	FunctionShellCallOutputTimeoutOutcomeTypeTimeout FunctionShellCallOutputTimeoutOutcomeType = "timeout"
+)
+
+// FunctionShellCallOutputType The type of the shell call output. Always 'shell_call_output'.
+type FunctionShellCallOutputType string
+
+const (
+	FunctionShellCallOutputTypeShellCallOutput FunctionShellCallOutputType = "shell_call_output"
+)
+
+// FunctionShellCallType The type of the item. Always 'shell_call'.
+type FunctionShellCallType string
+
+const (
+	FunctionShellCallTypeShellCall FunctionShellCallType = "shell_call"
+)
+
+// FunctionShellTool A tool that allows the model to execute shell commands.
+type FunctionShellTool struct {
+	// The type of the shell tool. Always 'shell'.
+	Type FunctionShellToolType `json:"type" jsonschema:"description=The type of the shell tool. Always 'shell'."`
+}
+
+// FunctionShellToolChoice Require the assistant to call the shell tool.
+type FunctionShellToolChoice struct {
+	// The selected tool. Always 'shell'.
+	Type FunctionShellToolChoiceType `json:"type" jsonschema:"description=The selected tool. Always 'shell'."`
+}
+
+// FunctionShellToolChoiceType The selected tool. Always 'shell'.
+type FunctionShellToolChoiceType string
+
+const (
+	FunctionShellToolChoiceTypeShell FunctionShellToolChoiceType = "shell"
+)
+
+// FunctionShellToolParam A tool that allows the model to execute shell commands.
+type FunctionShellToolParam struct {
+	// The type of the shell tool. Always 'shell'.
+	Type FunctionShellToolParamType `json:"type" jsonschema:"description=The type of the shell tool. Always 'shell'."`
+}
+
+// FunctionShellToolParamType The type of the shell tool. Always 'shell'.
+type FunctionShellToolParamType string
+
+const (
+	FunctionShellToolParamTypeShell FunctionShellToolParamType = "shell"
+)
+
+// FunctionShellToolType The type of the shell tool. Always 'shell'.
+type FunctionShellToolType string
+
+const (
+	FunctionShellToolTypeShell FunctionShellToolType = "shell"
+)
+
+// FunctionTool Defines a function in your own code the model can choose to call. Learn more about [function calling](https://platform.openai.com/docs/guides/function-calling).
+type FunctionTool struct {
+	// The name of the function to call.
+	Name string `json:"name" jsonschema:"description=The name of the function to call."`
+	// A description of the function. Used by the model to determine whether or not to call the function.
+	Description *string `json:"description" jsonschema:"description=A description of the function. Used by the model to determine whether or not to call the function."`
+	// A JSON schema object describing the parameters of the function.
+	Parameters map[string]any `json:"parameters" jsonschema:"description=A JSON schema object describing the parameters of the function."`
+	// Whether to enforce strict parameter validation. Default 'true'.
+	Strict *bool `json:"strict" jsonschema:"description=Whether to enforce strict parameter validation. Default 'true'."`
+	// The type of the function tool. Always 'function'.
+	Type FunctionToolType `json:"type" jsonschema:"description=The type of the function tool. Always 'function'."`
+}
+
+type FunctionToolChoice struct {
+	Type FunctionToolChoiceType `json:"type"`
+	Name *string `json:"name,omitempty"`
+}
+
+type FunctionToolChoiceType string
+
+const (
+	FunctionToolChoiceTypeFunction FunctionToolChoiceType = "function"
+)
+
+type FunctionToolParam struct {
+	Type FunctionToolParamType `json:"type"`
+	Name string `json:"name" jsonschema:"minLength=1,maxLength=64,pattern=^[a-zA-Z0-9_-]+$"`
+	Description *string `json:"description,omitempty"`
+	Parameters *EmptyModelParam `json:"parameters,omitempty"`
+	Strict *bool `json:"strict,omitempty"`
+}
+
+type FunctionToolParamType string
+
+const (
+	FunctionToolParamTypeFunction FunctionToolParamType = "function"
+)
+
+// FunctionToolType The type of the function tool. Always 'function'.
+type FunctionToolType string
+
+const (
+	FunctionToolTypeFunction FunctionToolType = "function"
+)
+
+type GrammarSyntax string
+
+const (
+	GrammarSyntaxLark GrammarSyntax = "lark"
+	GrammarSyntaxRegex GrammarSyntax = "regex"
+)
+
+type GrammarSyntax1 string
+
+const (
+	GrammarSyntax1Lark GrammarSyntax1 = "lark"
+	GrammarSyntax1Regex GrammarSyntax1 = "regex"
+)
+
+type HTTPError struct {
+	Type HTTPErrorType `json:"type"`
+	Code int64 `json:"code"`
+	Message string `json:"message"`
+}
+
+type HTTPErrorType string
+
+const (
+	HTTPErrorTypeHTTPError HTTPErrorType = "http_error"
+)
+
+type HybridSearchOptions struct {
+	// The weight of the text in the reciprocal ranking fusion.
+	TextWeight float64 `json:"text_weight" jsonschema:"description=The weight of the text in the reciprocal ranking fusion."`
+	// The weight of the embedding in the reciprocal ranking fusion.
+	EmbeddingWeight float64 `json:"embedding_weight" jsonschema:"description=The weight of the embedding in the reciprocal ranking fusion."`
+}
+
+// HybridSearchOptionsParam Optional hybrid search weighting configuration.
+type HybridSearchOptionsParam struct {
+	// Weight to apply to embedding similarity scores when using hybrid search.
+	EmbeddingWeight *float64 `json:"embedding_weight,omitempty" jsonschema:"description=Weight to apply to embedding similarity scores when using hybrid search."`
+	// Weight to apply to text similarity scores when using hybrid search.
+	TextWeight *float64 `json:"text_weight,omitempty" jsonschema:"description=Weight to apply to text similarity scores when using hybrid search."`
+}
+
+type ImageBackground string
+
+const (
+	ImageBackgroundTransparent ImageBackground = "transparent"
+	ImageBackgroundOpaque ImageBackground = "opaque"
+	ImageBackgroundAuto ImageBackground = "auto"
+)
+
+type ImageDetail string
+
+const (
+	ImageDetailLow ImageDetail = "low"
+	ImageDetailHigh ImageDetail = "high"
+	ImageDetailAuto ImageDetail = "auto"
+)
+
+type ImageGenAction string
+
+const (
+	ImageGenActionGenerate ImageGenAction = "generate"
+	ImageGenActionEdit ImageGenAction = "edit"
+	ImageGenActionAuto ImageGenAction = "auto"
+)
+
+type ImageGenActionEnum string
+
+const (
+	ImageGenActionEnumGenerate ImageGenActionEnum = "generate"
+	ImageGenActionEnumEdit ImageGenActionEnum = "edit"
+	ImageGenActionEnumAuto ImageGenActionEnum = "auto"
+)
+
+// ImageGenCall An image generation request made by the model.
+type ImageGenCall struct {
+	Size *ImageSize `json:"size,omitempty"`
+	Background *ImageBackground `json:"background,omitempty"`
+	Quality *ImageQuality `json:"quality,omitempty"`
+	OutputFormat *ImageOutputFormat `json:"output_format,omitempty"`
+	// The type of the image generation call. Always 'image_generation_call'.
+	Type ImageGenCallType `json:"type" jsonschema:"description=The type of the image generation call. Always 'image_generation_call'."`
+	Status ImageGenCallStatus `json:"status"`
+	// The generated image encoded in base64.
+	Result *string `json:"result,omitempty" jsonschema:"description=The generated image encoded in base64."`
+	Action *ImageGenAction `json:"action,omitempty"`
+	// The unique ID of the image generation call.
+	ID string `json:"id" jsonschema:"description=The unique ID of the image generation call."`
+	CreatedBy *string `json:"created_by,omitempty"`
+	RevisedPrompt *string `json:"revised_prompt,omitempty"`
+}
+
+type ImageGenCallItemParam struct {
+	OutputFormat *ImageOutputFormat `json:"output_format,omitempty"`
+	// Identifier of the actor that created the image generation call.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=Identifier of the actor that created the image generation call."`
+	Size *ImageSize `json:"size,omitempty"`
+	Background *ImageBackground `json:"background,omitempty"`
+	// The unique ID of the image generation call.
+	ID string `json:"id" jsonschema:"description=The unique ID of the image generation call."`
+	// The type of the image generation call. Always 'image_gen_call'.
+	Type ImageGenCallItemParamType `json:"type" jsonschema:"description=The type of the image generation call. Always 'image_gen_call'."`
+	Status *string `json:"status,omitempty"`
+	// The prompt that was used after any model prompt rewriting.
+	RevisedPrompt *string `json:"revised_prompt,omitempty" jsonschema:"description=The prompt that was used after any model prompt rewriting."`
+	// The generated image encoded in base64.
+	Result *string `json:"result,omitempty" jsonschema:"maxLength=33554432,description=The generated image encoded in base64."`
+	Quality *ImageQuality `json:"quality,omitempty"`
+}
+
+// ImageGenCallItemParamType The type of the image generation call. Always 'image_gen_call'.
+type ImageGenCallItemParamType string
+
+const (
+	ImageGenCallItemParamTypeImageGenerationCall ImageGenCallItemParamType = "image_generation_call"
+)
+
+type ImageGenCallStatus string
+
+const (
+	ImageGenCallStatusInProgress ImageGenCallStatus = "in_progress"
+	ImageGenCallStatusCompleted ImageGenCallStatus = "completed"
+	ImageGenCallStatusIncomplete ImageGenCallStatus = "incomplete"
+	ImageGenCallStatusGenerating ImageGenCallStatus = "generating"
+	ImageGenCallStatusFailed ImageGenCallStatus = "failed"
+)
+
+// ImageGenCallType The type of the image generation call. Always 'image_generation_call'.
+type ImageGenCallType string
+
+const (
+	ImageGenCallTypeImageGenerationCall ImageGenCallType = "image_generation_call"
+)
+
+// ImageGenTool A tool that generates images. Learn more about the [image generation tool](https://platform.openai.com/docs/guides/image-generation).
+type ImageGenTool struct {
+	// The compression level of the generated images. Must be between 0 and 100, and defaults to 100.
+	OutputCompression int64 `json:"output_compression" jsonschema:"description=The compression level of the generated images. Must be between 0 and 100, and defaults to 100."`
+	Moderation *ImageModeration `json:"moderation"`
+	Background *ImageBackground `json:"background"`
+	// The type of the image generation tool. Always 'image_generation'.
+	Type ImageGenToolType `json:"type" jsonschema:"description=The type of the image generation tool. Always 'image_generation'."`
+	// The number of images to generate. Must be between 1 and 10.
+	N int64 `json:"n" jsonschema:"description=The number of images to generate. Must be between 1 and 10."`
+	Model *ImageGenToolModel `json:"model"`
+	Quality *ImageQuality `json:"quality"`
+	Size *ImageSize `json:"size"`
+	OutputFormat *ImageOutputFormat `json:"output_format"`
+}
+
+type ImageGenToolChoice struct {
+	Type ImageGenToolChoiceType `json:"type"`
+}
+
+type ImageGenToolChoiceType string
+
+const (
+	ImageGenToolChoiceTypeImageGeneration ImageGenToolChoiceType = "image_generation"
+)
+
+type ImageGenToolModel string
+
+const (
+	ImageGenToolModelGptImage1 ImageGenToolModel = "gpt-image-1"
+	ImageGenToolModelGptImage1Mini ImageGenToolModel = "gpt-image-1-mini"
+)
+
+type ImageGenToolParam struct {
+	// The number of partial images to generate in streaming mode.
+	PartialImages *int64 `json:"partial_images,omitempty" jsonschema:"minimum=0,maximum=3,description=The number of partial images to generate in streaming mode."`
+	InputFidelity *InputFidelity `json:"input_fidelity,omitempty"`
+	Size *ImageSize `json:"size,omitempty"`
+	OutputFormat *ImageOutputFormat `json:"output_format,omitempty"`
+	// Compression level for lossy output formats.
+	OutputCompression *int64 `json:"output_compression,omitempty" jsonschema:"minimum=0,maximum=100,description=Compression level for lossy output formats."`
+	InputImageMask *InputImageMaskContentParam `json:"input_image_mask,omitempty"`
+	Action *ImageGenActionEnum `json:"action,omitempty"`
+	// The type of the tool. Always 'image_generation'.
+	Type ImageGenToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'image_generation'."`
+	Model *ImageGenToolModel `json:"model,omitempty"`
+	Quality *ImageQuality `json:"quality,omitempty"`
+	Moderation *ImageModeration `json:"moderation,omitempty"`
+	Background *ImageBackground `json:"background,omitempty"`
+}
+
+// ImageGenToolParamType The type of the tool. Always 'image_generation'.
+type ImageGenToolParamType string
+
+const (
+	ImageGenToolParamTypeImageGeneration ImageGenToolParamType = "image_generation"
+)
+
+// ImageGenToolType The type of the image generation tool. Always 'image_generation'.
+type ImageGenToolType string
+
+const (
+	ImageGenToolTypeImageGeneration ImageGenToolType = "image_generation"
+)
+
+type ImageModeration string
+
+const (
+	ImageModerationAuto ImageModeration = "auto"
+	ImageModerationLow ImageModeration = "low"
+)
+
+type ImageOutputFormat string
+
+const (
+	ImageOutputFormatPng ImageOutputFormat = "png"
+	ImageOutputFormatWebp ImageOutputFormat = "webp"
+	ImageOutputFormatJpeg ImageOutputFormat = "jpeg"
+)
+
+type ImageQuality string
+
+const (
+	ImageQualityLow ImageQuality = "low"
+	ImageQualityMedium ImageQuality = "medium"
+	ImageQualityHigh ImageQuality = "high"
+	ImageQualityAuto ImageQuality = "auto"
+)
+
+type ImageSize string
+
+const (
+	ImageSizeN1024x1024 ImageSize = "1024x1024"
+	ImageSizeN1024x1536 ImageSize = "1024x1536"
+	ImageSizeN1536x1024 ImageSize = "1536x1024"
+	ImageSizeAuto ImageSize = "auto"
+)
+
+// IncludeEnum Specify additional output data to include in the model response. Currently supported values are:
+// - 'web_search_call.action.sources': Include the sources of the web search tool call.
+// - 'code_interpreter_call.outputs': Includes the outputs of python code execution in code interpreter tool call items.
+// - 'computer_call_output.output.image_url': Include image urls from the computer call output.
+// - 'file_search_call.results': Include the search results of the file search tool call.
+// - 'message.input_image.image_url': Include image urls from the input message.
+// - 'message.output_text.logprobs': Include logprobs with assistant messages.
+// - 'reasoning.encrypted_content': Includes an encrypted version of reasoning tokens in reasoning item outputs. This enables reasoning items to be used in multi-turn conversations when using the Responses API statelessly (like when the 'store' parameter is set to 'false', or when an organization is enrolled in the zero data retention program).
+type IncludeEnum string
+
+const (
+	IncludeEnumFileSearchCallResults IncludeEnum = "file_search_call.results"
+	IncludeEnumWebSearchCallResults IncludeEnum = "web_search_call.results"
+	IncludeEnumWebSearchCallActionSources IncludeEnum = "web_search_call.action.sources"
+	IncludeEnumMessageInputImageImageURL IncludeEnum = "message.input_image.image_url"
+	IncludeEnumComputerCallOutputOutputImageURL IncludeEnum = "computer_call_output.output.image_url"
+	IncludeEnumCodeInterpreterCallOutputs IncludeEnum = "code_interpreter_call.outputs"
+	IncludeEnumReasoningEncryptedContent IncludeEnum = "reasoning.encrypted_content"
+	IncludeEnumMessageOutputTextLogprobs IncludeEnum = "message.output_text.logprobs"
+)
+
+// IncompleteDetails Details about why the response was incomplete.
+type IncompleteDetails struct {
+	// The reason the response could not be completed.
+	Reason string `json:"reason" jsonschema:"description=The reason the response could not be completed."`
+}
+
+// InputFidelity Control how much effort the model will exert to match the style and features, especially facial features, of input images. This parameter is only supported for 'gpt-image-1'. Unsupported for 'gpt-image-1-mini'. Supports 'high' and 'low'. Defaults to 'low'.
+type InputFidelity string
+
+const (
+	InputFidelityHigh InputFidelity = "high"
+	InputFidelityLow InputFidelity = "low"
+)
 
 // InputFileContent A file input to the model.
 type InputFileContent struct {
 	// The type of the input item. Always 'input_file'.
 	Type InputFileContentType `json:"type" jsonschema:"description=The type of the input item. Always 'input_file'."`
 	// The ID of the file to be sent to the model.
+	FileID *string `json:"file_id" jsonschema:"description=The ID of the file to be sent to the model."`
+	// The name of the file to be sent to the model.
+	Filename *string `json:"filename,omitempty" jsonschema:"description=The name of the file to be sent to the model."`
+	// The URL of the file to be sent to the model.
+	FileURL *string `json:"file_url,omitempty" jsonschema:"description=The URL of the file to be sent to the model."`
+}
+
+// InputFileContentParam A file input to the model.
+type InputFileContentParam struct {
+	// The type of the input item. Always 'input_file'.
+	Type InputFileContentParamType `json:"type" jsonschema:"description=The type of the input item. Always 'input_file'."`
+	// The ID of the file to be sent to the model.
 	FileID *string `json:"file_id,omitempty" jsonschema:"description=The ID of the file to be sent to the model."`
 	// The name of the file to be sent to the model.
 	Filename *string `json:"filename,omitempty" jsonschema:"description=The name of the file to be sent to the model."`
-	// The content of the file to be sent to the model.
-	FileData *string `json:"file_data,omitempty" jsonschema:"description=The content of the file to be sent to the model."`
+	// The base64-encoded data of the file to be sent to the model.
+	FileData *string `json:"file_data,omitempty" jsonschema:"maxLength=33554432,description=The base64-encoded data of the file to be sent to the model."`
+	// The URL of the file to be sent to the model.
+	FileURL *string `json:"file_url,omitempty" jsonschema:"description=The URL of the file to be sent to the model."`
 }
+
+// InputFileContentParamType The type of the input item. Always 'input_file'.
+type InputFileContentParamType string
+
+const (
+	InputFileContentParamTypeInputFile InputFileContentParamType = "input_file"
+)
 
 // InputFileContentType The type of the input item. Always 'input_file'.
 type InputFileContentType string
@@ -1562,20 +5749,28 @@ type InputImageContent struct {
 	// The type of the input item. Always 'input_image'.
 	Type InputImageContentType `json:"type" jsonschema:"description=The type of the input item. Always 'input_image'."`
 	// The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
-	ImageURL *string `json:"image_url,omitempty" jsonschema:"description=The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."`
+	ImageURL *string `json:"image_url" jsonschema:"description=The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."`
 	// The ID of the file to be sent to the model.
-	FileID *string `json:"file_id,omitempty" jsonschema:"description=The ID of the file to be sent to the model."`
-	// The detail level of the image to be sent to the model. One of 'high', 'low', or 'auto'. Defaults to 'auto'.
-	Detail InputImageContentDetail `json:"detail" jsonschema:"description=The detail level of the image to be sent to the model. One of 'high', 'low', or 'auto'. Defaults to 'auto'."`
+	FileID *string `json:"file_id" jsonschema:"description=The ID of the file to be sent to the model."`
+	Detail ImageDetail `json:"detail"`
 }
 
-// InputImageContentDetail The detail level of the image to be sent to the model. One of 'high', 'low', or 'auto'. Defaults to 'auto'.
-type InputImageContentDetail string
+// InputImageContentParamAutoParam An image input to the model. Learn about [image inputs](/docs/guides/vision)
+type InputImageContentParamAutoParam struct {
+	Detail *DetailEnum `json:"detail,omitempty"`
+	// The type of the input item. Always 'input_image'.
+	Type InputImageContentParamAutoParamType `json:"type" jsonschema:"description=The type of the input item. Always 'input_image'."`
+	// The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL.
+	ImageURL *string `json:"image_url,omitempty" jsonschema:"maxLength=20971520,description=The URL of the image to be sent to the model. A fully qualified URL or base64 encoded image in a data URL."`
+	// The ID of the file to be sent to the model.
+	FileID *string `json:"file_id,omitempty" jsonschema:"description=The ID of the file to be sent to the model."`
+}
+
+// InputImageContentParamAutoParamType The type of the input item. Always 'input_image'.
+type InputImageContentParamAutoParamType string
 
 const (
-	InputImageContentDetailLow InputImageContentDetail = "low"
-	InputImageContentDetailHigh InputImageContentDetail = "high"
-	InputImageContentDetailAuto InputImageContentDetail = "auto"
+	InputImageContentParamAutoParamTypeInputImage InputImageContentParamAutoParamType = "input_image"
 )
 
 // InputImageContentType The type of the input item. Always 'input_image'.
@@ -1585,161 +5780,13 @@ const (
 	InputImageContentTypeInputImage InputImageContentType = "input_image"
 )
 
-// Discriminated by "type" field.
-//
-//compschema:generate
-type InputItem interface {
-	isInputItem()
-	DiscriminatorValue() string
+// InputImageMaskContentParam An optional mask image to apply when editing.
+type InputImageMaskContentParam struct {
+	// An image mask to apply when editing, specified as an image URL.
+	ImageURL *string `json:"image_url,omitempty" jsonschema:"maxLength=20971520,description=An image mask to apply when editing, specified as an image URL."`
+	// An uploaded file ID for an image mask to apply when editing.
+	FileID *string `json:"file_id,omitempty" jsonschema:"description=An uploaded file ID for an image mask to apply when editing."`
 }
-
-func (*EasyInputMessage) isInputItem() {}
-
-// InputItemItem wraps a Item value as a InputItem variant.
-type InputItemItem struct { Value Item }
-func (*InputItemItem) isInputItem() {}
-func (*ItemReferenceParam) isInputItem() {}
-
-func (x *EasyInputMessage) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-func (x *ItemReferenceParam) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-
-func (w *InputItemItem) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
-func (w InputItemItem) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *InputItemItem) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewInputItemItem creates a InputItem from a Item value.
-func NewInputItemItem(v Item) InputItem {
-	return &InputItemItem{Value: v}
-}
-
-// InputItemFromEasyInputMessage wraps a *EasyInputMessage as a InputItem union value.
-func InputItemFromEasyInputMessage(v *EasyInputMessage) InputItem {
-	return v
-}
-
-// InputItemFromItemReferenceParam wraps a *ItemReferenceParam as a InputItem union value.
-func InputItemFromItemReferenceParam(v *ItemReferenceParam) InputItem {
-	return v
-}
-
-// UnmarshalInputItem unmarshals JSON into the correct InputItem variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalInputItem(data []byte) (InputItem, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "message":
-		var val EasyInputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "item_reference":
-		var val ItemReferenceParam
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for InputItem", disc.D)
-	}
-}
-
-
-// InputMessage A message input to the model with a role indicating instruction following
-// hierarchy. Instructions given with the 'developer' or 'system' role take
-// precedence over instructions given with the 'user' role.
-type InputMessage struct {
-	// The type of the message input. Always set to 'message'.
-	Type *InputMessageType `json:"type,omitempty" jsonschema:"description=The type of the message input. Always set to 'message'."`
-	// The role of the message input. One of 'user', 'system', or 'developer'.
-	Role InputMessageRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'system', or 'developer'."`
-	// The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *InputMessageStatus `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	Content InputMessageContentList `json:"content"`
-}
-
-// InputMessageContentList A list of one or many input items to the model, containing different content 
-// types.
-type InputMessageContentList []InputContent
-
-// InputMessageResource A message input to the model with a role indicating instruction following
-// hierarchy. Instructions given with the 'developer' or 'system' role take
-// precedence over instructions given with the 'user' role.
-type InputMessageResource struct {
-	// The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *InputMessageResourceStatus `json:"status,omitempty" jsonschema:"description=The status of item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	Content InputMessageContentList `json:"content"`
-	// The unique ID of the message input.
-	ID string `json:"id" jsonschema:"description=The unique ID of the message input."`
-	// The type of the message input. Always set to 'message'.
-	Type *InputMessageResourceType `json:"type,omitempty" jsonschema:"description=The type of the message input. Always set to 'message'."`
-	// The role of the message input. One of 'user', 'system', or 'developer'.
-	Role InputMessageResourceRole `json:"role" jsonschema:"description=The role of the message input. One of 'user', 'system', or 'developer'."`
-}
-
-// InputMessageResourceRole The role of the message input. One of 'user', 'system', or 'developer'.
-type InputMessageResourceRole string
-
-const (
-	InputMessageResourceRoleUser InputMessageResourceRole = "user"
-	InputMessageResourceRoleSystem InputMessageResourceRole = "system"
-	InputMessageResourceRoleDeveloper InputMessageResourceRole = "developer"
-)
-
-// InputMessageResourceStatus The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type InputMessageResourceStatus string
-
-const (
-	InputMessageResourceStatusInProgress InputMessageResourceStatus = "in_progress"
-	InputMessageResourceStatusCompleted InputMessageResourceStatus = "completed"
-	InputMessageResourceStatusIncomplete InputMessageResourceStatus = "incomplete"
-)
-
-// InputMessageResourceType The type of the message input. Always set to 'message'.
-type InputMessageResourceType string
-
-const (
-	InputMessageResourceTypeMessage InputMessageResourceType = "message"
-)
-
-// InputMessageRole The role of the message input. One of 'user', 'system', or 'developer'.
-type InputMessageRole string
-
-const (
-	InputMessageRoleUser InputMessageRole = "user"
-	InputMessageRoleSystem InputMessageRole = "system"
-	InputMessageRoleDeveloper InputMessageRole = "developer"
-)
-
-// InputMessageStatus The status of item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type InputMessageStatus string
-
-const (
-	InputMessageStatusInProgress InputMessageStatus = "in_progress"
-	InputMessageStatusCompleted InputMessageStatus = "completed"
-	InputMessageStatusIncomplete InputMessageStatus = "incomplete"
-)
-
-// InputMessageType The type of the message input. Always set to 'message'.
-type InputMessageType string
-
-const (
-	InputMessageTypeMessage InputMessageType = "message"
-)
 
 // InputTextContent A text input to the model.
 type InputTextContent struct {
@@ -1749,6 +5796,21 @@ type InputTextContent struct {
 	Text string `json:"text" jsonschema:"description=The text input to the model."`
 }
 
+// InputTextContentParam A text input to the model.
+type InputTextContentParam struct {
+	// The type of the input item. Always 'input_text'.
+	Type InputTextContentParamType `json:"type" jsonschema:"description=The type of the input item. Always 'input_text'."`
+	// The text input to the model.
+	Text string `json:"text" jsonschema:"maxLength=10485760,description=The text input to the model."`
+}
+
+// InputTextContentParamType The type of the input item. Always 'input_text'.
+type InputTextContentParamType string
+
+const (
+	InputTextContentParamTypeInputText InputTextContentParamType = "input_text"
+)
+
 // InputTextContentType The type of the input item. Always 'input_text'.
 type InputTextContentType string
 
@@ -1756,83 +5818,187 @@ const (
 	InputTextContentTypeInputText InputTextContentType = "input_text"
 )
 
-// Item Content item used to generate a response.
+// InputTokensDetails A breakdown of input token usage that was recorded.
+type InputTokensDetails struct {
+	// The number of input tokens that were served from cache.
+	CachedTokens int64 `json:"cached_tokens" jsonschema:"description=The number of input tokens that were served from cache."`
+}
+
+// ItemField An item representing a message, tool call, tool output, reasoning, or other response element.
 // Discriminated by "type" field.
 //
 //compschema:generate
-type Item interface {
-	isItem()
+type ItemField interface {
+	isItemField()
 	DiscriminatorValue() string
 }
 
-func (*InputMessage) isItem() {}
-func (*OutputMessage) isItem() {}
-func (*FileSearchToolCall) isItem() {}
-func (*ComputerToolCall) isItem() {}
-func (*ComputerCallOutputItemParam) isItem() {}
-func (*WebSearchToolCall) isItem() {}
-func (*FunctionToolCall) isItem() {}
-func (*FunctionCallOutputItemParam) isItem() {}
-func (*ReasoningItem) isItem() {}
+func (*Message) isItemField() {}
+func (*FunctionCall) isItemField() {}
+func (*FunctionCallOutput) isItemField() {}
+func (*FileSearchCall) isItemField() {}
+func (*WebSearchCall) isItemField() {}
+func (*ImageGenCall) isItemField() {}
+func (*ComputerCall) isItemField() {}
+func (*ComputerCallOutput) isItemField() {}
+func (*ReasoningBody) isItemField() {}
+func (*CompactionBody) isItemField() {}
+func (*CodeInterpreterCall) isItemField() {}
+func (*LocalShellCall) isItemField() {}
+func (*LocalShellCallOutput) isItemField() {}
+func (*FunctionShellCall) isItemField() {}
+func (*FunctionShellCallOutput) isItemField() {}
+func (*ApplyPatchToolCall) isItemField() {}
+func (*ApplyPatchToolCallOutput) isItemField() {}
+func (*MCPListTools) isItemField() {}
+func (*MCPApprovalRequest) isItemField() {}
+func (*MCPApprovalResponse) isItemField() {}
+func (*MCPToolCall) isItemField() {}
+func (*CustomToolCall) isItemField() {}
+func (*CustomToolCallOutput) isItemField() {}
 
-func (x *InputMessage) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-func (x *OutputMessage) DiscriminatorValue() string { return string(x.Type) }
-func (x *FileSearchToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *ComputerToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *ComputerCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
-func (x *WebSearchToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionToolCall) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
-func (x *ReasoningItem) DiscriminatorValue() string { return string(x.Type) }
+func (x *Message) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionCallOutput) DiscriminatorValue() string { return string(x.Type) }
+func (x *FileSearchCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *ImageGenCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerCallOutput) DiscriminatorValue() string { return string(x.Type) }
+func (x *ReasoningBody) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompactionBody) DiscriminatorValue() string { return string(x.Type) }
+func (x *CodeInterpreterCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *LocalShellCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *LocalShellCallOutput) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCallOutput) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchToolCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchToolCallOutput) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPListTools) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPApprovalRequest) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPApprovalResponse) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPToolCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomToolCall) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomToolCallOutput) DiscriminatorValue() string { return string(x.Type) }
 
-// ItemFromInputMessage wraps a *InputMessage as a Item union value.
-func ItemFromInputMessage(v *InputMessage) Item {
+// ItemFieldFromMessage wraps a *Message as a ItemField union value.
+func ItemFieldFromMessage(v *Message) ItemField {
 	return v
 }
 
-// ItemFromOutputMessage wraps a *OutputMessage as a Item union value.
-func ItemFromOutputMessage(v *OutputMessage) Item {
+// ItemFieldFromFunctionCall wraps a *FunctionCall as a ItemField union value.
+func ItemFieldFromFunctionCall(v *FunctionCall) ItemField {
 	return v
 }
 
-// ItemFromFileSearchToolCall wraps a *FileSearchToolCall as a Item union value.
-func ItemFromFileSearchToolCall(v *FileSearchToolCall) Item {
+// ItemFieldFromFunctionCallOutput wraps a *FunctionCallOutput as a ItemField union value.
+func ItemFieldFromFunctionCallOutput(v *FunctionCallOutput) ItemField {
 	return v
 }
 
-// ItemFromComputerToolCall wraps a *ComputerToolCall as a Item union value.
-func ItemFromComputerToolCall(v *ComputerToolCall) Item {
+// ItemFieldFromFileSearchCall wraps a *FileSearchCall as a ItemField union value.
+func ItemFieldFromFileSearchCall(v *FileSearchCall) ItemField {
 	return v
 }
 
-// ItemFromComputerCallOutputItemParam wraps a *ComputerCallOutputItemParam as a Item union value.
-func ItemFromComputerCallOutputItemParam(v *ComputerCallOutputItemParam) Item {
+// ItemFieldFromWebSearchCall wraps a *WebSearchCall as a ItemField union value.
+func ItemFieldFromWebSearchCall(v *WebSearchCall) ItemField {
 	return v
 }
 
-// ItemFromWebSearchToolCall wraps a *WebSearchToolCall as a Item union value.
-func ItemFromWebSearchToolCall(v *WebSearchToolCall) Item {
+// ItemFieldFromImageGenCall wraps a *ImageGenCall as a ItemField union value.
+func ItemFieldFromImageGenCall(v *ImageGenCall) ItemField {
 	return v
 }
 
-// ItemFromFunctionToolCall wraps a *FunctionToolCall as a Item union value.
-func ItemFromFunctionToolCall(v *FunctionToolCall) Item {
+// ItemFieldFromComputerCall wraps a *ComputerCall as a ItemField union value.
+func ItemFieldFromComputerCall(v *ComputerCall) ItemField {
 	return v
 }
 
-// ItemFromFunctionCallOutputItemParam wraps a *FunctionCallOutputItemParam as a Item union value.
-func ItemFromFunctionCallOutputItemParam(v *FunctionCallOutputItemParam) Item {
+// ItemFieldFromComputerCallOutput wraps a *ComputerCallOutput as a ItemField union value.
+func ItemFieldFromComputerCallOutput(v *ComputerCallOutput) ItemField {
 	return v
 }
 
-// ItemFromReasoningItem wraps a *ReasoningItem as a Item union value.
-func ItemFromReasoningItem(v *ReasoningItem) Item {
+// ItemFieldFromReasoningBody wraps a *ReasoningBody as a ItemField union value.
+func ItemFieldFromReasoningBody(v *ReasoningBody) ItemField {
 	return v
 }
 
-// UnmarshalItem unmarshals JSON into the correct Item variant.
+// ItemFieldFromCompactionBody wraps a *CompactionBody as a ItemField union value.
+func ItemFieldFromCompactionBody(v *CompactionBody) ItemField {
+	return v
+}
+
+// ItemFieldFromCodeInterpreterCall wraps a *CodeInterpreterCall as a ItemField union value.
+func ItemFieldFromCodeInterpreterCall(v *CodeInterpreterCall) ItemField {
+	return v
+}
+
+// ItemFieldFromLocalShellCall wraps a *LocalShellCall as a ItemField union value.
+func ItemFieldFromLocalShellCall(v *LocalShellCall) ItemField {
+	return v
+}
+
+// ItemFieldFromLocalShellCallOutput wraps a *LocalShellCallOutput as a ItemField union value.
+func ItemFieldFromLocalShellCallOutput(v *LocalShellCallOutput) ItemField {
+	return v
+}
+
+// ItemFieldFromFunctionShellCall wraps a *FunctionShellCall as a ItemField union value.
+func ItemFieldFromFunctionShellCall(v *FunctionShellCall) ItemField {
+	return v
+}
+
+// ItemFieldFromFunctionShellCallOutput wraps a *FunctionShellCallOutput as a ItemField union value.
+func ItemFieldFromFunctionShellCallOutput(v *FunctionShellCallOutput) ItemField {
+	return v
+}
+
+// ItemFieldFromApplyPatchToolCall wraps a *ApplyPatchToolCall as a ItemField union value.
+func ItemFieldFromApplyPatchToolCall(v *ApplyPatchToolCall) ItemField {
+	return v
+}
+
+// ItemFieldFromApplyPatchToolCallOutput wraps a *ApplyPatchToolCallOutput as a ItemField union value.
+func ItemFieldFromApplyPatchToolCallOutput(v *ApplyPatchToolCallOutput) ItemField {
+	return v
+}
+
+// ItemFieldFromMCPListTools wraps a *MCPListTools as a ItemField union value.
+func ItemFieldFromMCPListTools(v *MCPListTools) ItemField {
+	return v
+}
+
+// ItemFieldFromMCPApprovalRequest wraps a *MCPApprovalRequest as a ItemField union value.
+func ItemFieldFromMCPApprovalRequest(v *MCPApprovalRequest) ItemField {
+	return v
+}
+
+// ItemFieldFromMCPApprovalResponse wraps a *MCPApprovalResponse as a ItemField union value.
+func ItemFieldFromMCPApprovalResponse(v *MCPApprovalResponse) ItemField {
+	return v
+}
+
+// ItemFieldFromMCPToolCall wraps a *MCPToolCall as a ItemField union value.
+func ItemFieldFromMCPToolCall(v *MCPToolCall) ItemField {
+	return v
+}
+
+// ItemFieldFromCustomToolCall wraps a *CustomToolCall as a ItemField union value.
+func ItemFieldFromCustomToolCall(v *CustomToolCall) ItemField {
+	return v
+}
+
+// ItemFieldFromCustomToolCallOutput wraps a *CustomToolCallOutput as a ItemField union value.
+func ItemFieldFromCustomToolCallOutput(v *CustomToolCallOutput) ItemField {
+	return v
+}
+
+// UnmarshalItemField unmarshals JSON into the correct ItemField variant.
 // Dispatches on the "type" discriminator field.
-func UnmarshalItem(data []byte) (Item, error) {
+func UnmarshalItemField(data []byte) (ItemField, error) {
 	var disc struct {
 		D string `json:"type"`
 	}
@@ -1841,19 +6007,418 @@ func UnmarshalItem(data []byte) (Item, error) {
 	}
 	switch disc.D {
 	case "message":
-		var val InputMessage
+		var val Message
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call":
+		var val FunctionCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call_output":
+		var val FunctionCallOutput
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "file_search_call":
-		var val FileSearchToolCall
+		var val FileSearchCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_call":
+		var val WebSearchCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation_call":
+		var val ImageGenCall
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "computer_call":
-		var val ComputerToolCall
+		var val ComputerCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_call_output":
+		var val ComputerCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning":
+		var val ReasoningBody
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "compaction":
+		var val CompactionBody
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "code_interpreter_call":
+		var val CodeInterpreterCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call":
+		var val LocalShellCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call_output":
+		var val LocalShellCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call":
+		var val FunctionShellCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call_output":
+		var val FunctionShellCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch_call":
+		var val ApplyPatchToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch_call_output":
+		var val ApplyPatchToolCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_list_tools":
+		var val MCPListTools
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_request":
+		var val MCPApprovalRequest
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_response":
+		var val MCPApprovalResponse
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_call":
+		var val MCPToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call":
+		var val CustomToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call_output":
+		var val CustomToolCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ItemField", disc.D)
+	}
+}
+
+
+// Discriminated by "type" field.
+//
+//compschema:generate
+type ItemParam interface {
+	isItemParam()
+	DiscriminatorValue() string
+}
+
+func (*ItemReferenceParam) isItemParam() {}
+func (*ReasoningItemParam) isItemParam() {}
+func (*CompactionSummaryItemParam) isItemParam() {}
+func (*UserMessageItemParam) isItemParam() {}
+func (*SystemMessageItemParam) isItemParam() {}
+func (*DeveloperMessageItemParam) isItemParam() {}
+func (*AssistantMessageItemParam) isItemParam() {}
+func (*FunctionCallItemParam) isItemParam() {}
+func (*FunctionCallOutputItemParam) isItemParam() {}
+func (*CustomToolCallItemParam) isItemParam() {}
+func (*CustomToolCallOutputItemParam) isItemParam() {}
+func (*ApplyPatchToolCallItemParam) isItemParam() {}
+func (*FunctionShellCallItemParam) isItemParam() {}
+func (*FunctionShellCallOutputItemParam) isItemParam() {}
+func (*ApplyPatchToolCallOutputItemParam) isItemParam() {}
+func (*ComputerCallItemParam) isItemParam() {}
+func (*ComputerCallOutputItemParam) isItemParam() {}
+func (*WebSearchCallItemParam) isItemParam() {}
+func (*ImageGenCallItemParam) isItemParam() {}
+func (*CodeInterpreterCallItemParam) isItemParam() {}
+func (*FileSearchCallItemParam) isItemParam() {}
+func (*LocalShellCallItemParam) isItemParam() {}
+func (*LocalShellCallOutputItemParam) isItemParam() {}
+func (*MCPApprovalResponseItemParam) isItemParam() {}
+func (*MCPApprovalRequestItemParam) isItemParam() {}
+
+func (x *ItemReferenceParam) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
+func (x *ReasoningItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CompactionSummaryItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *UserMessageItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SystemMessageItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *DeveloperMessageItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *AssistantMessageItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomToolCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomToolCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchToolCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchToolCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ImageGenCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CodeInterpreterCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FileSearchCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *LocalShellCallItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *LocalShellCallOutputItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPApprovalResponseItemParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPApprovalRequestItemParam) DiscriminatorValue() string { return string(x.Type) }
+
+// ItemParamFromItemReferenceParam wraps a *ItemReferenceParam as a ItemParam union value.
+func ItemParamFromItemReferenceParam(v *ItemReferenceParam) ItemParam {
+	return v
+}
+
+// ItemParamFromReasoningItemParam wraps a *ReasoningItemParam as a ItemParam union value.
+func ItemParamFromReasoningItemParam(v *ReasoningItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromCompactionSummaryItemParam wraps a *CompactionSummaryItemParam as a ItemParam union value.
+func ItemParamFromCompactionSummaryItemParam(v *CompactionSummaryItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromUserMessageItemParam wraps a *UserMessageItemParam as a ItemParam union value.
+func ItemParamFromUserMessageItemParam(v *UserMessageItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromSystemMessageItemParam wraps a *SystemMessageItemParam as a ItemParam union value.
+func ItemParamFromSystemMessageItemParam(v *SystemMessageItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromDeveloperMessageItemParam wraps a *DeveloperMessageItemParam as a ItemParam union value.
+func ItemParamFromDeveloperMessageItemParam(v *DeveloperMessageItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromAssistantMessageItemParam wraps a *AssistantMessageItemParam as a ItemParam union value.
+func ItemParamFromAssistantMessageItemParam(v *AssistantMessageItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromFunctionCallItemParam wraps a *FunctionCallItemParam as a ItemParam union value.
+func ItemParamFromFunctionCallItemParam(v *FunctionCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromFunctionCallOutputItemParam wraps a *FunctionCallOutputItemParam as a ItemParam union value.
+func ItemParamFromFunctionCallOutputItemParam(v *FunctionCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromCustomToolCallItemParam wraps a *CustomToolCallItemParam as a ItemParam union value.
+func ItemParamFromCustomToolCallItemParam(v *CustomToolCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromCustomToolCallOutputItemParam wraps a *CustomToolCallOutputItemParam as a ItemParam union value.
+func ItemParamFromCustomToolCallOutputItemParam(v *CustomToolCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromApplyPatchToolCallItemParam wraps a *ApplyPatchToolCallItemParam as a ItemParam union value.
+func ItemParamFromApplyPatchToolCallItemParam(v *ApplyPatchToolCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromFunctionShellCallItemParam wraps a *FunctionShellCallItemParam as a ItemParam union value.
+func ItemParamFromFunctionShellCallItemParam(v *FunctionShellCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromFunctionShellCallOutputItemParam wraps a *FunctionShellCallOutputItemParam as a ItemParam union value.
+func ItemParamFromFunctionShellCallOutputItemParam(v *FunctionShellCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromApplyPatchToolCallOutputItemParam wraps a *ApplyPatchToolCallOutputItemParam as a ItemParam union value.
+func ItemParamFromApplyPatchToolCallOutputItemParam(v *ApplyPatchToolCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromComputerCallItemParam wraps a *ComputerCallItemParam as a ItemParam union value.
+func ItemParamFromComputerCallItemParam(v *ComputerCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromComputerCallOutputItemParam wraps a *ComputerCallOutputItemParam as a ItemParam union value.
+func ItemParamFromComputerCallOutputItemParam(v *ComputerCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromWebSearchCallItemParam wraps a *WebSearchCallItemParam as a ItemParam union value.
+func ItemParamFromWebSearchCallItemParam(v *WebSearchCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromImageGenCallItemParam wraps a *ImageGenCallItemParam as a ItemParam union value.
+func ItemParamFromImageGenCallItemParam(v *ImageGenCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromCodeInterpreterCallItemParam wraps a *CodeInterpreterCallItemParam as a ItemParam union value.
+func ItemParamFromCodeInterpreterCallItemParam(v *CodeInterpreterCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromFileSearchCallItemParam wraps a *FileSearchCallItemParam as a ItemParam union value.
+func ItemParamFromFileSearchCallItemParam(v *FileSearchCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromLocalShellCallItemParam wraps a *LocalShellCallItemParam as a ItemParam union value.
+func ItemParamFromLocalShellCallItemParam(v *LocalShellCallItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromLocalShellCallOutputItemParam wraps a *LocalShellCallOutputItemParam as a ItemParam union value.
+func ItemParamFromLocalShellCallOutputItemParam(v *LocalShellCallOutputItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromMCPApprovalResponseItemParam wraps a *MCPApprovalResponseItemParam as a ItemParam union value.
+func ItemParamFromMCPApprovalResponseItemParam(v *MCPApprovalResponseItemParam) ItemParam {
+	return v
+}
+
+// ItemParamFromMCPApprovalRequestItemParam wraps a *MCPApprovalRequestItemParam as a ItemParam union value.
+func ItemParamFromMCPApprovalRequestItemParam(v *MCPApprovalRequestItemParam) ItemParam {
+	return v
+}
+
+// UnmarshalItemParam unmarshals JSON into the correct ItemParam variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalItemParam(data []byte) (ItemParam, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "item_reference":
+		var val ItemReferenceParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning":
+		var val ReasoningItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "compaction":
+		var val CompactionSummaryItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "message":
+		var val UserMessageItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call":
+		var val FunctionCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call_output":
+		var val FunctionCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call":
+		var val CustomToolCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call_output":
+		var val CustomToolCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch_call":
+		var val ApplyPatchToolCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call":
+		var val FunctionShellCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call_output":
+		var val FunctionShellCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch_call_output":
+		var val ApplyPatchToolCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_call":
+		var val ComputerCallItemParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -1865,31 +6430,55 @@ func UnmarshalItem(data []byte) (Item, error) {
 		}
 		return &val, nil
 	case "web_search_call":
-		var val WebSearchToolCall
+		var val WebSearchCallItemParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "function_call":
-		var val FunctionToolCall
+	case "image_generation_call":
+		var val ImageGenCallItemParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "function_call_output":
-		var val FunctionCallOutputItemParam
+	case "code_interpreter_call":
+		var val CodeInterpreterCallItemParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "reasoning":
-		var val ReasoningItem
+	case "file_search_call":
+		var val FileSearchCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call":
+		var val LocalShellCallItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call_output":
+		var val LocalShellCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_response":
+		var val MCPApprovalResponseItemParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_request":
+		var val MCPApprovalRequestItemParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for Item", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ItemParam", disc.D)
 	}
 }
 
@@ -1909,507 +6498,806 @@ const (
 	ItemReferenceParamTypeItemReference ItemReferenceParamType = "item_reference"
 )
 
-// ItemResource Content item used to generate a response.
-// Discriminated by "type" field.
-//
-//compschema:generate
-type ItemResource interface {
-	isItemResource()
-	DiscriminatorValue() string
+type JsonObjectResponseFormat struct {
+	Type JsonObjectResponseFormatType `json:"type"`
 }
 
-func (*InputMessageResource) isItemResource() {}
-func (*OutputMessage) isItemResource() {}
-func (*FileSearchToolCall) isItemResource() {}
-func (*ComputerToolCall) isItemResource() {}
-func (*ComputerToolCallOutputResource) isItemResource() {}
-func (*WebSearchToolCall) isItemResource() {}
-func (*FunctionToolCallResource) isItemResource() {}
-func (*FunctionToolCallOutputResource) isItemResource() {}
+type JsonObjectResponseFormatType string
 
-func (x *InputMessageResource) DiscriminatorValue() string { if x.Type == nil { var zero string; return zero }; return string(*x.Type) }
-func (x *ComputerToolCallOutputResource) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionToolCallResource) DiscriminatorValue() string { return string(x.Type) }
-func (x *FunctionToolCallOutputResource) DiscriminatorValue() string { return string(x.Type) }
+const (
+	JsonObjectResponseFormatTypeJSONObject JsonObjectResponseFormatType = "json_object"
+)
 
-// ItemResourceFromInputMessageResource wraps a *InputMessageResource as a ItemResource union value.
-func ItemResourceFromInputMessageResource(v *InputMessageResource) ItemResource {
-	return v
+type JsonSchemaResponseFormat struct {
+	Description *string `json:"description"`
+	Schema *any `json:"schema"`
+	Strict bool `json:"strict"`
+	Type JsonSchemaResponseFormatType `json:"type"`
+	Name string `json:"name"`
 }
 
-// ItemResourceFromOutputMessage wraps a *OutputMessage as a ItemResource union value.
-func ItemResourceFromOutputMessage(v *OutputMessage) ItemResource {
-	return v
-}
+type JsonSchemaResponseFormatType string
 
-// ItemResourceFromFileSearchToolCall wraps a *FileSearchToolCall as a ItemResource union value.
-func ItemResourceFromFileSearchToolCall(v *FileSearchToolCall) ItemResource {
-	return v
-}
+const (
+	JsonSchemaResponseFormatTypeJSONSchema JsonSchemaResponseFormatType = "json_schema"
+)
 
-// ItemResourceFromComputerToolCall wraps a *ComputerToolCall as a ItemResource union value.
-func ItemResourceFromComputerToolCall(v *ComputerToolCall) ItemResource {
-	return v
-}
-
-// ItemResourceFromComputerToolCallOutputResource wraps a *ComputerToolCallOutputResource as a ItemResource union value.
-func ItemResourceFromComputerToolCallOutputResource(v *ComputerToolCallOutputResource) ItemResource {
-	return v
-}
-
-// ItemResourceFromWebSearchToolCall wraps a *WebSearchToolCall as a ItemResource union value.
-func ItemResourceFromWebSearchToolCall(v *WebSearchToolCall) ItemResource {
-	return v
-}
-
-// ItemResourceFromFunctionToolCallResource wraps a *FunctionToolCallResource as a ItemResource union value.
-func ItemResourceFromFunctionToolCallResource(v *FunctionToolCallResource) ItemResource {
-	return v
-}
-
-// ItemResourceFromFunctionToolCallOutputResource wraps a *FunctionToolCallOutputResource as a ItemResource union value.
-func ItemResourceFromFunctionToolCallOutputResource(v *FunctionToolCallOutputResource) ItemResource {
-	return v
-}
-
-// UnmarshalItemResource unmarshals JSON into the correct ItemResource variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalItemResource(data []byte) (ItemResource, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "message":
-		var val InputMessageResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_call":
-		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_call_output":
-		var val ComputerToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCallResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call_output":
-		var val FunctionToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ItemResource", disc.D)
-	}
-}
-
-
-// KeyPress A collection of keypresses the model would like to perform.
-type KeyPress struct {
-	// Specifies the event type. For a keypress action, this property is 
-// always set to 'keypress'.
-	Type KeyPressType `json:"type" jsonschema:"description=Specifies the event type. For a keypress action, this property is always set to 'keypress'."`
-	// The combination of keys the model is requesting to be pressed. This is an
-// array of strings, each representing a key.
+// KeyPressAction A collection of keypresses the model would like to perform.
+type KeyPressAction struct {
+	// Specifies the event type. For a keypress action, this property is always set to 'keypress'.
+	Type KeyPressActionType `json:"type" jsonschema:"description=Specifies the event type. For a keypress action, this property is always set to 'keypress'."`
+	// The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key.
 	Keys []string `json:"keys" jsonschema:"description=The combination of keys the model is requesting to be pressed. This is an array of strings, each representing a key."`
 }
 
-// KeyPressType Specifies the event type. For a keypress action, this property is 
-// always set to 'keypress'.
-type KeyPressType string
+// KeyPressActionType Specifies the event type. For a keypress action, this property is always set to 'keypress'.
+type KeyPressActionType string
 
 const (
-	KeyPressTypeKeypress KeyPressType = "keypress"
+	KeyPressActionTypeKeypress KeyPressActionType = "keypress"
 )
 
-// Metadata Set of 16 key-value pairs that can be attached to an object. This can be
-// useful for storing additional information about the object in a structured
-// format, and querying for objects via API or the dashboard. 
-// 
-// Keys are strings with a maximum length of 64 characters. Values are strings
-// with a maximum length of 512 characters.
-type Metadata map[string]string
-
-type ModelIdsResponses string
-
-const (
-	ModelIdsResponsesGpt41 ModelIdsResponses = "gpt-4.1"
-	ModelIdsResponsesGpt41Mini ModelIdsResponses = "gpt-4.1-mini"
-	ModelIdsResponsesGpt41Nano ModelIdsResponses = "gpt-4.1-nano"
-	ModelIdsResponsesGpt4120250414 ModelIdsResponses = "gpt-4.1-2025-04-14"
-	ModelIdsResponsesGpt41Mini20250414 ModelIdsResponses = "gpt-4.1-mini-2025-04-14"
-	ModelIdsResponsesGpt41Nano20250414 ModelIdsResponses = "gpt-4.1-nano-2025-04-14"
-	ModelIdsResponsesO4Mini ModelIdsResponses = "o4-mini"
-	ModelIdsResponsesO4Mini20250416 ModelIdsResponses = "o4-mini-2025-04-16"
-	ModelIdsResponsesO3 ModelIdsResponses = "o3"
-	ModelIdsResponsesO320250416 ModelIdsResponses = "o3-2025-04-16"
-	ModelIdsResponsesO3Mini ModelIdsResponses = "o3-mini"
-	ModelIdsResponsesO3Mini20250131 ModelIdsResponses = "o3-mini-2025-01-31"
-	ModelIdsResponsesO1 ModelIdsResponses = "o1"
-	ModelIdsResponsesO120241217 ModelIdsResponses = "o1-2024-12-17"
-	ModelIdsResponsesO1Preview ModelIdsResponses = "o1-preview"
-	ModelIdsResponsesO1Preview20240912 ModelIdsResponses = "o1-preview-2024-09-12"
-	ModelIdsResponsesO1Mini ModelIdsResponses = "o1-mini"
-	ModelIdsResponsesO1Mini20240912 ModelIdsResponses = "o1-mini-2024-09-12"
-	ModelIdsResponsesGpt4o ModelIdsResponses = "gpt-4o"
-	ModelIdsResponsesGpt4o20241120 ModelIdsResponses = "gpt-4o-2024-11-20"
-	ModelIdsResponsesGpt4o20240806 ModelIdsResponses = "gpt-4o-2024-08-06"
-	ModelIdsResponsesGpt4o20240513 ModelIdsResponses = "gpt-4o-2024-05-13"
-	ModelIdsResponsesGpt4oAudioPreview ModelIdsResponses = "gpt-4o-audio-preview"
-	ModelIdsResponsesGpt4oAudioPreview20241001 ModelIdsResponses = "gpt-4o-audio-preview-2024-10-01"
-	ModelIdsResponsesGpt4oAudioPreview20241217 ModelIdsResponses = "gpt-4o-audio-preview-2024-12-17"
-	ModelIdsResponsesGpt4oMiniAudioPreview ModelIdsResponses = "gpt-4o-mini-audio-preview"
-	ModelIdsResponsesGpt4oMiniAudioPreview20241217 ModelIdsResponses = "gpt-4o-mini-audio-preview-2024-12-17"
-	ModelIdsResponsesGpt4oSearchPreview ModelIdsResponses = "gpt-4o-search-preview"
-	ModelIdsResponsesGpt4oMiniSearchPreview ModelIdsResponses = "gpt-4o-mini-search-preview"
-	ModelIdsResponsesGpt4oSearchPreview20250311 ModelIdsResponses = "gpt-4o-search-preview-2025-03-11"
-	ModelIdsResponsesGpt4oMiniSearchPreview20250311 ModelIdsResponses = "gpt-4o-mini-search-preview-2025-03-11"
-	ModelIdsResponsesChatgpt4oLatest ModelIdsResponses = "chatgpt-4o-latest"
-	ModelIdsResponsesGpt4oMini ModelIdsResponses = "gpt-4o-mini"
-	ModelIdsResponsesGpt4oMini20240718 ModelIdsResponses = "gpt-4o-mini-2024-07-18"
-	ModelIdsResponsesGpt4Turbo ModelIdsResponses = "gpt-4-turbo"
-	ModelIdsResponsesGpt4Turbo20240409 ModelIdsResponses = "gpt-4-turbo-2024-04-09"
-	ModelIdsResponsesGpt40125Preview ModelIdsResponses = "gpt-4-0125-preview"
-	ModelIdsResponsesGpt4TurboPreview ModelIdsResponses = "gpt-4-turbo-preview"
-	ModelIdsResponsesGpt41106Preview ModelIdsResponses = "gpt-4-1106-preview"
-	ModelIdsResponsesGpt4VisionPreview ModelIdsResponses = "gpt-4-vision-preview"
-	ModelIdsResponsesGpt4 ModelIdsResponses = "gpt-4"
-	ModelIdsResponsesGpt40314 ModelIdsResponses = "gpt-4-0314"
-	ModelIdsResponsesGpt40613 ModelIdsResponses = "gpt-4-0613"
-	ModelIdsResponsesGpt432k ModelIdsResponses = "gpt-4-32k"
-	ModelIdsResponsesGpt432k0314 ModelIdsResponses = "gpt-4-32k-0314"
-	ModelIdsResponsesGpt432k0613 ModelIdsResponses = "gpt-4-32k-0613"
-	ModelIdsResponsesGpt35Turbo ModelIdsResponses = "gpt-3.5-turbo"
-	ModelIdsResponsesGpt35Turbo16k ModelIdsResponses = "gpt-3.5-turbo-16k"
-	ModelIdsResponsesGpt35Turbo0301 ModelIdsResponses = "gpt-3.5-turbo-0301"
-	ModelIdsResponsesGpt35Turbo0613 ModelIdsResponses = "gpt-3.5-turbo-0613"
-	ModelIdsResponsesGpt35Turbo1106 ModelIdsResponses = "gpt-3.5-turbo-1106"
-	ModelIdsResponsesGpt35Turbo0125 ModelIdsResponses = "gpt-3.5-turbo-0125"
-	ModelIdsResponsesGpt35Turbo16k0613 ModelIdsResponses = "gpt-3.5-turbo-16k-0613"
-	ModelIdsResponsesO1Pro ModelIdsResponses = "o1-pro"
-	ModelIdsResponsesO1Pro20250319 ModelIdsResponses = "o1-pro-2025-03-19"
-	ModelIdsResponsesComputerUsePreview ModelIdsResponses = "computer-use-preview"
-	ModelIdsResponsesComputerUsePreview20250311 ModelIdsResponses = "computer-use-preview-2025-03-11"
-)
-
-type ModelIdsShared string
-
-const (
-	ModelIdsSharedGpt41 ModelIdsShared = "gpt-4.1"
-	ModelIdsSharedGpt41Mini ModelIdsShared = "gpt-4.1-mini"
-	ModelIdsSharedGpt41Nano ModelIdsShared = "gpt-4.1-nano"
-	ModelIdsSharedGpt4120250414 ModelIdsShared = "gpt-4.1-2025-04-14"
-	ModelIdsSharedGpt41Mini20250414 ModelIdsShared = "gpt-4.1-mini-2025-04-14"
-	ModelIdsSharedGpt41Nano20250414 ModelIdsShared = "gpt-4.1-nano-2025-04-14"
-	ModelIdsSharedO4Mini ModelIdsShared = "o4-mini"
-	ModelIdsSharedO4Mini20250416 ModelIdsShared = "o4-mini-2025-04-16"
-	ModelIdsSharedO3 ModelIdsShared = "o3"
-	ModelIdsSharedO320250416 ModelIdsShared = "o3-2025-04-16"
-	ModelIdsSharedO3Mini ModelIdsShared = "o3-mini"
-	ModelIdsSharedO3Mini20250131 ModelIdsShared = "o3-mini-2025-01-31"
-	ModelIdsSharedO1 ModelIdsShared = "o1"
-	ModelIdsSharedO120241217 ModelIdsShared = "o1-2024-12-17"
-	ModelIdsSharedO1Preview ModelIdsShared = "o1-preview"
-	ModelIdsSharedO1Preview20240912 ModelIdsShared = "o1-preview-2024-09-12"
-	ModelIdsSharedO1Mini ModelIdsShared = "o1-mini"
-	ModelIdsSharedO1Mini20240912 ModelIdsShared = "o1-mini-2024-09-12"
-	ModelIdsSharedGpt4o ModelIdsShared = "gpt-4o"
-	ModelIdsSharedGpt4o20241120 ModelIdsShared = "gpt-4o-2024-11-20"
-	ModelIdsSharedGpt4o20240806 ModelIdsShared = "gpt-4o-2024-08-06"
-	ModelIdsSharedGpt4o20240513 ModelIdsShared = "gpt-4o-2024-05-13"
-	ModelIdsSharedGpt4oAudioPreview ModelIdsShared = "gpt-4o-audio-preview"
-	ModelIdsSharedGpt4oAudioPreview20241001 ModelIdsShared = "gpt-4o-audio-preview-2024-10-01"
-	ModelIdsSharedGpt4oAudioPreview20241217 ModelIdsShared = "gpt-4o-audio-preview-2024-12-17"
-	ModelIdsSharedGpt4oMiniAudioPreview ModelIdsShared = "gpt-4o-mini-audio-preview"
-	ModelIdsSharedGpt4oMiniAudioPreview20241217 ModelIdsShared = "gpt-4o-mini-audio-preview-2024-12-17"
-	ModelIdsSharedGpt4oSearchPreview ModelIdsShared = "gpt-4o-search-preview"
-	ModelIdsSharedGpt4oMiniSearchPreview ModelIdsShared = "gpt-4o-mini-search-preview"
-	ModelIdsSharedGpt4oSearchPreview20250311 ModelIdsShared = "gpt-4o-search-preview-2025-03-11"
-	ModelIdsSharedGpt4oMiniSearchPreview20250311 ModelIdsShared = "gpt-4o-mini-search-preview-2025-03-11"
-	ModelIdsSharedChatgpt4oLatest ModelIdsShared = "chatgpt-4o-latest"
-	ModelIdsSharedGpt4oMini ModelIdsShared = "gpt-4o-mini"
-	ModelIdsSharedGpt4oMini20240718 ModelIdsShared = "gpt-4o-mini-2024-07-18"
-	ModelIdsSharedGpt4Turbo ModelIdsShared = "gpt-4-turbo"
-	ModelIdsSharedGpt4Turbo20240409 ModelIdsShared = "gpt-4-turbo-2024-04-09"
-	ModelIdsSharedGpt40125Preview ModelIdsShared = "gpt-4-0125-preview"
-	ModelIdsSharedGpt4TurboPreview ModelIdsShared = "gpt-4-turbo-preview"
-	ModelIdsSharedGpt41106Preview ModelIdsShared = "gpt-4-1106-preview"
-	ModelIdsSharedGpt4VisionPreview ModelIdsShared = "gpt-4-vision-preview"
-	ModelIdsSharedGpt4 ModelIdsShared = "gpt-4"
-	ModelIdsSharedGpt40314 ModelIdsShared = "gpt-4-0314"
-	ModelIdsSharedGpt40613 ModelIdsShared = "gpt-4-0613"
-	ModelIdsSharedGpt432k ModelIdsShared = "gpt-4-32k"
-	ModelIdsSharedGpt432k0314 ModelIdsShared = "gpt-4-32k-0314"
-	ModelIdsSharedGpt432k0613 ModelIdsShared = "gpt-4-32k-0613"
-	ModelIdsSharedGpt35Turbo ModelIdsShared = "gpt-3.5-turbo"
-	ModelIdsSharedGpt35Turbo16k ModelIdsShared = "gpt-3.5-turbo-16k"
-	ModelIdsSharedGpt35Turbo0301 ModelIdsShared = "gpt-3.5-turbo-0301"
-	ModelIdsSharedGpt35Turbo0613 ModelIdsShared = "gpt-3.5-turbo-0613"
-	ModelIdsSharedGpt35Turbo1106 ModelIdsShared = "gpt-3.5-turbo-1106"
-	ModelIdsSharedGpt35Turbo0125 ModelIdsShared = "gpt-3.5-turbo-0125"
-	ModelIdsSharedGpt35Turbo16k0613 ModelIdsShared = "gpt-3.5-turbo-16k-0613"
-)
-
-type ModelResponseProperties struct {
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-	Metadata *Metadata `json:"metadata,omitempty"`
-	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
-	Temperature *float64 `json:"temperature,omitempty" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
-	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
-	TopP *float64 `json:"top_p,omitempty" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
-	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
+type KeyPressParam struct {
+	// Specifies the event type. Always 'keypress'.
+	Type KeyPressParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'keypress'."`
+	// The keys to press.
+	Keys []string `json:"keys" jsonschema:"description=The keys to press."`
 }
 
-// Move A mouse move action.
-type Move struct {
-	// The y-coordinate to move to.
-	Y int64 `json:"y" jsonschema:"description=The y-coordinate to move to."`
-	// Specifies the event type. For a move action, this property is 
-// always set to 'move'.
-	Type MoveType `json:"type" jsonschema:"description=Specifies the event type. For a move action, this property is always set to 'move'."`
-	// The x-coordinate to move to.
-	X int64 `json:"x" jsonschema:"description=The x-coordinate to move to."`
-}
-
-// MoveType Specifies the event type. For a move action, this property is 
-// always set to 'move'.
-type MoveType string
+// KeyPressParamType Specifies the event type. Always 'keypress'.
+type KeyPressParamType string
 
 const (
-	MoveTypeMove MoveType = "move"
+	KeyPressParamTypeKeypress KeyPressParamType = "keypress"
 )
 
-// Discriminated by "type" field.
+type LocalShellCall struct {
+	CreatedBy *string `json:"created_by,omitempty"`
+	Type LocalShellCallType `json:"type"`
+	ID string `json:"id"`
+	CallID string `json:"call_id"`
+	Action LocalShellExecAction `json:"action"`
+	Status LocalShellCallStatus `json:"status"`
+}
+
+type LocalShellCallItemParam struct {
+	// The unique ID of this local shell tool call.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this local shell tool call."`
+	// The unique ID of the local shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the local shell tool call generated by the model."`
+	// The item type. Always 'local_shell_call'.
+	Type LocalShellCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'local_shell_call'."`
+	Action LocalShellExecActionParam `json:"action"`
+	Status *LocalShellCallItemStatus `json:"status,omitempty"`
+}
+
+// LocalShellCallItemParamType The item type. Always 'local_shell_call'.
+type LocalShellCallItemParamType string
+
+const (
+	LocalShellCallItemParamTypeLocalShellCall LocalShellCallItemParamType = "local_shell_call"
+)
+
+type LocalShellCallItemStatus string
+
+const (
+	LocalShellCallItemStatusInProgress LocalShellCallItemStatus = "in_progress"
+	LocalShellCallItemStatusCompleted LocalShellCallItemStatus = "completed"
+	LocalShellCallItemStatusIncomplete LocalShellCallItemStatus = "incomplete"
+)
+
+// LocalShellCallOutput The output of a local shell tool call.
+type LocalShellCallOutput struct {
+	// A JSON string of the output of the local shell tool call.
+	Output string `json:"output" jsonschema:"description=A JSON string of the output of the local shell tool call."`
+	Status LocalShellCallOutputStatusEnum `json:"status"`
+	CreatedBy *string `json:"created_by,omitempty"`
+	// The type of the local shell call output. Always 'local_shell_call_output'.
+	Type LocalShellCallOutputType `json:"type" jsonschema:"description=The type of the local shell call output. Always 'local_shell_call_output'."`
+	// The unique ID of the local shell tool call output. Populated when this item is returned via API.
+	ID string `json:"id" jsonschema:"description=The unique ID of the local shell tool call output. Populated when this item is returned via API."`
+	// The unique ID of the local shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"description=The unique ID of the local shell tool call generated by the model."`
+}
+
+type LocalShellCallOutputItemParam struct {
+	// The unique ID of the local shell tool call generated by the model.
+	CallID string `json:"call_id" jsonschema:"minLength=1,maxLength=64,description=The unique ID of the local shell tool call generated by the model."`
+	// The type of the local shell tool call output. Always 'local_shell_call_output'.
+	Type LocalShellCallOutputItemParamType `json:"type" jsonschema:"description=The type of the local shell tool call output. Always 'local_shell_call_output'."`
+	// A JSON string of the output of the local shell tool call.
+	Output string `json:"output" jsonschema:"maxLength=10485760,description=A JSON string of the output of the local shell tool call."`
+	Status *LocalShellCallItemStatus `json:"status,omitempty"`
+	// The unique ID of the local shell tool call output. Populated when this item is returned via API.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the local shell tool call output. Populated when this item is returned via API."`
+}
+
+// LocalShellCallOutputItemParamType The type of the local shell tool call output. Always 'local_shell_call_output'.
+type LocalShellCallOutputItemParamType string
+
+const (
+	LocalShellCallOutputItemParamTypeLocalShellCallOutput LocalShellCallOutputItemParamType = "local_shell_call_output"
+)
+
+type LocalShellCallOutputStatusEnum string
+
+const (
+	LocalShellCallOutputStatusEnumInProgress LocalShellCallOutputStatusEnum = "in_progress"
+	LocalShellCallOutputStatusEnumCompleted LocalShellCallOutputStatusEnum = "completed"
+	LocalShellCallOutputStatusEnumIncomplete LocalShellCallOutputStatusEnum = "incomplete"
+)
+
+// LocalShellCallOutputType The type of the local shell call output. Always 'local_shell_call_output'.
+type LocalShellCallOutputType string
+
+const (
+	LocalShellCallOutputTypeLocalShellCallOutput LocalShellCallOutputType = "local_shell_call_output"
+)
+
+type LocalShellCallStatus string
+
+const (
+	LocalShellCallStatusInProgress LocalShellCallStatus = "in_progress"
+	LocalShellCallStatusCompleted LocalShellCallStatus = "completed"
+	LocalShellCallStatusIncomplete LocalShellCallStatus = "incomplete"
+)
+
+type LocalShellCallType string
+
+const (
+	LocalShellCallTypeLocalShellCall LocalShellCallType = "local_shell_call"
+)
+
+// LocalShellExecAction Execute a shell command on the server.
+type LocalShellExecAction struct {
+	// Optional working directory to run the command in.
+	WorkingDirectory *string `json:"working_directory,omitempty" jsonschema:"description=Optional working directory to run the command in."`
+	// Environment variables to set for the command.
+	Env map[string]string `json:"env" jsonschema:"description=Environment variables to set for the command."`
+	// Optional user to run the command as.
+	User *string `json:"user,omitempty" jsonschema:"description=Optional user to run the command as."`
+	// The type of the local shell action. Always 'exec'.
+	Type LocalShellExecActionType `json:"type" jsonschema:"description=The type of the local shell action. Always 'exec'."`
+	// The command to run.
+	Command []string `json:"command" jsonschema:"description=The command to run."`
+	// Optional timeout in milliseconds for the command.
+	TimeoutMs *int64 `json:"timeout_ms,omitempty" jsonschema:"description=Optional timeout in milliseconds for the command."`
+}
+
+// LocalShellExecActionParam The action to execute in the local shell.
+type LocalShellExecActionParam struct {
+	// The maximum time to allow for the command, in milliseconds.
+	TimeoutMs *int64 `json:"timeout_ms,omitempty" jsonschema:"description=The maximum time to allow for the command, in milliseconds."`
+	// The working directory to run the command in.
+	WorkingDirectory *string `json:"working_directory,omitempty" jsonschema:"description=The working directory to run the command in."`
+	// Environment variables to set for the command.
+	Env map[string]string `json:"env" jsonschema:"description=Environment variables to set for the command."`
+	// The user to run the command as.
+	User *string `json:"user,omitempty" jsonschema:"description=The user to run the command as."`
+	// The action type. Always 'exec'.
+	Type LocalShellExecActionParamType `json:"type" jsonschema:"description=The action type. Always 'exec'."`
+	// The command to execute, expressed as an array of strings.
+	Command []string `json:"command" jsonschema:"description=The command to execute, expressed as an array of strings."`
+}
+
+// LocalShellExecActionParamType The action type. Always 'exec'.
+type LocalShellExecActionParamType string
+
+const (
+	LocalShellExecActionParamTypeExec LocalShellExecActionParamType = "exec"
+)
+
+// LocalShellExecActionType The type of the local shell action. Always 'exec'.
+type LocalShellExecActionType string
+
+const (
+	LocalShellExecActionTypeExec LocalShellExecActionType = "exec"
+)
+
+type LocalShellToolChoice struct {
+	Type LocalShellToolChoiceType `json:"type"`
+}
+
+type LocalShellToolChoiceType string
+
+const (
+	LocalShellToolChoiceTypeLocalShell LocalShellToolChoiceType = "local_shell"
+)
+
+// LocalShellToolParam A tool that allows the model to execute shell commands in a local environment.
+type LocalShellToolParam struct {
+	// The type of the local shell tool. Always 'local_shell'.
+	Type LocalShellToolParamType `json:"type" jsonschema:"description=The type of the local shell tool. Always 'local_shell'."`
+}
+
+// LocalShellToolParamType The type of the local shell tool. Always 'local_shell'.
+type LocalShellToolParamType string
+
+const (
+	LocalShellToolParamTypeLocalShell LocalShellToolParamType = "local_shell"
+)
+
+// LogProb The log probability of a token.
+type LogProb struct {
+	TopLogprobs []TopLogProb `json:"top_logprobs"`
+	Token string `json:"token"`
+	Logprob float64 `json:"logprob"`
+	Bytes []int64 `json:"bytes"`
+}
+
+// MCPApprovalRequest A request for human approval of a tool invocation.
+type MCPApprovalRequest struct {
+	// The type of the item. Always 'mcp_approval_request'.
+	Type MCPApprovalRequestType `json:"type" jsonschema:"description=The type of the item. Always 'mcp_approval_request'."`
+	// The unique ID of the approval request.
+	ID string `json:"id" jsonschema:"description=The unique ID of the approval request."`
+	// The label of the MCP server making the request.
+	ServerLabel string `json:"server_label" jsonschema:"description=The label of the MCP server making the request."`
+	// The name of the tool to run.
+	Name string `json:"name" jsonschema:"description=The name of the tool to run."`
+	// A JSON string of arguments for the tool.
+	Arguments string `json:"arguments" jsonschema:"description=A JSON string of arguments for the tool."`
+}
+
+type MCPApprovalRequestItemParam struct {
+	// A JSON string of arguments for the tool.
+	Arguments string `json:"arguments" jsonschema:"description=A JSON string of arguments for the tool."`
+	// The unique ID of the approval request.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the approval request."`
+	// The type of the item. Always 'mcp_approval_request'.
+	Type MCPApprovalRequestItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'mcp_approval_request'."`
+	// The label of the MCP server making the request.
+	ServerLabel string `json:"server_label" jsonschema:"description=The label of the MCP server making the request."`
+	// The name of the tool to run.
+	Name string `json:"name" jsonschema:"description=The name of the tool to run."`
+}
+
+// MCPApprovalRequestItemParamType The type of the item. Always 'mcp_approval_request'.
+type MCPApprovalRequestItemParamType string
+
+const (
+	MCPApprovalRequestItemParamTypeMcpApprovalRequest MCPApprovalRequestItemParamType = "mcp_approval_request"
+)
+
+// MCPApprovalRequestType The type of the item. Always 'mcp_approval_request'.
+type MCPApprovalRequestType string
+
+const (
+	MCPApprovalRequestTypeMcpApprovalRequest MCPApprovalRequestType = "mcp_approval_request"
+)
+
+// MCPApprovalResponse A response to an MCP approval request.
+type MCPApprovalResponse struct {
+	// The type of the item. Always 'mcp_approval_response'.
+	Type MCPApprovalResponseType `json:"type" jsonschema:"description=The type of the item. Always 'mcp_approval_response'."`
+	// The unique ID of the approval response.
+	ID string `json:"id" jsonschema:"description=The unique ID of the approval response."`
+	// The ID of the approval request being answered.
+	ApprovalRequestID string `json:"approval_request_id" jsonschema:"description=The ID of the approval request being answered."`
+	// Whether the request was approved.
+	Approve bool `json:"approve" jsonschema:"description=Whether the request was approved."`
+	// Optional reason for the decision.
+	Reason *string `json:"reason" jsonschema:"description=Optional reason for the decision."`
+}
+
+type MCPApprovalResponseItemParam struct {
+	// The unique ID of the approval response.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of the approval response."`
+	// The type of the item. Always 'mcp_approval_response'.
+	Type MCPApprovalResponseItemParamType `json:"type" jsonschema:"description=The type of the item. Always 'mcp_approval_response'."`
+	// The ID of the approval request being answered.
+	ApprovalRequestID string `json:"approval_request_id" jsonschema:"description=The ID of the approval request being answered."`
+	// Whether the request was approved.
+	Approve bool `json:"approve" jsonschema:"description=Whether the request was approved."`
+	// Optional reason for the decision.
+	Reason *string `json:"reason,omitempty" jsonschema:"description=Optional reason for the decision."`
+}
+
+// MCPApprovalResponseItemParamType The type of the item. Always 'mcp_approval_response'.
+type MCPApprovalResponseItemParamType string
+
+const (
+	MCPApprovalResponseItemParamTypeMcpApprovalResponse MCPApprovalResponseItemParamType = "mcp_approval_response"
+)
+
+// MCPApprovalResponseType The type of the item. Always 'mcp_approval_response'.
+type MCPApprovalResponseType string
+
+const (
+	MCPApprovalResponseTypeMcpApprovalResponse MCPApprovalResponseType = "mcp_approval_response"
+)
+
+type MCPListTools struct {
+	Tools []MCPListToolsTool `json:"tools"`
+	Type MCPListToolsType `json:"type"`
+	ID string `json:"id"`
+	ServerLabel string `json:"server_label"`
+}
+
+type MCPListToolsTool struct {
+	Annotations *any `json:"annotations"`
+	Name string `json:"name"`
+	Description *string `json:"description"`
+	InputSchema any `json:"input_schema"`
+}
+
+type MCPListToolsType string
+
+const (
+	MCPListToolsTypeMcpListTools MCPListToolsType = "mcp_list_tools"
+)
+
+type MCPProtocolError struct {
+	Type MCPProtocolErrorType `json:"type"`
+	Code int64 `json:"code"`
+	Message string `json:"message"`
+}
+
+type MCPProtocolErrorType string
+
+const (
+	MCPProtocolErrorTypeMcpProtocolError MCPProtocolErrorType = "mcp_protocol_error"
+)
+
+type MCPRequireApprovalApiEnum string
+
+const (
+	MCPRequireApprovalApiEnumAlways MCPRequireApprovalApiEnum = "always"
+	MCPRequireApprovalApiEnumNever MCPRequireApprovalApiEnum = "never"
+)
+
+type MCPRequireApprovalFieldEnum string
+
+const (
+	MCPRequireApprovalFieldEnumAlways MCPRequireApprovalFieldEnum = "always"
+	MCPRequireApprovalFieldEnumNever MCPRequireApprovalFieldEnum = "never"
+)
+
+type MCPRequireApprovalFilterField struct {
+	Always *MCPToolFilterField `json:"always"`
+	Never *MCPToolFilterField `json:"never"`
+}
+
+type MCPRequireApprovalFilterParam struct {
+	Always *MCPToolFilterParam `json:"always,omitempty"`
+	Never *MCPToolFilterParam `json:"never,omitempty"`
+}
+
+type MCPTool struct {
+	Type MCPToolType `json:"type"`
+	ServerLabel string `json:"server_label"`
+	ServerDescription *string `json:"server_description"`
+	ServerURL *string `json:"server_url"`
+	Headers *any `json:"headers"`
+	AllowedTools *any `json:"allowed_tools"`
+	RequireApproval MCPToolRequireApproval `json:"require_approval"`
+}
+
+type MCPToolCall struct {
+	Type MCPToolCallType `json:"type"`
+	ID string `json:"id"`
+	ServerLabel string `json:"server_label"`
+	Arguments string `json:"arguments"`
+	Status MCPToolCallStatus `json:"status"`
+	ApprovalRequestID *string `json:"approval_request_id"`
+	Name string `json:"name"`
+	Output *string `json:"output"`
+	Error *any `json:"error"`
+}
+
+type MCPToolCallStatus string
+
+const (
+	MCPToolCallStatusInProgress MCPToolCallStatus = "in_progress"
+	MCPToolCallStatusCompleted MCPToolCallStatus = "completed"
+	MCPToolCallStatusIncomplete MCPToolCallStatus = "incomplete"
+	MCPToolCallStatusCalling MCPToolCallStatus = "calling"
+	MCPToolCallStatusFailed MCPToolCallStatus = "failed"
+)
+
+type MCPToolCallType string
+
+const (
+	MCPToolCallTypeMcpCall MCPToolCallType = "mcp_call"
+)
+
+type MCPToolChoice struct {
+	Type MCPToolChoiceType `json:"type"`
+	ServerLabel string `json:"server_label"`
+	Name *string `json:"name"`
+}
+
+type MCPToolChoiceType string
+
+const (
+	MCPToolChoiceTypeMcp MCPToolChoiceType = "mcp"
+)
+
+type MCPToolExecutionError struct {
+	Type MCPToolExecutionErrorType `json:"type"`
+	Content any `json:"content"`
+}
+
+type MCPToolExecutionErrorType string
+
+const (
+	MCPToolExecutionErrorTypeMcpToolExecutionError MCPToolExecutionErrorType = "mcp_tool_execution_error"
+)
+
+type MCPToolFilterField struct {
+	ToolNames []string `json:"tool_names"`
+	ReadOnly *bool `json:"read_only"`
+}
+
+type MCPToolFilterParam struct {
+	// A list of tool names to match against.
+	ToolNames []string `json:"tool_names,omitempty" jsonschema:"description=A list of tool names to match against."`
+	// Whether to allow only read-only tools for matching entries.
+	ReadOnly *bool `json:"read_only,omitempty" jsonschema:"description=Whether to allow only read-only tools for matching entries."`
+}
+
+type MCPToolParam struct {
+	// A list of MCP tool names that are allowed for this server.
+	AllowedTools MCPToolParamAllowedTools `json:"allowed_tools,omitempty" jsonschema:"description=A list of MCP tool names that are allowed for this server."`
+	// Controls which MCP tools require explicit user approval before execution.
+	RequireApproval MCPToolParamRequireApproval `json:"require_approval,omitempty" jsonschema:"description=Controls which MCP tools require explicit user approval before execution."`
+	// The type of the tool. Always 'mcp'.
+	Type MCPToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'mcp'."`
+	// A label used to identify the MCP server.
+	ServerLabel string `json:"server_label" jsonschema:"description=A label used to identify the MCP server."`
+	// The URL of the MCP server to connect to.
+	ServerURL *string `json:"server_url,omitempty" jsonschema:"description=The URL of the MCP server to connect to."`
+	// An optional human-readable description of the MCP server.
+	ServerDescription *string `json:"server_description,omitempty" jsonschema:"description=An optional human-readable description of the MCP server."`
+	// Optional HTTP headers to send when connecting to the MCP server.
+	Headers map[string]string `json:"headers,omitempty" jsonschema:"description=Optional HTTP headers to send when connecting to the MCP server."`
+}
+
+// MCPToolParamAllowedTools A list of MCP tool names that are allowed for this server.
 //
 //compschema:generate
-type OutputContent interface {
-	isOutputContent()
-	DiscriminatorValue() string
+type MCPToolParamAllowedTools interface {
+	isMCPToolParamAllowedTools()
 }
 
-func (*OutputTextContent) isOutputContent() {}
-func (*RefusalContent) isOutputContent() {}
 
-func (x *OutputTextContent) DiscriminatorValue() string { return string(x.Type) }
-func (x *RefusalContent) DiscriminatorValue() string { return string(x.Type) }
+// MCPToolParamAllowedToolsSlicestring wraps a []string value as a MCPToolParamAllowedTools variant.
+type MCPToolParamAllowedToolsSlicestring struct { Value []string }
+func (*MCPToolParamAllowedToolsSlicestring) isMCPToolParamAllowedTools() {}
+func (*MCPToolFilterParam) isMCPToolParamAllowedTools() {}
 
-// OutputContentFromOutputTextContent wraps a *OutputTextContent as a OutputContent union value.
-func OutputContentFromOutputTextContent(v *OutputTextContent) OutputContent {
+func (w MCPToolParamAllowedToolsSlicestring) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *MCPToolParamAllowedToolsSlicestring) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewMCPToolParamAllowedToolsSlicestring creates a MCPToolParamAllowedTools from a []string value.
+func NewMCPToolParamAllowedToolsSlicestring(v []string) MCPToolParamAllowedTools {
+	return &MCPToolParamAllowedToolsSlicestring{Value: v}
+}
+
+// MCPToolParamAllowedToolsFromMCPToolFilterParam wraps a *MCPToolFilterParam as a MCPToolParamAllowedTools union value.
+func MCPToolParamAllowedToolsFromMCPToolFilterParam(v *MCPToolFilterParam) MCPToolParamAllowedTools {
 	return v
 }
 
-// OutputContentFromRefusalContent wraps a *RefusalContent as a OutputContent union value.
-func OutputContentFromRefusalContent(v *RefusalContent) OutputContent {
-	return v
-}
-
-// UnmarshalOutputContent unmarshals JSON into the correct OutputContent variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalOutputContent(data []byte) (OutputContent, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "output_text":
-		var val OutputTextContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
+// UnmarshalMCPToolParamAllowedTools unmarshals JSON into the correct MCPToolParamAllowedTools variant.
+func UnmarshalMCPToolParamAllowedTools(data []byte) (MCPToolParamAllowedTools, error) {
+	{
+		var val MCPToolFilterParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
 		}
-		return &val, nil
-	case "refusal":
-		var val RefusalContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for OutputContent", disc.D)
 	}
+	{
+		var val MCPToolParamAllowedToolsSlicestring
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for MCPToolParamAllowedTools")
 }
 
 
-// Discriminated by "type" field.
+// MCPToolParamRequireApproval Controls which MCP tools require explicit user approval before execution.
 //
 //compschema:generate
-type OutputItem interface {
-	isOutputItem()
-	DiscriminatorValue() string
+type MCPToolParamRequireApproval interface {
+	isMCPToolParamRequireApproval()
 }
 
-func (*OutputMessage) isOutputItem() {}
-func (*FileSearchToolCall) isOutputItem() {}
-func (*FunctionToolCall) isOutputItem() {}
-func (*WebSearchToolCall) isOutputItem() {}
-func (*ComputerToolCall) isOutputItem() {}
-func (*ReasoningItem) isOutputItem() {}
+func (*MCPRequireApprovalFilterParam) isMCPToolParamRequireApproval() {}
 
+// MCPToolParamRequireApprovalMCPRequireApprovalApiEnum wraps a MCPRequireApprovalApiEnum value as a MCPToolParamRequireApproval variant.
+type MCPToolParamRequireApprovalMCPRequireApprovalApiEnum struct { Value MCPRequireApprovalApiEnum }
+func (*MCPToolParamRequireApprovalMCPRequireApprovalApiEnum) isMCPToolParamRequireApproval() {}
 
-// OutputItemFromOutputMessage wraps a *OutputMessage as a OutputItem union value.
-func OutputItemFromOutputMessage(v *OutputMessage) OutputItem {
+func (w MCPToolParamRequireApprovalMCPRequireApprovalApiEnum) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *MCPToolParamRequireApprovalMCPRequireApprovalApiEnum) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewMCPToolParamRequireApprovalMCPRequireApprovalApiEnum creates a MCPToolParamRequireApproval from a MCPRequireApprovalApiEnum value.
+func NewMCPToolParamRequireApprovalMCPRequireApprovalApiEnum(v MCPRequireApprovalApiEnum) MCPToolParamRequireApproval {
+	return &MCPToolParamRequireApprovalMCPRequireApprovalApiEnum{Value: v}
+}
+
+// MCPToolParamRequireApprovalFromMCPRequireApprovalFilterParam wraps a *MCPRequireApprovalFilterParam as a MCPToolParamRequireApproval union value.
+func MCPToolParamRequireApprovalFromMCPRequireApprovalFilterParam(v *MCPRequireApprovalFilterParam) MCPToolParamRequireApproval {
 	return v
 }
 
-// OutputItemFromFileSearchToolCall wraps a *FileSearchToolCall as a OutputItem union value.
-func OutputItemFromFileSearchToolCall(v *FileSearchToolCall) OutputItem {
-	return v
-}
-
-// OutputItemFromFunctionToolCall wraps a *FunctionToolCall as a OutputItem union value.
-func OutputItemFromFunctionToolCall(v *FunctionToolCall) OutputItem {
-	return v
-}
-
-// OutputItemFromWebSearchToolCall wraps a *WebSearchToolCall as a OutputItem union value.
-func OutputItemFromWebSearchToolCall(v *WebSearchToolCall) OutputItem {
-	return v
-}
-
-// OutputItemFromComputerToolCall wraps a *ComputerToolCall as a OutputItem union value.
-func OutputItemFromComputerToolCall(v *ComputerToolCall) OutputItem {
-	return v
-}
-
-// OutputItemFromReasoningItem wraps a *ReasoningItem as a OutputItem union value.
-func OutputItemFromReasoningItem(v *ReasoningItem) OutputItem {
-	return v
-}
-
-// UnmarshalOutputItem unmarshals JSON into the correct OutputItem variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalOutputItem(data []byte) (OutputItem, error) {
-	var disc struct {
-		D string `json:"type"`
+// UnmarshalMCPToolParamRequireApproval unmarshals JSON into the correct MCPToolParamRequireApproval variant.
+func UnmarshalMCPToolParamRequireApproval(data []byte) (MCPToolParamRequireApproval, error) {
+	{
+		var val MCPRequireApprovalFilterParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
 	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
+	{
+		var val MCPToolParamRequireApprovalMCPRequireApprovalApiEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
 	}
-	switch disc.D {
-	case "message":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_call":
-		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "reasoning":
-		var val ReasoningItem
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for OutputItem", disc.D)
-	}
+	return nil, fmt.Errorf("no matching variant for MCPToolParamRequireApproval")
 }
 
 
-// OutputMessage An output message from the model.
-type OutputMessage struct {
-	// The type of the output message. Always 'message'.
-	Type OutputMessageType `json:"type" jsonschema:"description=The type of the output message. Always 'message'."`
-	// The role of the output message. Always 'assistant'.
-	Role OutputMessageRole `json:"role" jsonschema:"description=The role of the output message. Always 'assistant'."`
-	// The content of the output message.
-	Content []OutputContent `json:"content" jsonschema:"description=The content of the output message."`
-	// The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-	Status OutputMessageStatus `json:"status" jsonschema:"description=The status of the message input. One of 'in_progress', 'completed', or 'incomplete'. Populated when input items are returned via API."`
-	// The unique ID of the output message.
-	ID string `json:"id" jsonschema:"description=The unique ID of the output message."`
-}
-
-// OutputMessageRole The role of the output message. Always 'assistant'.
-type OutputMessageRole string
+// MCPToolParamType The type of the tool. Always 'mcp'.
+type MCPToolParamType string
 
 const (
-	OutputMessageRoleAssistant OutputMessageRole = "assistant"
+	MCPToolParamTypeMcp MCPToolParamType = "mcp"
 )
 
-// OutputMessageStatus The status of the message input. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when input items are returned via API.
-type OutputMessageStatus string
+//
+//compschema:generate
+type MCPToolRequireApproval interface {
+	isMCPToolRequireApproval()
+}
+
+func (*MCPRequireApprovalFilterField) isMCPToolRequireApproval() {}
+
+// MCPToolRequireApprovalMCPRequireApprovalFieldEnum wraps a MCPRequireApprovalFieldEnum value as a MCPToolRequireApproval variant.
+type MCPToolRequireApprovalMCPRequireApprovalFieldEnum struct { Value MCPRequireApprovalFieldEnum }
+func (*MCPToolRequireApprovalMCPRequireApprovalFieldEnum) isMCPToolRequireApproval() {}
+
+func (w MCPToolRequireApprovalMCPRequireApprovalFieldEnum) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *MCPToolRequireApprovalMCPRequireApprovalFieldEnum) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewMCPToolRequireApprovalMCPRequireApprovalFieldEnum creates a MCPToolRequireApproval from a MCPRequireApprovalFieldEnum value.
+func NewMCPToolRequireApprovalMCPRequireApprovalFieldEnum(v MCPRequireApprovalFieldEnum) MCPToolRequireApproval {
+	return &MCPToolRequireApprovalMCPRequireApprovalFieldEnum{Value: v}
+}
+
+// MCPToolRequireApprovalFromMCPRequireApprovalFilterField wraps a *MCPRequireApprovalFilterField as a MCPToolRequireApproval union value.
+func MCPToolRequireApprovalFromMCPRequireApprovalFilterField(v *MCPRequireApprovalFilterField) MCPToolRequireApproval {
+	return v
+}
+
+// UnmarshalMCPToolRequireApproval unmarshals JSON into the correct MCPToolRequireApproval variant.
+func UnmarshalMCPToolRequireApproval(data []byte) (MCPToolRequireApproval, error) {
+	{
+		var val MCPRequireApprovalFilterField
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val MCPToolRequireApprovalMCPRequireApprovalFieldEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for MCPToolRequireApproval")
+}
+
+
+type MCPToolType string
 
 const (
-	OutputMessageStatusInProgress OutputMessageStatus = "in_progress"
-	OutputMessageStatusCompleted OutputMessageStatus = "completed"
-	OutputMessageStatusIncomplete OutputMessageStatus = "incomplete"
+	MCPToolTypeMcp MCPToolType = "mcp"
 )
 
-// OutputMessageType The type of the output message. Always 'message'.
-type OutputMessageType string
+// Message A message to or from the model.
+type Message struct {
+	// The type of the message. Always set to 'message'.
+	Type MessageType `json:"type" jsonschema:"description=The type of the message. Always set to 'message'."`
+	// The unique ID of the message.
+	ID string `json:"id" jsonschema:"description=The unique ID of the message."`
+	Status MessageStatus `json:"status"`
+	Role MessageRole `json:"role"`
+	// The content of the message
+	Content []any `json:"content" jsonschema:"description=The content of the message"`
+}
+
+type MessageRole string
 
 const (
-	OutputMessageTypeMessage OutputMessageType = "message"
+	MessageRoleUnknown MessageRole = "unknown"
+	MessageRoleUser MessageRole = "user"
+	MessageRoleAssistant MessageRole = "assistant"
+	MessageRoleSystem MessageRole = "system"
+	MessageRoleCritic MessageRole = "critic"
+	MessageRoleDiscriminator MessageRole = "discriminator"
+	MessageRoleDeveloper MessageRole = "developer"
+	MessageRoleTool MessageRole = "tool"
+)
+
+type MessageStatus string
+
+const (
+	MessageStatusInProgress MessageStatus = "in_progress"
+	MessageStatusCompleted MessageStatus = "completed"
+	MessageStatusIncomplete MessageStatus = "incomplete"
+)
+
+// MessageType The type of the message. Always set to 'message'.
+type MessageType string
+
+const (
+	MessageTypeMessage MessageType = "message"
+)
+
+// MetadataParam Set of 16 key-value pairs that can be attached to an object. This can be         useful for storing additional information about the object in a structured         format, and querying for objects via API or the dashboard.
+//         Keys are strings with a maximum length of 64 characters. Values are strings         with a maximum length of 512 characters.
+type MetadataParam map[string]string
+
+// MoveAction A pointer move action that was requested by the model.
+type MoveAction struct {
+	// The type of the action. Always 'move'.
+	Type MoveActionType `json:"type" jsonschema:"description=The type of the action. Always 'move'."`
+	// The x-coordinate where the pointer was moved.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate where the pointer was moved."`
+	// The y-coordinate where the pointer was moved.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the pointer was moved."`
+}
+
+// MoveActionType The type of the action. Always 'move'.
+type MoveActionType string
+
+const (
+	MoveActionTypeMove MoveActionType = "move"
+)
+
+type MoveParam struct {
+	// Specifies the event type. Always 'move'.
+	Type MoveParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'move'."`
+	// The target x-coordinate for the cursor.
+	X int64 `json:"x" jsonschema:"description=The target x-coordinate for the cursor."`
+	// The target y-coordinate for the cursor.
+	Y int64 `json:"y" jsonschema:"description=The target y-coordinate for the cursor."`
+}
+
+// MoveParamType Specifies the event type. Always 'move'.
+type MoveParamType string
+
+const (
+	MoveParamTypeMove MoveParamType = "move"
 )
 
 // OutputTextContent A text output from the model.
 type OutputTextContent struct {
-	// The annotations of the text output.
-	Annotations []Annotation `json:"annotations" jsonschema:"description=The annotations of the text output."`
 	// The type of the output text. Always 'output_text'.
 	Type OutputTextContentType `json:"type" jsonschema:"description=The type of the output text. Always 'output_text'."`
 	// The text output from the model.
 	Text string `json:"text" jsonschema:"description=The text output from the model."`
+	// The annotations of the text output.
+	Annotations []Annotation `json:"annotations" jsonschema:"description=The annotations of the text output."`
+	Logprobs []LogProb `json:"logprobs,omitempty"`
 }
+
+type OutputTextContentParam struct {
+	// The content type. Always 'output_text'.
+	Type OutputTextContentParamType `json:"type" jsonschema:"description=The content type. Always 'output_text'."`
+	// The text content.
+	Text string `json:"text" jsonschema:"maxLength=10485760,description=The text content."`
+	// Citations associated with the text content.
+	Annotations OutputTextContentParamAnnotations `json:"annotations,omitempty" jsonschema:"description=Citations associated with the text content."`
+}
+
+// OutputTextContentParamAnnotations Citations associated with the text content.
+//
+//compschema:generate
+type OutputTextContentParamAnnotations interface {
+	isOutputTextContentParamAnnotations()
+}
+
+
+// OutputTextContentParamAnnotationsSliceFileCitationParam wraps a []FileCitationParam value as a OutputTextContentParamAnnotations variant.
+type OutputTextContentParamAnnotationsSliceFileCitationParam struct { Value []FileCitationParam }
+func (*OutputTextContentParamAnnotationsSliceFileCitationParam) isOutputTextContentParamAnnotations() {}
+
+// OutputTextContentParamAnnotationsSliceUrlCitationParam wraps a []UrlCitationParam value as a OutputTextContentParamAnnotations variant.
+type OutputTextContentParamAnnotationsSliceUrlCitationParam struct { Value []UrlCitationParam }
+func (*OutputTextContentParamAnnotationsSliceUrlCitationParam) isOutputTextContentParamAnnotations() {}
+
+// OutputTextContentParamAnnotationsSliceContainerFileCitationParam wraps a []ContainerFileCitationParam value as a OutputTextContentParamAnnotations variant.
+type OutputTextContentParamAnnotationsSliceContainerFileCitationParam struct { Value []ContainerFileCitationParam }
+func (*OutputTextContentParamAnnotationsSliceContainerFileCitationParam) isOutputTextContentParamAnnotations() {}
+
+func (w OutputTextContentParamAnnotationsSliceFileCitationParam) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *OutputTextContentParamAnnotationsSliceFileCitationParam) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w OutputTextContentParamAnnotationsSliceUrlCitationParam) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *OutputTextContentParamAnnotationsSliceUrlCitationParam) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w OutputTextContentParamAnnotationsSliceContainerFileCitationParam) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *OutputTextContentParamAnnotationsSliceContainerFileCitationParam) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewOutputTextContentParamAnnotationsSliceFileCitationParam creates a OutputTextContentParamAnnotations from a []FileCitationParam value.
+func NewOutputTextContentParamAnnotationsSliceFileCitationParam(v []FileCitationParam) OutputTextContentParamAnnotations {
+	return &OutputTextContentParamAnnotationsSliceFileCitationParam{Value: v}
+}
+
+// NewOutputTextContentParamAnnotationsSliceUrlCitationParam creates a OutputTextContentParamAnnotations from a []UrlCitationParam value.
+func NewOutputTextContentParamAnnotationsSliceUrlCitationParam(v []UrlCitationParam) OutputTextContentParamAnnotations {
+	return &OutputTextContentParamAnnotationsSliceUrlCitationParam{Value: v}
+}
+
+// NewOutputTextContentParamAnnotationsSliceContainerFileCitationParam creates a OutputTextContentParamAnnotations from a []ContainerFileCitationParam value.
+func NewOutputTextContentParamAnnotationsSliceContainerFileCitationParam(v []ContainerFileCitationParam) OutputTextContentParamAnnotations {
+	return &OutputTextContentParamAnnotationsSliceContainerFileCitationParam{Value: v}
+}
+
+// UnmarshalOutputTextContentParamAnnotations unmarshals JSON into the correct OutputTextContentParamAnnotations variant.
+func UnmarshalOutputTextContentParamAnnotations(data []byte) (OutputTextContentParamAnnotations, error) {
+	{
+		var val OutputTextContentParamAnnotationsSliceContainerFileCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputTextContentParamAnnotationsSliceFileCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputTextContentParamAnnotationsSliceUrlCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for OutputTextContentParamAnnotations")
+}
+
+
+// OutputTextContentParamType The content type. Always 'output_text'.
+type OutputTextContentParamType string
+
+const (
+	OutputTextContentParamTypeOutputText OutputTextContentParamType = "output_text"
+)
 
 // OutputTextContentType The type of the output text. Always 'output_text'.
 type OutputTextContentType string
@@ -2418,116 +7306,182 @@ const (
 	OutputTextContentTypeOutputText OutputTextContentType = "output_text"
 )
 
+// OutputTokensDetails A breakdown of output token usage that was recorded.
+type OutputTokensDetails struct {
+	// The number of output tokens that were attributed to reasoning.
+	ReasoningTokens int64 `json:"reasoning_tokens" jsonschema:"description=The number of output tokens that were attributed to reasoning."`
+}
+
+type Payer string
+
+const (
+	PayerDeveloper Payer = "developer"
+	PayerOpenai Payer = "openai"
+)
+
+type PromptCacheRetentionEnum string
+
+const (
+	PromptCacheRetentionEnumInMemory PromptCacheRetentionEnum = "in_memory"
+	PromptCacheRetentionEnumN24h PromptCacheRetentionEnum = "24h"
+)
+
+// PromptInstructionMessage A message item that was used as an instruction for generating the response.
+type PromptInstructionMessage struct {
+	// The item type, which was always 'message' for instruction items.
+	Type PromptInstructionMessageType `json:"type" jsonschema:"description=The item type, which was always 'message' for instruction items."`
+	Role MessageRole `json:"role"`
+	// The content parts that were included in the instruction message.
+	Content []any `json:"content" jsonschema:"description=The content parts that were included in the instruction message."`
+}
+
+// PromptInstructionMessageType The item type, which was always 'message' for instruction items.
+type PromptInstructionMessageType string
+
+const (
+	PromptInstructionMessageTypeMessage PromptInstructionMessageType = "message"
+)
+
+type RankerVersionType string
+
+const (
+	RankerVersionTypeAuto RankerVersionType = "auto"
+	RankerVersionTypeDefault20241115 RankerVersionType = "default-2024-11-15"
+)
+
 type RankingOptions struct {
-	// The ranker to use for the file search.
-	Ranker *RankingOptionsRanker `json:"ranker,omitempty" jsonschema:"description=The ranker to use for the file search."`
+	Ranker RankerVersionType `json:"ranker"`
 	// The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results.
-	ScoreThreshold *float64 `json:"score_threshold,omitempty" jsonschema:"description=The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results."`
+	ScoreThreshold float64 `json:"score_threshold" jsonschema:"description=The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return only the most relevant results, but may return fewer results."`
+	HybridSearch *HybridSearchOptions `json:"hybrid_search,omitempty"`
 }
 
-// RankingOptionsRanker The ranker to use for the file search.
-type RankingOptionsRanker string
-
-const (
-	RankingOptionsRankerAuto RankingOptionsRanker = "auto"
-	RankingOptionsRankerDefault20241115 RankingOptionsRanker = "default-2024-11-15"
-)
-
-// Reasoning **o-series models only**
-// 
-// Configuration options for 
-// [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+// Reasoning Reasoning configuration and metadata that were used for the response.
 type Reasoning struct {
-	Effort *ReasoningEffort `json:"effort,omitempty"`
-	// A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
-	Summary *ReasoningSummary `json:"summary,omitempty" jsonschema:"description=A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of 'auto', 'concise', or 'detailed'."`
-	// **Deprecated:** use 'summary' instead.
-// 
-// A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
-	GenerateSummary *ReasoningGenerateSummary `json:"generate_summary,omitempty" jsonschema:"description=**Deprecated:** use 'summary' instead. A summary of the reasoning performed by the model. This can be useful for debugging and understanding the model's reasoning process. One of 'auto', 'concise', or 'detailed'."`
+	Summary *ReasoningSummaryEnum `json:"summary"`
+	GenerateSummary *ReasoningSummaryEnum `json:"generate_summary,omitempty"`
+	Effort *string `json:"effort"`
 }
 
-// ReasoningEffort **o-series models only** 
-// 
-// Constrains effort on reasoning for 
-// [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-// Currently supported values are 'low', 'medium', and 'high'. Reducing
-// reasoning effort can result in faster responses and fewer tokens used
-// on reasoning in a response.
-type ReasoningEffort string
-
-const (
-	ReasoningEffortLow ReasoningEffort = "low"
-	ReasoningEffortMedium ReasoningEffort = "medium"
-	ReasoningEffortHigh ReasoningEffort = "high"
-)
-
-// ReasoningGenerateSummary **Deprecated:** use 'summary' instead.
-// 
-// A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
-type ReasoningGenerateSummary string
-
-const (
-	ReasoningGenerateSummaryAuto ReasoningGenerateSummary = "auto"
-	ReasoningGenerateSummaryConcise ReasoningGenerateSummary = "concise"
-	ReasoningGenerateSummaryDetailed ReasoningGenerateSummary = "detailed"
-)
-
-// ReasoningItem A description of the chain of thought used by a reasoning model while generating
-// a response.
-type ReasoningItem struct {
-	// The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-	Status *ReasoningItemStatus `json:"status,omitempty" jsonschema:"description=The status of the item. One of 'in_progress', 'completed', or 'incomplete'. Populated when items are returned via API."`
-	// The type of the object. Always 'reasoning'.
-	Type ReasoningItemType `json:"type" jsonschema:"description=The type of the object. Always 'reasoning'."`
-	// The unique identifier of the reasoning content.
-	ID string `json:"id" jsonschema:"description=The unique identifier of the reasoning content."`
-	// Reasoning text contents.
-	Summary []any `json:"summary" jsonschema:"description=Reasoning text contents."`
+// ReasoningBody A reasoning item that was generated by the model.
+type ReasoningBody struct {
+	// The type of the item. Always 'reasoning'.
+	Type ReasoningBodyType `json:"type" jsonschema:"description=The type of the item. Always 'reasoning'."`
+	// The unique ID of the reasoning item.
+	ID string `json:"id" jsonschema:"description=The unique ID of the reasoning item."`
+	// The reasoning content that was generated.
+	Content []any `json:"content,omitempty" jsonschema:"description=The reasoning content that was generated."`
+	// The reasoning summary content that was generated.
+	Summary []any `json:"summary" jsonschema:"description=The reasoning summary content that was generated."`
+	// The encrypted reasoning content that was generated.
+	EncryptedContent *string `json:"encrypted_content,omitempty" jsonschema:"description=The encrypted reasoning content that was generated."`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
 }
 
-// ReasoningItemStatus The status of the item. One of 'in_progress', 'completed', or
-// 'incomplete'. Populated when items are returned via API.
-type ReasoningItemStatus string
+// ReasoningBodyType The type of the item. Always 'reasoning'.
+type ReasoningBodyType string
 
 const (
-	ReasoningItemStatusInProgress ReasoningItemStatus = "in_progress"
-	ReasoningItemStatusCompleted ReasoningItemStatus = "completed"
-	ReasoningItemStatusIncomplete ReasoningItemStatus = "incomplete"
+	ReasoningBodyTypeReasoning ReasoningBodyType = "reasoning"
 )
 
-// ReasoningItemType The type of the object. Always 'reasoning'.
-type ReasoningItemType string
+type ReasoningEffortEnum string
 
 const (
-	ReasoningItemTypeReasoning ReasoningItemType = "reasoning"
+	ReasoningEffortEnumNone ReasoningEffortEnum = "none"
+	ReasoningEffortEnumMinimal ReasoningEffortEnum = "minimal"
+	ReasoningEffortEnumLow ReasoningEffortEnum = "low"
+	ReasoningEffortEnumMedium ReasoningEffortEnum = "medium"
+	ReasoningEffortEnumHigh ReasoningEffortEnum = "high"
+	ReasoningEffortEnumXhigh ReasoningEffortEnum = "xhigh"
 )
 
-// ReasoningSummary A summary of the reasoning performed by the model. This can be
-// useful for debugging and understanding the model's reasoning process.
-// One of 'auto', 'concise', or 'detailed'.
-type ReasoningSummary string
+type ReasoningItemParam struct {
+	// Reasoning content for this item.
+	Content []any `json:"content,omitempty" jsonschema:"maxItems=0,description=Reasoning content for this item."`
+	// An encrypted representation of the reasoning content.
+	EncryptedContent *string `json:"encrypted_content,omitempty" jsonschema:"description=An encrypted representation of the reasoning content."`
+	// The unique ID of this reasoning item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this reasoning item."`
+	// The item type. Always 'reasoning'.
+	Type ReasoningItemParamType `json:"type" jsonschema:"description=The item type. Always 'reasoning'."`
+	// Reasoning summary content associated with this item.
+	Summary []ReasoningSummaryContentParam `json:"summary" jsonschema:"description=Reasoning summary content associated with this item."`
+}
+
+// ReasoningItemParamType The item type. Always 'reasoning'.
+type ReasoningItemParamType string
 
 const (
-	ReasoningSummaryAuto ReasoningSummary = "auto"
-	ReasoningSummaryConcise ReasoningSummary = "concise"
-	ReasoningSummaryDetailed ReasoningSummary = "detailed"
+	ReasoningItemParamTypeReasoning ReasoningItemParamType = "reasoning"
+)
+
+// ReasoningParam **gpt-5 and o-series models only** Configuration options for [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+type ReasoningParam struct {
+	Effort *string `json:"effort,omitempty"`
+	GenerateSummary *ReasoningSummaryEnum `json:"generate_summary,omitempty"`
+	Summary *ReasoningSummaryEnum `json:"summary,omitempty"`
+}
+
+type ReasoningSummaryContentParam struct {
+	// The content type. Always 'summary_text'.
+	Type ReasoningSummaryContentParamType `json:"type" jsonschema:"description=The content type. Always 'summary_text'."`
+	// The reasoning summary text.
+	Text string `json:"text" jsonschema:"maxLength=10485760,description=The reasoning summary text."`
+}
+
+// ReasoningSummaryContentParamType The content type. Always 'summary_text'.
+type ReasoningSummaryContentParamType string
+
+const (
+	ReasoningSummaryContentParamTypeSummaryText ReasoningSummaryContentParamType = "summary_text"
+)
+
+type ReasoningSummaryEnum string
+
+const (
+	ReasoningSummaryEnumConcise ReasoningSummaryEnum = "concise"
+	ReasoningSummaryEnumDetailed ReasoningSummaryEnum = "detailed"
+	ReasoningSummaryEnumAuto ReasoningSummaryEnum = "auto"
+)
+
+// ReasoningTextContent Reasoning text from the model.
+type ReasoningTextContent struct {
+	// The type of the reasoning text. Always 'reasoning_text'.
+	Type ReasoningTextContentType `json:"type" jsonschema:"description=The type of the reasoning text. Always 'reasoning_text'."`
+	// The reasoning text from the model.
+	Text string `json:"text" jsonschema:"description=The reasoning text from the model."`
+}
+
+// ReasoningTextContentType The type of the reasoning text. Always 'reasoning_text'.
+type ReasoningTextContentType string
+
+const (
+	ReasoningTextContentTypeReasoningText ReasoningTextContentType = "reasoning_text"
 )
 
 // RefusalContent A refusal from the model.
 type RefusalContent struct {
 	// The type of the refusal. Always 'refusal'.
 	Type RefusalContentType `json:"type" jsonschema:"description=The type of the refusal. Always 'refusal'."`
-	// The refusal explanationfrom the model.
-	Refusal string `json:"refusal" jsonschema:"description=The refusal explanationfrom the model."`
+	// The refusal explanation from the model.
+	Refusal string `json:"refusal" jsonschema:"description=The refusal explanation from the model."`
 }
+
+type RefusalContentParam struct {
+	// The content type. Always 'refusal'.
+	Type RefusalContentParamType `json:"type" jsonschema:"description=The content type. Always 'refusal'."`
+	// The refusal text.
+	Refusal string `json:"refusal" jsonschema:"maxLength=10485760,description=The refusal text."`
+}
+
+// RefusalContentParamType The content type. Always 'refusal'.
+type RefusalContentParamType string
+
+const (
+	RefusalContentParamTypeRefusal RefusalContentParamType = "refusal"
+)
 
 // RefusalContentType The type of the refusal. Always 'refusal'.
 type RefusalContentType string
@@ -2536,680 +7490,257 @@ const (
 	RefusalContentTypeRefusal RefusalContentType = "refusal"
 )
 
-type Response struct {
-	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
-	Instructions *string `json:"instructions" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
-	// Unique identifier for this Response.
-	ID string `json:"id" jsonschema:"description=Unique identifier for this Response."`
-	// Details about why the response is incomplete.
-	IncompleteDetails ResponseIncompleteDetails `json:"incomplete_details" jsonschema:"description=Details about why the response is incomplete."`
-	// An array of content items generated by the model.
-// 
-// - The length and order of items in the 'output' array is dependent
-//   on the model's response.
-// - Rather than accessing the first item in the 'output' array and 
-//   assuming it's an 'assistant' message with the content generated by
-//   the model, you might consider using the 'output_text' property where
-//   supported in SDKs.
-	Output []OutputItem `json:"output" jsonschema:"description=An array of content items generated by the model. - The length and order of items in the 'output' array is dependent on the model's response. - Rather than accessing the first item in the 'output' array and assuming it's an 'assistant' message with the content generated by the model, you might consider using the 'output_text' property where supported in SDKs."`
-	// Whether to allow the model to run tool calls in parallel.
-	ParallelToolCalls bool `json:"parallel_tool_calls" jsonschema:"description=Whether to allow the model to run tool calls in parallel."`
-	Metadata Metadata `json:"metadata"`
-	// What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-// We generally recommend altering this or 'top_p' but not both.
-	Temperature *float64 `json:"temperature" jsonschema:"minimum=0,maximum=2,description=What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or 'top_p' but not both."`
-	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-	Text *ResponseText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
-	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-	ToolChoice ResponseToolChoice `json:"tool_choice" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
-	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-	Truncation *ResponseTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
-	// The status of the response generation. One of 'completed', 'failed', 
-// 'in_progress', or 'incomplete'.
-	Status *ResponseStatus `json:"status,omitempty" jsonschema:"description=The status of the response generation. One of 'completed', 'failed', 'in_progress', or 'incomplete'."`
-	// Unix timestamp (in seconds) of when this Response was created.
-	CreatedAt float64 `json:"created_at" jsonschema:"description=Unix timestamp (in seconds) of when this Response was created."`
-	// SDK-only convenience property that contains the aggregated text output 
-// from all 'output_text' items in the 'output' array, if any are present. 
-// Supported in the Python and JavaScript SDKs.
-	OutputText *string `json:"output_text,omitempty" jsonschema:"description=SDK-only convenience property that contains the aggregated text output from all 'output_text' items in the 'output' array, if any are present. Supported in the Python and JavaScript SDKs."`
-	// An alternative to sampling with temperature, called nucleus sampling,
-// where the model considers the results of the tokens with top_p probability
-// mass. So 0.1 means only the tokens comprising the top 10% probability mass
-// are considered.
-// 
-// We generally recommend altering this or 'temperature' but not both.
-	TopP *float64 `json:"top_p" jsonschema:"minimum=0,maximum=1,description=An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or 'temperature' but not both."`
-	// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids).
-	User *string `json:"user,omitempty" jsonschema:"description=A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices#end-user-ids)."`
-	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
-	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
-	ServiceTier *ServiceTier `json:"service_tier,omitempty"`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
-	Tools []Tool `json:"tools" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
-	// The object type of this resource - always set to 'response'.
-	Object ResponseObject `json:"object" jsonschema:"description=The object type of this resource - always set to 'response'."`
-	Error ResponseError `json:"error"`
-	Usage *ResponseUsage `json:"usage,omitempty"`
-	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
-	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
-	Model ModelIdsResponses `json:"model"`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
+// ResponseResource The complete response object that was returned by the Responses API.
+type ResponseResource struct {
+	IncompleteDetails *IncompleteDetails `json:"incomplete_details"`
+	// The IDs of responses that were created as follow-ups to this response, if requested.
+	NextResponseIds []string `json:"next_response_ids,omitempty" jsonschema:"description=The IDs of responses that were created as follow-ups to this response, if requested."`
+	// The output items that were generated by the model.
+	Output []ItemField `json:"output" jsonschema:"description=The output items that were generated by the model."`
+	ToolChoice ResponseResourceToolChoice `json:"tool_choice"`
+	Text TextField `json:"text"`
+	Reasoning *Reasoning `json:"reasoning"`
+	Conversation *Conversation `json:"conversation,omitempty"`
+	Instructions *any `json:"instructions"`
+	Truncation TruncationEnum `json:"truncation"`
+	// The maximum number of tokens the model was allowed to generate for this response.
+	MaxOutputTokens *int64 `json:"max_output_tokens" jsonschema:"description=The maximum number of tokens the model was allowed to generate for this response."`
+	// The maximum number of tool calls the model was allowed to make while generating the response.
+	MaxToolCalls *int64 `json:"max_tool_calls" jsonschema:"description=The maximum number of tool calls the model was allowed to make while generating the response."`
+	// A stable identifier that was used for safety monitoring and abuse detection.
+	SafetyIdentifier *string `json:"safety_identifier" jsonschema:"description=A stable identifier that was used for safety monitoring and abuse detection."`
+	// A key that was used to read from or write to the prompt cache.
+	PromptCacheKey *string `json:"prompt_cache_key" jsonschema:"description=A key that was used to read from or write to the prompt cache."`
+	PromptCacheRetention *PromptCacheRetentionEnum `json:"prompt_cache_retention,omitempty"`
+	// The input items that were provided to the model.
+	Input []ItemField `json:"input,omitempty" jsonschema:"description=The input items that were provided to the model."`
+	Error *Error `json:"error"`
+	// The tools that were available to the model during response generation.
+	Tools []Tool `json:"tools" jsonschema:"description=The tools that were available to the model during response generation."`
+	// The number of most likely tokens that were returned at each position, along with their log probabilities.
+	TopLogprobs int64 `json:"top_logprobs" jsonschema:"description=The number of most likely tokens that were returned at each position, along with their log probabilities."`
+	Usage *Usage `json:"usage"`
+	// The Unix timestamp (in seconds) for when the response was completed, if it was completed.
+	CompletedAt *int64 `json:"completed_at" jsonschema:"description=The Unix timestamp (in seconds) for when the response was completed, if it was completed."`
+	// The model that generated this response.
+	Model string `json:"model" jsonschema:"description=The model that generated this response."`
+	// The Unix timestamp (in seconds) for when the response was created.
+	CreatedAt int64 `json:"created_at" jsonschema:"description=The Unix timestamp (in seconds) for when the response was created."`
+	// Whether the model was allowed to call multiple tools in parallel.
+	ParallelToolCalls bool `json:"parallel_tool_calls" jsonschema:"description=Whether the model was allowed to call multiple tools in parallel."`
+	// The presence penalty that was used to penalize new tokens based on whether they appear in the text so far.
+	PresencePenalty float64 `json:"presence_penalty" jsonschema:"description=The presence penalty that was used to penalize new tokens based on whether they appear in the text so far."`
+	// A unique identifier that was used to represent your end user.
+	User *string `json:"user" jsonschema:"description=A unique identifier that was used to represent your end user."`
+	// A signed token that was generated to encode usage and cost information for this response.
+	CostToken *string `json:"cost_token,omitempty" jsonschema:"description=A signed token that was generated to encode usage and cost information for this response."`
+	// The context management edits that were applied while generating this response, if any.
+	ContextEdits []ContextEdit `json:"context_edits,omitempty" jsonschema:"description=The context management edits that were applied while generating this response, if any."`
+	Billing *Billing `json:"billing,omitempty"`
+	// The unique ID of the response that was created.
+	ID string `json:"id" jsonschema:"description=The unique ID of the response that was created."`
+	// The status that was set for the response.
+	Status string `json:"status" jsonschema:"description=The status that was set for the response."`
+	// The service tier that was used for this response.
+	ServiceTier string `json:"service_tier" jsonschema:"description=The service tier that was used for this response."`
+	// The object type, which was always 'response'.
+	Object ResponseResourceObject `json:"object" jsonschema:"description=The object type, which was always 'response'."`
+	// The ID of the previous response in the chain that was referenced, if any.
+	PreviousResponseID *string `json:"previous_response_id" jsonschema:"description=The ID of the previous response in the chain that was referenced, if any."`
+	// The nucleus sampling parameter that was used for this response.
+	TopP float64 `json:"top_p" jsonschema:"description=The nucleus sampling parameter that was used for this response."`
+	// The frequency penalty that was used to penalize new tokens based on their frequency in the text so far.
+	FrequencyPenalty float64 `json:"frequency_penalty" jsonschema:"description=The frequency penalty that was used to penalize new tokens based on their frequency in the text so far."`
+	// The sampling temperature that was used for this response.
+	Temperature float64 `json:"temperature" jsonschema:"description=The sampling temperature that was used for this response."`
+	// Whether this response was stored so it can be retrieved later.
+	Store bool `json:"store" jsonschema:"description=Whether this response was stored so it can be retrieved later."`
+	// Whether this request was run in the background.
+	Background bool `json:"background" jsonschema:"description=Whether this request was run in the background."`
+	// Developer-defined metadata that was associated with the response.
+	Metadata any `json:"metadata" jsonschema:"description=Developer-defined metadata that was associated with the response."`
 }
 
-// ResponseAudioDeltaEvent Emitted when there is a partial audio response.
-type ResponseAudioDeltaEvent struct {
-	// The type of the event. Always 'response.audio.delta'.
-	Type ResponseAudioDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.audio.delta'."`
-	// A chunk of Base64 encoded response audio bytes.
-	Delta string `json:"delta" jsonschema:"description=A chunk of Base64 encoded response audio bytes."`
-}
-
-// ResponseAudioDeltaEventType The type of the event. Always 'response.audio.delta'.
-type ResponseAudioDeltaEventType string
+// ResponseResourceObject The object type, which was always 'response'.
+type ResponseResourceObject string
 
 const (
-	ResponseAudioDeltaEventTypeResponseAudioDelta ResponseAudioDeltaEventType = "response.audio.delta"
+	ResponseResourceObjectResponse ResponseResourceObject = "response"
 )
 
-// ResponseAudioDoneEvent Emitted when the audio response is complete.
-type ResponseAudioDoneEvent struct {
-	// The type of the event. Always 'response.audio.done'.
-	Type ResponseAudioDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.audio.done'."`
-}
-
-// ResponseAudioDoneEventType The type of the event. Always 'response.audio.done'.
-type ResponseAudioDoneEventType string
-
-const (
-	ResponseAudioDoneEventTypeResponseAudioDone ResponseAudioDoneEventType = "response.audio.done"
-)
-
-// ResponseAudioTranscriptDeltaEvent Emitted when there is a partial transcript of audio.
-type ResponseAudioTranscriptDeltaEvent struct {
-	// The type of the event. Always 'response.audio.transcript.delta'.
-	Type ResponseAudioTranscriptDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.audio.transcript.delta'."`
-	// The partial transcript of the audio response.
-	Delta string `json:"delta" jsonschema:"description=The partial transcript of the audio response."`
-}
-
-// ResponseAudioTranscriptDeltaEventType The type of the event. Always 'response.audio.transcript.delta'.
-type ResponseAudioTranscriptDeltaEventType string
-
-const (
-	ResponseAudioTranscriptDeltaEventTypeResponseAudioTranscriptDelta ResponseAudioTranscriptDeltaEventType = "response.audio.transcript.delta"
-)
-
-// ResponseAudioTranscriptDoneEvent Emitted when the full audio transcript is completed.
-type ResponseAudioTranscriptDoneEvent struct {
-	// The type of the event. Always 'response.audio.transcript.done'.
-	Type ResponseAudioTranscriptDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.audio.transcript.done'."`
-}
-
-// ResponseAudioTranscriptDoneEventType The type of the event. Always 'response.audio.transcript.done'.
-type ResponseAudioTranscriptDoneEventType string
-
-const (
-	ResponseAudioTranscriptDoneEventTypeResponseAudioTranscriptDone ResponseAudioTranscriptDoneEventType = "response.audio.transcript.done"
-)
-
-// ResponseCodeInterpreterCallCodeDeltaEvent Emitted when a partial code snippet is added by the code interpreter.
-type ResponseCodeInterpreterCallCodeDeltaEvent struct {
-	// The type of the event. Always 'response.code_interpreter_call.code.delta'.
-	Type ResponseCodeInterpreterCallCodeDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.code.delta'."`
-	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
-	// The partial code snippet added by the code interpreter.
-	Delta string `json:"delta" jsonschema:"description=The partial code snippet added by the code interpreter."`
-}
-
-// ResponseCodeInterpreterCallCodeDeltaEventType The type of the event. Always 'response.code_interpreter_call.code.delta'.
-type ResponseCodeInterpreterCallCodeDeltaEventType string
-
-const (
-	ResponseCodeInterpreterCallCodeDeltaEventTypeResponseCodeInterpreterCallCodeDelta ResponseCodeInterpreterCallCodeDeltaEventType = "response.code_interpreter_call.code.delta"
-)
-
-// ResponseCodeInterpreterCallCodeDoneEvent Emitted when code snippet output is finalized by the code interpreter.
-type ResponseCodeInterpreterCallCodeDoneEvent struct {
-	// The type of the event. Always 'response.code_interpreter_call.code.done'.
-	Type ResponseCodeInterpreterCallCodeDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.code.done'."`
-	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
-	// The final code snippet output by the code interpreter.
-	Code string `json:"code" jsonschema:"description=The final code snippet output by the code interpreter."`
-}
-
-// ResponseCodeInterpreterCallCodeDoneEventType The type of the event. Always 'response.code_interpreter_call.code.done'.
-type ResponseCodeInterpreterCallCodeDoneEventType string
-
-const (
-	ResponseCodeInterpreterCallCodeDoneEventTypeResponseCodeInterpreterCallCodeDone ResponseCodeInterpreterCallCodeDoneEventType = "response.code_interpreter_call.code.done"
-)
-
-// ResponseCodeInterpreterCallCompletedEvent Emitted when the code interpreter call is completed.
-type ResponseCodeInterpreterCallCompletedEvent struct {
-	// The type of the event. Always 'response.code_interpreter_call.completed'.
-	Type ResponseCodeInterpreterCallCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.completed'."`
-	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
-	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
-}
-
-// ResponseCodeInterpreterCallCompletedEventType The type of the event. Always 'response.code_interpreter_call.completed'.
-type ResponseCodeInterpreterCallCompletedEventType string
-
-const (
-	ResponseCodeInterpreterCallCompletedEventTypeResponseCodeInterpreterCallCompleted ResponseCodeInterpreterCallCompletedEventType = "response.code_interpreter_call.completed"
-)
-
-// ResponseCodeInterpreterCallInProgressEvent Emitted when a code interpreter call is in progress.
-type ResponseCodeInterpreterCallInProgressEvent struct {
-	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
-	// The type of the event. Always 'response.code_interpreter_call.in_progress'.
-	Type ResponseCodeInterpreterCallInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.in_progress'."`
-	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
-}
-
-// ResponseCodeInterpreterCallInProgressEventType The type of the event. Always 'response.code_interpreter_call.in_progress'.
-type ResponseCodeInterpreterCallInProgressEventType string
-
-const (
-	ResponseCodeInterpreterCallInProgressEventTypeResponseCodeInterpreterCallInProgress ResponseCodeInterpreterCallInProgressEventType = "response.code_interpreter_call.in_progress"
-)
-
-// ResponseCodeInterpreterCallInterpretingEvent Emitted when the code interpreter is actively interpreting the code snippet.
-type ResponseCodeInterpreterCallInterpretingEvent struct {
-	CodeInterpreterCall CodeInterpreterToolCall `json:"code_interpreter_call"`
-	// The type of the event. Always 'response.code_interpreter_call.interpreting'.
-	Type ResponseCodeInterpreterCallInterpretingEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.code_interpreter_call.interpreting'."`
-	// The index of the output item that the code interpreter call is in progress.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the code interpreter call is in progress."`
-}
-
-// ResponseCodeInterpreterCallInterpretingEventType The type of the event. Always 'response.code_interpreter_call.interpreting'.
-type ResponseCodeInterpreterCallInterpretingEventType string
-
-const (
-	ResponseCodeInterpreterCallInterpretingEventTypeResponseCodeInterpreterCallInterpreting ResponseCodeInterpreterCallInterpretingEventType = "response.code_interpreter_call.interpreting"
-)
-
-// ResponseCompletedEvent Emitted when the model response is complete.
-type ResponseCompletedEvent struct {
-	// The type of the event. Always 'response.completed'.
-	Type ResponseCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.completed'."`
-	Response Response `json:"response"`
-}
-
-// ResponseCompletedEventType The type of the event. Always 'response.completed'.
-type ResponseCompletedEventType string
-
-const (
-	ResponseCompletedEventTypeResponseCompleted ResponseCompletedEventType = "response.completed"
-)
-
-// ResponseContentPartAddedEvent Emitted when a new content part is added.
-type ResponseContentPartAddedEvent struct {
-	// The ID of the output item that the content part was added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the content part was added to."`
-	// The index of the output item that the content part was added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the content part was added to."`
-	// The index of the content part that was added.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that was added."`
-	Part OutputContent `json:"part"`
-	// The type of the event. Always 'response.content_part.added'.
-	Type ResponseContentPartAddedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.content_part.added'."`
-}
-
-// ResponseContentPartAddedEventType The type of the event. Always 'response.content_part.added'.
-type ResponseContentPartAddedEventType string
-
-const (
-	ResponseContentPartAddedEventTypeResponseContentPartAdded ResponseContentPartAddedEventType = "response.content_part.added"
-)
-
-// ResponseContentPartDoneEvent Emitted when a content part is done.
-type ResponseContentPartDoneEvent struct {
-	// The type of the event. Always 'response.content_part.done'.
-	Type ResponseContentPartDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.content_part.done'."`
-	// The ID of the output item that the content part was added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the content part was added to."`
-	// The index of the output item that the content part was added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the content part was added to."`
-	// The index of the content part that is done.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that is done."`
-	Part OutputContent `json:"part"`
-}
-
-// ResponseContentPartDoneEventType The type of the event. Always 'response.content_part.done'.
-type ResponseContentPartDoneEventType string
-
-const (
-	ResponseContentPartDoneEventTypeResponseContentPartDone ResponseContentPartDoneEventType = "response.content_part.done"
-)
-
-// ResponseCreatedEvent An event that is emitted when a response is created.
-type ResponseCreatedEvent struct {
-	// The type of the event. Always 'response.created'.
-	Type ResponseCreatedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.created'."`
-	Response Response `json:"response"`
-}
-
-// ResponseCreatedEventType The type of the event. Always 'response.created'.
-type ResponseCreatedEventType string
-
-const (
-	ResponseCreatedEventTypeResponseCreated ResponseCreatedEventType = "response.created"
-)
-
-// ResponseError An error object returned when the model fails to generate a Response.
-type ResponseError struct {
-	Code ResponseErrorCode `json:"code"`
-	// A human-readable description of the error.
-	Message string `json:"message" jsonschema:"description=A human-readable description of the error."`
-}
-
-// ResponseErrorCode The error code for the response.
-type ResponseErrorCode string
-
-const (
-	ResponseErrorCodeServerError ResponseErrorCode = "server_error"
-	ResponseErrorCodeRateLimitExceeded ResponseErrorCode = "rate_limit_exceeded"
-	ResponseErrorCodeInvalidPrompt ResponseErrorCode = "invalid_prompt"
-	ResponseErrorCodeVectorStoreTimeout ResponseErrorCode = "vector_store_timeout"
-	ResponseErrorCodeInvalidImage ResponseErrorCode = "invalid_image"
-	ResponseErrorCodeInvalidImageFormat ResponseErrorCode = "invalid_image_format"
-	ResponseErrorCodeInvalidBase64Image ResponseErrorCode = "invalid_base64_image"
-	ResponseErrorCodeInvalidImageURL ResponseErrorCode = "invalid_image_url"
-	ResponseErrorCodeImageTooLarge ResponseErrorCode = "image_too_large"
-	ResponseErrorCodeImageTooSmall ResponseErrorCode = "image_too_small"
-	ResponseErrorCodeImageParseError ResponseErrorCode = "image_parse_error"
-	ResponseErrorCodeImageContentPolicyViolation ResponseErrorCode = "image_content_policy_violation"
-	ResponseErrorCodeInvalidImageMode ResponseErrorCode = "invalid_image_mode"
-	ResponseErrorCodeImageFileTooLarge ResponseErrorCode = "image_file_too_large"
-	ResponseErrorCodeUnsupportedImageMediaType ResponseErrorCode = "unsupported_image_media_type"
-	ResponseErrorCodeEmptyImageFile ResponseErrorCode = "empty_image_file"
-	ResponseErrorCodeFailedToDownloadImage ResponseErrorCode = "failed_to_download_image"
-	ResponseErrorCodeImageFileNotFound ResponseErrorCode = "image_file_not_found"
-)
-
-// ResponseErrorEvent Emitted when an error occurs.
-type ResponseErrorEvent struct {
-	// The error message.
-	Message string `json:"message" jsonschema:"description=The error message."`
-	// The error parameter.
-	Param *string `json:"param" jsonschema:"description=The error parameter."`
-	// The type of the event. Always 'error'.
-	Type ResponseErrorEventType `json:"type" jsonschema:"description=The type of the event. Always 'error'."`
-	// The error code.
-	Code *string `json:"code" jsonschema:"description=The error code."`
-}
-
-// ResponseErrorEventType The type of the event. Always 'error'.
-type ResponseErrorEventType string
-
-const (
-	ResponseErrorEventTypeError ResponseErrorEventType = "error"
-)
-
-// ResponseFailedEvent An event that is emitted when a response fails.
-type ResponseFailedEvent struct {
-	// The type of the event. Always 'response.failed'.
-	Type ResponseFailedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.failed'."`
-	Response Response `json:"response"`
-}
-
-// ResponseFailedEventType The type of the event. Always 'response.failed'.
-type ResponseFailedEventType string
-
-const (
-	ResponseFailedEventTypeResponseFailed ResponseFailedEventType = "response.failed"
-)
-
-// ResponseFileSearchCallCompletedEvent Emitted when a file search call is completed (results found).
-type ResponseFileSearchCallCompletedEvent struct {
-	// The type of the event. Always 'response.file_search_call.completed'.
-	Type ResponseFileSearchCallCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.file_search_call.completed'."`
-	// The index of the output item that the file search call is initiated.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the file search call is initiated."`
-	// The ID of the output item that the file search call is initiated.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the file search call is initiated."`
-}
-
-// ResponseFileSearchCallCompletedEventType The type of the event. Always 'response.file_search_call.completed'.
-type ResponseFileSearchCallCompletedEventType string
-
-const (
-	ResponseFileSearchCallCompletedEventTypeResponseFileSearchCallCompleted ResponseFileSearchCallCompletedEventType = "response.file_search_call.completed"
-)
-
-// ResponseFileSearchCallInProgressEvent Emitted when a file search call is initiated.
-type ResponseFileSearchCallInProgressEvent struct {
-	// The type of the event. Always 'response.file_search_call.in_progress'.
-	Type ResponseFileSearchCallInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.file_search_call.in_progress'."`
-	// The index of the output item that the file search call is initiated.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the file search call is initiated."`
-	// The ID of the output item that the file search call is initiated.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the file search call is initiated."`
-}
-
-// ResponseFileSearchCallInProgressEventType The type of the event. Always 'response.file_search_call.in_progress'.
-type ResponseFileSearchCallInProgressEventType string
-
-const (
-	ResponseFileSearchCallInProgressEventTypeResponseFileSearchCallInProgress ResponseFileSearchCallInProgressEventType = "response.file_search_call.in_progress"
-)
-
-// ResponseFileSearchCallSearchingEvent Emitted when a file search is currently searching.
-type ResponseFileSearchCallSearchingEvent struct {
-	// The ID of the output item that the file search call is initiated.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the file search call is initiated."`
-	// The type of the event. Always 'response.file_search_call.searching'.
-	Type ResponseFileSearchCallSearchingEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.file_search_call.searching'."`
-	// The index of the output item that the file search call is searching.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the file search call is searching."`
-}
-
-// ResponseFileSearchCallSearchingEventType The type of the event. Always 'response.file_search_call.searching'.
-type ResponseFileSearchCallSearchingEventType string
-
-const (
-	ResponseFileSearchCallSearchingEventTypeResponseFileSearchCallSearching ResponseFileSearchCallSearchingEventType = "response.file_search_call.searching"
-)
-
-// ResponseFormatJsonObject JSON object response format. An older method of generating JSON responses.
-// Using 'json_schema' is recommended for models that support it. Note that the
-// model will not generate JSON without a system or user message instructing it
-// to do so.
-type ResponseFormatJsonObject struct {
-	// The type of response format being defined. Always 'json_object'.
-	Type ResponseFormatJsonObjectType `json:"type" jsonschema:"description=The type of response format being defined. Always 'json_object'."`
-}
-
-// ResponseFormatJsonObjectType The type of response format being defined. Always 'json_object'.
-type ResponseFormatJsonObjectType string
-
-const (
-	ResponseFormatJsonObjectTypeJSONObject ResponseFormatJsonObjectType = "json_object"
-)
-
-// ResponseFormatJsonSchemaSchema The schema for the response format, described as a JSON Schema object.
-// Learn how to build JSON schemas [here](https://json-schema.org/).
-type ResponseFormatJsonSchemaSchema map[string]any
-
-// ResponseFormatText Default response format. Used to generate text responses.
-type ResponseFormatText struct {
-	// The type of response format being defined. Always 'text'.
-	Type ResponseFormatTextType `json:"type" jsonschema:"description=The type of response format being defined. Always 'text'."`
-}
-
-// ResponseFormatTextType The type of response format being defined. Always 'text'.
-type ResponseFormatTextType string
-
-const (
-	ResponseFormatTextTypeText ResponseFormatTextType = "text"
-)
-
-// ResponseFunctionCallArgumentsDeltaEvent Emitted when there is a partial function-call arguments delta.
-type ResponseFunctionCallArgumentsDeltaEvent struct {
-	// The function-call arguments delta that is added.
-	Delta string `json:"delta" jsonschema:"description=The function-call arguments delta that is added."`
-	// The type of the event. Always 'response.function_call_arguments.delta'.
-	Type ResponseFunctionCallArgumentsDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.function_call_arguments.delta'."`
-	// The ID of the output item that the function-call arguments delta is added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the function-call arguments delta is added to."`
-	// The index of the output item that the function-call arguments delta is added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the function-call arguments delta is added to."`
-}
-
-// ResponseFunctionCallArgumentsDeltaEventType The type of the event. Always 'response.function_call_arguments.delta'.
-type ResponseFunctionCallArgumentsDeltaEventType string
-
-const (
-	ResponseFunctionCallArgumentsDeltaEventTypeResponseFunctionCallArgumentsDelta ResponseFunctionCallArgumentsDeltaEventType = "response.function_call_arguments.delta"
-)
-
-// ResponseFunctionCallArgumentsDoneEvent Emitted when function-call arguments are finalized.
-type ResponseFunctionCallArgumentsDoneEvent struct {
-	Type ResponseFunctionCallArgumentsDoneEventType `json:"type"`
-	// The ID of the item.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the item."`
-	// The index of the output item.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item."`
-	// The function-call arguments.
-	Arguments string `json:"arguments" jsonschema:"description=The function-call arguments."`
-}
-
-type ResponseFunctionCallArgumentsDoneEventType string
-
-const (
-	ResponseFunctionCallArgumentsDoneEventTypeResponseFunctionCallArgumentsDone ResponseFunctionCallArgumentsDoneEventType = "response.function_call_arguments.done"
-)
-
-// ResponseInProgressEvent Emitted when the response is in progress.
-type ResponseInProgressEvent struct {
-	// The type of the event. Always 'response.in_progress'.
-	Type ResponseInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.in_progress'."`
-	Response Response `json:"response"`
-}
-
-// ResponseInProgressEventType The type of the event. Always 'response.in_progress'.
-type ResponseInProgressEventType string
-
-const (
-	ResponseInProgressEventTypeResponseInProgress ResponseInProgressEventType = "response.in_progress"
-)
-
-// ResponseIncompleteDetails Details about why the response is incomplete.
-type ResponseIncompleteDetails struct {
-	// The reason why the response is incomplete.
-	Reason *string `json:"reason,omitempty" jsonschema:"description=The reason why the response is incomplete."`
-}
-
-// ResponseIncompleteEvent An event that is emitted when a response finishes as incomplete.
-type ResponseIncompleteEvent struct {
-	// The type of the event. Always 'response.incomplete'.
-	Type ResponseIncompleteEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.incomplete'."`
-	Response Response `json:"response"`
-}
-
-// ResponseIncompleteEventType The type of the event. Always 'response.incomplete'.
-type ResponseIncompleteEventType string
-
-const (
-	ResponseIncompleteEventTypeResponseIncomplete ResponseIncompleteEventType = "response.incomplete"
-)
-
-// ResponseItemList A list of Response items.
-type ResponseItemList struct {
-	// A list of items used to generate this response.
-	Data []ItemResource `json:"data" jsonschema:"description=A list of items used to generate this response."`
-	// Whether there are more items available.
-	HasMore bool `json:"has_more" jsonschema:"description=Whether there are more items available."`
-	// The ID of the first item in the list.
-	FirstID string `json:"first_id" jsonschema:"description=The ID of the first item in the list."`
-	// The ID of the last item in the list.
-	LastID string `json:"last_id" jsonschema:"description=The ID of the last item in the list."`
-	// The type of object returned, must be 'list'.
-	Object ResponseItemListObject `json:"object" jsonschema:"description=The type of object returned, must be 'list'."`
-}
-
-// ResponseItemListObject The type of object returned, must be 'list'.
-type ResponseItemListObject string
-
-const (
-	ResponseItemListObjectList ResponseItemListObject = "list"
-)
-
-// ResponseObject The object type of this resource - always set to 'response'.
-type ResponseObject string
-
-const (
-	ResponseObjectResponse ResponseObject = "response"
-)
-
-// ResponseOutputItemAddedEvent Emitted when a new output item is added.
-type ResponseOutputItemAddedEvent struct {
-	// The index of the output item that was added.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that was added."`
-	Item OutputItem `json:"item"`
-	// The type of the event. Always 'response.output_item.added'.
-	Type ResponseOutputItemAddedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_item.added'."`
-}
-
-// ResponseOutputItemAddedEventType The type of the event. Always 'response.output_item.added'.
-type ResponseOutputItemAddedEventType string
-
-const (
-	ResponseOutputItemAddedEventTypeResponseOutputItemAdded ResponseOutputItemAddedEventType = "response.output_item.added"
-)
-
-// ResponseOutputItemDoneEvent Emitted when an output item is marked done.
-type ResponseOutputItemDoneEvent struct {
-	Item OutputItem `json:"item"`
-	// The type of the event. Always 'response.output_item.done'.
-	Type ResponseOutputItemDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_item.done'."`
-	// The index of the output item that was marked done.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that was marked done."`
-}
-
-// ResponseOutputItemDoneEventType The type of the event. Always 'response.output_item.done'.
-type ResponseOutputItemDoneEventType string
-
-const (
-	ResponseOutputItemDoneEventTypeResponseOutputItemDone ResponseOutputItemDoneEventType = "response.output_item.done"
-)
-
-type ResponseProperties struct {
-	// The unique ID of the previous response to the model. Use this to
-// create multi-turn conversations. Learn more about 
-// [conversation state](/docs/guides/conversation-state).
-	PreviousResponseID *string `json:"previous_response_id,omitempty" jsonschema:"description=The unique ID of the previous response to the model. Use this to create multi-turn conversations. Learn more about [conversation state](/docs/guides/conversation-state)."`
-	Reasoning *Reasoning `json:"reasoning,omitempty"`
-	// An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning).
-	MaxOutputTokens *int64 `json:"max_output_tokens,omitempty" jsonschema:"description=An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](/docs/guides/reasoning)."`
-	// Inserts a system (or developer) message as the first item in the model's context.
-// 
-// When using along with 'previous_response_id', the instructions from a previous
-// response will not be carried over to the next response. This makes it simple
-// to swap out system (or developer) messages in new responses.
-	Instructions *string `json:"instructions,omitempty" jsonschema:"description=Inserts a system (or developer) message as the first item in the model's context. When using along with 'previous_response_id', the instructions from a previous response will not be carried over to the next response. This makes it simple to swap out system (or developer) messages in new responses."`
-	// Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-	Text *ResponsePropertiesText `json:"text,omitempty" jsonschema:"description=Configuration options for a text response from the model. Can be plain text or structured JSON data. Learn more: - [Text inputs and outputs](/docs/guides/text) - [Structured Outputs](/docs/guides/structured-outputs)"`
-	// An array of tools the model may call while generating a response. You 
-// can specify which tool to use by setting the 'tool_choice' parameter.
-// 
-// The two categories of tools you can provide the model are:
-// 
-// - **Built-in tools**: Tools that are provided by OpenAI that extend the
-//   model's capabilities, like [web search](/docs/guides/tools-web-search)
-//   or [file search](/docs/guides/tools-file-search). Learn more about
-//   [built-in tools](/docs/guides/tools).
-// - **Function calls (custom tools)**: Functions that are defined by you,
-//   enabling the model to call your own code. Learn more about
-//   [function calling](/docs/guides/function-calling).
-	Tools []Tool `json:"tools,omitempty" jsonschema:"description=An array of tools the model may call while generating a response. You can specify which tool to use by setting the 'tool_choice' parameter. The two categories of tools you can provide the model are: - **Built-in tools**: Tools that are provided by OpenAI that extend the model's capabilities, like [web search](/docs/guides/tools-web-search) or [file search](/docs/guides/tools-file-search). Learn more about [built-in tools](/docs/guides/tools). - **Function calls (custom tools)**: Functions that are defined by you, enabling the model to call your own code. Learn more about [function calling](/docs/guides/function-calling)."`
-	// The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-	Truncation *ResponsePropertiesTruncation `json:"truncation,omitempty" jsonschema:"description=The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error."`
-	Model *ModelIdsResponses `json:"model,omitempty"`
-	// How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-	ToolChoice ResponsePropertiesToolChoice `json:"tool_choice,omitempty" jsonschema:"description=How the model should select which tool (or tools) to use when generating a response. See the 'tools' parameter to see how to specify which tools the model can call."`
-}
-
-// ResponsePropertiesText Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-type ResponsePropertiesText struct {
-	Format TextResponseFormatConfiguration `json:"format,omitempty"`
-}
-
-// ResponsePropertiesToolChoice How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-// Discriminated by "type" field.
 //
 //compschema:generate
-type ResponsePropertiesToolChoice interface {
-	isResponsePropertiesToolChoice()
-	DiscriminatorValue() string
+type ResponseResourceToolChoice interface {
+	isResponseResourceToolChoice()
 }
 
 
-// ResponsePropertiesToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a ResponsePropertiesToolChoice variant.
-type ResponsePropertiesToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
-func (*ResponsePropertiesToolChoiceToolChoiceOptions) isResponsePropertiesToolChoice() {}
-func (*ToolChoiceTypes) isResponsePropertiesToolChoice() {}
-func (*ToolChoiceFunction) isResponsePropertiesToolChoice() {}
+// ResponseResourceToolChoiceToolChoiceValueEnum wraps a ToolChoiceValueEnum value as a ResponseResourceToolChoice variant.
+type ResponseResourceToolChoiceToolChoiceValueEnum struct { Value ToolChoiceValueEnum }
+func (*ResponseResourceToolChoiceToolChoiceValueEnum) isResponseResourceToolChoice() {}
+func (*AllowedToolChoice) isResponseResourceToolChoice() {}
 
-
-func (w *ResponsePropertiesToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
-func (w ResponsePropertiesToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
+func (w ResponseResourceToolChoiceToolChoiceValueEnum) MarshalJSON() ([]byte, error) {
 	return json.Marshal(w.Value)
 }
 
-func (w *ResponsePropertiesToolChoiceToolChoiceOptions) UnmarshalJSON(data []byte) error {
+func (w *ResponseResourceToolChoiceToolChoiceValueEnum) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &w.Value)
 }
 
-// NewResponsePropertiesToolChoiceToolChoiceOptions creates a ResponsePropertiesToolChoice from a ToolChoiceOptions value.
-func NewResponsePropertiesToolChoiceToolChoiceOptions(v ToolChoiceOptions) ResponsePropertiesToolChoice {
-	return &ResponsePropertiesToolChoiceToolChoiceOptions{Value: v}
+// NewResponseResourceToolChoiceToolChoiceValueEnum creates a ResponseResourceToolChoice from a ToolChoiceValueEnum value.
+func NewResponseResourceToolChoiceToolChoiceValueEnum(v ToolChoiceValueEnum) ResponseResourceToolChoice {
+	return &ResponseResourceToolChoiceToolChoiceValueEnum{Value: v}
 }
 
-// ResponsePropertiesToolChoiceFromToolChoiceTypes wraps a *ToolChoiceTypes as a ResponsePropertiesToolChoice union value.
-func ResponsePropertiesToolChoiceFromToolChoiceTypes(v *ToolChoiceTypes) ResponsePropertiesToolChoice {
+// ResponseResourceToolChoiceFromAllowedToolChoice wraps a *AllowedToolChoice as a ResponseResourceToolChoice union value.
+func ResponseResourceToolChoiceFromAllowedToolChoice(v *AllowedToolChoice) ResponseResourceToolChoice {
 	return v
 }
 
-// ResponsePropertiesToolChoiceFromToolChoiceFunction wraps a *ToolChoiceFunction as a ResponsePropertiesToolChoice union value.
-func ResponsePropertiesToolChoiceFromToolChoiceFunction(v *ToolChoiceFunction) ResponsePropertiesToolChoice {
+// UnmarshalResponseResourceToolChoice unmarshals JSON into the correct ResponseResourceToolChoice variant.
+func UnmarshalResponseResourceToolChoice(data []byte) (ResponseResourceToolChoice, error) {
+	{
+		var val AllowedToolChoice
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ResponseResourceToolChoiceToolChoiceValueEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ResponseResourceToolChoice")
+}
+
+
+// Discriminated by "type" field.
+//
+//compschema:generate
+type ResponsesToolParam interface {
+	isResponsesToolParam()
+	DiscriminatorValue() string
+}
+
+func (*CodeInterpreterToolParam) isResponsesToolParam() {}
+func (*FunctionToolParam) isResponsesToolParam() {}
+func (*CustomToolParam) isResponsesToolParam() {}
+func (*WebSearchToolParam) isResponsesToolParam() {}
+func (*WebSearchToolParam20250814Param) isResponsesToolParam() {}
+func (*WebSearchGADeprecatedToolParam) isResponsesToolParam() {}
+func (*WebSearchPreviewToolParam) isResponsesToolParam() {}
+func (*WebSearchPreviewToolParam20250311Param) isResponsesToolParam() {}
+func (*ImageGenToolParam) isResponsesToolParam() {}
+func (*MCPToolParam) isResponsesToolParam() {}
+func (*FileSearchToolParam) isResponsesToolParam() {}
+func (*ComputerToolParam) isResponsesToolParam() {}
+func (*ComputerUsePreviewToolParam) isResponsesToolParam() {}
+func (*LocalShellToolParam) isResponsesToolParam() {}
+func (*FunctionShellToolParam) isResponsesToolParam() {}
+func (*ApplyPatchToolParam) isResponsesToolParam() {}
+
+func (x *CodeInterpreterToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchToolParam20250814Param) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchGADeprecatedToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchPreviewToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchPreviewToolParam20250311Param) DiscriminatorValue() string { return string(x.Type) }
+func (x *ImageGenToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FileSearchToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ComputerUsePreviewToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *LocalShellToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchToolParam) DiscriminatorValue() string { return string(x.Type) }
+
+// ResponsesToolParamFromCodeInterpreterToolParam wraps a *CodeInterpreterToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromCodeInterpreterToolParam(v *CodeInterpreterToolParam) ResponsesToolParam {
 	return v
 }
 
-// UnmarshalResponsePropertiesToolChoice unmarshals JSON into the correct ResponsePropertiesToolChoice variant.
+// ResponsesToolParamFromFunctionToolParam wraps a *FunctionToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromFunctionToolParam(v *FunctionToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromCustomToolParam wraps a *CustomToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromCustomToolParam(v *CustomToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromWebSearchToolParam wraps a *WebSearchToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromWebSearchToolParam(v *WebSearchToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromWebSearchToolParam20250814Param wraps a *WebSearchToolParam20250814Param as a ResponsesToolParam union value.
+func ResponsesToolParamFromWebSearchToolParam20250814Param(v *WebSearchToolParam20250814Param) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromWebSearchGADeprecatedToolParam wraps a *WebSearchGADeprecatedToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromWebSearchGADeprecatedToolParam(v *WebSearchGADeprecatedToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromWebSearchPreviewToolParam wraps a *WebSearchPreviewToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromWebSearchPreviewToolParam(v *WebSearchPreviewToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromWebSearchPreviewToolParam20250311Param wraps a *WebSearchPreviewToolParam20250311Param as a ResponsesToolParam union value.
+func ResponsesToolParamFromWebSearchPreviewToolParam20250311Param(v *WebSearchPreviewToolParam20250311Param) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromImageGenToolParam wraps a *ImageGenToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromImageGenToolParam(v *ImageGenToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromMCPToolParam wraps a *MCPToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromMCPToolParam(v *MCPToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromFileSearchToolParam wraps a *FileSearchToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromFileSearchToolParam(v *FileSearchToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromComputerToolParam wraps a *ComputerToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromComputerToolParam(v *ComputerToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromComputerUsePreviewToolParam wraps a *ComputerUsePreviewToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromComputerUsePreviewToolParam(v *ComputerUsePreviewToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromLocalShellToolParam wraps a *LocalShellToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromLocalShellToolParam(v *LocalShellToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromFunctionShellToolParam wraps a *FunctionShellToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromFunctionShellToolParam(v *FunctionShellToolParam) ResponsesToolParam {
+	return v
+}
+
+// ResponsesToolParamFromApplyPatchToolParam wraps a *ApplyPatchToolParam as a ResponsesToolParam union value.
+func ResponsesToolParamFromApplyPatchToolParam(v *ApplyPatchToolParam) ResponsesToolParam {
+	return v
+}
+
+// UnmarshalResponsesToolParam unmarshals JSON into the correct ResponsesToolParam variant.
 // Dispatches on the "type" discriminator field.
-func UnmarshalResponsePropertiesToolChoice(data []byte) (ResponsePropertiesToolChoice, error) {
+func UnmarshalResponsesToolParam(data []byte) (ResponsesToolParam, error) {
 	var disc struct {
 		D string `json:"type"`
 	}
@@ -3217,1023 +7748,721 @@ func UnmarshalResponsePropertiesToolChoice(data []byte) (ResponsePropertiesToolC
 		return nil, err
 	}
 	switch disc.D {
-	case "file_search", "web_search_preview", "computer_use_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
+	case "code_interpreter":
+		var val CodeInterpreterToolParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "function":
-		var val ToolChoiceFunction
+		var val FunctionToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val CustomToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search":
+		var val WebSearchToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_2025_08_26":
+		var val WebSearchToolParam20250814Param
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_ga":
+		var val WebSearchGADeprecatedToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview":
+		var val WebSearchPreviewToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview_2025_03_11":
+		var val WebSearchPreviewToolParam20250311Param
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation":
+		var val ImageGenToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val MCPToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "file_search":
+		var val FileSearchToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer-preview":
+		var val ComputerToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview":
+		var val ComputerUsePreviewToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell":
+		var val LocalShellToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val FunctionShellToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch":
+		var val ApplyPatchToolParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for ResponsePropertiesToolChoice", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ResponsesToolParam", disc.D)
 	}
 }
 
 
-// ResponsePropertiesTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-type ResponsePropertiesTruncation string
+// SafetyCheck A safety check that was recorded for a computer tool call.
+type SafetyCheck struct {
+	// The unique ID of the safety check.
+	ID string `json:"id" jsonschema:"description=The unique ID of the safety check."`
+	// The safety check code that was recorded.
+	Code string `json:"code" jsonschema:"description=The safety check code that was recorded."`
+	// The safety check message that was recorded.
+	Message *string `json:"message" jsonschema:"description=The safety check message that was recorded."`
+}
+
+// ScreenshotAction A screenshot action that was requested by the model.
+type ScreenshotAction struct {
+	// The type of the action. Always 'screenshot'.
+	Type ScreenshotActionType `json:"type" jsonschema:"description=The type of the action. Always 'screenshot'."`
+}
+
+// ScreenshotActionType The type of the action. Always 'screenshot'.
+type ScreenshotActionType string
 
 const (
-	ResponsePropertiesTruncationAuto ResponsePropertiesTruncation = "auto"
-	ResponsePropertiesTruncationDisabled ResponsePropertiesTruncation = "disabled"
+	ScreenshotActionTypeScreenshot ScreenshotActionType = "screenshot"
 )
 
-// ResponseReasoningSummaryPartAddedEvent Emitted when a new reasoning summary part is added.
-type ResponseReasoningSummaryPartAddedEvent struct {
-	// The index of the output item this summary part is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item this summary part is associated with."`
-	// The index of the summary part within the reasoning summary.
-	SummaryIndex int64 `json:"summary_index" jsonschema:"description=The index of the summary part within the reasoning summary."`
-	// The summary part that was added.
-	Part ResponseReasoningSummaryPartAddedEventPart `json:"part" jsonschema:"description=The summary part that was added."`
-	// The type of the event. Always 'response.reasoning_summary_part.added'.
-	Type ResponseReasoningSummaryPartAddedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.reasoning_summary_part.added'."`
-	// The ID of the item this summary part is associated with.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the item this summary part is associated with."`
+type ScreenshotParam struct {
+	// Specifies the event type. Always 'screenshot'.
+	Type ScreenshotParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'screenshot'."`
 }
 
-// ResponseReasoningSummaryPartAddedEventPart The summary part that was added.
-type ResponseReasoningSummaryPartAddedEventPart struct {
-	// The type of the summary part. Always 'summary_text'.
-	Type string `json:"type" jsonschema:"description=The type of the summary part. Always 'summary_text'."`
-	// The text of the summary part.
-	Text string `json:"text" jsonschema:"description=The text of the summary part."`
-}
-
-// ResponseReasoningSummaryPartAddedEventType The type of the event. Always 'response.reasoning_summary_part.added'.
-type ResponseReasoningSummaryPartAddedEventType string
+// ScreenshotParamType Specifies the event type. Always 'screenshot'.
+type ScreenshotParamType string
 
 const (
-	ResponseReasoningSummaryPartAddedEventTypeResponseReasoningSummaryPartAdded ResponseReasoningSummaryPartAddedEventType = "response.reasoning_summary_part.added"
+	ScreenshotParamTypeScreenshot ScreenshotParamType = "screenshot"
 )
 
-// ResponseReasoningSummaryPartDoneEvent Emitted when a reasoning summary part is completed.
-type ResponseReasoningSummaryPartDoneEvent struct {
-	// The index of the output item this summary part is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item this summary part is associated with."`
-	// The index of the summary part within the reasoning summary.
-	SummaryIndex int64 `json:"summary_index" jsonschema:"description=The index of the summary part within the reasoning summary."`
-	// The completed summary part.
-	Part ResponseReasoningSummaryPartDoneEventPart `json:"part" jsonschema:"description=The completed summary part."`
-	// The type of the event. Always 'response.reasoning_summary_part.done'.
-	Type ResponseReasoningSummaryPartDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.reasoning_summary_part.done'."`
-	// The ID of the item this summary part is associated with.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the item this summary part is associated with."`
+// ScrollAction A scroll action that was requested by the model.
+type ScrollAction struct {
+	// The x-coordinate where scrolling was performed.
+	X int64 `json:"x" jsonschema:"description=The x-coordinate where scrolling was performed."`
+	// The y-coordinate where scrolling was performed.
+	Y int64 `json:"y" jsonschema:"description=The y-coordinate where scrolling was performed."`
+	// The horizontal scroll delta that was applied.
+	ScrollX int64 `json:"scroll_x" jsonschema:"description=The horizontal scroll delta that was applied."`
+	// The vertical scroll delta that was applied.
+	ScrollY int64 `json:"scroll_y" jsonschema:"description=The vertical scroll delta that was applied."`
+	// The type of the action. Always 'scroll'.
+	Type ScrollActionType `json:"type" jsonschema:"description=The type of the action. Always 'scroll'."`
 }
 
-// ResponseReasoningSummaryPartDoneEventPart The completed summary part.
-type ResponseReasoningSummaryPartDoneEventPart struct {
-	// The type of the summary part. Always 'summary_text'.
-	Type string `json:"type" jsonschema:"description=The type of the summary part. Always 'summary_text'."`
-	// The text of the summary part.
-	Text string `json:"text" jsonschema:"description=The text of the summary part."`
-}
-
-// ResponseReasoningSummaryPartDoneEventType The type of the event. Always 'response.reasoning_summary_part.done'.
-type ResponseReasoningSummaryPartDoneEventType string
+// ScrollActionType The type of the action. Always 'scroll'.
+type ScrollActionType string
 
 const (
-	ResponseReasoningSummaryPartDoneEventTypeResponseReasoningSummaryPartDone ResponseReasoningSummaryPartDoneEventType = "response.reasoning_summary_part.done"
+	ScrollActionTypeScroll ScrollActionType = "scroll"
 )
 
-// ResponseReasoningSummaryTextDeltaEvent Emitted when a delta is added to a reasoning summary text.
-type ResponseReasoningSummaryTextDeltaEvent struct {
-	// The type of the event. Always 'response.reasoning_summary_text.delta'.
-	Type ResponseReasoningSummaryTextDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.reasoning_summary_text.delta'."`
-	// The ID of the item this summary text delta is associated with.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the item this summary text delta is associated with."`
-	// The index of the output item this summary text delta is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item this summary text delta is associated with."`
-	// The index of the summary part within the reasoning summary.
-	SummaryIndex int64 `json:"summary_index" jsonschema:"description=The index of the summary part within the reasoning summary."`
-	// The text delta that was added to the summary.
-	Delta string `json:"delta" jsonschema:"description=The text delta that was added to the summary."`
-}
-
-// ResponseReasoningSummaryTextDeltaEventType The type of the event. Always 'response.reasoning_summary_text.delta'.
-type ResponseReasoningSummaryTextDeltaEventType string
-
-const (
-	ResponseReasoningSummaryTextDeltaEventTypeResponseReasoningSummaryTextDelta ResponseReasoningSummaryTextDeltaEventType = "response.reasoning_summary_text.delta"
-)
-
-// ResponseReasoningSummaryTextDoneEvent Emitted when a reasoning summary text is completed.
-type ResponseReasoningSummaryTextDoneEvent struct {
-	// The ID of the item this summary text is associated with.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the item this summary text is associated with."`
-	// The index of the output item this summary text is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item this summary text is associated with."`
-	// The index of the summary part within the reasoning summary.
-	SummaryIndex int64 `json:"summary_index" jsonschema:"description=The index of the summary part within the reasoning summary."`
-	// The full text of the completed reasoning summary.
-	Text string `json:"text" jsonschema:"description=The full text of the completed reasoning summary."`
-	// The type of the event. Always 'response.reasoning_summary_text.done'.
-	Type ResponseReasoningSummaryTextDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.reasoning_summary_text.done'."`
-}
-
-// ResponseReasoningSummaryTextDoneEventType The type of the event. Always 'response.reasoning_summary_text.done'.
-type ResponseReasoningSummaryTextDoneEventType string
-
-const (
-	ResponseReasoningSummaryTextDoneEventTypeResponseReasoningSummaryTextDone ResponseReasoningSummaryTextDoneEventType = "response.reasoning_summary_text.done"
-)
-
-// ResponseRefusalDeltaEvent Emitted when there is a partial refusal text.
-type ResponseRefusalDeltaEvent struct {
-	// The type of the event. Always 'response.refusal.delta'.
-	Type ResponseRefusalDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.refusal.delta'."`
-	// The ID of the output item that the refusal text is added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the refusal text is added to."`
-	// The index of the output item that the refusal text is added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the refusal text is added to."`
-	// The index of the content part that the refusal text is added to.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the refusal text is added to."`
-	// The refusal text that is added.
-	Delta string `json:"delta" jsonschema:"description=The refusal text that is added."`
-}
-
-// ResponseRefusalDeltaEventType The type of the event. Always 'response.refusal.delta'.
-type ResponseRefusalDeltaEventType string
-
-const (
-	ResponseRefusalDeltaEventTypeResponseRefusalDelta ResponseRefusalDeltaEventType = "response.refusal.delta"
-)
-
-// ResponseRefusalDoneEvent Emitted when refusal text is finalized.
-type ResponseRefusalDoneEvent struct {
-	// The type of the event. Always 'response.refusal.done'.
-	Type ResponseRefusalDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.refusal.done'."`
-	// The ID of the output item that the refusal text is finalized.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the refusal text is finalized."`
-	// The index of the output item that the refusal text is finalized.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the refusal text is finalized."`
-	// The index of the content part that the refusal text is finalized.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the refusal text is finalized."`
-	// The refusal text that is finalized.
-	Refusal string `json:"refusal" jsonschema:"description=The refusal text that is finalized."`
-}
-
-// ResponseRefusalDoneEventType The type of the event. Always 'response.refusal.done'.
-type ResponseRefusalDoneEventType string
-
-const (
-	ResponseRefusalDoneEventTypeResponseRefusalDone ResponseRefusalDoneEventType = "response.refusal.done"
-)
-
-// ResponseStatus The status of the response generation. One of 'completed', 'failed', 
-// 'in_progress', or 'incomplete'.
-type ResponseStatus string
-
-const (
-	ResponseStatusCompleted ResponseStatus = "completed"
-	ResponseStatusFailed ResponseStatus = "failed"
-	ResponseStatusInProgress ResponseStatus = "in_progress"
-	ResponseStatusIncomplete ResponseStatus = "incomplete"
-)
-
-// Discriminated by "type" field.
-//
-//compschema:generate
-type ResponseStreamEvent interface {
-	isResponseStreamEvent()
-	EventType() string
-}
-
-func (*ResponseAudioDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioDoneEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseAudioTranscriptDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCodeDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseCodeInterpreterCallInterpretingEvent) isResponseStreamEvent() {}
-func (*ResponseCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseContentPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseCreatedEvent) isResponseStreamEvent() {}
-func (*ResponseErrorEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFileSearchCallSearchingEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseFunctionCallArgumentsDoneEvent) isResponseStreamEvent() {}
-func (*ResponseInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseFailedEvent) isResponseStreamEvent() {}
-func (*ResponseIncompleteEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemAddedEvent) isResponseStreamEvent() {}
-func (*ResponseOutputItemDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartAddedEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryPartDoneEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseReasoningSummaryTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseRefusalDoneEvent) isResponseStreamEvent() {}
-func (*ResponseTextAnnotationDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDeltaEvent) isResponseStreamEvent() {}
-func (*ResponseTextDoneEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallCompletedEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallInProgressEvent) isResponseStreamEvent() {}
-func (*ResponseWebSearchCallSearchingEvent) isResponseStreamEvent() {}
-
-func (x *ResponseAudioDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioTranscriptDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseAudioTranscriptDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCodeDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCodeDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCodeInterpreterCallInterpretingEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseContentPartAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseContentPartDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseCreatedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseErrorEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFileSearchCallSearchingEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFunctionCallArgumentsDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFunctionCallArgumentsDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseFailedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseIncompleteEvent) EventType() string { return string(x.Type) }
-func (x *ResponseOutputItemAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseOutputItemDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryPartAddedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryPartDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryTextDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseReasoningSummaryTextDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseRefusalDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseRefusalDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextAnnotationDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextDeltaEvent) EventType() string { return string(x.Type) }
-func (x *ResponseTextDoneEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallCompletedEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallInProgressEvent) EventType() string { return string(x.Type) }
-func (x *ResponseWebSearchCallSearchingEvent) EventType() string { return string(x.Type) }
-
-// ResponseStreamEventFromResponseAudioDeltaEvent wraps a *ResponseAudioDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseAudioDeltaEvent(v *ResponseAudioDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseAudioDoneEvent wraps a *ResponseAudioDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseAudioDoneEvent(v *ResponseAudioDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseAudioTranscriptDeltaEvent wraps a *ResponseAudioTranscriptDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseAudioTranscriptDeltaEvent(v *ResponseAudioTranscriptDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseAudioTranscriptDoneEvent wraps a *ResponseAudioTranscriptDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseAudioTranscriptDoneEvent(v *ResponseAudioTranscriptDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCodeInterpreterCallCodeDeltaEvent wraps a *ResponseCodeInterpreterCallCodeDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCodeInterpreterCallCodeDeltaEvent(v *ResponseCodeInterpreterCallCodeDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCodeInterpreterCallCodeDoneEvent wraps a *ResponseCodeInterpreterCallCodeDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCodeInterpreterCallCodeDoneEvent(v *ResponseCodeInterpreterCallCodeDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCodeInterpreterCallCompletedEvent wraps a *ResponseCodeInterpreterCallCompletedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCodeInterpreterCallCompletedEvent(v *ResponseCodeInterpreterCallCompletedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCodeInterpreterCallInProgressEvent wraps a *ResponseCodeInterpreterCallInProgressEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCodeInterpreterCallInProgressEvent(v *ResponseCodeInterpreterCallInProgressEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCodeInterpreterCallInterpretingEvent wraps a *ResponseCodeInterpreterCallInterpretingEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCodeInterpreterCallInterpretingEvent(v *ResponseCodeInterpreterCallInterpretingEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCompletedEvent wraps a *ResponseCompletedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCompletedEvent(v *ResponseCompletedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseContentPartAddedEvent wraps a *ResponseContentPartAddedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseContentPartAddedEvent(v *ResponseContentPartAddedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseContentPartDoneEvent wraps a *ResponseContentPartDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseContentPartDoneEvent(v *ResponseContentPartDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseCreatedEvent wraps a *ResponseCreatedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseCreatedEvent(v *ResponseCreatedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseErrorEvent wraps a *ResponseErrorEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseErrorEvent(v *ResponseErrorEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFileSearchCallCompletedEvent wraps a *ResponseFileSearchCallCompletedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFileSearchCallCompletedEvent(v *ResponseFileSearchCallCompletedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFileSearchCallInProgressEvent wraps a *ResponseFileSearchCallInProgressEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFileSearchCallInProgressEvent(v *ResponseFileSearchCallInProgressEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFileSearchCallSearchingEvent wraps a *ResponseFileSearchCallSearchingEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFileSearchCallSearchingEvent(v *ResponseFileSearchCallSearchingEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFunctionCallArgumentsDeltaEvent wraps a *ResponseFunctionCallArgumentsDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFunctionCallArgumentsDeltaEvent(v *ResponseFunctionCallArgumentsDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFunctionCallArgumentsDoneEvent wraps a *ResponseFunctionCallArgumentsDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFunctionCallArgumentsDoneEvent(v *ResponseFunctionCallArgumentsDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseInProgressEvent wraps a *ResponseInProgressEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseInProgressEvent(v *ResponseInProgressEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseFailedEvent wraps a *ResponseFailedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseFailedEvent(v *ResponseFailedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseIncompleteEvent wraps a *ResponseIncompleteEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseIncompleteEvent(v *ResponseIncompleteEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseOutputItemAddedEvent wraps a *ResponseOutputItemAddedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseOutputItemAddedEvent(v *ResponseOutputItemAddedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseOutputItemDoneEvent wraps a *ResponseOutputItemDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseOutputItemDoneEvent(v *ResponseOutputItemDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseReasoningSummaryPartAddedEvent wraps a *ResponseReasoningSummaryPartAddedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseReasoningSummaryPartAddedEvent(v *ResponseReasoningSummaryPartAddedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseReasoningSummaryPartDoneEvent wraps a *ResponseReasoningSummaryPartDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseReasoningSummaryPartDoneEvent(v *ResponseReasoningSummaryPartDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseReasoningSummaryTextDeltaEvent wraps a *ResponseReasoningSummaryTextDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseReasoningSummaryTextDeltaEvent(v *ResponseReasoningSummaryTextDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseReasoningSummaryTextDoneEvent wraps a *ResponseReasoningSummaryTextDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseReasoningSummaryTextDoneEvent(v *ResponseReasoningSummaryTextDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseRefusalDeltaEvent wraps a *ResponseRefusalDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseRefusalDeltaEvent(v *ResponseRefusalDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseRefusalDoneEvent wraps a *ResponseRefusalDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseRefusalDoneEvent(v *ResponseRefusalDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseTextAnnotationDeltaEvent wraps a *ResponseTextAnnotationDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseTextAnnotationDeltaEvent(v *ResponseTextAnnotationDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseTextDeltaEvent wraps a *ResponseTextDeltaEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseTextDeltaEvent(v *ResponseTextDeltaEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseTextDoneEvent wraps a *ResponseTextDoneEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseTextDoneEvent(v *ResponseTextDoneEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseWebSearchCallCompletedEvent wraps a *ResponseWebSearchCallCompletedEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseWebSearchCallCompletedEvent(v *ResponseWebSearchCallCompletedEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseWebSearchCallInProgressEvent wraps a *ResponseWebSearchCallInProgressEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseWebSearchCallInProgressEvent(v *ResponseWebSearchCallInProgressEvent) ResponseStreamEvent {
-	return v
-}
-
-// ResponseStreamEventFromResponseWebSearchCallSearchingEvent wraps a *ResponseWebSearchCallSearchingEvent as a ResponseStreamEvent union value.
-func ResponseStreamEventFromResponseWebSearchCallSearchingEvent(v *ResponseWebSearchCallSearchingEvent) ResponseStreamEvent {
-	return v
-}
-
-// UnmarshalResponseStreamEvent unmarshals JSON into the correct ResponseStreamEvent variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalResponseStreamEvent(data []byte) (ResponseStreamEvent, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "response.audio.delta":
-		var val ResponseAudioDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.done":
-		var val ResponseAudioDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.transcript.delta":
-		var val ResponseAudioTranscriptDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.transcript.done":
-		var val ResponseAudioTranscriptDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.code.delta":
-		var val ResponseCodeInterpreterCallCodeDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.code.done":
-		var val ResponseCodeInterpreterCallCodeDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.completed":
-		var val ResponseCodeInterpreterCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.in_progress":
-		var val ResponseCodeInterpreterCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.interpreting":
-		var val ResponseCodeInterpreterCallInterpretingEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.completed":
-		var val ResponseCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.content_part.added":
-		var val ResponseContentPartAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.content_part.done":
-		var val ResponseContentPartDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.created":
-		var val ResponseCreatedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "error":
-		var val ResponseErrorEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.completed":
-		var val ResponseFileSearchCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.in_progress":
-		var val ResponseFileSearchCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.searching":
-		var val ResponseFileSearchCallSearchingEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.function_call_arguments.delta":
-		var val ResponseFunctionCallArgumentsDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.function_call_arguments.done":
-		var val ResponseFunctionCallArgumentsDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.in_progress":
-		var val ResponseInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.failed":
-		var val ResponseFailedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.incomplete":
-		var val ResponseIncompleteEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_item.added":
-		var val ResponseOutputItemAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_item.done":
-		var val ResponseOutputItemDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_part.added":
-		var val ResponseReasoningSummaryPartAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_part.done":
-		var val ResponseReasoningSummaryPartDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_text.delta":
-		var val ResponseReasoningSummaryTextDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_text.done":
-		var val ResponseReasoningSummaryTextDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.refusal.delta":
-		var val ResponseRefusalDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.refusal.done":
-		var val ResponseRefusalDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.annotation.added":
-		var val ResponseTextAnnotationDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.delta":
-		var val ResponseTextDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.done":
-		var val ResponseTextDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.completed":
-		var val ResponseWebSearchCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.in_progress":
-		var val ResponseWebSearchCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.searching":
-		var val ResponseWebSearchCallSearchingEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ResponseStreamEvent", disc.D)
-	}
-}
-
-
-// ResponseText Configuration options for a text response from the model. Can be plain
-// text or structured JSON data. Learn more:
-// - [Text inputs and outputs](/docs/guides/text)
-// - [Structured Outputs](/docs/guides/structured-outputs)
-type ResponseText struct {
-	Format TextResponseFormatConfiguration `json:"format,omitempty"`
-}
-
-// ResponseTextAnnotationDeltaEvent Emitted when a text annotation is added.
-type ResponseTextAnnotationDeltaEvent struct {
-	// The type of the event. Always 'response.output_text.annotation.added'.
-	Type ResponseTextAnnotationDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_text.annotation.added'."`
-	// The ID of the output item that the text annotation was added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the text annotation was added to."`
-	// The index of the output item that the text annotation was added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the text annotation was added to."`
-	// The index of the content part that the text annotation was added to.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the text annotation was added to."`
-	// The index of the annotation that was added.
-	AnnotationIndex int64 `json:"annotation_index" jsonschema:"description=The index of the annotation that was added."`
-	Annotation Annotation `json:"annotation"`
-}
-
-// ResponseTextAnnotationDeltaEventType The type of the event. Always 'response.output_text.annotation.added'.
-type ResponseTextAnnotationDeltaEventType string
-
-const (
-	ResponseTextAnnotationDeltaEventTypeResponseOutputTextAnnotationAdded ResponseTextAnnotationDeltaEventType = "response.output_text.annotation.added"
-)
-
-// ResponseTextDeltaEvent Emitted when there is an additional text delta.
-type ResponseTextDeltaEvent struct {
-	// The ID of the output item that the text delta was added to.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the text delta was added to."`
-	// The index of the output item that the text delta was added to.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the text delta was added to."`
-	// The index of the content part that the text delta was added to.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the text delta was added to."`
-	// The text delta that was added.
-	Delta string `json:"delta" jsonschema:"description=The text delta that was added."`
-	// The type of the event. Always 'response.output_text.delta'.
-	Type ResponseTextDeltaEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_text.delta'."`
-}
-
-// ResponseTextDeltaEventType The type of the event. Always 'response.output_text.delta'.
-type ResponseTextDeltaEventType string
-
-const (
-	ResponseTextDeltaEventTypeResponseOutputTextDelta ResponseTextDeltaEventType = "response.output_text.delta"
-)
-
-// ResponseTextDoneEvent Emitted when text content is finalized.
-type ResponseTextDoneEvent struct {
-	// The ID of the output item that the text content is finalized.
-	ItemID string `json:"item_id" jsonschema:"description=The ID of the output item that the text content is finalized."`
-	// The index of the output item that the text content is finalized.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the text content is finalized."`
-	// The index of the content part that the text content is finalized.
-	ContentIndex int64 `json:"content_index" jsonschema:"description=The index of the content part that the text content is finalized."`
-	// The text content that is finalized.
-	Text string `json:"text" jsonschema:"description=The text content that is finalized."`
-	// The type of the event. Always 'response.output_text.done'.
-	Type ResponseTextDoneEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.output_text.done'."`
-}
-
-// ResponseTextDoneEventType The type of the event. Always 'response.output_text.done'.
-type ResponseTextDoneEventType string
-
-const (
-	ResponseTextDoneEventTypeResponseOutputTextDone ResponseTextDoneEventType = "response.output_text.done"
-)
-
-// ResponseToolChoice How the model should select which tool (or tools) to use when generating
-// a response. See the 'tools' parameter to see how to specify which tools
-// the model can call.
-// Discriminated by "type" field.
-//
-//compschema:generate
-type ResponseToolChoice interface {
-	isResponseToolChoice()
-	DiscriminatorValue() string
-}
-
-
-// ResponseToolChoiceToolChoiceOptions wraps a ToolChoiceOptions value as a ResponseToolChoice variant.
-type ResponseToolChoiceToolChoiceOptions struct { Value ToolChoiceOptions }
-func (*ResponseToolChoiceToolChoiceOptions) isResponseToolChoice() {}
-func (*ToolChoiceTypes) isResponseToolChoice() {}
-func (*ToolChoiceFunction) isResponseToolChoice() {}
-
-
-func (w *ResponseToolChoiceToolChoiceOptions) DiscriminatorValue() string { return fmt.Sprintf("%v", w.Value) }
-func (w ResponseToolChoiceToolChoiceOptions) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Value)
-}
-
-func (w *ResponseToolChoiceToolChoiceOptions) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &w.Value)
-}
-
-// NewResponseToolChoiceToolChoiceOptions creates a ResponseToolChoice from a ToolChoiceOptions value.
-func NewResponseToolChoiceToolChoiceOptions(v ToolChoiceOptions) ResponseToolChoice {
-	return &ResponseToolChoiceToolChoiceOptions{Value: v}
-}
-
-// ResponseToolChoiceFromToolChoiceTypes wraps a *ToolChoiceTypes as a ResponseToolChoice union value.
-func ResponseToolChoiceFromToolChoiceTypes(v *ToolChoiceTypes) ResponseToolChoice {
-	return v
-}
-
-// ResponseToolChoiceFromToolChoiceFunction wraps a *ToolChoiceFunction as a ResponseToolChoice union value.
-func ResponseToolChoiceFromToolChoiceFunction(v *ToolChoiceFunction) ResponseToolChoice {
-	return v
-}
-
-// UnmarshalResponseToolChoice unmarshals JSON into the correct ResponseToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func UnmarshalResponseToolChoice(data []byte) (ResponseToolChoice, error) {
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "file_search", "web_search_preview", "computer_use_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ResponseToolChoice", disc.D)
-	}
-}
-
-
-// ResponseTruncation The truncation strategy to use for the model response.
-// - 'auto': If the context of this response and previous ones exceeds
-//   the model's context window size, the model will truncate the 
-//   response to fit the context window by dropping input items in the
-//   middle of the conversation. 
-// - 'disabled' (default): If a model response will exceed the context window 
-//   size for a model, the request will fail with a 400 error.
-type ResponseTruncation string
-
-const (
-	ResponseTruncationAuto ResponseTruncation = "auto"
-	ResponseTruncationDisabled ResponseTruncation = "disabled"
-)
-
-// ResponseUsage Represents token usage details including input tokens, output tokens,
-// a breakdown of output tokens, and the total tokens used.
-type ResponseUsage struct {
-	// The total number of tokens used.
-	TotalTokens int64 `json:"total_tokens" jsonschema:"description=The total number of tokens used."`
-	// The number of input tokens.
-	InputTokens int64 `json:"input_tokens" jsonschema:"description=The number of input tokens."`
-	// A detailed breakdown of the input tokens.
-	InputTokensDetails ResponseUsageInputTokensDetails `json:"input_tokens_details" jsonschema:"description=A detailed breakdown of the input tokens."`
-	// The number of output tokens.
-	OutputTokens int64 `json:"output_tokens" jsonschema:"description=The number of output tokens."`
-	// A detailed breakdown of the output tokens.
-	OutputTokensDetails ResponseUsageOutputTokensDetails `json:"output_tokens_details" jsonschema:"description=A detailed breakdown of the output tokens."`
-}
-
-// ResponseUsageInputTokensDetails A detailed breakdown of the input tokens.
-type ResponseUsageInputTokensDetails struct {
-	// The number of tokens that were retrieved from the cache. 
-// [More on prompt caching](/docs/guides/prompt-caching).
-	CachedTokens int64 `json:"cached_tokens" jsonschema:"description=The number of tokens that were retrieved from the cache. [More on prompt caching](/docs/guides/prompt-caching)."`
-}
-
-// ResponseUsageOutputTokensDetails A detailed breakdown of the output tokens.
-type ResponseUsageOutputTokensDetails struct {
-	// The number of reasoning tokens.
-	ReasoningTokens int64 `json:"reasoning_tokens" jsonschema:"description=The number of reasoning tokens."`
-}
-
-// ResponseWebSearchCallCompletedEvent Emitted when a web search call is completed.
-type ResponseWebSearchCallCompletedEvent struct {
-	// The type of the event. Always 'response.web_search_call.completed'.
-	Type ResponseWebSearchCallCompletedEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.web_search_call.completed'."`
-	// The index of the output item that the web search call is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the web search call is associated with."`
-	// Unique ID for the output item associated with the web search call.
-	ItemID string `json:"item_id" jsonschema:"description=Unique ID for the output item associated with the web search call."`
-}
-
-// ResponseWebSearchCallCompletedEventType The type of the event. Always 'response.web_search_call.completed'.
-type ResponseWebSearchCallCompletedEventType string
-
-const (
-	ResponseWebSearchCallCompletedEventTypeResponseWebSearchCallCompleted ResponseWebSearchCallCompletedEventType = "response.web_search_call.completed"
-)
-
-// ResponseWebSearchCallInProgressEvent Emitted when a web search call is initiated.
-type ResponseWebSearchCallInProgressEvent struct {
-	// The index of the output item that the web search call is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the web search call is associated with."`
-	// Unique ID for the output item associated with the web search call.
-	ItemID string `json:"item_id" jsonschema:"description=Unique ID for the output item associated with the web search call."`
-	// The type of the event. Always 'response.web_search_call.in_progress'.
-	Type ResponseWebSearchCallInProgressEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.web_search_call.in_progress'."`
-}
-
-// ResponseWebSearchCallInProgressEventType The type of the event. Always 'response.web_search_call.in_progress'.
-type ResponseWebSearchCallInProgressEventType string
-
-const (
-	ResponseWebSearchCallInProgressEventTypeResponseWebSearchCallInProgress ResponseWebSearchCallInProgressEventType = "response.web_search_call.in_progress"
-)
-
-// ResponseWebSearchCallSearchingEvent Emitted when a web search call is executing.
-type ResponseWebSearchCallSearchingEvent struct {
-	// The type of the event. Always 'response.web_search_call.searching'.
-	Type ResponseWebSearchCallSearchingEventType `json:"type" jsonschema:"description=The type of the event. Always 'response.web_search_call.searching'."`
-	// The index of the output item that the web search call is associated with.
-	OutputIndex int64 `json:"output_index" jsonschema:"description=The index of the output item that the web search call is associated with."`
-	// Unique ID for the output item associated with the web search call.
-	ItemID string `json:"item_id" jsonschema:"description=Unique ID for the output item associated with the web search call."`
-}
-
-// ResponseWebSearchCallSearchingEventType The type of the event. Always 'response.web_search_call.searching'.
-type ResponseWebSearchCallSearchingEventType string
-
-const (
-	ResponseWebSearchCallSearchingEventTypeResponseWebSearchCallSearching ResponseWebSearchCallSearchingEventType = "response.web_search_call.searching"
-)
-
-// Screenshot A screenshot action.
-type Screenshot struct {
-	// Specifies the event type. For a screenshot action, this property is 
-// always set to 'screenshot'.
-	Type ScreenshotType `json:"type" jsonschema:"description=Specifies the event type. For a screenshot action, this property is always set to 'screenshot'."`
-}
-
-// ScreenshotType Specifies the event type. For a screenshot action, this property is 
-// always set to 'screenshot'.
-type ScreenshotType string
-
-const (
-	ScreenshotTypeScreenshot ScreenshotType = "screenshot"
-)
-
-// Scroll A scroll action.
-type Scroll struct {
-	// The vertical scroll distance.
-	ScrollY int64 `json:"scroll_y" jsonschema:"description=The vertical scroll distance."`
-	// Specifies the event type. For a scroll action, this property is 
-// always set to 'scroll'.
-	Type ScrollType `json:"type" jsonschema:"description=Specifies the event type. For a scroll action, this property is always set to 'scroll'."`
+type ScrollParam struct {
+	// Specifies the event type. Always 'scroll'.
+	Type ScrollParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'scroll'."`
 	// The x-coordinate where the scroll occurred.
 	X int64 `json:"x" jsonschema:"description=The x-coordinate where the scroll occurred."`
 	// The y-coordinate where the scroll occurred.
 	Y int64 `json:"y" jsonschema:"description=The y-coordinate where the scroll occurred."`
 	// The horizontal scroll distance.
 	ScrollX int64 `json:"scroll_x" jsonschema:"description=The horizontal scroll distance."`
+	// The vertical scroll distance.
+	ScrollY int64 `json:"scroll_y" jsonschema:"description=The vertical scroll distance."`
 }
 
-// ScrollType Specifies the event type. For a scroll action, this property is 
-// always set to 'scroll'.
-type ScrollType string
+// ScrollParamType Specifies the event type. Always 'scroll'.
+type ScrollParamType string
 
 const (
-	ScrollTypeScroll ScrollType = "scroll"
+	ScrollParamTypeScroll ScrollParamType = "scroll"
 )
 
-// ServiceTier Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:
-//   - If set to 'auto', and the Project is Scale tier enabled, the system
-//     will utilize scale tier credits until they are exhausted.
-//   - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
-//   - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.
-//   - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).
-//   - When not set, the default behavior is 'auto'.
-// 
-//   When this parameter is set, the response body will include the 'service_tier' utilized.
-type ServiceTier string
+type SearchContextSize string
 
 const (
-	ServiceTierAuto ServiceTier = "auto"
-	ServiceTierDefault ServiceTier = "default"
-	ServiceTierFlex ServiceTier = "flex"
+	SearchContextSizeLow SearchContextSize = "low"
+	SearchContextSizeMedium SearchContextSize = "medium"
+	SearchContextSizeHigh SearchContextSize = "high"
 )
 
-// TextResponseFormatConfiguration An object specifying the format that the model must output.
-// 
-// Configuring '{ "type": "json_schema" }' enables Structured Outputs, 
-// which ensures the model will match your supplied JSON schema. Learn more in the 
-// [Structured Outputs guide](/docs/guides/structured-outputs).
-// 
-// The default format is '{ "type": "text" }' with no additional options.
-// 
-// **Not recommended for gpt-4o and newer models:**
-// 
-// Setting to '{ "type": "json_object" }' enables the older JSON mode, which
-// ensures the message the model generates is valid JSON. Using 'json_schema'
-// is preferred for models that support it.
+type ServiceTierEnum string
+
+const (
+	ServiceTierEnumAuto ServiceTierEnum = "auto"
+	ServiceTierEnumDefault ServiceTierEnum = "default"
+	ServiceTierEnumFlex ServiceTierEnum = "flex"
+	ServiceTierEnumPriority ServiceTierEnum = "priority"
+)
+
+// SpecificApplyPatchParam Forces the model to call the apply_patch tool when executing a tool call.
+type SpecificApplyPatchParam struct {
+	// The tool to call. Always 'apply_patch'.
+	Type SpecificApplyPatchParamType `json:"type" jsonschema:"description=The tool to call. Always 'apply_patch'."`
+}
+
+// SpecificApplyPatchParamType The tool to call. Always 'apply_patch'.
+type SpecificApplyPatchParamType string
+
+const (
+	SpecificApplyPatchParamTypeApplyPatch SpecificApplyPatchParamType = "apply_patch"
+)
+
+type SpecificCodeInterpreterParam struct {
+	// The tool to call. Always 'code_interpreter'.
+	Type SpecificCodeInterpreterParamType `json:"type" jsonschema:"description=The tool to call. Always 'code_interpreter'."`
+}
+
+// SpecificCodeInterpreterParamType The tool to call. Always 'code_interpreter'.
+type SpecificCodeInterpreterParamType string
+
+const (
+	SpecificCodeInterpreterParamTypeCodeInterpreter SpecificCodeInterpreterParamType = "code_interpreter"
+)
+
+type SpecificComputerParam struct {
+	// The tool to call. Always 'computer-preview'.
+	Type SpecificComputerParamType `json:"type" jsonschema:"description=The tool to call. Always 'computer-preview'."`
+}
+
+// SpecificComputerParamType The tool to call. Always 'computer-preview'.
+type SpecificComputerParamType string
+
+const (
+	SpecificComputerParamTypeComputerPreview SpecificComputerParamType = "computer-preview"
+)
+
+type SpecificComputerPreviewParam struct {
+	// The tool to call. Always 'computer_use_preview'.
+	Type SpecificComputerPreviewParamType `json:"type" jsonschema:"description=The tool to call. Always 'computer_use_preview'."`
+}
+
+// SpecificComputerPreviewParamType The tool to call. Always 'computer_use_preview'.
+type SpecificComputerPreviewParamType string
+
+const (
+	SpecificComputerPreviewParamTypeComputerUsePreview SpecificComputerPreviewParamType = "computer_use_preview"
+)
+
+type SpecificCustomToolParam struct {
+	// The tool to call. Always 'custom'.
+	Type SpecificCustomToolParamType `json:"type" jsonschema:"description=The tool to call. Always 'custom'."`
+	// The name of the custom tool to call.
+	Name string `json:"name" jsonschema:"description=The name of the custom tool to call."`
+}
+
+// SpecificCustomToolParamType The tool to call. Always 'custom'.
+type SpecificCustomToolParamType string
+
+const (
+	SpecificCustomToolParamTypeCustom SpecificCustomToolParamType = "custom"
+)
+
+type SpecificFileSearchParam struct {
+	// The tool to call. Always 'file_search'.
+	Type SpecificFileSearchParamType `json:"type" jsonschema:"description=The tool to call. Always 'file_search'."`
+}
+
+// SpecificFileSearchParamType The tool to call. Always 'file_search'.
+type SpecificFileSearchParamType string
+
+const (
+	SpecificFileSearchParamTypeFileSearch SpecificFileSearchParamType = "file_search"
+)
+
+type SpecificFunctionParam struct {
+	// The tool to call. Always 'function'.
+	Type SpecificFunctionParamType `json:"type" jsonschema:"description=The tool to call. Always 'function'."`
+	// The name of the function tool to call.
+	Name string `json:"name" jsonschema:"description=The name of the function tool to call."`
+}
+
+// SpecificFunctionParamType The tool to call. Always 'function'.
+type SpecificFunctionParamType string
+
+const (
+	SpecificFunctionParamTypeFunction SpecificFunctionParamType = "function"
+)
+
+// SpecificFunctionShellParam Forces the model to call the shell tool when a tool call is required.
+type SpecificFunctionShellParam struct {
+	// The tool to call. Always 'shell'.
+	Type SpecificFunctionShellParamType `json:"type" jsonschema:"description=The tool to call. Always 'shell'."`
+}
+
+// SpecificFunctionShellParamType The tool to call. Always 'shell'.
+type SpecificFunctionShellParamType string
+
+const (
+	SpecificFunctionShellParamTypeShell SpecificFunctionShellParamType = "shell"
+)
+
+type SpecificImageGenParam struct {
+	// The tool to call. Always 'image_generation'.
+	Type SpecificImageGenParamType `json:"type" jsonschema:"description=The tool to call. Always 'image_generation'."`
+}
+
+// SpecificImageGenParamType The tool to call. Always 'image_generation'.
+type SpecificImageGenParamType string
+
+const (
+	SpecificImageGenParamTypeImageGeneration SpecificImageGenParamType = "image_generation"
+)
+
+type SpecificLocalShellParam struct {
+	// The tool to call. Always 'local_shell'.
+	Type SpecificLocalShellParamType `json:"type" jsonschema:"description=The tool to call. Always 'local_shell'."`
+}
+
+// SpecificLocalShellParamType The tool to call. Always 'local_shell'.
+type SpecificLocalShellParamType string
+
+const (
+	SpecificLocalShellParamTypeLocalShell SpecificLocalShellParamType = "local_shell"
+)
+
+type SpecificMCPFunctionParam struct {
+	// The tool to call. Always 'mcp'.
+	Type SpecificMCPFunctionParamType `json:"type" jsonschema:"description=The tool to call. Always 'mcp'."`
+	// The label of the MCP server to call.
+	ServerLabel string `json:"server_label" jsonschema:"description=The label of the MCP server to call."`
+	// The name of the MCP tool to call. If omitted, the server may choose a default.
+	Name *string `json:"name,omitempty" jsonschema:"description=The name of the MCP tool to call. If omitted, the server may choose a default."`
+}
+
+// SpecificMCPFunctionParamType The tool to call. Always 'mcp'.
+type SpecificMCPFunctionParamType string
+
+const (
+	SpecificMCPFunctionParamTypeMcp SpecificMCPFunctionParamType = "mcp"
+)
+
 // Discriminated by "type" field.
 //
 //compschema:generate
-type TextResponseFormatConfiguration interface {
-	isTextResponseFormatConfiguration()
+type SpecificToolChoiceParam interface {
+	isSpecificToolChoiceParam()
 	DiscriminatorValue() string
 }
 
-func (*ResponseFormatText) isTextResponseFormatConfiguration() {}
-func (*TextResponseFormatJsonSchema) isTextResponseFormatConfiguration() {}
-func (*ResponseFormatJsonObject) isTextResponseFormatConfiguration() {}
+func (*SpecificFileSearchParam) isSpecificToolChoiceParam() {}
+func (*SpecificWebSearchParam) isSpecificToolChoiceParam() {}
+func (*SpecificWebSearchPreviewParam) isSpecificToolChoiceParam() {}
+func (*SpecificImageGenParam) isSpecificToolChoiceParam() {}
+func (*SpecificComputerParam) isSpecificToolChoiceParam() {}
+func (*SpecificComputerPreviewParam) isSpecificToolChoiceParam() {}
+func (*SpecificCodeInterpreterParam) isSpecificToolChoiceParam() {}
+func (*SpecificFunctionParam) isSpecificToolChoiceParam() {}
+func (*SpecificMCPFunctionParam) isSpecificToolChoiceParam() {}
+func (*SpecificLocalShellParam) isSpecificToolChoiceParam() {}
+func (*SpecificFunctionShellParam) isSpecificToolChoiceParam() {}
+func (*SpecificCustomToolParam) isSpecificToolChoiceParam() {}
+func (*SpecificApplyPatchParam) isSpecificToolChoiceParam() {}
 
-func (x *ResponseFormatText) DiscriminatorValue() string { return string(x.Type) }
-func (x *TextResponseFormatJsonSchema) DiscriminatorValue() string { return string(x.Type) }
-func (x *ResponseFormatJsonObject) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificFileSearchParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificWebSearchParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificWebSearchPreviewParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificImageGenParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificComputerParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificComputerPreviewParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificCodeInterpreterParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificFunctionParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificMCPFunctionParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificLocalShellParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificFunctionShellParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificCustomToolParam) DiscriminatorValue() string { return string(x.Type) }
+func (x *SpecificApplyPatchParam) DiscriminatorValue() string { return string(x.Type) }
 
-// TextResponseFormatConfigurationFromResponseFormatText wraps a *ResponseFormatText as a TextResponseFormatConfiguration union value.
-func TextResponseFormatConfigurationFromResponseFormatText(v *ResponseFormatText) TextResponseFormatConfiguration {
+// SpecificToolChoiceParamFromSpecificFileSearchParam wraps a *SpecificFileSearchParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificFileSearchParam(v *SpecificFileSearchParam) SpecificToolChoiceParam {
 	return v
 }
 
-// TextResponseFormatConfigurationFromTextResponseFormatJsonSchema wraps a *TextResponseFormatJsonSchema as a TextResponseFormatConfiguration union value.
-func TextResponseFormatConfigurationFromTextResponseFormatJsonSchema(v *TextResponseFormatJsonSchema) TextResponseFormatConfiguration {
+// SpecificToolChoiceParamFromSpecificWebSearchParam wraps a *SpecificWebSearchParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificWebSearchParam(v *SpecificWebSearchParam) SpecificToolChoiceParam {
 	return v
 }
 
-// TextResponseFormatConfigurationFromResponseFormatJsonObject wraps a *ResponseFormatJsonObject as a TextResponseFormatConfiguration union value.
-func TextResponseFormatConfigurationFromResponseFormatJsonObject(v *ResponseFormatJsonObject) TextResponseFormatConfiguration {
+// SpecificToolChoiceParamFromSpecificWebSearchPreviewParam wraps a *SpecificWebSearchPreviewParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificWebSearchPreviewParam(v *SpecificWebSearchPreviewParam) SpecificToolChoiceParam {
 	return v
 }
 
-// UnmarshalTextResponseFormatConfiguration unmarshals JSON into the correct TextResponseFormatConfiguration variant.
+// SpecificToolChoiceParamFromSpecificImageGenParam wraps a *SpecificImageGenParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificImageGenParam(v *SpecificImageGenParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificComputerParam wraps a *SpecificComputerParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificComputerParam(v *SpecificComputerParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificComputerPreviewParam wraps a *SpecificComputerPreviewParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificComputerPreviewParam(v *SpecificComputerPreviewParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificCodeInterpreterParam wraps a *SpecificCodeInterpreterParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificCodeInterpreterParam(v *SpecificCodeInterpreterParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificFunctionParam wraps a *SpecificFunctionParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificFunctionParam(v *SpecificFunctionParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificMCPFunctionParam wraps a *SpecificMCPFunctionParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificMCPFunctionParam(v *SpecificMCPFunctionParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificLocalShellParam wraps a *SpecificLocalShellParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificLocalShellParam(v *SpecificLocalShellParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificFunctionShellParam wraps a *SpecificFunctionShellParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificFunctionShellParam(v *SpecificFunctionShellParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificCustomToolParam wraps a *SpecificCustomToolParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificCustomToolParam(v *SpecificCustomToolParam) SpecificToolChoiceParam {
+	return v
+}
+
+// SpecificToolChoiceParamFromSpecificApplyPatchParam wraps a *SpecificApplyPatchParam as a SpecificToolChoiceParam union value.
+func SpecificToolChoiceParamFromSpecificApplyPatchParam(v *SpecificApplyPatchParam) SpecificToolChoiceParam {
+	return v
+}
+
+// UnmarshalSpecificToolChoiceParam unmarshals JSON into the correct SpecificToolChoiceParam variant.
 // Dispatches on the "type" discriminator field.
-func UnmarshalTextResponseFormatConfiguration(data []byte) (TextResponseFormatConfiguration, error) {
+func UnmarshalSpecificToolChoiceParam(data []byte) (SpecificToolChoiceParam, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "file_search":
+		var val SpecificFileSearchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search":
+		var val SpecificWebSearchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview":
+		var val SpecificWebSearchPreviewParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation":
+		var val SpecificImageGenParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer-preview":
+		var val SpecificComputerParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview":
+		var val SpecificComputerPreviewParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "code_interpreter":
+		var val SpecificCodeInterpreterParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function":
+		var val SpecificFunctionParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val SpecificMCPFunctionParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell":
+		var val SpecificLocalShellParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val SpecificFunctionShellParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val SpecificCustomToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch":
+		var val SpecificApplyPatchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for SpecificToolChoiceParam", disc.D)
+	}
+}
+
+
+type SpecificWebSearchParam struct {
+	// The tool to call. Always 'web_search'.
+	Type SpecificWebSearchParamType `json:"type" jsonschema:"description=The tool to call. Always 'web_search'."`
+}
+
+// SpecificWebSearchParamType The tool to call. Always 'web_search'.
+type SpecificWebSearchParamType string
+
+const (
+	SpecificWebSearchParamTypeWebSearch SpecificWebSearchParamType = "web_search"
+)
+
+type SpecificWebSearchPreviewParam struct {
+	// The tool to call. Always 'web_search_preview'.
+	Type SpecificWebSearchPreviewParamType `json:"type" jsonschema:"description=The tool to call. Always 'web_search_preview'."`
+}
+
+// SpecificWebSearchPreviewParamType The tool to call. Always 'web_search_preview'.
+type SpecificWebSearchPreviewParamType string
+
+const (
+	SpecificWebSearchPreviewParamTypeWebSearchPreview SpecificWebSearchPreviewParamType = "web_search_preview"
+)
+
+// StreamOptionsParam Options that control streamed response behavior.
+type StreamOptionsParam struct {
+	// Whether to obfuscate sensitive information in streamed output. Defaults to 'true'.
+	IncludeObfuscation *bool `json:"include_obfuscation,omitempty" jsonschema:"description=Whether to obfuscate sensitive information in streamed output. Defaults to 'true'."`
+}
+
+// SummaryTextContent A summary text from the model.
+type SummaryTextContent struct {
+	// The type of the object. Always 'summary_text'.
+	Type SummaryTextContentType `json:"type" jsonschema:"description=The type of the object. Always 'summary_text'."`
+	// A summary of the reasoning output from the model so far.
+	Text string `json:"text" jsonschema:"description=A summary of the reasoning output from the model so far."`
+}
+
+// SummaryTextContentType The type of the object. Always 'summary_text'.
+type SummaryTextContentType string
+
+const (
+	SummaryTextContentTypeSummaryText SummaryTextContentType = "summary_text"
+)
+
+type SystemMessageItemParam struct {
+	// The unique ID of this message item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this message item."`
+	// The item type. Always 'message'.
+	Type SystemMessageItemParamType `json:"type" jsonschema:"description=The item type. Always 'message'."`
+	// The message role. Always 'system'.
+	Role SystemMessageItemParamRole `json:"role" jsonschema:"description=The message role. Always 'system'."`
+	// The message content, as an array of content parts.
+	Content SystemMessageItemParamContent `json:"content" jsonschema:"description=The message content, as an array of content parts."`
+	// The status of the message item.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the message item."`
+}
+
+// SystemMessageItemParamContent The message content, as an array of content parts.
+//
+//compschema:generate
+type SystemMessageItemParamContent interface {
+	isSystemMessageItemParamContent()
+}
+
+
+// SystemMessageItemParamContentSliceany wraps a []any value as a SystemMessageItemParamContent variant.
+type SystemMessageItemParamContentSliceany struct { Value []any }
+func (*SystemMessageItemParamContentSliceany) isSystemMessageItemParamContent() {}
+
+// SystemMessageItemParamContentString wraps a string value as a SystemMessageItemParamContent variant.
+type SystemMessageItemParamContentString struct { Value string }
+func (*SystemMessageItemParamContentString) isSystemMessageItemParamContent() {}
+
+func (w SystemMessageItemParamContentSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *SystemMessageItemParamContentSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w SystemMessageItemParamContentString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *SystemMessageItemParamContentString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewSystemMessageItemParamContentSliceany creates a SystemMessageItemParamContent from a []any value.
+func NewSystemMessageItemParamContentSliceany(v []any) SystemMessageItemParamContent {
+	return &SystemMessageItemParamContentSliceany{Value: v}
+}
+
+// NewSystemMessageItemParamContentString creates a SystemMessageItemParamContent from a string value.
+func NewSystemMessageItemParamContentString(v string) SystemMessageItemParamContent {
+	return &SystemMessageItemParamContentString{Value: v}
+}
+
+// UnmarshalSystemMessageItemParamContent unmarshals JSON into the correct SystemMessageItemParamContent variant.
+func UnmarshalSystemMessageItemParamContent(data []byte) (SystemMessageItemParamContent, error) {
+	{
+		var val SystemMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val SystemMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for SystemMessageItemParamContent")
+}
+
+
+// SystemMessageItemParamRole The message role. Always 'system'.
+type SystemMessageItemParamRole string
+
+const (
+	SystemMessageItemParamRoleSystem SystemMessageItemParamRole = "system"
+)
+
+// SystemMessageItemParamType The item type. Always 'message'.
+type SystemMessageItemParamType string
+
+const (
+	SystemMessageItemParamTypeMessage SystemMessageItemParamType = "message"
+)
+
+// TextContent A text content.
+type TextContent struct {
+	Type TextContentType `json:"type"`
+	Text string `json:"text"`
+}
+
+type TextContentType string
+
+const (
+	TextContentTypeText TextContentType = "text"
+)
+
+type TextField struct {
+	Format TextFieldFormat `json:"format"`
+	Verbosity *VerbosityEnum `json:"verbosity,omitempty"`
+}
+
+// Discriminated by "type" field.
+//
+//compschema:generate
+type TextFieldFormat interface {
+	isTextFieldFormat()
+	DiscriminatorValue() string
+}
+
+func (*TextResponseFormat) isTextFieldFormat() {}
+func (*JsonObjectResponseFormat) isTextFieldFormat() {}
+func (*JsonSchemaResponseFormat) isTextFieldFormat() {}
+
+func (x *TextResponseFormat) DiscriminatorValue() string { return string(x.Type) }
+func (x *JsonObjectResponseFormat) DiscriminatorValue() string { return string(x.Type) }
+func (x *JsonSchemaResponseFormat) DiscriminatorValue() string { return string(x.Type) }
+
+// TextFieldFormatFromTextResponseFormat wraps a *TextResponseFormat as a TextFieldFormat union value.
+func TextFieldFormatFromTextResponseFormat(v *TextResponseFormat) TextFieldFormat {
+	return v
+}
+
+// TextFieldFormatFromJsonObjectResponseFormat wraps a *JsonObjectResponseFormat as a TextFieldFormat union value.
+func TextFieldFormatFromJsonObjectResponseFormat(v *JsonObjectResponseFormat) TextFieldFormat {
+	return v
+}
+
+// TextFieldFormatFromJsonSchemaResponseFormat wraps a *JsonSchemaResponseFormat as a TextFieldFormat union value.
+func TextFieldFormatFromJsonSchemaResponseFormat(v *JsonSchemaResponseFormat) TextFieldFormat {
+	return v
+}
+
+// UnmarshalTextFieldFormat unmarshals JSON into the correct TextFieldFormat variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalTextFieldFormat(data []byte) (TextFieldFormat, error) {
 	var disc struct {
 		D string `json:"type"`
 	}
@@ -4242,56 +8471,46 @@ func UnmarshalTextResponseFormatConfiguration(data []byte) (TextResponseFormatCo
 	}
 	switch disc.D {
 	case "text":
-		var val ResponseFormatText
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "json_schema":
-		var val TextResponseFormatJsonSchema
+		var val TextResponseFormat
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "json_object":
-		var val ResponseFormatJsonObject
+		var val JsonObjectResponseFormat
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "json_schema":
+		var val JsonSchemaResponseFormat
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for TextResponseFormatConfiguration", disc.D)
+		return nil, fmt.Errorf("unknown type %q for TextFieldFormat", disc.D)
 	}
 }
 
 
-// TextResponseFormatJsonSchema JSON Schema response format. Used to generate structured JSON responses.
-// Learn more about [Structured Outputs](/docs/guides/structured-outputs).
-type TextResponseFormatJsonSchema struct {
-	// The type of response format being defined. Always 'json_schema'.
-	Type TextResponseFormatJsonSchemaType `json:"type" jsonschema:"description=The type of response format being defined. Always 'json_schema'."`
-	// A description of what the response format is for, used by the model to
-// determine how to respond in the format.
-	Description *string `json:"description,omitempty" jsonschema:"description=A description of what the response format is for, used by the model to determine how to respond in the format."`
-	// The name of the response format. Must be a-z, A-Z, 0-9, or contain
-// underscores and dashes, with a maximum length of 64.
-	Name string `json:"name" jsonschema:"description=The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."`
-	Schema ResponseFormatJsonSchemaSchema `json:"schema"`
-	// Whether to enable strict schema adherence when generating the output.
-// If set to true, the model will always follow the exact schema defined
-// in the 'schema' field. Only a subset of JSON Schema is supported when
-// 'strict' is 'true'. To learn more, read the [Structured Outputs
-// guide](/docs/guides/structured-outputs).
-	Strict *bool `json:"strict,omitempty" jsonschema:"description=Whether to enable strict schema adherence when generating the output. If set to true, the model will always follow the exact schema defined in the 'schema' field. Only a subset of JSON Schema is supported when 'strict' is 'true'. To learn more, read the [Structured Outputs guide](/docs/guides/structured-outputs)."`
+type TextParam struct {
+	Verbosity *VerbosityEnum `json:"verbosity,omitempty"`
+	// The format configuration for text output.
+	Format *any `json:"format,omitempty" jsonschema:"description=The format configuration for text output."`
 }
 
-// TextResponseFormatJsonSchemaType The type of response format being defined. Always 'json_schema'.
-type TextResponseFormatJsonSchemaType string
+type TextResponseFormat struct {
+	Type TextResponseFormatType `json:"type"`
+}
+
+type TextResponseFormatType string
 
 const (
-	TextResponseFormatJsonSchemaTypeJSONSchema TextResponseFormatJsonSchemaType = "json_schema"
+	TextResponseFormatTypeText TextResponseFormatType = "text"
 )
 
+// Tool A tool that can be used to generate a response.
 // Discriminated by "type" field.
 //
 //compschema:generate
@@ -4303,12 +8522,22 @@ type Tool interface {
 func (*FileSearchTool) isTool() {}
 func (*FunctionTool) isTool() {}
 func (*WebSearchPreviewTool) isTool() {}
+func (*MCPTool) isTool() {}
 func (*ComputerUsePreviewTool) isTool() {}
+func (*ImageGenTool) isTool() {}
+func (*FunctionShellTool) isTool() {}
+func (*CustomTool) isTool() {}
+func (*ApplyPatchTool) isTool() {}
 
 func (x *FileSearchTool) DiscriminatorValue() string { return string(x.Type) }
 func (x *FunctionTool) DiscriminatorValue() string { return string(x.Type) }
 func (x *WebSearchPreviewTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *MCPTool) DiscriminatorValue() string { return string(x.Type) }
 func (x *ComputerUsePreviewTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *ImageGenTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *FunctionShellTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *CustomTool) DiscriminatorValue() string { return string(x.Type) }
+func (x *ApplyPatchTool) DiscriminatorValue() string { return string(x.Type) }
 
 // ToolFromFileSearchTool wraps a *FileSearchTool as a Tool union value.
 func ToolFromFileSearchTool(v *FileSearchTool) Tool {
@@ -4325,8 +8554,33 @@ func ToolFromWebSearchPreviewTool(v *WebSearchPreviewTool) Tool {
 	return v
 }
 
+// ToolFromMCPTool wraps a *MCPTool as a Tool union value.
+func ToolFromMCPTool(v *MCPTool) Tool {
+	return v
+}
+
 // ToolFromComputerUsePreviewTool wraps a *ComputerUsePreviewTool as a Tool union value.
 func ToolFromComputerUsePreviewTool(v *ComputerUsePreviewTool) Tool {
+	return v
+}
+
+// ToolFromImageGenTool wraps a *ImageGenTool as a Tool union value.
+func ToolFromImageGenTool(v *ImageGenTool) Tool {
+	return v
+}
+
+// ToolFromFunctionShellTool wraps a *FunctionShellTool as a Tool union value.
+func ToolFromFunctionShellTool(v *FunctionShellTool) Tool {
+	return v
+}
+
+// ToolFromCustomTool wraps a *CustomTool as a Tool union value.
+func ToolFromCustomTool(v *CustomTool) Tool {
+	return v
+}
+
+// ToolFromApplyPatchTool wraps a *ApplyPatchTool as a Tool union value.
+func ToolFromApplyPatchTool(v *ApplyPatchTool) Tool {
 	return v
 }
 
@@ -4352,8 +8606,14 @@ func UnmarshalTool(data []byte) (Tool, error) {
 			return nil, err
 		}
 		return &val, nil
-	case "web_search_preview", "web_search_preview_2025_03_11":
+	case "web_search_preview":
 		var val WebSearchPreviewTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val MCPTool
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -4364,87 +8624,157 @@ func UnmarshalTool(data []byte) (Tool, error) {
 			return nil, err
 		}
 		return &val, nil
+	case "image_generation":
+		var val ImageGenTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val FunctionShellTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val CustomTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch":
+		var val ApplyPatchTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
 	default:
 		return nil, fmt.Errorf("unknown type %q for Tool", disc.D)
 	}
 }
 
 
-// ToolChoiceFunction Use this option to force the model to call a specific function.
-type ToolChoiceFunction struct {
-	// For function calling, the type is always 'function'.
-	Type ToolChoiceFunctionType `json:"type" jsonschema:"description=For function calling, the type is always 'function'."`
-	// The name of the function to call.
-	Name string `json:"name" jsonschema:"description=The name of the function to call."`
+// ToolChoiceParam Controls which tool the model should use, if any.
+//
+//compschema:generate
+type ToolChoiceParam interface {
+	isToolChoiceParam()
 }
 
-// ToolChoiceFunctionType For function calling, the type is always 'function'.
-type ToolChoiceFunctionType string
 
-const (
-	ToolChoiceFunctionTypeFunction ToolChoiceFunctionType = "function"
-)
+// ToolChoiceParamSpecificToolChoiceParam wraps a SpecificToolChoiceParam value as a ToolChoiceParam variant.
+type ToolChoiceParamSpecificToolChoiceParam struct { Value SpecificToolChoiceParam }
+func (*ToolChoiceParamSpecificToolChoiceParam) isToolChoiceParam() {}
 
-// ToolChoiceOptions Controls which (if any) tool is called by the model.
-// 
-// 'none' means the model will not call any tool and instead generates a message.
-// 
-// 'auto' means the model can pick between generating a message or calling one or
-// more tools.
-// 
-// 'required' means the model must call one or more tools.
-type ToolChoiceOptions string
+// ToolChoiceParamToolChoiceValueEnum wraps a ToolChoiceValueEnum value as a ToolChoiceParam variant.
+type ToolChoiceParamToolChoiceValueEnum struct { Value ToolChoiceValueEnum }
+func (*ToolChoiceParamToolChoiceValueEnum) isToolChoiceParam() {}
+func (*AllowedToolsParam) isToolChoiceParam() {}
 
-const (
-	ToolChoiceOptionsNone ToolChoiceOptions = "none"
-	ToolChoiceOptionsAuto ToolChoiceOptions = "auto"
-	ToolChoiceOptionsRequired ToolChoiceOptions = "required"
-)
-
-// ToolChoiceTypes Indicates that the model should use a built-in tool to generate a response.
-// [Learn more about built-in tools](/docs/guides/tools).
-type ToolChoiceTypes struct {
-	// The type of hosted tool the model should to use. Learn more about
-// [built-in tools](/docs/guides/tools).
-// 
-// Allowed values are:
-// - 'file_search'
-// - 'web_search_preview'
-// - 'computer_use_preview'
-	Type ToolChoiceTypesType `json:"type" jsonschema:"description=The type of hosted tool the model should to use. Learn more about [built-in tools](/docs/guides/tools). Allowed values are: - 'file_search' - 'web_search_preview' - 'computer_use_preview'"`
+func (w ToolChoiceParamSpecificToolChoiceParam) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
 }
 
-// ToolChoiceTypesType The type of hosted tool the model should to use. Learn more about
-// [built-in tools](/docs/guides/tools).
-// 
-// Allowed values are:
-// - 'file_search'
-// - 'web_search_preview'
-// - 'computer_use_preview'
-type ToolChoiceTypesType string
+func (w *ToolChoiceParamSpecificToolChoiceParam) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w ToolChoiceParamToolChoiceValueEnum) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *ToolChoiceParamToolChoiceValueEnum) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewToolChoiceParamSpecificToolChoiceParam creates a ToolChoiceParam from a SpecificToolChoiceParam value.
+func NewToolChoiceParamSpecificToolChoiceParam(v SpecificToolChoiceParam) ToolChoiceParam {
+	return &ToolChoiceParamSpecificToolChoiceParam{Value: v}
+}
+
+// NewToolChoiceParamToolChoiceValueEnum creates a ToolChoiceParam from a ToolChoiceValueEnum value.
+func NewToolChoiceParamToolChoiceValueEnum(v ToolChoiceValueEnum) ToolChoiceParam {
+	return &ToolChoiceParamToolChoiceValueEnum{Value: v}
+}
+
+// ToolChoiceParamFromAllowedToolsParam wraps a *AllowedToolsParam as a ToolChoiceParam union value.
+func ToolChoiceParamFromAllowedToolsParam(v *AllowedToolsParam) ToolChoiceParam {
+	return v
+}
+
+// UnmarshalToolChoiceParam unmarshals JSON into the correct ToolChoiceParam variant.
+func UnmarshalToolChoiceParam(data []byte) (ToolChoiceParam, error) {
+	{
+		var val AllowedToolsParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ToolChoiceParamSpecificToolChoiceParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ToolChoiceParamToolChoiceValueEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ToolChoiceParam")
+}
+
+
+type ToolChoiceValueEnum string
 
 const (
-	ToolChoiceTypesTypeFileSearch ToolChoiceTypesType = "file_search"
-	ToolChoiceTypesTypeWebSearchPreview ToolChoiceTypesType = "web_search_preview"
-	ToolChoiceTypesTypeComputerUsePreview ToolChoiceTypesType = "computer_use_preview"
-	ToolChoiceTypesTypeWebSearchPreview20250311 ToolChoiceTypesType = "web_search_preview_2025_03_11"
+	ToolChoiceValueEnumNone ToolChoiceValueEnum = "none"
+	ToolChoiceValueEnumAuto ToolChoiceValueEnum = "auto"
+	ToolChoiceValueEnumRequired ToolChoiceValueEnum = "required"
 )
 
-// Type An action to type in text.
-type Type struct {
-	// Specifies the event type. For a type action, this property is 
-// always set to 'type'.
-	Type TypeType `json:"type" jsonschema:"description=Specifies the event type. For a type action, this property is always set to 'type'."`
+// TopLogProb The top log probability of a token.
+type TopLogProb struct {
+	Token string `json:"token"`
+	Logprob float64 `json:"logprob"`
+	Bytes []int64 `json:"bytes"`
+}
+
+type TruncationEnum string
+
+const (
+	TruncationEnumAuto TruncationEnum = "auto"
+	TruncationEnumDisabled TruncationEnum = "disabled"
+)
+
+// TypeAction A typing action that was requested by the model.
+type TypeAction struct {
+	// The type of the action. Always 'type'.
+	Type TypeActionType `json:"type" jsonschema:"description=The type of the action. Always 'type'."`
+	// The text that was typed.
+	Text string `json:"text" jsonschema:"description=The text that was typed."`
+}
+
+// TypeActionType The type of the action. Always 'type'.
+type TypeActionType string
+
+const (
+	TypeActionTypeType TypeActionType = "type"
+)
+
+type TypeParam struct {
+	// Specifies the event type. Always 'type'.
+	Type TypeParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'type'."`
 	// The text to type.
 	Text string `json:"text" jsonschema:"description=The text to type."`
 }
 
-// TypeType Specifies the event type. For a type action, this property is 
-// always set to 'type'.
-type TypeType string
+// TypeParamType Specifies the event type. Always 'type'.
+type TypeParamType string
 
 const (
-	TypeTypeType TypeType = "type"
+	TypeParamTypeType TypeParamType = "type"
 )
 
 // UrlCitationBody A citation for a web resource used to generate a model response.
@@ -4468,44 +8798,410 @@ const (
 	UrlCitationBodyTypeURLCitation UrlCitationBodyType = "url_citation"
 )
 
-// VectorStoreFileAttributes Set of 16 key-value pairs that can be attached to an object. This can be 
-// useful for storing additional information about the object in a structured 
-// format, and querying for objects via API or the dashboard. Keys are strings 
-// with a maximum length of 64 characters. Values are strings with a maximum 
-// length of 512 characters, booleans, or numbers.
-type VectorStoreFileAttributes map[string]any
-
-// Wait A wait action.
-type Wait struct {
-	// Specifies the event type. For a wait action, this property is 
-// always set to 'wait'.
-	Type WaitType `json:"type" jsonschema:"description=Specifies the event type. For a wait action, this property is always set to 'wait'."`
+type UrlCitationParam struct {
+	// The URL of the cited resource.
+	URL string `json:"url" jsonschema:"description=The URL of the cited resource."`
+	// The title of the cited resource.
+	Title string `json:"title" jsonschema:"description=The title of the cited resource."`
+	// The citation type. Always 'url_citation'.
+	Type UrlCitationParamType `json:"type" jsonschema:"description=The citation type. Always 'url_citation'."`
+	// The index of the first character of the citation in the message.
+	StartIndex int64 `json:"start_index" jsonschema:"minimum=0,description=The index of the first character of the citation in the message."`
+	// The index of the last character of the citation in the message.
+	EndIndex int64 `json:"end_index" jsonschema:"minimum=0,description=The index of the last character of the citation in the message."`
 }
 
-// WaitType Specifies the event type. For a wait action, this property is 
-// always set to 'wait'.
-type WaitType string
+// UrlCitationParamType The citation type. Always 'url_citation'.
+type UrlCitationParamType string
 
 const (
-	WaitTypeWait WaitType = "wait"
+	UrlCitationParamTypeURLCitation UrlCitationParamType = "url_citation"
+)
+
+type UrlSourceParam struct {
+	// The URL source.
+	URL string `json:"url" jsonschema:"description=The URL source."`
+	// The source type. Always 'url'.
+	Type UrlSourceParamType `json:"type" jsonschema:"description=The source type. Always 'url'."`
+}
+
+// UrlSourceParamType The source type. Always 'url'.
+type UrlSourceParamType string
+
+const (
+	UrlSourceParamTypeURL UrlSourceParamType = "url"
+)
+
+// Usage Token usage statistics that were recorded for the response.
+type Usage struct {
+	// The number of input tokens that were used to generate the response.
+	InputTokens int64 `json:"input_tokens" jsonschema:"description=The number of input tokens that were used to generate the response."`
+	// The number of output tokens that were generated by the model.
+	OutputTokens int64 `json:"output_tokens" jsonschema:"description=The number of output tokens that were generated by the model."`
+	// The total number of tokens that were used.
+	TotalTokens int64 `json:"total_tokens" jsonschema:"description=The total number of tokens that were used."`
+	InputTokensDetails InputTokensDetails `json:"input_tokens_details"`
+	OutputTokensDetails OutputTokensDetails `json:"output_tokens_details"`
+}
+
+type UserMessageItemParam struct {
+	// The status of the message item.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the message item."`
+	// The unique ID of this message item.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this message item."`
+	// The item type. Always 'message'.
+	Type UserMessageItemParamType `json:"type" jsonschema:"description=The item type. Always 'message'."`
+	// The message role. Always 'user'.
+	Role UserMessageItemParamRole `json:"role" jsonschema:"description=The message role. Always 'user'."`
+	// The message content, as an array of content parts.
+	Content UserMessageItemParamContent `json:"content" jsonschema:"description=The message content, as an array of content parts."`
+}
+
+// UserMessageItemParamContent The message content, as an array of content parts.
+//
+//compschema:generate
+type UserMessageItemParamContent interface {
+	isUserMessageItemParamContent()
+}
+
+
+// UserMessageItemParamContentSliceany wraps a []any value as a UserMessageItemParamContent variant.
+type UserMessageItemParamContentSliceany struct { Value []any }
+func (*UserMessageItemParamContentSliceany) isUserMessageItemParamContent() {}
+
+// UserMessageItemParamContentString wraps a string value as a UserMessageItemParamContent variant.
+type UserMessageItemParamContentString struct { Value string }
+func (*UserMessageItemParamContentString) isUserMessageItemParamContent() {}
+
+func (w UserMessageItemParamContentSliceany) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *UserMessageItemParamContentSliceany) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+func (w UserMessageItemParamContentString) MarshalJSON() ([]byte, error) {
+	return json.Marshal(w.Value)
+}
+
+func (w *UserMessageItemParamContentString) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &w.Value)
+}
+
+// NewUserMessageItemParamContentSliceany creates a UserMessageItemParamContent from a []any value.
+func NewUserMessageItemParamContentSliceany(v []any) UserMessageItemParamContent {
+	return &UserMessageItemParamContentSliceany{Value: v}
+}
+
+// NewUserMessageItemParamContentString creates a UserMessageItemParamContent from a string value.
+func NewUserMessageItemParamContentString(v string) UserMessageItemParamContent {
+	return &UserMessageItemParamContentString{Value: v}
+}
+
+// UnmarshalUserMessageItemParamContent unmarshals JSON into the correct UserMessageItemParamContent variant.
+func UnmarshalUserMessageItemParamContent(data []byte) (UserMessageItemParamContent, error) {
+	{
+		var val UserMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val UserMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for UserMessageItemParamContent")
+}
+
+
+// UserMessageItemParamRole The message role. Always 'user'.
+type UserMessageItemParamRole string
+
+const (
+	UserMessageItemParamRoleUser UserMessageItemParamRole = "user"
+)
+
+// UserMessageItemParamType The item type. Always 'message'.
+type UserMessageItemParamType string
+
+const (
+	UserMessageItemParamTypeMessage UserMessageItemParamType = "message"
+)
+
+type VerbosityEnum string
+
+const (
+	VerbosityEnumLow VerbosityEnum = "low"
+	VerbosityEnumMedium VerbosityEnum = "medium"
+	VerbosityEnumHigh VerbosityEnum = "high"
+)
+
+// WaitAction A wait action that was requested by the model.
+type WaitAction struct {
+	// The type of the action. Always 'wait'.
+	Type WaitActionType `json:"type" jsonschema:"description=The type of the action. Always 'wait'."`
+}
+
+// WaitActionType The type of the action. Always 'wait'.
+type WaitActionType string
+
+const (
+	WaitActionTypeWait WaitActionType = "wait"
+)
+
+type WaitParam struct {
+	// Specifies the event type. Always 'wait'.
+	Type WaitParamType `json:"type" jsonschema:"description=Specifies the event type. Always 'wait'."`
+}
+
+// WaitParamType Specifies the event type. Always 'wait'.
+type WaitParamType string
+
+const (
+	WaitParamTypeWait WaitParamType = "wait"
+)
+
+type WebSearchCall struct {
+	Status WebSearchCallStatus `json:"status"`
+	Action WebSearchCallAction `json:"action,omitempty"`
+	// The identifier of the actor that created the item.
+	CreatedBy *string `json:"created_by,omitempty" jsonschema:"description=The identifier of the actor that created the item."`
+	Type WebSearchCallType `json:"type"`
+	ID string `json:"id"`
+}
+
+// Discriminated by "type" field.
+//
+//compschema:generate
+type WebSearchCallAction interface {
+	isWebSearchCallAction()
+	DiscriminatorValue() string
+}
+
+func (*WebSearchCallActionSearch) isWebSearchCallAction() {}
+func (*WebSearchCallActionOpenPage) isWebSearchCallAction() {}
+func (*WebSearchCallActionFindInPage) isWebSearchCallAction() {}
+
+func (x *WebSearchCallActionSearch) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchCallActionOpenPage) DiscriminatorValue() string { return string(x.Type) }
+func (x *WebSearchCallActionFindInPage) DiscriminatorValue() string { return string(x.Type) }
+
+// WebSearchCallActionFromWebSearchCallActionSearch wraps a *WebSearchCallActionSearch as a WebSearchCallAction union value.
+func WebSearchCallActionFromWebSearchCallActionSearch(v *WebSearchCallActionSearch) WebSearchCallAction {
+	return v
+}
+
+// WebSearchCallActionFromWebSearchCallActionOpenPage wraps a *WebSearchCallActionOpenPage as a WebSearchCallAction union value.
+func WebSearchCallActionFromWebSearchCallActionOpenPage(v *WebSearchCallActionOpenPage) WebSearchCallAction {
+	return v
+}
+
+// WebSearchCallActionFromWebSearchCallActionFindInPage wraps a *WebSearchCallActionFindInPage as a WebSearchCallAction union value.
+func WebSearchCallActionFromWebSearchCallActionFindInPage(v *WebSearchCallActionFindInPage) WebSearchCallAction {
+	return v
+}
+
+// UnmarshalWebSearchCallAction unmarshals JSON into the correct WebSearchCallAction variant.
+// Dispatches on the "type" discriminator field.
+func UnmarshalWebSearchCallAction(data []byte) (WebSearchCallAction, error) {
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "search":
+		var val WebSearchCallActionSearch
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "open_page":
+		var val WebSearchCallActionOpenPage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "find_in_page":
+		var val WebSearchCallActionFindInPage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for WebSearchCallAction", disc.D)
+	}
+}
+
+
+type WebSearchCallActionFindInPage struct {
+	Pattern *string `json:"pattern,omitempty"`
+	Type WebSearchCallActionFindInPageType `json:"type"`
+	URL *string `json:"url,omitempty"`
+}
+
+type WebSearchCallActionFindInPageParam struct {
+	// The action type. Always 'find_in_page'.
+	Type WebSearchCallActionFindInPageParamType `json:"type" jsonschema:"description=The action type. Always 'find_in_page'."`
+	// The URL of the page to search within.
+	URL *string `json:"url,omitempty" jsonschema:"description=The URL of the page to search within."`
+	// The pattern to search for within the page.
+	Pattern *string `json:"pattern,omitempty" jsonschema:"description=The pattern to search for within the page."`
+}
+
+// WebSearchCallActionFindInPageParamType The action type. Always 'find_in_page'.
+type WebSearchCallActionFindInPageParamType string
+
+const (
+	WebSearchCallActionFindInPageParamTypeFindInPage WebSearchCallActionFindInPageParamType = "find_in_page"
+)
+
+type WebSearchCallActionFindInPageType string
+
+const (
+	WebSearchCallActionFindInPageTypeFindInPage WebSearchCallActionFindInPageType = "find_in_page"
+)
+
+type WebSearchCallActionOpenPage struct {
+	URL *string `json:"url,omitempty"`
+	Type WebSearchCallActionOpenPageType `json:"type"`
+}
+
+type WebSearchCallActionOpenPageParam struct {
+	// The action type. Always 'open_page'.
+	Type WebSearchCallActionOpenPageParamType `json:"type" jsonschema:"description=The action type. Always 'open_page'."`
+	// The URL of the page to open.
+	URL *string `json:"url,omitempty" jsonschema:"description=The URL of the page to open."`
+}
+
+// WebSearchCallActionOpenPageParamType The action type. Always 'open_page'.
+type WebSearchCallActionOpenPageParamType string
+
+const (
+	WebSearchCallActionOpenPageParamTypeOpenPage WebSearchCallActionOpenPageParamType = "open_page"
+)
+
+type WebSearchCallActionOpenPageType string
+
+const (
+	WebSearchCallActionOpenPageTypeOpenPage WebSearchCallActionOpenPageType = "open_page"
+)
+
+type WebSearchCallActionSearch struct {
+	Type WebSearchCallActionSearchType `json:"type"`
+	Query *string `json:"query,omitempty"`
+	Queries []string `json:"queries,omitempty"`
+}
+
+type WebSearchCallActionSearchParam struct {
+	// The action type. Always 'search'.
+	Type WebSearchCallActionSearchParamType `json:"type" jsonschema:"description=The action type. Always 'search'."`
+	// The query string used for web search.
+	Query *string `json:"query,omitempty" jsonschema:"description=The query string used for web search."`
+	// The list of queries issued as part of this web search call.
+	Queries []string `json:"queries,omitempty" jsonschema:"description=The list of queries issued as part of this web search call."`
+	// Sources used for the search.
+	Sources []any `json:"sources,omitempty" jsonschema:"description=Sources used for the search."`
+}
+
+// WebSearchCallActionSearchParamType The action type. Always 'search'.
+type WebSearchCallActionSearchParamType string
+
+const (
+	WebSearchCallActionSearchParamTypeSearch WebSearchCallActionSearchParamType = "search"
+)
+
+type WebSearchCallActionSearchType string
+
+const (
+	WebSearchCallActionSearchTypeSearch WebSearchCallActionSearchType = "search"
+)
+
+type WebSearchCallItemParam struct {
+	Action *any `json:"action,omitempty"`
+	// The unique ID of this web search tool call.
+	ID *string `json:"id,omitempty" jsonschema:"description=The unique ID of this web search tool call."`
+	// The item type. Always 'web_search_call'.
+	Type WebSearchCallItemParamType `json:"type" jsonschema:"description=The item type. Always 'web_search_call'."`
+	// The status of the web search tool call.
+	Status *string `json:"status,omitempty" jsonschema:"description=The status of the web search tool call."`
+}
+
+// WebSearchCallItemParamType The item type. Always 'web_search_call'.
+type WebSearchCallItemParamType string
+
+const (
+	WebSearchCallItemParamTypeWebSearchCall WebSearchCallItemParamType = "web_search_call"
+)
+
+type WebSearchCallStatus string
+
+const (
+	WebSearchCallStatusInProgress WebSearchCallStatus = "in_progress"
+	WebSearchCallStatusCompleted WebSearchCallStatus = "completed"
+	WebSearchCallStatusIncomplete WebSearchCallStatus = "incomplete"
+	WebSearchCallStatusSearching WebSearchCallStatus = "searching"
+	WebSearchCallStatusFailed WebSearchCallStatus = "failed"
+)
+
+type WebSearchCallType string
+
+const (
+	WebSearchCallTypeWebSearchCall WebSearchCallType = "web_search_call"
+)
+
+type WebSearchGADeprecatedToolParam struct {
+	UserLocation *ApproximateLocationParam `json:"user_location,omitempty"`
+	SearchContextSize *SearchContextSize `json:"search_context_size,omitempty"`
+	// The type of the tool. Always 'web_search_ga'.
+	Type WebSearchGADeprecatedToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'web_search_ga'."`
+}
+
+// WebSearchGADeprecatedToolParamType The type of the tool. Always 'web_search_ga'.
+type WebSearchGADeprecatedToolParamType string
+
+const (
+	WebSearchGADeprecatedToolParamTypeWebSearchGa WebSearchGADeprecatedToolParamType = "web_search_ga"
 )
 
 // WebSearchPreviewTool This tool searches the web for relevant results to use in a response. Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
 type WebSearchPreviewTool struct {
-	// High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default.
-	SearchContextSize *WebSearchPreviewToolSearchContextSize `json:"search_context_size,omitempty" jsonschema:"description=High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default."`
 	// The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'.
 	Type WebSearchPreviewToolType `json:"type" jsonschema:"description=The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'."`
-	UserLocation *ApproximateLocation `json:"user_location,omitempty"`
+	UserLocation *ApproximateLocation `json:"user_location"`
+	SearchContextSize SearchContextSize `json:"search_context_size"`
 }
 
-// WebSearchPreviewToolSearchContextSize High level guidance for the amount of context window space to use for the search. One of 'low', 'medium', or 'high'. 'medium' is the default.
-type WebSearchPreviewToolSearchContextSize string
+type WebSearchPreviewToolParam struct {
+	// The type of the tool. Always 'web_search_preview'.
+	Type WebSearchPreviewToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'web_search_preview'."`
+	UserLocation *ApproximateLocationParam `json:"user_location,omitempty"`
+	SearchContextSize *SearchContextSize `json:"search_context_size,omitempty"`
+}
+
+// WebSearchPreviewToolParamType The type of the tool. Always 'web_search_preview'.
+type WebSearchPreviewToolParamType string
 
 const (
-	WebSearchPreviewToolSearchContextSizeLow WebSearchPreviewToolSearchContextSize = "low"
-	WebSearchPreviewToolSearchContextSizeMedium WebSearchPreviewToolSearchContextSize = "medium"
-	WebSearchPreviewToolSearchContextSizeHigh WebSearchPreviewToolSearchContextSize = "high"
+	WebSearchPreviewToolParamTypeWebSearchPreview WebSearchPreviewToolParamType = "web_search_preview"
+)
+
+type WebSearchPreviewToolParam20250311Param struct {
+	UserLocation *ApproximateLocationParam `json:"user_location,omitempty"`
+	SearchContextSize *SearchContextSize `json:"search_context_size,omitempty"`
+	// The type of the tool. Always 'web_search_preview_2025_03_11'.
+	Type WebSearchPreviewToolParam20250311ParamType `json:"type" jsonschema:"description=The type of the tool. Always 'web_search_preview_2025_03_11'."`
+}
+
+// WebSearchPreviewToolParam20250311ParamType The type of the tool. Always 'web_search_preview_2025_03_11'.
+type WebSearchPreviewToolParam20250311ParamType string
+
+const (
+	WebSearchPreviewToolParam20250311ParamTypeWebSearchPreview20250311 WebSearchPreviewToolParam20250311ParamType = "web_search_preview_2025_03_11"
 )
 
 // WebSearchPreviewToolType The type of the web search tool. One of 'web_search_preview' or 'web_search_preview_2025_03_11'.
@@ -4513,58 +9209,151 @@ type WebSearchPreviewToolType string
 
 const (
 	WebSearchPreviewToolTypeWebSearchPreview WebSearchPreviewToolType = "web_search_preview"
-	WebSearchPreviewToolTypeWebSearchPreview20250311 WebSearchPreviewToolType = "web_search_preview_2025_03_11"
 )
 
-// WebSearchToolCall The results of a web search tool call. See the 
-// [web search guide](/docs/guides/tools-web-search) for more information.
-type WebSearchToolCall struct {
-	// The unique ID of the web search tool call.
-	ID string `json:"id" jsonschema:"description=The unique ID of the web search tool call."`
-	// The type of the web search tool call. Always 'web_search_call'.
-	Type WebSearchToolCallType `json:"type" jsonschema:"description=The type of the web search tool call. Always 'web_search_call'."`
-	// The status of the web search tool call.
-	Status WebSearchToolCallStatus `json:"status" jsonschema:"description=The status of the web search tool call."`
+type WebSearchToolChoice struct {
+	Type WebSearchToolChoiceType `json:"type"`
 }
 
-// WebSearchToolCallStatus The status of the web search tool call.
-type WebSearchToolCallStatus string
+type WebSearchToolChoiceType string
 
 const (
-	WebSearchToolCallStatusInProgress WebSearchToolCallStatus = "in_progress"
-	WebSearchToolCallStatusSearching WebSearchToolCallStatus = "searching"
-	WebSearchToolCallStatusCompleted WebSearchToolCallStatus = "completed"
-	WebSearchToolCallStatusFailed WebSearchToolCallStatus = "failed"
+	WebSearchToolChoiceTypeWebSearchPreview WebSearchToolChoiceType = "web_search_preview"
 )
 
-// WebSearchToolCallType The type of the web search tool call. Always 'web_search_call'.
-type WebSearchToolCallType string
+type WebSearchToolParam struct {
+	SearchContextSize *SearchContextSize `json:"search_context_size,omitempty"`
+	// The type of the tool. Always 'web_search'.
+	Type WebSearchToolParamType `json:"type" jsonschema:"description=The type of the tool. Always 'web_search'."`
+	// Allow live internet access for web search. When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+	ExternalWebAccess *bool `json:"external_web_access,omitempty" jsonschema:"description=Allow live internet access for web search. When false, the web search tool runs in offline/cache-only mode and will not fetch new external content."`
+	UserLocation *ApproximateLocationParam `json:"user_location,omitempty"`
+}
+
+// WebSearchToolParamType The type of the tool. Always 'web_search'.
+type WebSearchToolParamType string
 
 const (
-	WebSearchToolCallTypeWebSearchCall WebSearchToolCallType = "web_search_call"
+	WebSearchToolParamTypeWebSearch WebSearchToolParamType = "web_search"
 )
-func (v *CodeInterpreterToolCall) UnmarshalJSON(data []byte) error {
-	type Alias CodeInterpreterToolCall
+
+type WebSearchToolParam20250814Param struct {
+	// The type of the tool. Always 'web_search_2025_08_26'.
+	Type WebSearchToolParam20250814ParamType `json:"type" jsonschema:"description=The type of the tool. Always 'web_search_2025_08_26'."`
+	// Allow live internet access for web search. When false, the web search tool runs in offline/cache-only mode and will not fetch new external content.
+	ExternalWebAccess *bool `json:"external_web_access,omitempty" jsonschema:"description=Allow live internet access for web search. When false, the web search tool runs in offline/cache-only mode and will not fetch new external content."`
+	UserLocation *ApproximateLocationParam `json:"user_location,omitempty"`
+	SearchContextSize *SearchContextSize `json:"search_context_size,omitempty"`
+}
+
+// WebSearchToolParam20250814ParamType The type of the tool. Always 'web_search_2025_08_26'.
+type WebSearchToolParam20250814ParamType string
+
+const (
+	WebSearchToolParam20250814ParamTypeWebSearch20250826 WebSearchToolParam20250814ParamType = "web_search_2025_08_26"
+)
+func (v *AllowedToolsParam) UnmarshalJSON(data []byte) error {
+	type Alias AllowedToolsParam
 	var raw struct {
 		Alias
-		Results []json.RawMessage `json:"results"`
+		Tools []json.RawMessage `json:"tools"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = CodeInterpreterToolCall(raw.Alias)
-	for _, item := range raw.Results {
-		parsed, err := UnmarshalCodeInterpreterToolOutput(item)
+	*v = AllowedToolsParam(raw.Alias)
+	for _, item := range raw.Tools {
+		parsed, err := UnmarshalSpecificToolChoiceParam(item)
 		if err != nil {
 			return err
 		}
-		v.Results = append(v.Results, parsed)
+		v.Tools = append(v.Tools, parsed)
 	}
 	return nil
 }
 
-func (v *ComparisonFilter) UnmarshalJSON(data []byte) error {
-	type Alias ComparisonFilter
+func (v *ApplyPatchToolCall) UnmarshalJSON(data []byte) error {
+	type Alias ApplyPatchToolCall
+	var raw struct {
+		Alias
+		Operation json.RawMessage `json:"operation"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ApplyPatchToolCall(raw.Alias)
+	if len(raw.Operation) > 0 && string(raw.Operation) != "null" {
+		parsed, err := UnmarshalApplyPatchToolCallOperation(raw.Operation)
+		if err != nil {
+			return err
+		}
+		v.Operation = parsed
+	}
+	return nil
+}
+
+func (v *ApplyPatchToolCallItemParam) UnmarshalJSON(data []byte) error {
+	type Alias ApplyPatchToolCallItemParam
+	var raw struct {
+		Alias
+		Operation json.RawMessage `json:"operation"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ApplyPatchToolCallItemParam(raw.Alias)
+	if len(raw.Operation) > 0 && string(raw.Operation) != "null" {
+		parsed, err := UnmarshalApplyPatchOperationParam(raw.Operation)
+		if err != nil {
+			return err
+		}
+		v.Operation = parsed
+	}
+	return nil
+}
+
+func (v *AssistantMessageItemParam) UnmarshalJSON(data []byte) error {
+	type Alias AssistantMessageItemParam
+	var raw struct {
+		Alias
+		Content json.RawMessage `json:"content"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = AssistantMessageItemParam(raw.Alias)
+	if len(raw.Content) > 0 && string(raw.Content) != "null" {
+		parsed, err := UnmarshalAssistantMessageItemParamContent(raw.Content)
+		if err != nil {
+			return err
+		}
+		v.Content = parsed
+	}
+	return nil
+}
+
+func (v *CodeInterpreterToolParam) UnmarshalJSON(data []byte) error {
+	type Alias CodeInterpreterToolParam
+	var raw struct {
+		Alias
+		Container json.RawMessage `json:"container"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CodeInterpreterToolParam(raw.Alias)
+	if len(raw.Container) > 0 && string(raw.Container) != "null" {
+		parsed, err := UnmarshalCodeInterpreterToolParamContainer(raw.Container)
+		if err != nil {
+			return err
+		}
+		v.Container = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamContainsAnyParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamContainsAnyParam
 	var raw struct {
 		Alias
 		Value json.RawMessage `json:"value"`
@@ -4572,9 +9361,9 @@ func (v *ComparisonFilter) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ComparisonFilter(raw.Alias)
+	*v = ComparisonFilterParamContainsAnyParam(raw.Alias)
 	if len(raw.Value) > 0 && string(raw.Value) != "null" {
-		parsed, err := UnmarshalComparisonFilterValue(raw.Value)
+		parsed, err := UnmarshalComparisonFilterParamContainsAnyParamValue(raw.Value)
 		if err != nil {
 			return err
 		}
@@ -4583,8 +9372,268 @@ func (v *ComparisonFilter) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *ComputerToolCall) UnmarshalJSON(data []byte) error {
-	type Alias ComputerToolCall
+func (v *ComparisonFilterParamContainsParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamContainsParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamContainsParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamContainsParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamEQParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamEQParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamEQParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamEQParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamGTEParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamGTEParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamGTEParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamGTEParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamGTParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamGTParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamGTParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamGTParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamINParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamINParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamINParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamINParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamLTEParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamLTEParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamLTEParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamLTEParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamLTParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamLTParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamLTParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamLTParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamNContainsAnyParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamNContainsAnyParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamNContainsAnyParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamNContainsAnyParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamNContainsParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamNContainsParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamNContainsParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamNContainsParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamNEParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamNEParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamNEParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamNEParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *ComparisonFilterParamNINParam) UnmarshalJSON(data []byte) error {
+	type Alias ComparisonFilterParamNINParam
+	var raw struct {
+		Alias
+		Value json.RawMessage `json:"value"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComparisonFilterParamNINParam(raw.Alias)
+	if len(raw.Value) > 0 && string(raw.Value) != "null" {
+		parsed, err := UnmarshalComparisonFilterParamNINParamValue(raw.Value)
+		if err != nil {
+			return err
+		}
+		v.Value = parsed
+	}
+	return nil
+}
+
+func (v *CompoundFilterFieldAND) UnmarshalJSON(data []byte) error {
+	type Alias CompoundFilterFieldAND
+	var raw struct {
+		Alias
+		Filters []json.RawMessage `json:"filters"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CompoundFilterFieldAND(raw.Alias)
+	for _, item := range raw.Filters {
+		parsed, err := UnmarshalFilters(item)
+		if err != nil {
+			return err
+		}
+		v.Filters = append(v.Filters, parsed)
+	}
+	return nil
+}
+
+func (v *CompoundFilterFieldOR) UnmarshalJSON(data []byte) error {
+	type Alias CompoundFilterFieldOR
+	var raw struct {
+		Alias
+		Filters []json.RawMessage `json:"filters"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CompoundFilterFieldOR(raw.Alias)
+	for _, item := range raw.Filters {
+		parsed, err := UnmarshalFilters(item)
+		if err != nil {
+			return err
+		}
+		v.Filters = append(v.Filters, parsed)
+	}
+	return nil
+}
+
+func (v *ComputerCall) UnmarshalJSON(data []byte) error {
+	type Alias ComputerCall
 	var raw struct {
 		Alias
 		Action json.RawMessage `json:"action"`
@@ -4592,9 +9641,9 @@ func (v *ComputerToolCall) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ComputerToolCall(raw.Alias)
+	*v = ComputerCall(raw.Alias)
 	if len(raw.Action) > 0 && string(raw.Action) != "null" {
-		parsed, err := UnmarshalComputerAction(raw.Action)
+		parsed, err := UnmarshalComputerCallAction(raw.Action)
 		if err != nil {
 			return err
 		}
@@ -4603,44 +9652,76 @@ func (v *ComputerToolCall) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *CreateResponse) UnmarshalJSON(data []byte) error {
-	type Alias CreateResponse
+func (v *ComputerCallItemParam) UnmarshalJSON(data []byte) error {
+	type Alias ComputerCallItemParam
 	var raw struct {
 		Alias
-		Tools []json.RawMessage `json:"tools"`
-		ToolChoice json.RawMessage `json:"tool_choice"`
-		Input json.RawMessage `json:"input"`
+		Action json.RawMessage `json:"action"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = CreateResponse(raw.Alias)
-	for _, item := range raw.Tools {
-		parsed, err := UnmarshalTool(item)
+	*v = ComputerCallItemParam(raw.Alias)
+	if len(raw.Action) > 0 && string(raw.Action) != "null" {
+		parsed, err := UnmarshalComputerCallItemParamAction(raw.Action)
 		if err != nil {
 			return err
 		}
-		v.Tools = append(v.Tools, parsed)
+		v.Action = parsed
 	}
+	return nil
+}
+
+func (v *ComputerCallOutput) UnmarshalJSON(data []byte) error {
+	type Alias ComputerCallOutput
+	var raw struct {
+		Alias
+		Output json.RawMessage `json:"output"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComputerCallOutput(raw.Alias)
+	if len(raw.Output) > 0 && string(raw.Output) != "null" {
+		parsed, err := UnmarshalComputerCallOutputOutput(raw.Output)
+		if err != nil {
+			return err
+		}
+		v.Output = parsed
+	}
+	return nil
+}
+
+func (v *CreateResponseBody) UnmarshalJSON(data []byte) error {
+	type Alias CreateResponseBody
+	var raw struct {
+		Alias
+		ToolChoice json.RawMessage `json:"tool_choice"`
+		Tools []json.RawMessage `json:"tools"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CreateResponseBody(raw.Alias)
 	if len(raw.ToolChoice) > 0 && string(raw.ToolChoice) != "null" {
-		parsed, err := UnmarshalCreateResponseToolChoice(raw.ToolChoice)
+		parsed, err := UnmarshalToolChoiceParam(raw.ToolChoice)
 		if err != nil {
 			return err
 		}
 		v.ToolChoice = parsed
 	}
-	if len(raw.Input) > 0 && string(raw.Input) != "null" {
-		parsed, err := UnmarshalCreateResponseInput(raw.Input)
+	for _, item := range raw.Tools {
+		parsed, err := UnmarshalResponsesToolParam(item)
 		if err != nil {
 			return err
 		}
-		v.Input = parsed
+		v.Tools = append(v.Tools, parsed)
 	}
 	return nil
 }
 
-func (v *CreateResponseText) UnmarshalJSON(data []byte) error {
-	type Alias CreateResponseText
+func (v *CustomTool) UnmarshalJSON(data []byte) error {
+	type Alias CustomTool
 	var raw struct {
 		Alias
 		Format json.RawMessage `json:"format"`
@@ -4648,9 +9729,9 @@ func (v *CreateResponseText) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = CreateResponseText(raw.Alias)
+	*v = CustomTool(raw.Alias)
 	if len(raw.Format) > 0 && string(raw.Format) != "null" {
-		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+		parsed, err := UnmarshalCustomToolFormat(raw.Format)
 		if err != nil {
 			return err
 		}
@@ -4659,8 +9740,68 @@ func (v *CreateResponseText) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *EasyInputMessage) UnmarshalJSON(data []byte) error {
-	type Alias EasyInputMessage
+func (v *CustomToolCallOutput) UnmarshalJSON(data []byte) error {
+	type Alias CustomToolCallOutput
+	var raw struct {
+		Alias
+		Output json.RawMessage `json:"output"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CustomToolCallOutput(raw.Alias)
+	if len(raw.Output) > 0 && string(raw.Output) != "null" {
+		parsed, err := UnmarshalCustomToolCallOutputOutput(raw.Output)
+		if err != nil {
+			return err
+		}
+		v.Output = parsed
+	}
+	return nil
+}
+
+func (v *CustomToolCallOutputItemParam) UnmarshalJSON(data []byte) error {
+	type Alias CustomToolCallOutputItemParam
+	var raw struct {
+		Alias
+		Output json.RawMessage `json:"output"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CustomToolCallOutputItemParam(raw.Alias)
+	if len(raw.Output) > 0 && string(raw.Output) != "null" {
+		parsed, err := UnmarshalCustomToolCallOutputItemParamOutput(raw.Output)
+		if err != nil {
+			return err
+		}
+		v.Output = parsed
+	}
+	return nil
+}
+
+func (v *CustomToolParam) UnmarshalJSON(data []byte) error {
+	type Alias CustomToolParam
+	var raw struct {
+		Alias
+		Format json.RawMessage `json:"format"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CustomToolParam(raw.Alias)
+	if len(raw.Format) > 0 && string(raw.Format) != "null" {
+		parsed, err := UnmarshalCustomToolParamFormat(raw.Format)
+		if err != nil {
+			return err
+		}
+		v.Format = parsed
+	}
+	return nil
+}
+
+func (v *DeveloperMessageItemParam) UnmarshalJSON(data []byte) error {
+	type Alias DeveloperMessageItemParam
 	var raw struct {
 		Alias
 		Content json.RawMessage `json:"content"`
@@ -4668,9 +9809,9 @@ func (v *EasyInputMessage) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = EasyInputMessage(raw.Alias)
+	*v = DeveloperMessageItemParam(raw.Alias)
 	if len(raw.Content) > 0 && string(raw.Content) != "null" {
-		parsed, err := UnmarshalEasyInputMessageContent(raw.Content)
+		parsed, err := UnmarshalDeveloperMessageItemParamContent(raw.Content)
 		if err != nil {
 			return err
 		}
@@ -4699,62 +9840,150 @@ func (v *FileSearchTool) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *InputMessage) UnmarshalJSON(data []byte) error {
-	type Alias InputMessage
+func (v *FileSearchToolParam) UnmarshalJSON(data []byte) error {
+	type Alias FileSearchToolParam
 	var raw struct {
 		Alias
-		Content []json.RawMessage `json:"content"`
+		Filters json.RawMessage `json:"filters"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = InputMessage(raw.Alias)
-	for _, item := range raw.Content {
-		parsed, err := UnmarshalInputContent(item)
+	*v = FileSearchToolParam(raw.Alias)
+	if len(raw.Filters) > 0 && string(raw.Filters) != "null" {
+		parsed, err := UnmarshalFileSearchToolParamFilters(raw.Filters)
 		if err != nil {
 			return err
 		}
-		v.Content = append(v.Content, parsed)
+		v.Filters = parsed
 	}
 	return nil
 }
 
-func (v *InputMessageResource) UnmarshalJSON(data []byte) error {
-	type Alias InputMessageResource
+func (v *FunctionCallOutput) UnmarshalJSON(data []byte) error {
+	type Alias FunctionCallOutput
 	var raw struct {
 		Alias
-		Content []json.RawMessage `json:"content"`
+		Output json.RawMessage `json:"output"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = InputMessageResource(raw.Alias)
-	for _, item := range raw.Content {
-		parsed, err := UnmarshalInputContent(item)
+	*v = FunctionCallOutput(raw.Alias)
+	if len(raw.Output) > 0 && string(raw.Output) != "null" {
+		parsed, err := UnmarshalFunctionCallOutputOutput(raw.Output)
 		if err != nil {
 			return err
 		}
-		v.Content = append(v.Content, parsed)
+		v.Output = parsed
 	}
 	return nil
 }
 
-func (v *OutputMessage) UnmarshalJSON(data []byte) error {
-	type Alias OutputMessage
+func (v *FunctionCallOutputItemParam) UnmarshalJSON(data []byte) error {
+	type Alias FunctionCallOutputItemParam
 	var raw struct {
 		Alias
-		Content []json.RawMessage `json:"content"`
+		Output json.RawMessage `json:"output"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = OutputMessage(raw.Alias)
-	for _, item := range raw.Content {
-		parsed, err := UnmarshalOutputContent(item)
+	*v = FunctionCallOutputItemParam(raw.Alias)
+	if len(raw.Output) > 0 && string(raw.Output) != "null" {
+		parsed, err := UnmarshalFunctionCallOutputItemParamOutput(raw.Output)
 		if err != nil {
 			return err
 		}
-		v.Content = append(v.Content, parsed)
+		v.Output = parsed
+	}
+	return nil
+}
+
+func (v *FunctionShellCallOutputContent) UnmarshalJSON(data []byte) error {
+	type Alias FunctionShellCallOutputContent
+	var raw struct {
+		Alias
+		Outcome json.RawMessage `json:"outcome"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = FunctionShellCallOutputContent(raw.Alias)
+	if len(raw.Outcome) > 0 && string(raw.Outcome) != "null" {
+		parsed, err := UnmarshalFunctionShellCallOutputContentOutcome(raw.Outcome)
+		if err != nil {
+			return err
+		}
+		v.Outcome = parsed
+	}
+	return nil
+}
+
+func (v *FunctionShellCallOutputContentParam) UnmarshalJSON(data []byte) error {
+	type Alias FunctionShellCallOutputContentParam
+	var raw struct {
+		Alias
+		Outcome json.RawMessage `json:"outcome"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = FunctionShellCallOutputContentParam(raw.Alias)
+	if len(raw.Outcome) > 0 && string(raw.Outcome) != "null" {
+		parsed, err := UnmarshalFunctionShellCallOutputOutcomeParam(raw.Outcome)
+		if err != nil {
+			return err
+		}
+		v.Outcome = parsed
+	}
+	return nil
+}
+
+func (v *MCPTool) UnmarshalJSON(data []byte) error {
+	type Alias MCPTool
+	var raw struct {
+		Alias
+		RequireApproval json.RawMessage `json:"require_approval"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = MCPTool(raw.Alias)
+	if len(raw.RequireApproval) > 0 && string(raw.RequireApproval) != "null" {
+		parsed, err := UnmarshalMCPToolRequireApproval(raw.RequireApproval)
+		if err != nil {
+			return err
+		}
+		v.RequireApproval = parsed
+	}
+	return nil
+}
+
+func (v *MCPToolParam) UnmarshalJSON(data []byte) error {
+	type Alias MCPToolParam
+	var raw struct {
+		Alias
+		AllowedTools json.RawMessage `json:"allowed_tools"`
+		RequireApproval json.RawMessage `json:"require_approval"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = MCPToolParam(raw.Alias)
+	if len(raw.AllowedTools) > 0 && string(raw.AllowedTools) != "null" {
+		parsed, err := UnmarshalMCPToolParamAllowedTools(raw.AllowedTools)
+		if err != nil {
+			return err
+		}
+		v.AllowedTools = parsed
+	}
+	if len(raw.RequireApproval) > 0 && string(raw.RequireApproval) != "null" {
+		parsed, err := UnmarshalMCPToolParamRequireApproval(raw.RequireApproval)
+		if err != nil {
+			return err
+		}
+		v.RequireApproval = parsed
 	}
 	return nil
 }
@@ -4779,31 +10008,59 @@ func (v *OutputTextContent) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *Response) UnmarshalJSON(data []byte) error {
-	type Alias Response
+func (v *OutputTextContentParam) UnmarshalJSON(data []byte) error {
+	type Alias OutputTextContentParam
+	var raw struct {
+		Alias
+		Annotations json.RawMessage `json:"annotations"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = OutputTextContentParam(raw.Alias)
+	if len(raw.Annotations) > 0 && string(raw.Annotations) != "null" {
+		parsed, err := UnmarshalOutputTextContentParamAnnotations(raw.Annotations)
+		if err != nil {
+			return err
+		}
+		v.Annotations = parsed
+	}
+	return nil
+}
+
+func (v *ResponseResource) UnmarshalJSON(data []byte) error {
+	type Alias ResponseResource
 	var raw struct {
 		Alias
 		Output []json.RawMessage `json:"output"`
 		ToolChoice json.RawMessage `json:"tool_choice"`
+		Input []json.RawMessage `json:"input"`
 		Tools []json.RawMessage `json:"tools"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = Response(raw.Alias)
+	*v = ResponseResource(raw.Alias)
 	for _, item := range raw.Output {
-		parsed, err := UnmarshalOutputItem(item)
+		parsed, err := UnmarshalItemField(item)
 		if err != nil {
 			return err
 		}
 		v.Output = append(v.Output, parsed)
 	}
 	if len(raw.ToolChoice) > 0 && string(raw.ToolChoice) != "null" {
-		parsed, err := UnmarshalResponseToolChoice(raw.ToolChoice)
+		parsed, err := UnmarshalResponseResourceToolChoice(raw.ToolChoice)
 		if err != nil {
 			return err
 		}
 		v.ToolChoice = parsed
+	}
+	for _, item := range raw.Input {
+		parsed, err := UnmarshalItemField(item)
+		if err != nil {
+			return err
+		}
+		v.Input = append(v.Input, parsed)
 	}
 	for _, item := range raw.Tools {
 		parsed, err := UnmarshalTool(item)
@@ -4815,136 +10072,28 @@ func (v *Response) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *ResponseContentPartAddedEvent) UnmarshalJSON(data []byte) error {
-	type Alias ResponseContentPartAddedEvent
+func (v *SystemMessageItemParam) UnmarshalJSON(data []byte) error {
+	type Alias SystemMessageItemParam
 	var raw struct {
 		Alias
-		Part json.RawMessage `json:"part"`
+		Content json.RawMessage `json:"content"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ResponseContentPartAddedEvent(raw.Alias)
-	if len(raw.Part) > 0 && string(raw.Part) != "null" {
-		parsed, err := UnmarshalOutputContent(raw.Part)
+	*v = SystemMessageItemParam(raw.Alias)
+	if len(raw.Content) > 0 && string(raw.Content) != "null" {
+		parsed, err := UnmarshalSystemMessageItemParamContent(raw.Content)
 		if err != nil {
 			return err
 		}
-		v.Part = parsed
+		v.Content = parsed
 	}
 	return nil
 }
 
-func (v *ResponseContentPartDoneEvent) UnmarshalJSON(data []byte) error {
-	type Alias ResponseContentPartDoneEvent
-	var raw struct {
-		Alias
-		Part json.RawMessage `json:"part"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-	*v = ResponseContentPartDoneEvent(raw.Alias)
-	if len(raw.Part) > 0 && string(raw.Part) != "null" {
-		parsed, err := UnmarshalOutputContent(raw.Part)
-		if err != nil {
-			return err
-		}
-		v.Part = parsed
-	}
-	return nil
-}
-
-func (v *ResponseItemList) UnmarshalJSON(data []byte) error {
-	type Alias ResponseItemList
-	var raw struct {
-		Alias
-		Data []json.RawMessage `json:"data"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-	*v = ResponseItemList(raw.Alias)
-	for _, item := range raw.Data {
-		parsed, err := UnmarshalItemResource(item)
-		if err != nil {
-			return err
-		}
-		v.Data = append(v.Data, parsed)
-	}
-	return nil
-}
-
-func (v *ResponseOutputItemAddedEvent) UnmarshalJSON(data []byte) error {
-	type Alias ResponseOutputItemAddedEvent
-	var raw struct {
-		Alias
-		Item json.RawMessage `json:"item"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-	*v = ResponseOutputItemAddedEvent(raw.Alias)
-	if len(raw.Item) > 0 && string(raw.Item) != "null" {
-		parsed, err := UnmarshalOutputItem(raw.Item)
-		if err != nil {
-			return err
-		}
-		v.Item = parsed
-	}
-	return nil
-}
-
-func (v *ResponseOutputItemDoneEvent) UnmarshalJSON(data []byte) error {
-	type Alias ResponseOutputItemDoneEvent
-	var raw struct {
-		Alias
-		Item json.RawMessage `json:"item"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-	*v = ResponseOutputItemDoneEvent(raw.Alias)
-	if len(raw.Item) > 0 && string(raw.Item) != "null" {
-		parsed, err := UnmarshalOutputItem(raw.Item)
-		if err != nil {
-			return err
-		}
-		v.Item = parsed
-	}
-	return nil
-}
-
-func (v *ResponseProperties) UnmarshalJSON(data []byte) error {
-	type Alias ResponseProperties
-	var raw struct {
-		Alias
-		Tools []json.RawMessage `json:"tools"`
-		ToolChoice json.RawMessage `json:"tool_choice"`
-	}
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-	*v = ResponseProperties(raw.Alias)
-	for _, item := range raw.Tools {
-		parsed, err := UnmarshalTool(item)
-		if err != nil {
-			return err
-		}
-		v.Tools = append(v.Tools, parsed)
-	}
-	if len(raw.ToolChoice) > 0 && string(raw.ToolChoice) != "null" {
-		parsed, err := UnmarshalResponsePropertiesToolChoice(raw.ToolChoice)
-		if err != nil {
-			return err
-		}
-		v.ToolChoice = parsed
-	}
-	return nil
-}
-
-func (v *ResponsePropertiesText) UnmarshalJSON(data []byte) error {
-	type Alias ResponsePropertiesText
+func (v *TextField) UnmarshalJSON(data []byte) error {
+	type Alias TextField
 	var raw struct {
 		Alias
 		Format json.RawMessage `json:"format"`
@@ -4952,9 +10101,9 @@ func (v *ResponsePropertiesText) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ResponsePropertiesText(raw.Alias)
+	*v = TextField(raw.Alias)
 	if len(raw.Format) > 0 && string(raw.Format) != "null" {
-		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+		parsed, err := UnmarshalTextFieldFormat(raw.Format)
 		if err != nil {
 			return err
 		}
@@ -4963,42 +10112,42 @@ func (v *ResponsePropertiesText) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (v *ResponseText) UnmarshalJSON(data []byte) error {
-	type Alias ResponseText
+func (v *UserMessageItemParam) UnmarshalJSON(data []byte) error {
+	type Alias UserMessageItemParam
 	var raw struct {
 		Alias
-		Format json.RawMessage `json:"format"`
+		Content json.RawMessage `json:"content"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ResponseText(raw.Alias)
-	if len(raw.Format) > 0 && string(raw.Format) != "null" {
-		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+	*v = UserMessageItemParam(raw.Alias)
+	if len(raw.Content) > 0 && string(raw.Content) != "null" {
+		parsed, err := UnmarshalUserMessageItemParamContent(raw.Content)
 		if err != nil {
 			return err
 		}
-		v.Format = parsed
+		v.Content = parsed
 	}
 	return nil
 }
 
-func (v *ResponseTextAnnotationDeltaEvent) UnmarshalJSON(data []byte) error {
-	type Alias ResponseTextAnnotationDeltaEvent
+func (v *WebSearchCall) UnmarshalJSON(data []byte) error {
+	type Alias WebSearchCall
 	var raw struct {
 		Alias
-		Annotation json.RawMessage `json:"annotation"`
+		Action json.RawMessage `json:"action"`
 	}
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*v = ResponseTextAnnotationDeltaEvent(raw.Alias)
-	if len(raw.Annotation) > 0 && string(raw.Annotation) != "null" {
-		parsed, err := UnmarshalAnnotation(raw.Annotation)
+	*v = WebSearchCall(raw.Alias)
+	if len(raw.Action) > 0 && string(raw.Action) != "null" {
+		parsed, err := UnmarshalWebSearchCallAction(raw.Action)
 		if err != nil {
 			return err
 		}
-		v.Annotation = parsed
+		v.Action = parsed
 	}
 	return nil
 }

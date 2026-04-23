@@ -192,19 +192,26 @@ func TestAnalyze_AllTypes(t *testing.T) {
 }
 
 func TestAnalyze_EmptyInterface(t *testing.T) {
-	// Named map types (map[string]any) should be included as KindMap.
+	// Inline map[string]any fields should analyze as KindMap somewhere in the IR.
 	pkgs, err := Analyze(true, "../../examples/openai")
 	if err != nil {
 		t.Fatal(err)
 	}
 	pkg := pkgs[0]
 
-	// ResponseFormatJsonSchemaSchema is `map[string]any` — should be KindMap.
-	typ, ok := pkg.Types["ResponseFormatJsonSchemaSchema"]
-	if !ok {
-		t.Fatal("ResponseFormatJsonSchemaSchema should be in the IR")
+	found := false
+	for _, typ := range pkg.Types {
+		for _, f := range typ.Fields {
+			if f.JSONName == "parameters" && f.Type.Inline != nil && f.Type.Inline.Kind == ir.KindMap {
+				found = true
+				break
+			}
+		}
+		if found {
+			break
+		}
 	}
-	if typ.Kind != ir.KindMap {
-		t.Errorf("ResponseFormatJsonSchemaSchema should be KindMap, got %v", typ.Kind)
+	if !found {
+		t.Fatal("expected at least one parameters field to analyze as KindMap")
 	}
 }

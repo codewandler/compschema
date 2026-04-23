@@ -785,10 +785,17 @@ func paramName(fieldName string) string {
 // goLiteral returns a Go literal string for a const/default value.
 func goLiteral(v any) string {
 	switch val := v.(type) {
+	case nil:
+		return "nil"
 	case string:
 		return fmt.Sprintf("%q", val)
 	case float64:
 		if val == float64(int64(val)) {
+			return fmt.Sprintf("%d", int64(val))
+		}
+		return fmt.Sprintf("%v", val)
+	case float32:
+		if float64(val) == float64(int64(val)) {
 			return fmt.Sprintf("%d", int64(val))
 		}
 		return fmt.Sprintf("%v", val)
@@ -801,8 +808,40 @@ func goLiteral(v any) string {
 			return "true"
 		}
 		return "false"
+	case []any:
+		parts := make([]string, len(val))
+		for i, item := range val {
+			parts[i] = goLiteral(item)
+		}
+		return "[]any{" + strings.Join(parts, ", ") + "}"
+	case []string:
+		parts := make([]string, len(val))
+		for i, item := range val {
+			parts[i] = goLiteral(item)
+		}
+		return "[]string{" + strings.Join(parts, ", ") + "}"
+	case []int64:
+		parts := make([]string, len(val))
+		for i, item := range val {
+			parts[i] = fmt.Sprintf("%d", item)
+		}
+		return "[]int64{" + strings.Join(parts, ", ") + "}"
+	case map[string]any:
+		if len(val) == 0 {
+			return "map[string]any{}"
+		}
+		keys := make([]string, 0, len(val))
+		for k := range val {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		parts := make([]string, 0, len(keys))
+		for _, k := range keys {
+			parts = append(parts, fmt.Sprintf("%q: %s", k, goLiteral(val[k])))
+		}
+		return "map[string]any{" + strings.Join(parts, ", ") + "}"
 	default:
-		return fmt.Sprintf("%v", val)
+		return fmt.Sprintf("%#v", val)
 	}
 }
 
@@ -1319,53 +1358,33 @@ func emitConstructorTest(b *strings.Builder, name string, t *ir.Type, pkg *ir.Pa
 	params := constructorParams(t)
 	autoFilled := autoFilledFields(t)
 
-	// Check if any param is a union type or has constraints that zero values
-	// won't satisfy — skip validation for these.
-	hasComplexParam := false
-	for _, f := range params {
-		if isUnionTypedField(f, pkg) {
-			hasComplexParam = true
-			break
+	ex := GenerateExample(t, pkg)
+	if ex == nil {
+		// Fall back to the minimal fixture generator.
+		if fixture, ok := generateFixture(t, pkg); ok && fixture != "" {
+			ex = json.RawMessage(fixture)
+		} else {
+			return
 		}
-		// Check for constraints that zero values fail.
-		for _, c := range f.Constraints {
-			switch c.Keyword {
-			case "minLength", "minItems", "pattern":
-				if n, ok := toFloat(c.Value); ok && n > 0 {
-					hasComplexParam = true
-				}
-				if c.Keyword == "pattern" {
-					hasComplexParam = true
-				}
-			case "minimum":
-				if n, ok := toFloat(c.Value); ok && n > 0 {
-					hasComplexParam = true
-				}
-			}
-		}
-		if hasComplexParam {
-			break
-		}
-		// Check if the field references a struct with required/const fields
-		// (zero value won't be schema-valid).
-		if f.Type.Name != "" {
-			if ft, ok := pkg.Types[f.Type.Name]; ok && ft.Kind == ir.KindStruct {
-				if ft.HasRequired() {
-					hasComplexParam = true
-				}
-			}
-		}
-		if hasComplexParam {
-			break
-		}
+	}
+	exJSON, err := json.Marshal(ex)
+	if err != nil {
+		return
 	}
 
 	b.WriteString(fmt.Sprintf("func TestCompschema_New%s(t *testing.T) {\n", name))
+	b.WriteString(fmt.Sprintf("\tsample, err := Decode%s([]byte(%q))\n", name, string(exJSON)))
+	b.WriteString("\tif err != nil {\n")
+	b.WriteString(fmt.Sprintf("\t\tt.Fatalf(\"decode example for %s: %%v\", err)\n", name))
+	b.WriteString("\t}\n")
 
-	// Build constructor call with zero/example values.
 	var argParts []string
 	for _, f := range params {
-		argParts = append(argParts, constructorTestArg(f, pkg))
+		arg := "sample." + f.Name
+		if isNullableRequiredField(f, pkg) {
+			arg = "*sample." + f.Name
+		}
+		argParts = append(argParts, arg)
 	}
 
 	b.WriteString(fmt.Sprintf("\tv := New%s(%s)\n", name, strings.Join(argParts, ", ")))
@@ -1373,7 +1392,6 @@ func emitConstructorTest(b *strings.Builder, name string, t *ir.Type, pkg *ir.Pa
 	b.WriteString(fmt.Sprintf("\t\tt.Fatal(\"New%s returned nil\")\n", name))
 	b.WriteString("\t}\n")
 
-	// Check auto-filled fields.
 	for _, f := range autoFilled {
 		val := constValue(f)
 		if val == nil {
@@ -1386,158 +1404,14 @@ func emitConstructorTest(b *strings.Builder, name string, t *ir.Type, pkg *ir.Pa
 		}
 	}
 
-	// Validate round-trip: marshal and validate against schema.
-	// Skip validation when params include union types — zero-value variants
-	// typically don't satisfy oneOf constraints.
-	if hasComplexParam {
-		b.WriteString("\t// Skip validation: constructor has union-typed params whose zero values\n")
-		b.WriteString("\t// may not satisfy oneOf schema constraints.\n")
-	} else {
-		b.WriteString("\tdata, err := json.Marshal(v)\n")
-		b.WriteString("\tif err != nil {\n")
-		b.WriteString("\t\tt.Fatalf(\"marshal: %v\", err)\n")
-		b.WriteString("\t}\n")
-		b.WriteString("\tif err := v.Validate(data); err != nil {\n")
-		b.WriteString(fmt.Sprintf("\t\tt.Errorf(\"New%s output fails validation: %%v\", err)\n", name))
-		b.WriteString("\t}\n")
-	}
-
+	b.WriteString("\tdata, err := json.Marshal(v)\n")
+	b.WriteString("\tif err != nil {\n")
+	b.WriteString("\t\tt.Fatalf(\"marshal: %v\", err)\n")
+	b.WriteString("\t}\n")
+	b.WriteString("\tif err := v.Validate(data); err != nil {\n")
+	b.WriteString(fmt.Sprintf("\t\tt.Errorf(\"New%s output fails validation: %%v\", err)\n", name))
+	b.WriteString("\t}\n")
 	b.WriteString("}\n\n")
-}
-
-// isUnionTypedField returns true if the field's type (directly or through
-// lists/nullable wrappers) involves a union interface.
-func isUnionTypedField(f ir.Field, pkg *ir.Package) bool {
-	return isUnionTypeRef(f.Type, pkg)
-}
-
-func isUnionTypeRef(ref ir.TypeRef, pkg *ir.Package) bool {
-	if ref.Name != "" {
-		if t, ok := pkg.Types[ref.Name]; ok {
-			if t.Kind == ir.KindUnion {
-				return true
-			}
-			// Named list whose items are a union.
-			if t.Kind == ir.KindList && t.Items != nil {
-				return isUnionTypeRef(*t.Items, pkg)
-			}
-		}
-	}
-	if ref.Inline != nil {
-		if ref.Inline.Kind == ir.KindNullable && ref.Inline.Inner != nil {
-			return isUnionTypeRef(*ref.Inline.Inner, pkg)
-		}
-		if ref.Inline.Kind == ir.KindList && ref.Inline.Items != nil {
-			return isUnionTypeRef(*ref.Inline.Items, pkg)
-		}
-	}
-	return false
-}
-
-// constructorTestArg returns a Go expression for a constructor test argument.
-func constructorTestArg(f ir.Field, pkg *ir.Package) string {
-	// Use const value if available.
-	if v := constValue(f); v != nil {
-		return goLiteral(v)
-	}
-
-	// Check constraints for a useful value.
-	for _, c := range f.Constraints {
-		if c.Keyword == "minimum" {
-			if n, ok := toFloat(c.Value); ok {
-				if n == float64(int64(n)) {
-					return fmt.Sprintf("%d", int64(n))
-				}
-				return fmt.Sprintf("%v", n)
-			}
-		}
-	}
-
-	// Generate zero-ish value based on type.
-	return constructorTestArgFromType(f.Type, pkg)
-}
-
-func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
-	if ref.Name != "" {
-		if t, ok := pkg.Types[ref.Name]; ok {
-			switch t.Kind {
-			case ir.KindEnum:
-				if len(t.EnumValues) > 0 {
-					return ref.Name + "(" + goLiteral(t.EnumValues[0]) + ")"
-				}
-				return ref.Name + `("")`
-			case ir.KindStruct:
-				return ref.Name + "{}"
-			case ir.KindUnion:
-				// Pick the first struct variant to construct a valid value.
-				for _, v := range t.Variants {
-					if v.Name != "" {
-						if vt, ok := pkg.Types[v.Name]; ok && vt.Kind == ir.KindStruct {
-							return "&" + v.Name + "{}"
-						}
-					}
-				}
-				return "nil"
-			case ir.KindScalar:
-				switch t.ScalarType {
-				case "string":
-					return `""`
-				case "integer", "int", "int8", "int16", "int32", "int64":
-					return "0"
-				case "number":
-					return "0.0"
-				case "boolean":
-					return "false"
-				default:
-					return "nil"
-				}
-			case ir.KindList:
-				return ref.Name + "{}"
-			case ir.KindMap:
-				return ref.Name + "{}"
-			case ir.KindNullable:
-				if t.Inner != nil {
-					return constructorTestArgFromType(*t.Inner, pkg)
-				}
-				return "nil"
-			}
-		}
-		return ref.Name + "{}"
-	}
-	if ref.Inline != nil {
-		switch ref.Inline.Kind {
-		case ir.KindScalar:
-			switch ref.Inline.ScalarType {
-			case "string":
-				return `""`
-			case "integer", "int", "int8", "int16", "int32", "int64":
-				return "0"
-			case "number":
-				return "0.0"
-			case "boolean":
-				return "false"
-			default:
-				return "nil"
-			}
-		case ir.KindList:
-			if ref.Inline.Items != nil {
-				item := constructorTestArgFromType(*ref.Inline.Items, pkg)
-				return "[]" + fieldGoTypeFromRef(*ref.Inline.Items, pkg) + "{" + item + "}"
-			}
-			return "[]any{}"
-		case ir.KindMap:
-			if ref.Inline.MapValue != nil {
-				return "map[string]" + fieldGoTypeFromRef(*ref.Inline.MapValue, pkg) + "{}"
-			}
-			return "map[string]any{}"
-		case ir.KindNullable:
-			if ref.Inline.Inner != nil {
-				return constructorTestArgFromType(*ref.Inline.Inner, pkg)
-			}
-			return "nil"
-		}
-	}
-	return `""`
 }
 
 // generateFixture creates a minimal valid JSON string for a struct type.

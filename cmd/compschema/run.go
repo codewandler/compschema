@@ -129,6 +129,7 @@ func runAction(a config.Action) (*report.StepReport, error) {
 
 func runExtractAction(a config.Action, sr *report.StepReport) error {
 	specPath := a.Spec
+	specOrigin := specPath
 
 	// Resolve source if set (overrides spec).
 	if a.Source != nil {
@@ -140,6 +141,7 @@ func runExtractAction(a config.Action, sr *report.StepReport) error {
 			defer os.Remove(path) //nolint:errcheck // best-effort temp cleanup
 		}
 		specPath = path
+		specOrigin = meta.Origin
 		sr.Set("source_hash", meta.Hash)
 	}
 
@@ -153,7 +155,19 @@ func runExtractAction(a config.Action, sr *report.StepReport) error {
 		return fmt.Errorf("'path' is required")
 	}
 
-	conv, err := openapi2jsonschema.New(specPath)
+	var (
+		conv *openapi2jsonschema.Converter
+		err  error
+	)
+	if specOrigin != "" && specOrigin != specPath {
+		data, readErr := os.ReadFile(specPath)
+		if readErr != nil {
+			return fmt.Errorf("read fetched spec: %w", readErr)
+		}
+		conv, err = openapi2jsonschema.NewWithOrigin(data, specOrigin)
+	} else {
+		conv, err = openapi2jsonschema.New(specPath)
+	}
 	if err != nil {
 		return err
 	}
@@ -517,7 +531,11 @@ func fetchSourceToTemp(raw any) (path string, meta source.Meta, isTemp bool, err
 		return "", source.Meta{}, false, err
 	}
 
-	tmpFile, err := os.CreateTemp("", "compschema-source-*")
+	tmpPattern := "compschema-source-*"
+	if ext := filepath.Ext(meta.Origin); ext != "" {
+		tmpPattern = "compschema-source-*" + ext
+	}
+	tmpFile, err := os.CreateTemp("", tmpPattern)
 	if err != nil {
 		return "", source.Meta{}, false, fmt.Errorf("create temp file: %w", err)
 	}

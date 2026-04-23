@@ -355,10 +355,26 @@ func applyConstraints(val any, constraints []ir.Constraint, fieldName string) an
 					}
 				}
 			}
+		case "maximum":
+			if max, ok := toFloat(c.Value); ok {
+				if cur, ok := toFloat(val); ok && cur > max {
+					if max == float64(int64(max)) {
+						val = int64(max)
+					} else {
+						val = max
+					}
+				}
+			}
 		case "minLength":
 			if ml, ok := toFloat(c.Value); ok && ml > 0 {
 				if s, ok := val.(string); ok && len(s) < int(ml) {
 					val = strings.Repeat("x", int(ml))
+				}
+			}
+		case "maxLength":
+			if ml, ok := toFloat(c.Value); ok {
+				if s, ok := val.(string); ok && len(s) > int(ml) {
+					val = s[:int(ml)]
 				}
 			}
 		case "minItems":
@@ -372,6 +388,12 @@ func applyConstraints(val any, constraints []ir.Constraint, fieldName string) an
 						}
 					}
 					val = arr
+				}
+			}
+		case "maxItems":
+			if mi, ok := toFloat(c.Value); ok {
+				if arr, ok := val.([]any); ok && len(arr) > int(mi) {
+					val = arr[:int(mi)]
 				}
 			}
 		}

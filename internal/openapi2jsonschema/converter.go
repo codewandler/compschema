@@ -13,14 +13,16 @@ package openapi2jsonschema
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 
+	"github.com/pb33f/libopenapi"
+	"github.com/pb33f/libopenapi/datamodel"
 	v3base "github.com/pb33f/libopenapi/datamodel/high/base"
 	v3high "github.com/pb33f/libopenapi/datamodel/high/v3"
 	"github.com/pb33f/libopenapi/orderedmap"
-
-	"github.com/pb33f/libopenapi"
 )
 
 // Converter holds the parsed OpenAPI model and extracted $defs.
@@ -31,13 +33,23 @@ type Converter struct {
 	nameStack []string                     // tracks current named schema for recursive $ref resolution
 }
 
-// New parses an OpenAPI spec from a file and returns a Converter.
+// New parses an OpenAPI spec from a local file path and returns a Converter.
 func New(path string) (*Converter, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read spec: %w", err)
 	}
-	doc, err := libopenapi.NewDocument(data)
+	return NewWithOrigin(data, path)
+}
+
+// NewWithOrigin parses an OpenAPI spec from bytes and configures external
+// reference resolution using the supplied origin. The origin may be a local
+// file path or an HTTP(S) URL.
+func NewWithOrigin(data []byte, origin string) (*Converter, error) {
+	cfg := datamodel.NewDocumentConfiguration()
+	configureReferenceResolution(cfg, origin)
+
+	doc, err := libopenapi.NewDocumentWithConfiguration(data, cfg)
 	if err != nil {
 		return nil, fmt.Errorf("parse openapi: %w", err)
 	}
@@ -55,6 +67,33 @@ func New(path string) (*Converter, error) {
 		seen:      make(map[string]bool),
 		nameStack: nil,
 	}, nil
+}
+
+func configureReferenceResolution(cfg *datamodel.DocumentConfiguration, origin string) {
+	if cfg == nil || origin == "" {
+		return
+	}
+
+	if u, err := url.Parse(origin); err == nil && (u.Scheme == "http" || u.Scheme == "https") {
+		base := *u
+		base.RawQuery = ""
+		base.Fragment = ""
+		if idx := strings.LastIndex(base.Path, "/"); idx >= 0 {
+			base.Path = base.Path[:idx+1]
+		} else {
+			base.Path = "/"
+		}
+		cfg.BaseURL = &base
+		return
+	}
+
+	absPath, err := filepath.Abs(origin)
+	if err != nil {
+		absPath = origin
+	}
+	cfg.BasePath = filepath.Dir(absPath)
+	cfg.SpecFilePath = filepath.Base(absPath)
+	cfg.AllowFileReferences = true
 }
 
 // ExtractSchema extracts a named component schema (e.g. "CreateResponse")
@@ -293,7 +332,11 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 
 	// propertyNames  (3.1+)
 	if schema.PropertyNames != nil {
-		out.Set("propertyNames", c.convertProxy(schema.PropertyNames))
+		if c.isEmptyProxy(schema.PropertyNames) {
+			out.Set("propertyNames", true)
+		} else {
+			out.Set("propertyNames", c.convertProxy(schema.PropertyNames))
+		}
 	}
 
 	// required
@@ -488,15 +531,6 @@ func (c *Converter) convertSchema(name string, schema *v3base.Schema) *orderedma
 		}
 	}
 
-	// ── Intentionally stripped (OpenAPI-only, no JSON Schema equivalent) ─
-	//
-	// - XML              → OpenAPI serialization hint, not relevant for JSON
-	// - ExternalDocs     → OpenAPI documentation link, no JSON Schema equivalent
-	// - SchemaTypeRef    → nested $schema dialect (set at document level, not per-def)
-	// - Vocabulary       → meta-schema vocabulary declaration (not per-schema)
-	// - Nullable         → already handled above (merged into type array)
-	// - ParentProxy, low → internal libopenapi bookkeeping
-
 	// ── Register named schemas in $defs ─────────────────────────────────
 
 	if name != "" {
@@ -515,7 +549,7 @@ func (c *Converter) convertProxy(proxy *v3base.SchemaProxy) any {
 	ref := proxy.GetReference()
 	if ref != "" {
 		refName := refToName(ref)
-		c.ensureDef(refName)
+		c.ensureDefFromProxy(refName, proxy)
 		refMap := orderedmap.New[string, any]()
 		refMap.Set("$ref", "#/$defs/"+refName)
 		return refMap
@@ -526,40 +560,51 @@ func (c *Converter) convertProxy(proxy *v3base.SchemaProxy) any {
 		return orderedmap.New[string, any]()
 	}
 
-	// Detect empty schemas — these are typically $recursiveRef: "#" that
-	// libopenapi can't resolve. Replace with a $ref to the nearest named
-	// parent schema (self-reference).
-	if c.isEmptySchema(s) && len(c.nameStack) > 0 {
-		parentName := c.nameStack[len(c.nameStack)-1]
-		refMap := orderedmap.New[string, any]()
-		refMap.Set("$ref", "#/$defs/"+parentName)
-		return refMap
-	}
-
 	return c.convertSchema("", s)
 }
 
 // ensureDef resolves a component schema name and adds it to $defs if not already present.
 func (c *Converter) ensureDef(name string) {
+	if c.doc.Components == nil || c.doc.Components.Schemas == nil {
+		return
+	}
+	compProxy, ok := c.doc.Components.Schemas.Get(name)
+	if !ok {
+		return
+	}
+	c.ensureDefFromProxy(name, compProxy)
+}
+
+// ensureDefFromProxy resolves any schema proxy, including external references,
+// and stores the result under the supplied definition name.
+func (c *Converter) ensureDefFromProxy(name string, proxy *v3base.SchemaProxy) {
+	if name == "" || proxy == nil {
+		return
+	}
 	if c.seen[name] {
 		return
 	}
 	c.seen[name] = true
 
-	if c.doc.Components == nil || c.doc.Components.Schemas == nil {
-		return
-	}
-
-	compProxy, ok := c.doc.Components.Schemas.Get(name)
-	if !ok {
-		return
-	}
-
-	schema, err := compProxy.BuildSchema()
+	schema, err := proxy.BuildSchema()
 	if err != nil {
 		return
 	}
 	c.convertSchema(name, schema)
+}
+
+func (c *Converter) isEmptyProxy(proxy *v3base.SchemaProxy) bool {
+	if proxy == nil {
+		return true
+	}
+	if proxy.GetReference() != "" {
+		return false
+	}
+	s, err := proxy.BuildSchema()
+	if err != nil {
+		return false
+	}
+	return c.isEmptySchema(s)
 }
 
 // isEmptySchema returns true if a schema has no meaningful content — typically
@@ -810,7 +855,13 @@ func mergeInto(dst, src *orderedmap.Map[string, any]) {
 // refToName extracts the schema name from a $ref like "#/components/schemas/Foo".
 func refToName(ref string) string {
 	parts := strings.Split(ref, "/")
-	return parts[len(parts)-1]
+	name := parts[len(parts)-1]
+	if strings.HasSuffix(name, ".json") || strings.HasSuffix(name, ".yaml") || strings.HasSuffix(name, ".yml") {
+		if ext := filepath.Ext(name); ext != "" {
+			name = strings.TrimSuffix(name, ext)
+		}
+	}
+	return name
 }
 
 // ListSchemaNames returns all component schema names in the spec.
@@ -854,7 +905,7 @@ func (c *Converter) ExtractEndpointSchemas(pathPrefix string) ([]byte, error) {
 						if ref != "" {
 							name := refToName(ref)
 							rootSchemaNames = append(rootSchemaNames, name)
-							c.ensureDef(name)
+							c.ensureDefFromProxy(name, ct.Value.Schema)
 						}
 					}
 				}
@@ -870,7 +921,7 @@ func (c *Converter) ExtractEndpointSchemas(pathPrefix string) ([]byte, error) {
 								if ref != "" {
 									name := refToName(ref)
 									rootSchemaNames = append(rootSchemaNames, name)
-									c.ensureDef(name)
+									c.ensureDefFromProxy(name, ct.Value.Schema)
 								}
 							}
 						}

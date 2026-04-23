@@ -54,6 +54,669 @@ func compschemaValidator(name string) *jsonschema.Schema {
 	return sch
 }
 
+// JSONSchemaBytes returns the JSON Schema for ToolChoiceValueEnum.
+func (ToolChoiceValueEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceValueEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for AllowedToolChoice.
+func (AllowedToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AllowedToolChoice") }
+
+// Validate checks whether raw JSON conforms to the AllowedToolChoice schema.
+func (AllowedToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("AllowedToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAllowedToolChoice validates and unmarshals JSON into a AllowedToolChoice.
+func DecodeAllowedToolChoice(data []byte) (AllowedToolChoice, error) {
+	var zero AllowedToolChoice
+	if err := zero.Validate(data); err != nil {
+		return AllowedToolChoice{}, err
+	}
+	var result AllowedToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AllowedToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewAllowedToolChoice creates a new AllowedToolChoice with required fields and auto-filled const/default values.
+func NewAllowedToolChoice(type_ AllowedToolChoiceType, tools []any, mode ToolChoiceValueEnum) *AllowedToolChoice {
+	return &AllowedToolChoice{
+		Type: type_,
+		Tools: tools,
+		Mode: mode,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificApplyPatchParam.
+func (SpecificApplyPatchParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificApplyPatchParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificApplyPatchParam schema.
+func (SpecificApplyPatchParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificApplyPatchParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificApplyPatchParam validates and unmarshals JSON into a SpecificApplyPatchParam.
+func DecodeSpecificApplyPatchParam(data []byte) (SpecificApplyPatchParam, error) {
+	var zero SpecificApplyPatchParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificApplyPatchParam{}, err
+	}
+	var result SpecificApplyPatchParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificApplyPatchParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificApplyPatchParam creates a new SpecificApplyPatchParam with required fields and auto-filled const/default values.
+func NewSpecificApplyPatchParam(type_ SpecificApplyPatchParamType) *SpecificApplyPatchParam {
+	return &SpecificApplyPatchParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificCodeInterpreterParam.
+func (SpecificCodeInterpreterParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificCodeInterpreterParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificCodeInterpreterParam schema.
+func (SpecificCodeInterpreterParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificCodeInterpreterParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificCodeInterpreterParam validates and unmarshals JSON into a SpecificCodeInterpreterParam.
+func DecodeSpecificCodeInterpreterParam(data []byte) (SpecificCodeInterpreterParam, error) {
+	var zero SpecificCodeInterpreterParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificCodeInterpreterParam{}, err
+	}
+	var result SpecificCodeInterpreterParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificCodeInterpreterParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificCodeInterpreterParam creates a new SpecificCodeInterpreterParam with required fields and auto-filled const/default values.
+func NewSpecificCodeInterpreterParam(type_ SpecificCodeInterpreterParamType) *SpecificCodeInterpreterParam {
+	return &SpecificCodeInterpreterParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificComputerParam.
+func (SpecificComputerParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificComputerParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificComputerParam schema.
+func (SpecificComputerParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificComputerParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificComputerParam validates and unmarshals JSON into a SpecificComputerParam.
+func DecodeSpecificComputerParam(data []byte) (SpecificComputerParam, error) {
+	var zero SpecificComputerParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificComputerParam{}, err
+	}
+	var result SpecificComputerParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificComputerParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificComputerParam creates a new SpecificComputerParam with required fields and auto-filled const/default values.
+func NewSpecificComputerParam(type_ SpecificComputerParamType) *SpecificComputerParam {
+	return &SpecificComputerParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificComputerPreviewParam.
+func (SpecificComputerPreviewParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificComputerPreviewParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificComputerPreviewParam schema.
+func (SpecificComputerPreviewParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificComputerPreviewParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificComputerPreviewParam validates and unmarshals JSON into a SpecificComputerPreviewParam.
+func DecodeSpecificComputerPreviewParam(data []byte) (SpecificComputerPreviewParam, error) {
+	var zero SpecificComputerPreviewParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificComputerPreviewParam{}, err
+	}
+	var result SpecificComputerPreviewParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificComputerPreviewParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificComputerPreviewParam creates a new SpecificComputerPreviewParam with required fields and auto-filled const/default values.
+func NewSpecificComputerPreviewParam(type_ SpecificComputerPreviewParamType) *SpecificComputerPreviewParam {
+	return &SpecificComputerPreviewParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificCustomToolParam.
+func (SpecificCustomToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificCustomToolParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificCustomToolParam schema.
+func (SpecificCustomToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificCustomToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificCustomToolParam validates and unmarshals JSON into a SpecificCustomToolParam.
+func DecodeSpecificCustomToolParam(data []byte) (SpecificCustomToolParam, error) {
+	var zero SpecificCustomToolParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificCustomToolParam{}, err
+	}
+	var result SpecificCustomToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificCustomToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificCustomToolParam creates a new SpecificCustomToolParam with required fields and auto-filled const/default values.
+func NewSpecificCustomToolParam(type_ SpecificCustomToolParamType, name string) *SpecificCustomToolParam {
+	return &SpecificCustomToolParam{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificFileSearchParam.
+func (SpecificFileSearchParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificFileSearchParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificFileSearchParam schema.
+func (SpecificFileSearchParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificFileSearchParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificFileSearchParam validates and unmarshals JSON into a SpecificFileSearchParam.
+func DecodeSpecificFileSearchParam(data []byte) (SpecificFileSearchParam, error) {
+	var zero SpecificFileSearchParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificFileSearchParam{}, err
+	}
+	var result SpecificFileSearchParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificFileSearchParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificFileSearchParam creates a new SpecificFileSearchParam with required fields and auto-filled const/default values.
+func NewSpecificFileSearchParam(type_ SpecificFileSearchParamType) *SpecificFileSearchParam {
+	return &SpecificFileSearchParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificFunctionParam.
+func (SpecificFunctionParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificFunctionParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificFunctionParam schema.
+func (SpecificFunctionParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificFunctionParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificFunctionParam validates and unmarshals JSON into a SpecificFunctionParam.
+func DecodeSpecificFunctionParam(data []byte) (SpecificFunctionParam, error) {
+	var zero SpecificFunctionParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificFunctionParam{}, err
+	}
+	var result SpecificFunctionParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificFunctionParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificFunctionParam creates a new SpecificFunctionParam with required fields and auto-filled const/default values.
+func NewSpecificFunctionParam(type_ SpecificFunctionParamType, name string) *SpecificFunctionParam {
+	return &SpecificFunctionParam{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificFunctionShellParam.
+func (SpecificFunctionShellParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificFunctionShellParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificFunctionShellParam schema.
+func (SpecificFunctionShellParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificFunctionShellParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificFunctionShellParam validates and unmarshals JSON into a SpecificFunctionShellParam.
+func DecodeSpecificFunctionShellParam(data []byte) (SpecificFunctionShellParam, error) {
+	var zero SpecificFunctionShellParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificFunctionShellParam{}, err
+	}
+	var result SpecificFunctionShellParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificFunctionShellParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificFunctionShellParam creates a new SpecificFunctionShellParam with required fields and auto-filled const/default values.
+func NewSpecificFunctionShellParam(type_ SpecificFunctionShellParamType) *SpecificFunctionShellParam {
+	return &SpecificFunctionShellParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificImageGenParam.
+func (SpecificImageGenParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificImageGenParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificImageGenParam schema.
+func (SpecificImageGenParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificImageGenParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificImageGenParam validates and unmarshals JSON into a SpecificImageGenParam.
+func DecodeSpecificImageGenParam(data []byte) (SpecificImageGenParam, error) {
+	var zero SpecificImageGenParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificImageGenParam{}, err
+	}
+	var result SpecificImageGenParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificImageGenParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificImageGenParam creates a new SpecificImageGenParam with required fields and auto-filled const/default values.
+func NewSpecificImageGenParam(type_ SpecificImageGenParamType) *SpecificImageGenParam {
+	return &SpecificImageGenParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificLocalShellParam.
+func (SpecificLocalShellParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificLocalShellParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificLocalShellParam schema.
+func (SpecificLocalShellParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificLocalShellParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificLocalShellParam validates and unmarshals JSON into a SpecificLocalShellParam.
+func DecodeSpecificLocalShellParam(data []byte) (SpecificLocalShellParam, error) {
+	var zero SpecificLocalShellParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificLocalShellParam{}, err
+	}
+	var result SpecificLocalShellParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificLocalShellParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificLocalShellParam creates a new SpecificLocalShellParam with required fields and auto-filled const/default values.
+func NewSpecificLocalShellParam(type_ SpecificLocalShellParamType) *SpecificLocalShellParam {
+	return &SpecificLocalShellParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificMCPFunctionParam.
+func (SpecificMCPFunctionParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificMCPFunctionParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificMCPFunctionParam schema.
+func (SpecificMCPFunctionParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificMCPFunctionParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificMCPFunctionParam validates and unmarshals JSON into a SpecificMCPFunctionParam.
+func DecodeSpecificMCPFunctionParam(data []byte) (SpecificMCPFunctionParam, error) {
+	var zero SpecificMCPFunctionParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificMCPFunctionParam{}, err
+	}
+	var result SpecificMCPFunctionParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificMCPFunctionParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificMCPFunctionParam creates a new SpecificMCPFunctionParam with required fields and auto-filled const/default values.
+func NewSpecificMCPFunctionParam(type_ SpecificMCPFunctionParamType, serverLabel string) *SpecificMCPFunctionParam {
+	return &SpecificMCPFunctionParam{
+		Type: type_,
+		ServerLabel: serverLabel,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificWebSearchParam.
+func (SpecificWebSearchParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificWebSearchParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificWebSearchParam schema.
+func (SpecificWebSearchParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificWebSearchParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificWebSearchParam validates and unmarshals JSON into a SpecificWebSearchParam.
+func DecodeSpecificWebSearchParam(data []byte) (SpecificWebSearchParam, error) {
+	var zero SpecificWebSearchParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificWebSearchParam{}, err
+	}
+	var result SpecificWebSearchParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificWebSearchParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificWebSearchParam creates a new SpecificWebSearchParam with required fields and auto-filled const/default values.
+func NewSpecificWebSearchParam(type_ SpecificWebSearchParamType) *SpecificWebSearchParam {
+	return &SpecificWebSearchParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SpecificWebSearchPreviewParam.
+func (SpecificWebSearchPreviewParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificWebSearchPreviewParam") }
+
+// Validate checks whether raw JSON conforms to the SpecificWebSearchPreviewParam schema.
+func (SpecificWebSearchPreviewParam) Validate(data []byte) error {
+	sch := compschemaValidator("SpecificWebSearchPreviewParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSpecificWebSearchPreviewParam validates and unmarshals JSON into a SpecificWebSearchPreviewParam.
+func DecodeSpecificWebSearchPreviewParam(data []byte) (SpecificWebSearchPreviewParam, error) {
+	var zero SpecificWebSearchPreviewParam
+	if err := zero.Validate(data); err != nil {
+		return SpecificWebSearchPreviewParam{}, err
+	}
+	var result SpecificWebSearchPreviewParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SpecificWebSearchPreviewParam{}, err
+	}
+	return result, nil
+}
+
+// NewSpecificWebSearchPreviewParam creates a new SpecificWebSearchPreviewParam with required fields and auto-filled const/default values.
+func NewSpecificWebSearchPreviewParam(type_ SpecificWebSearchPreviewParamType) *SpecificWebSearchPreviewParam {
+	return &SpecificWebSearchPreviewParam{
+		Type: type_,
+	}
+}
+
+// SpecificToolChoiceParamJSONSchemaBytes returns the JSON Schema for the SpecificToolChoiceParam union.
+func SpecificToolChoiceParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SpecificToolChoiceParam") }
+
+// DecodeSpecificToolChoiceParam validates and unmarshals JSON into the correct SpecificToolChoiceParam variant.
+// Dispatches on the "type" discriminator field.
+func DecodeSpecificToolChoiceParam(data []byte) (SpecificToolChoiceParam, error) {
+	sch := compschemaValidator("SpecificToolChoiceParam")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "apply_patch":
+		var val SpecificApplyPatchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "code_interpreter":
+		var val SpecificCodeInterpreterParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer-preview":
+		var val SpecificComputerParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview":
+		var val SpecificComputerPreviewParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val SpecificCustomToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "file_search":
+		var val SpecificFileSearchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function":
+		var val SpecificFunctionParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val SpecificFunctionShellParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation":
+		var val SpecificImageGenParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell":
+		var val SpecificLocalShellParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val SpecificMCPFunctionParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search":
+		var val SpecificWebSearchParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview":
+		var val SpecificWebSearchPreviewParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for SpecificToolChoiceParam", disc.D)
+	}
+}
+
+// SpecificToolChoiceParamAs extracts a variant from a SpecificToolChoiceParam union value, like errors.As.
+// Only types whose pointer implements SpecificToolChoiceParam can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if SpecificToolChoiceParamAs(shape, &circle) {
+//		// circle is populated
+//	}
+func SpecificToolChoiceParamAs[T any, P interface{ *T; SpecificToolChoiceParam }](v SpecificToolChoiceParam, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for AllowedToolsParam.
+func (AllowedToolsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AllowedToolsParam") }
+
+// Validate checks whether raw JSON conforms to the AllowedToolsParam schema.
+func (AllowedToolsParam) Validate(data []byte) error {
+	sch := compschemaValidator("AllowedToolsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAllowedToolsParam validates and unmarshals JSON into a AllowedToolsParam.
+func DecodeAllowedToolsParam(data []byte) (AllowedToolsParam, error) {
+	var zero AllowedToolsParam
+	if err := zero.Validate(data); err != nil {
+		return AllowedToolsParam{}, err
+	}
+	var result AllowedToolsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AllowedToolsParam{}, err
+	}
+	return result, nil
+}
+
+// NewAllowedToolsParam creates a new AllowedToolsParam with required fields and auto-filled const/default values.
+func NewAllowedToolsParam(type_ AllowedToolsParamType, tools []SpecificToolChoiceParam) *AllowedToolsParam {
+	return &AllowedToolsParam{
+		Type: type_,
+		Tools: tools,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ContainerFileCitationBody.
+func (ContainerFileCitationBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ContainerFileCitationBody") }
+
+// Validate checks whether raw JSON conforms to the ContainerFileCitationBody schema.
+func (ContainerFileCitationBody) Validate(data []byte) error {
+	sch := compschemaValidator("ContainerFileCitationBody")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeContainerFileCitationBody validates and unmarshals JSON into a ContainerFileCitationBody.
+func DecodeContainerFileCitationBody(data []byte) (ContainerFileCitationBody, error) {
+	var zero ContainerFileCitationBody
+	if err := zero.Validate(data); err != nil {
+		return ContainerFileCitationBody{}, err
+	}
+	var result ContainerFileCitationBody
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ContainerFileCitationBody{}, err
+	}
+	return result, nil
+}
+
+// NewContainerFileCitationBody creates a new ContainerFileCitationBody with required fields and auto-filled const/default values.
+func NewContainerFileCitationBody(startIndex int64, endIndex int64, filename string, type_ ContainerFileCitationBodyType, containerID string, fileID string) *ContainerFileCitationBody {
+	return &ContainerFileCitationBody{
+		StartIndex: startIndex,
+		EndIndex: endIndex,
+		Filename: filename,
+		Type: type_,
+		ContainerID: containerID,
+		FileID: fileID,
+	}
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for FileCitationBody.
 func (FileCitationBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileCitationBody") }
 
@@ -81,46 +744,12 @@ func DecodeFileCitationBody(data []byte) (FileCitationBody, error) {
 }
 
 // NewFileCitationBody creates a new FileCitationBody with required fields and auto-filled const/default values.
-func NewFileCitationBody(index int64, type_ FileCitationBodyType, fileID string) *FileCitationBody {
+func NewFileCitationBody(index int64, filename string, type_ FileCitationBodyType, fileID string) *FileCitationBody {
 	return &FileCitationBody{
 		Index: index,
+		Filename: filename,
 		Type: type_,
 		FileID: fileID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FilePath.
-func (FilePath) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FilePath") }
-
-// Validate checks whether raw JSON conforms to the FilePath schema.
-func (FilePath) Validate(data []byte) error {
-	sch := compschemaValidator("FilePath")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFilePath validates and unmarshals JSON into a FilePath.
-func DecodeFilePath(data []byte) (FilePath, error) {
-	var zero FilePath
-	if err := zero.Validate(data); err != nil {
-		return FilePath{}, err
-	}
-	var result FilePath
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FilePath{}, err
-	}
-	return result, nil
-}
-
-// NewFilePath creates a new FilePath with required fields and auto-filled const/default values.
-func NewFilePath(type_ FilePathType, fileID string, index int64) *FilePath {
-	return &FilePath{
-		Type: type_,
-		FileID: fileID,
-		Index: index,
 	}
 }
 
@@ -182,14 +811,14 @@ func DecodeAnnotation(data []byte) (Annotation, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "file_citation":
-		var val FileCitationBody
+	case "container_file_citation":
+		var val ContainerFileCitationBody
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "file_path":
-		var val FilePath
+	case "file_citation":
+		var val FileCitationBody
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -222,6 +851,613 @@ func AnnotationAs[T any, P interface{ *T; Annotation }](v Annotation, target *T)
 	return ok
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for ApiSourceParam.
+func (ApiSourceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApiSourceParam") }
+
+// Validate checks whether raw JSON conforms to the ApiSourceParam schema.
+func (ApiSourceParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApiSourceParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApiSourceParam validates and unmarshals JSON into a ApiSourceParam.
+func DecodeApiSourceParam(data []byte) (ApiSourceParam, error) {
+	var zero ApiSourceParam
+	if err := zero.Validate(data); err != nil {
+		return ApiSourceParam{}, err
+	}
+	var result ApiSourceParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApiSourceParam{}, err
+	}
+	return result, nil
+}
+
+// NewApiSourceParam creates a new ApiSourceParam with required fields and auto-filled const/default values.
+func NewApiSourceParam(type_ ApiSourceParamType, name string) *ApiSourceParam {
+	return &ApiSourceParam{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchCreateFileOperation.
+func (ApplyPatchCreateFileOperation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchCreateFileOperation") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchCreateFileOperation schema.
+func (ApplyPatchCreateFileOperation) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchCreateFileOperation")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchCreateFileOperation validates and unmarshals JSON into a ApplyPatchCreateFileOperation.
+func DecodeApplyPatchCreateFileOperation(data []byte) (ApplyPatchCreateFileOperation, error) {
+	var zero ApplyPatchCreateFileOperation
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchCreateFileOperation{}, err
+	}
+	var result ApplyPatchCreateFileOperation
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchCreateFileOperation{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchCreateFileOperation creates a new ApplyPatchCreateFileOperation with required fields and auto-filled const/default values.
+func NewApplyPatchCreateFileOperation(type_ ApplyPatchCreateFileOperationType, path string, diff string) *ApplyPatchCreateFileOperation {
+	return &ApplyPatchCreateFileOperation{
+		Type: type_,
+		Path: path,
+		Diff: diff,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchCreateFileOperationParam.
+func (ApplyPatchCreateFileOperationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchCreateFileOperationParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchCreateFileOperationParam schema.
+func (ApplyPatchCreateFileOperationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchCreateFileOperationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchCreateFileOperationParam validates and unmarshals JSON into a ApplyPatchCreateFileOperationParam.
+func DecodeApplyPatchCreateFileOperationParam(data []byte) (ApplyPatchCreateFileOperationParam, error) {
+	var zero ApplyPatchCreateFileOperationParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchCreateFileOperationParam{}, err
+	}
+	var result ApplyPatchCreateFileOperationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchCreateFileOperationParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchCreateFileOperationParam creates a new ApplyPatchCreateFileOperationParam with required fields and auto-filled const/default values.
+func NewApplyPatchCreateFileOperationParam(type_ ApplyPatchCreateFileOperationParamType, path string, diff string) *ApplyPatchCreateFileOperationParam {
+	return &ApplyPatchCreateFileOperationParam{
+		Type: type_,
+		Path: path,
+		Diff: diff,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchDeleteFileOperation.
+func (ApplyPatchDeleteFileOperation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchDeleteFileOperation") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchDeleteFileOperation schema.
+func (ApplyPatchDeleteFileOperation) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchDeleteFileOperation")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchDeleteFileOperation validates and unmarshals JSON into a ApplyPatchDeleteFileOperation.
+func DecodeApplyPatchDeleteFileOperation(data []byte) (ApplyPatchDeleteFileOperation, error) {
+	var zero ApplyPatchDeleteFileOperation
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchDeleteFileOperation{}, err
+	}
+	var result ApplyPatchDeleteFileOperation
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchDeleteFileOperation{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchDeleteFileOperation creates a new ApplyPatchDeleteFileOperation with required fields and auto-filled const/default values.
+func NewApplyPatchDeleteFileOperation(type_ ApplyPatchDeleteFileOperationType, path string) *ApplyPatchDeleteFileOperation {
+	return &ApplyPatchDeleteFileOperation{
+		Type: type_,
+		Path: path,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchDeleteFileOperationParam.
+func (ApplyPatchDeleteFileOperationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchDeleteFileOperationParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchDeleteFileOperationParam schema.
+func (ApplyPatchDeleteFileOperationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchDeleteFileOperationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchDeleteFileOperationParam validates and unmarshals JSON into a ApplyPatchDeleteFileOperationParam.
+func DecodeApplyPatchDeleteFileOperationParam(data []byte) (ApplyPatchDeleteFileOperationParam, error) {
+	var zero ApplyPatchDeleteFileOperationParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchDeleteFileOperationParam{}, err
+	}
+	var result ApplyPatchDeleteFileOperationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchDeleteFileOperationParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchDeleteFileOperationParam creates a new ApplyPatchDeleteFileOperationParam with required fields and auto-filled const/default values.
+func NewApplyPatchDeleteFileOperationParam(type_ ApplyPatchDeleteFileOperationParamType, path string) *ApplyPatchDeleteFileOperationParam {
+	return &ApplyPatchDeleteFileOperationParam{
+		Type: type_,
+		Path: path,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchUpdateFileOperationParam.
+func (ApplyPatchUpdateFileOperationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchUpdateFileOperationParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchUpdateFileOperationParam schema.
+func (ApplyPatchUpdateFileOperationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchUpdateFileOperationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchUpdateFileOperationParam validates and unmarshals JSON into a ApplyPatchUpdateFileOperationParam.
+func DecodeApplyPatchUpdateFileOperationParam(data []byte) (ApplyPatchUpdateFileOperationParam, error) {
+	var zero ApplyPatchUpdateFileOperationParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchUpdateFileOperationParam{}, err
+	}
+	var result ApplyPatchUpdateFileOperationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchUpdateFileOperationParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchUpdateFileOperationParam creates a new ApplyPatchUpdateFileOperationParam with required fields and auto-filled const/default values.
+func NewApplyPatchUpdateFileOperationParam(diff string, type_ ApplyPatchUpdateFileOperationParamType, path string) *ApplyPatchUpdateFileOperationParam {
+	return &ApplyPatchUpdateFileOperationParam{
+		Diff: diff,
+		Type: type_,
+		Path: path,
+	}
+}
+
+// ApplyPatchOperationParamJSONSchemaBytes returns the JSON Schema for the ApplyPatchOperationParam union.
+func ApplyPatchOperationParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchOperationParam") }
+
+// DecodeApplyPatchOperationParam validates and unmarshals JSON into the correct ApplyPatchOperationParam variant.
+// Dispatches on the "type" discriminator field.
+func DecodeApplyPatchOperationParam(data []byte) (ApplyPatchOperationParam, error) {
+	sch := compschemaValidator("ApplyPatchOperationParam")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "create_file":
+		var val ApplyPatchCreateFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "delete_file":
+		var val ApplyPatchDeleteFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "update_file":
+		var val ApplyPatchUpdateFileOperationParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ApplyPatchOperationParam", disc.D)
+	}
+}
+
+// ApplyPatchOperationParamAs extracts a variant from a ApplyPatchOperationParam union value, like errors.As.
+// Only types whose pointer implements ApplyPatchOperationParam can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ApplyPatchOperationParamAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ApplyPatchOperationParamAs[T any, P interface{ *T; ApplyPatchOperationParam }](v ApplyPatchOperationParam, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchTool.
+func (ApplyPatchTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchTool") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchTool schema.
+func (ApplyPatchTool) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchTool validates and unmarshals JSON into a ApplyPatchTool.
+func DecodeApplyPatchTool(data []byte) (ApplyPatchTool, error) {
+	var zero ApplyPatchTool
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchTool{}, err
+	}
+	var result ApplyPatchTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchTool{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchTool creates a new ApplyPatchTool with required fields and auto-filled const/default values.
+func NewApplyPatchTool(type_ ApplyPatchToolType) *ApplyPatchTool {
+	return &ApplyPatchTool{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchUpdateFileOperation.
+func (ApplyPatchUpdateFileOperation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchUpdateFileOperation") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchUpdateFileOperation schema.
+func (ApplyPatchUpdateFileOperation) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchUpdateFileOperation")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchUpdateFileOperation validates and unmarshals JSON into a ApplyPatchUpdateFileOperation.
+func DecodeApplyPatchUpdateFileOperation(data []byte) (ApplyPatchUpdateFileOperation, error) {
+	var zero ApplyPatchUpdateFileOperation
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchUpdateFileOperation{}, err
+	}
+	var result ApplyPatchUpdateFileOperation
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchUpdateFileOperation{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchUpdateFileOperation creates a new ApplyPatchUpdateFileOperation with required fields and auto-filled const/default values.
+func NewApplyPatchUpdateFileOperation(type_ ApplyPatchUpdateFileOperationType, path string, diff string) *ApplyPatchUpdateFileOperation {
+	return &ApplyPatchUpdateFileOperation{
+		Type: type_,
+		Path: path,
+		Diff: diff,
+	}
+}
+
+// ApplyPatchToolCallOperationJSONSchemaBytes returns the JSON Schema for the ApplyPatchToolCallOperation union.
+func ApplyPatchToolCallOperationJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolCallOperation") }
+
+// DecodeApplyPatchToolCallOperation validates and unmarshals JSON into the correct ApplyPatchToolCallOperation variant.
+// Dispatches on the "type" discriminator field.
+func DecodeApplyPatchToolCallOperation(data []byte) (ApplyPatchToolCallOperation, error) {
+	sch := compschemaValidator("ApplyPatchToolCallOperation")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "create_file":
+		var val ApplyPatchCreateFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "delete_file":
+		var val ApplyPatchDeleteFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "update_file":
+		var val ApplyPatchUpdateFileOperation
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ApplyPatchToolCallOperation", disc.D)
+	}
+}
+
+// ApplyPatchToolCallOperationAs extracts a variant from a ApplyPatchToolCallOperation union value, like errors.As.
+// Only types whose pointer implements ApplyPatchToolCallOperation can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ApplyPatchToolCallOperationAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ApplyPatchToolCallOperationAs[T any, P interface{ *T; ApplyPatchToolCallOperation }](v ApplyPatchToolCallOperation, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolCall.
+func (ApplyPatchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolCall") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolCall schema.
+func (ApplyPatchToolCall) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolCall validates and unmarshals JSON into a ApplyPatchToolCall.
+func DecodeApplyPatchToolCall(data []byte) (ApplyPatchToolCall, error) {
+	var zero ApplyPatchToolCall
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolCall{}, err
+	}
+	var result ApplyPatchToolCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolCall{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolCall creates a new ApplyPatchToolCall with required fields and auto-filled const/default values.
+func NewApplyPatchToolCall(type_ ApplyPatchToolCallType, id string, callID string, status ApplyPatchCallStatus, operation ApplyPatchToolCallOperation) *ApplyPatchToolCall {
+	return &ApplyPatchToolCall{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Status: status,
+		Operation: operation,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolCallItemParam.
+func (ApplyPatchToolCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolCallItemParam schema.
+func (ApplyPatchToolCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolCallItemParam validates and unmarshals JSON into a ApplyPatchToolCallItemParam.
+func DecodeApplyPatchToolCallItemParam(data []byte) (ApplyPatchToolCallItemParam, error) {
+	var zero ApplyPatchToolCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolCallItemParam{}, err
+	}
+	var result ApplyPatchToolCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolCallItemParam creates a new ApplyPatchToolCallItemParam with required fields and auto-filled const/default values.
+func NewApplyPatchToolCallItemParam(type_ ApplyPatchToolCallItemParamType, callID string, status ApplyPatchCallStatusParam, operation ApplyPatchOperationParam) *ApplyPatchToolCallItemParam {
+	return &ApplyPatchToolCallItemParam{
+		Type: type_,
+		CallID: callID,
+		Status: status,
+		Operation: operation,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolCallOutput.
+func (ApplyPatchToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolCallOutput") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolCallOutput schema.
+func (ApplyPatchToolCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolCallOutput validates and unmarshals JSON into a ApplyPatchToolCallOutput.
+func DecodeApplyPatchToolCallOutput(data []byte) (ApplyPatchToolCallOutput, error) {
+	var zero ApplyPatchToolCallOutput
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolCallOutput{}, err
+	}
+	var result ApplyPatchToolCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolCallOutput creates a new ApplyPatchToolCallOutput with required fields and auto-filled const/default values.
+func NewApplyPatchToolCallOutput(type_ ApplyPatchToolCallOutputType, id string, callID string, status ApplyPatchCallOutputStatus) *ApplyPatchToolCallOutput {
+	return &ApplyPatchToolCallOutput{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Status: status,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolCallOutputItemParam.
+func (ApplyPatchToolCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolCallOutputItemParam schema.
+func (ApplyPatchToolCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolCallOutputItemParam validates and unmarshals JSON into a ApplyPatchToolCallOutputItemParam.
+func DecodeApplyPatchToolCallOutputItemParam(data []byte) (ApplyPatchToolCallOutputItemParam, error) {
+	var zero ApplyPatchToolCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolCallOutputItemParam{}, err
+	}
+	var result ApplyPatchToolCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolCallOutputItemParam creates a new ApplyPatchToolCallOutputItemParam with required fields and auto-filled const/default values.
+func NewApplyPatchToolCallOutputItemParam(callID string, status ApplyPatchCallOutputStatusParam, type_ ApplyPatchToolCallOutputItemParamType) *ApplyPatchToolCallOutputItemParam {
+	return &ApplyPatchToolCallOutputItemParam{
+		CallID: callID,
+		Status: status,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolChoice.
+func (ApplyPatchToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolChoice") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolChoice schema.
+func (ApplyPatchToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolChoice validates and unmarshals JSON into a ApplyPatchToolChoice.
+func DecodeApplyPatchToolChoice(data []byte) (ApplyPatchToolChoice, error) {
+	var zero ApplyPatchToolChoice
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolChoice{}, err
+	}
+	var result ApplyPatchToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolChoice creates a new ApplyPatchToolChoice with required fields and auto-filled const/default values.
+func NewApplyPatchToolChoice(type_ ApplyPatchToolChoiceType) *ApplyPatchToolChoice {
+	return &ApplyPatchToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ApplyPatchToolParam.
+func (ApplyPatchToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApplyPatchToolParam") }
+
+// Validate checks whether raw JSON conforms to the ApplyPatchToolParam schema.
+func (ApplyPatchToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApplyPatchToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeApplyPatchToolParam validates and unmarshals JSON into a ApplyPatchToolParam.
+func DecodeApplyPatchToolParam(data []byte) (ApplyPatchToolParam, error) {
+	var zero ApplyPatchToolParam
+	if err := zero.Validate(data); err != nil {
+		return ApplyPatchToolParam{}, err
+	}
+	var result ApplyPatchToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ApplyPatchToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewApplyPatchToolParam creates a new ApplyPatchToolParam with required fields and auto-filled const/default values.
+func NewApplyPatchToolParam(type_ ApplyPatchToolParamType) *ApplyPatchToolParam {
+	return &ApplyPatchToolParam{
+		Type: type_,
+	}
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for ApproximateLocation.
 func (ApproximateLocation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApproximateLocation") }
 
@@ -249,18 +1485,22 @@ func DecodeApproximateLocation(data []byte) (ApproximateLocation, error) {
 }
 
 // NewApproximateLocation creates a new ApproximateLocation with required fields and auto-filled const/default values.
-func NewApproximateLocation(type_ ApproximateLocationType) *ApproximateLocation {
+func NewApproximateLocation(type_ ApproximateLocationType, country string, region string, city string, timezone string) *ApproximateLocation {
 	return &ApproximateLocation{
 		Type: type_,
+		Country: &country,
+		Region: &region,
+		City: &city,
+		Timezone: &timezone,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Click.
-func (Click) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Click") }
+// JSONSchemaBytes returns the JSON Schema definition for ApproximateLocationParam.
+func (ApproximateLocationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ApproximateLocationParam") }
 
-// Validate checks whether raw JSON conforms to the Click schema.
-func (Click) Validate(data []byte) error {
-	sch := compschemaValidator("Click")
+// Validate checks whether raw JSON conforms to the ApproximateLocationParam schema.
+func (ApproximateLocationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ApproximateLocationParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -268,22 +1508,289 @@ func (Click) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeClick validates and unmarshals JSON into a Click.
-func DecodeClick(data []byte) (Click, error) {
-	var zero Click
+// DecodeApproximateLocationParam validates and unmarshals JSON into a ApproximateLocationParam.
+func DecodeApproximateLocationParam(data []byte) (ApproximateLocationParam, error) {
+	var zero ApproximateLocationParam
 	if err := zero.Validate(data); err != nil {
-		return Click{}, err
+		return ApproximateLocationParam{}, err
 	}
-	var result Click
+	var result ApproximateLocationParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Click{}, err
+		return ApproximateLocationParam{}, err
 	}
 	return result, nil
 }
 
-// NewClick creates a new Click with required fields and auto-filled const/default values.
-func NewClick(type_ ClickType, button ClickButton, x int64, y int64) *Click {
-	return &Click{
+// NewApproximateLocationParam creates a new ApproximateLocationParam with required fields and auto-filled const/default values.
+func NewApproximateLocationParam(type_ ApproximateLocationParamType) *ApproximateLocationParam {
+	return &ApproximateLocationParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for AssistantMessageItemParamContentSliceany.
+func (AssistantMessageItemParamContentSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AssistantMessageItemParamContentSliceany") }
+
+// Validate checks whether raw JSON conforms to the AssistantMessageItemParamContentSliceany schema.
+func (AssistantMessageItemParamContentSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("AssistantMessageItemParamContentSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAssistantMessageItemParamContentSliceany validates and unmarshals JSON into a AssistantMessageItemParamContentSliceany.
+func DecodeAssistantMessageItemParamContentSliceany(data []byte) (AssistantMessageItemParamContentSliceany, error) {
+	var zero AssistantMessageItemParamContentSliceany
+	if err := zero.Validate(data); err != nil {
+		return AssistantMessageItemParamContentSliceany{}, err
+	}
+	var result AssistantMessageItemParamContentSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AssistantMessageItemParamContentSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for AssistantMessageItemParamContentString.
+func (AssistantMessageItemParamContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AssistantMessageItemParamContentString") }
+
+// Validate checks whether raw JSON conforms to the AssistantMessageItemParamContentString schema.
+func (AssistantMessageItemParamContentString) Validate(data []byte) error {
+	sch := compschemaValidator("AssistantMessageItemParamContentString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAssistantMessageItemParamContentString validates and unmarshals JSON into a AssistantMessageItemParamContentString.
+func DecodeAssistantMessageItemParamContentString(data []byte) (AssistantMessageItemParamContentString, error) {
+	var zero AssistantMessageItemParamContentString
+	if err := zero.Validate(data); err != nil {
+		return AssistantMessageItemParamContentString{}, err
+	}
+	var result AssistantMessageItemParamContentString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AssistantMessageItemParamContentString{}, err
+	}
+	return result, nil
+}
+
+// AssistantMessageItemParamContentJSONSchemaBytes returns the JSON Schema for the AssistantMessageItemParamContent union.
+func AssistantMessageItemParamContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AssistantMessageItemParamContent") }
+
+// DecodeAssistantMessageItemParamContent validates and unmarshals JSON into the correct AssistantMessageItemParamContent variant.
+func DecodeAssistantMessageItemParamContent(data []byte) (AssistantMessageItemParamContent, error) {
+	sch := compschemaValidator("AssistantMessageItemParamContent")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val AssistantMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val AssistantMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for AssistantMessageItemParamContent")
+}
+
+// AssistantMessageItemParamContentAs extracts a variant from a AssistantMessageItemParamContent union value, like errors.As.
+// Only types whose pointer implements AssistantMessageItemParamContent can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if AssistantMessageItemParamContentAs(shape, &circle) {
+//		// circle is populated
+//	}
+func AssistantMessageItemParamContentAs[T any, P interface{ *T; AssistantMessageItemParamContent }](v AssistantMessageItemParamContent, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for AssistantMessageItemParam.
+func (AssistantMessageItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AssistantMessageItemParam") }
+
+// Validate checks whether raw JSON conforms to the AssistantMessageItemParam schema.
+func (AssistantMessageItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("AssistantMessageItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAssistantMessageItemParam validates and unmarshals JSON into a AssistantMessageItemParam.
+func DecodeAssistantMessageItemParam(data []byte) (AssistantMessageItemParam, error) {
+	var zero AssistantMessageItemParam
+	if err := zero.Validate(data); err != nil {
+		return AssistantMessageItemParam{}, err
+	}
+	var result AssistantMessageItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AssistantMessageItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewAssistantMessageItemParam creates a new AssistantMessageItemParam with required fields and auto-filled const/default values.
+func NewAssistantMessageItemParam(type_ AssistantMessageItemParamType, role AssistantMessageItemParamRole, content AssistantMessageItemParamContent) *AssistantMessageItemParam {
+	return &AssistantMessageItemParam{
+		Type: type_,
+		Role: role,
+		Content: content,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for AutoCodeInterpreterToolParam.
+func (AutoCodeInterpreterToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("AutoCodeInterpreterToolParam") }
+
+// Validate checks whether raw JSON conforms to the AutoCodeInterpreterToolParam schema.
+func (AutoCodeInterpreterToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("AutoCodeInterpreterToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeAutoCodeInterpreterToolParam validates and unmarshals JSON into a AutoCodeInterpreterToolParam.
+func DecodeAutoCodeInterpreterToolParam(data []byte) (AutoCodeInterpreterToolParam, error) {
+	var zero AutoCodeInterpreterToolParam
+	if err := zero.Validate(data); err != nil {
+		return AutoCodeInterpreterToolParam{}, err
+	}
+	var result AutoCodeInterpreterToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return AutoCodeInterpreterToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewAutoCodeInterpreterToolParam creates a new AutoCodeInterpreterToolParam with required fields and auto-filled const/default values.
+func NewAutoCodeInterpreterToolParam(type_ AutoCodeInterpreterToolParamType) *AutoCodeInterpreterToolParam {
+	return &AutoCodeInterpreterToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for Billing.
+func (Billing) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Billing") }
+
+// Validate checks whether raw JSON conforms to the Billing schema.
+func (Billing) Validate(data []byte) error {
+	sch := compschemaValidator("Billing")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeBilling validates and unmarshals JSON into a Billing.
+func DecodeBilling(data []byte) (Billing, error) {
+	var zero Billing
+	if err := zero.Validate(data); err != nil {
+		return Billing{}, err
+	}
+	var result Billing
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Billing{}, err
+	}
+	return result, nil
+}
+
+// NewBilling creates a new Billing with required fields and auto-filled const/default values.
+func NewBilling(payer Payer) *Billing {
+	return &Billing{
+		Payer: payer,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ClickAction.
+func (ClickAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ClickAction") }
+
+// Validate checks whether raw JSON conforms to the ClickAction schema.
+func (ClickAction) Validate(data []byte) error {
+	sch := compschemaValidator("ClickAction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeClickAction validates and unmarshals JSON into a ClickAction.
+func DecodeClickAction(data []byte) (ClickAction, error) {
+	var zero ClickAction
+	if err := zero.Validate(data); err != nil {
+		return ClickAction{}, err
+	}
+	var result ClickAction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ClickAction{}, err
+	}
+	return result, nil
+}
+
+// NewClickAction creates a new ClickAction with required fields and auto-filled const/default values.
+func NewClickAction(button string, x int64, y int64, type_ ClickActionType) *ClickAction {
+	return &ClickAction{
+		Button: button,
+		X: x,
+		Y: y,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ClickParam.
+func (ClickParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ClickParam") }
+
+// Validate checks whether raw JSON conforms to the ClickParam schema.
+func (ClickParam) Validate(data []byte) error {
+	sch := compschemaValidator("ClickParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeClickParam validates and unmarshals JSON into a ClickParam.
+func DecodeClickParam(data []byte) (ClickParam, error) {
+	var zero ClickParam
+	if err := zero.Validate(data); err != nil {
+		return ClickParam{}, err
+	}
+	var result ClickParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ClickParam{}, err
+	}
+	return result, nil
+}
+
+// NewClickParam creates a new ClickParam with required fields and auto-filled const/default values.
+func NewClickParam(type_ ClickParamType, button ClickButtonType, x int64, y int64) *ClickParam {
+	return &ClickParam{
 		Type: type_,
 		Button: button,
 		X: x,
@@ -291,12 +1798,12 @@ func NewClick(type_ ClickType, button ClickButton, x int64, y int64) *Click {
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterFileOutput.
-func (CodeInterpreterFileOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterFileOutput") }
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterCall.
+func (CodeInterpreterCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterCall") }
 
-// Validate checks whether raw JSON conforms to the CodeInterpreterFileOutput schema.
-func (CodeInterpreterFileOutput) Validate(data []byte) error {
-	sch := compschemaValidator("CodeInterpreterFileOutput")
+// Validate checks whether raw JSON conforms to the CodeInterpreterCall schema.
+func (CodeInterpreterCall) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterCall")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -304,33 +1811,37 @@ func (CodeInterpreterFileOutput) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCodeInterpreterFileOutput validates and unmarshals JSON into a CodeInterpreterFileOutput.
-func DecodeCodeInterpreterFileOutput(data []byte) (CodeInterpreterFileOutput, error) {
-	var zero CodeInterpreterFileOutput
+// DecodeCodeInterpreterCall validates and unmarshals JSON into a CodeInterpreterCall.
+func DecodeCodeInterpreterCall(data []byte) (CodeInterpreterCall, error) {
+	var zero CodeInterpreterCall
 	if err := zero.Validate(data); err != nil {
-		return CodeInterpreterFileOutput{}, err
+		return CodeInterpreterCall{}, err
 	}
-	var result CodeInterpreterFileOutput
+	var result CodeInterpreterCall
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CodeInterpreterFileOutput{}, err
+		return CodeInterpreterCall{}, err
 	}
 	return result, nil
 }
 
-// NewCodeInterpreterFileOutput creates a new CodeInterpreterFileOutput with required fields and auto-filled const/default values.
-func NewCodeInterpreterFileOutput(type_ CodeInterpreterFileOutputType, files []any) *CodeInterpreterFileOutput {
-	return &CodeInterpreterFileOutput{
+// NewCodeInterpreterCall creates a new CodeInterpreterCall with required fields and auto-filled const/default values.
+func NewCodeInterpreterCall(type_ CodeInterpreterCallType, id string, status CodeInterpreterCallStatus, containerID string, code string, outputs []any) *CodeInterpreterCall {
+	return &CodeInterpreterCall{
 		Type: type_,
-		Files: files,
+		ID: id,
+		Status: status,
+		ContainerID: containerID,
+		Code: &code,
+		Outputs: outputs,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterTextOutput.
-func (CodeInterpreterTextOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterTextOutput") }
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterCallItemParam.
+func (CodeInterpreterCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterCallItemParam") }
 
-// Validate checks whether raw JSON conforms to the CodeInterpreterTextOutput schema.
-func (CodeInterpreterTextOutput) Validate(data []byte) error {
-	sch := compschemaValidator("CodeInterpreterTextOutput")
+// Validate checks whether raw JSON conforms to the CodeInterpreterCallItemParam schema.
+func (CodeInterpreterCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterCallItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -338,34 +1849,231 @@ func (CodeInterpreterTextOutput) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCodeInterpreterTextOutput validates and unmarshals JSON into a CodeInterpreterTextOutput.
-func DecodeCodeInterpreterTextOutput(data []byte) (CodeInterpreterTextOutput, error) {
-	var zero CodeInterpreterTextOutput
+// DecodeCodeInterpreterCallItemParam validates and unmarshals JSON into a CodeInterpreterCallItemParam.
+func DecodeCodeInterpreterCallItemParam(data []byte) (CodeInterpreterCallItemParam, error) {
+	var zero CodeInterpreterCallItemParam
 	if err := zero.Validate(data); err != nil {
-		return CodeInterpreterTextOutput{}, err
+		return CodeInterpreterCallItemParam{}, err
 	}
-	var result CodeInterpreterTextOutput
+	var result CodeInterpreterCallItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CodeInterpreterTextOutput{}, err
+		return CodeInterpreterCallItemParam{}, err
 	}
 	return result, nil
 }
 
-// NewCodeInterpreterTextOutput creates a new CodeInterpreterTextOutput with required fields and auto-filled const/default values.
-func NewCodeInterpreterTextOutput(logs string, type_ CodeInterpreterTextOutputType) *CodeInterpreterTextOutput {
-	return &CodeInterpreterTextOutput{
+// NewCodeInterpreterCallItemParam creates a new CodeInterpreterCallItemParam with required fields and auto-filled const/default values.
+func NewCodeInterpreterCallItemParam(id string, type_ CodeInterpreterCallItemParamType, containerID string, code string) *CodeInterpreterCallItemParam {
+	return &CodeInterpreterCallItemParam{
+		ID: id,
+		Type: type_,
+		ContainerID: containerID,
+		Code: code,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterOutputImage.
+func (CodeInterpreterOutputImage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterOutputImage") }
+
+// Validate checks whether raw JSON conforms to the CodeInterpreterOutputImage schema.
+func (CodeInterpreterOutputImage) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterOutputImage")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterOutputImage validates and unmarshals JSON into a CodeInterpreterOutputImage.
+func DecodeCodeInterpreterOutputImage(data []byte) (CodeInterpreterOutputImage, error) {
+	var zero CodeInterpreterOutputImage
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterOutputImage{}, err
+	}
+	var result CodeInterpreterOutputImage
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterOutputImage{}, err
+	}
+	return result, nil
+}
+
+// NewCodeInterpreterOutputImage creates a new CodeInterpreterOutputImage with required fields and auto-filled const/default values.
+func NewCodeInterpreterOutputImage(type_ CodeInterpreterOutputImageType, url string) *CodeInterpreterOutputImage {
+	return &CodeInterpreterOutputImage{
+		Type: type_,
+		URL: url,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterOutputLogs.
+func (CodeInterpreterOutputLogs) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterOutputLogs") }
+
+// Validate checks whether raw JSON conforms to the CodeInterpreterOutputLogs schema.
+func (CodeInterpreterOutputLogs) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterOutputLogs")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterOutputLogs validates and unmarshals JSON into a CodeInterpreterOutputLogs.
+func DecodeCodeInterpreterOutputLogs(data []byte) (CodeInterpreterOutputLogs, error) {
+	var zero CodeInterpreterOutputLogs
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterOutputLogs{}, err
+	}
+	var result CodeInterpreterOutputLogs
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterOutputLogs{}, err
+	}
+	return result, nil
+}
+
+// NewCodeInterpreterOutputLogs creates a new CodeInterpreterOutputLogs with required fields and auto-filled const/default values.
+func NewCodeInterpreterOutputLogs(type_ CodeInterpreterOutputLogsType, logs string) *CodeInterpreterOutputLogs {
+	return &CodeInterpreterOutputLogs{
+		Type: type_,
 		Logs: logs,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolCallOutputImageParam.
+func (CodeInterpreterToolCallOutputImageParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolCallOutputImageParam") }
+
+// Validate checks whether raw JSON conforms to the CodeInterpreterToolCallOutputImageParam schema.
+func (CodeInterpreterToolCallOutputImageParam) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterToolCallOutputImageParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterToolCallOutputImageParam validates and unmarshals JSON into a CodeInterpreterToolCallOutputImageParam.
+func DecodeCodeInterpreterToolCallOutputImageParam(data []byte) (CodeInterpreterToolCallOutputImageParam, error) {
+	var zero CodeInterpreterToolCallOutputImageParam
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterToolCallOutputImageParam{}, err
+	}
+	var result CodeInterpreterToolCallOutputImageParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterToolCallOutputImageParam{}, err
+	}
+	return result, nil
+}
+
+// NewCodeInterpreterToolCallOutputImageParam creates a new CodeInterpreterToolCallOutputImageParam with required fields and auto-filled const/default values.
+func NewCodeInterpreterToolCallOutputImageParam(type_ CodeInterpreterToolCallOutputImageParamType, url string) *CodeInterpreterToolCallOutputImageParam {
+	return &CodeInterpreterToolCallOutputImageParam{
+		Type: type_,
+		URL: url,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolCallOutputLogsParam.
+func (CodeInterpreterToolCallOutputLogsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolCallOutputLogsParam") }
+
+// Validate checks whether raw JSON conforms to the CodeInterpreterToolCallOutputLogsParam schema.
+func (CodeInterpreterToolCallOutputLogsParam) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterToolCallOutputLogsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterToolCallOutputLogsParam validates and unmarshals JSON into a CodeInterpreterToolCallOutputLogsParam.
+func DecodeCodeInterpreterToolCallOutputLogsParam(data []byte) (CodeInterpreterToolCallOutputLogsParam, error) {
+	var zero CodeInterpreterToolCallOutputLogsParam
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterToolCallOutputLogsParam{}, err
+	}
+	var result CodeInterpreterToolCallOutputLogsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterToolCallOutputLogsParam{}, err
+	}
+	return result, nil
+}
+
+// NewCodeInterpreterToolCallOutputLogsParam creates a new CodeInterpreterToolCallOutputLogsParam with required fields and auto-filled const/default values.
+func NewCodeInterpreterToolCallOutputLogsParam(type_ CodeInterpreterToolCallOutputLogsParamType, logs string) *CodeInterpreterToolCallOutputLogsParam {
+	return &CodeInterpreterToolCallOutputLogsParam{
+		Type: type_,
+		Logs: logs,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolChoice.
+func (CodeInterpreterToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolChoice") }
+
+// Validate checks whether raw JSON conforms to the CodeInterpreterToolChoice schema.
+func (CodeInterpreterToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterToolChoice validates and unmarshals JSON into a CodeInterpreterToolChoice.
+func DecodeCodeInterpreterToolChoice(data []byte) (CodeInterpreterToolChoice, error) {
+	var zero CodeInterpreterToolChoice
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterToolChoice{}, err
+	}
+	var result CodeInterpreterToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewCodeInterpreterToolChoice creates a new CodeInterpreterToolChoice with required fields and auto-filled const/default values.
+func NewCodeInterpreterToolChoice(type_ CodeInterpreterToolChoiceType) *CodeInterpreterToolChoice {
+	return &CodeInterpreterToolChoice{
 		Type: type_,
 	}
 }
 
-// CodeInterpreterToolOutputJSONSchemaBytes returns the JSON Schema for the CodeInterpreterToolOutput union.
-func CodeInterpreterToolOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolOutput") }
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolParamContainerString.
+func (CodeInterpreterToolParamContainerString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolParamContainerString") }
 
-// DecodeCodeInterpreterToolOutput validates and unmarshals JSON into the correct CodeInterpreterToolOutput variant.
+// Validate checks whether raw JSON conforms to the CodeInterpreterToolParamContainerString schema.
+func (CodeInterpreterToolParamContainerString) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterToolParamContainerString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCodeInterpreterToolParamContainerString validates and unmarshals JSON into a CodeInterpreterToolParamContainerString.
+func DecodeCodeInterpreterToolParamContainerString(data []byte) (CodeInterpreterToolParamContainerString, error) {
+	var zero CodeInterpreterToolParamContainerString
+	if err := zero.Validate(data); err != nil {
+		return CodeInterpreterToolParamContainerString{}, err
+	}
+	var result CodeInterpreterToolParamContainerString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CodeInterpreterToolParamContainerString{}, err
+	}
+	return result, nil
+}
+
+// CodeInterpreterToolParamContainerJSONSchemaBytes returns the JSON Schema for the CodeInterpreterToolParamContainer union.
+func CodeInterpreterToolParamContainerJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolParamContainer") }
+
+// DecodeCodeInterpreterToolParamContainer validates and unmarshals JSON into the correct CodeInterpreterToolParamContainer variant.
 // Dispatches on the "type" discriminator field.
-func DecodeCodeInterpreterToolOutput(data []byte) (CodeInterpreterToolOutput, error) {
-	sch := compschemaValidator("CodeInterpreterToolOutput")
+func DecodeCodeInterpreterToolParamContainer(data []byte) (CodeInterpreterToolParamContainer, error) {
+	sch := compschemaValidator("CodeInterpreterToolParamContainer")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -380,33 +2088,27 @@ func DecodeCodeInterpreterToolOutput(data []byte) (CodeInterpreterToolOutput, er
 		return nil, err
 	}
 	switch disc.D {
-	case "files":
-		var val CodeInterpreterFileOutput
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "logs":
-		var val CodeInterpreterTextOutput
+	case "auto":
+		var val AutoCodeInterpreterToolParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for CodeInterpreterToolOutput", disc.D)
+		return nil, fmt.Errorf("unknown type %q for CodeInterpreterToolParamContainer", disc.D)
 	}
 }
 
-// CodeInterpreterToolOutputAs extracts a variant from a CodeInterpreterToolOutput union value, like errors.As.
-// Only types whose pointer implements CodeInterpreterToolOutput can be used as target (compile-time checked).
+// CodeInterpreterToolParamContainerAs extracts a variant from a CodeInterpreterToolParamContainer union value, like errors.As.
+// Only types whose pointer implements CodeInterpreterToolParamContainer can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if CodeInterpreterToolOutputAs(shape, &circle) {
+//	if CodeInterpreterToolParamContainerAs(shape, &circle) {
 //		// circle is populated
 //	}
-func CodeInterpreterToolOutputAs[T any, P interface{ *T; CodeInterpreterToolOutput }](v CodeInterpreterToolOutput, target *T) bool {
+func CodeInterpreterToolParamContainerAs[T any, P interface{ *T; CodeInterpreterToolParamContainer }](v CodeInterpreterToolParamContainer, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -414,12 +2116,12 @@ func CodeInterpreterToolOutputAs[T any, P interface{ *T; CodeInterpreterToolOutp
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolCall.
-func (CodeInterpreterToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolCall") }
+// JSONSchemaBytes returns the JSON Schema definition for CodeInterpreterToolParam.
+func (CodeInterpreterToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CodeInterpreterToolParam") }
 
-// Validate checks whether raw JSON conforms to the CodeInterpreterToolCall schema.
-func (CodeInterpreterToolCall) Validate(data []byte) error {
-	sch := compschemaValidator("CodeInterpreterToolCall")
+// Validate checks whether raw JSON conforms to the CodeInterpreterToolParam schema.
+func (CodeInterpreterToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("CodeInterpreterToolParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -427,36 +2129,33 @@ func (CodeInterpreterToolCall) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCodeInterpreterToolCall validates and unmarshals JSON into a CodeInterpreterToolCall.
-func DecodeCodeInterpreterToolCall(data []byte) (CodeInterpreterToolCall, error) {
-	var zero CodeInterpreterToolCall
+// DecodeCodeInterpreterToolParam validates and unmarshals JSON into a CodeInterpreterToolParam.
+func DecodeCodeInterpreterToolParam(data []byte) (CodeInterpreterToolParam, error) {
+	var zero CodeInterpreterToolParam
 	if err := zero.Validate(data); err != nil {
-		return CodeInterpreterToolCall{}, err
+		return CodeInterpreterToolParam{}, err
 	}
-	var result CodeInterpreterToolCall
+	var result CodeInterpreterToolParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CodeInterpreterToolCall{}, err
+		return CodeInterpreterToolParam{}, err
 	}
 	return result, nil
 }
 
-// NewCodeInterpreterToolCall creates a new CodeInterpreterToolCall with required fields and auto-filled const/default values.
-func NewCodeInterpreterToolCall(results []CodeInterpreterToolOutput, id string, type_ CodeInterpreterToolCallType, code string, status CodeInterpreterToolCallStatus) *CodeInterpreterToolCall {
-	return &CodeInterpreterToolCall{
-		Results: results,
-		ID: id,
+// NewCodeInterpreterToolParam creates a new CodeInterpreterToolParam with required fields and auto-filled const/default values.
+func NewCodeInterpreterToolParam(type_ CodeInterpreterToolParamType, container CodeInterpreterToolParamContainer) *CodeInterpreterToolParam {
+	return &CodeInterpreterToolParam{
 		Type: type_,
-		Code: code,
-		Status: status,
+		Container: container,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueBool.
-func (ComparisonFilterValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValueBool") }
+// JSONSchemaBytes returns the JSON Schema definition for CompactionBody.
+func (CompactionBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompactionBody") }
 
-// Validate checks whether raw JSON conforms to the ComparisonFilterValueBool schema.
-func (ComparisonFilterValueBool) Validate(data []byte) error {
-	sch := compschemaValidator("ComparisonFilterValueBool")
+// Validate checks whether raw JSON conforms to the CompactionBody schema.
+func (CompactionBody) Validate(data []byte) error {
+	sch := compschemaValidator("CompactionBody")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -464,25 +2163,34 @@ func (ComparisonFilterValueBool) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComparisonFilterValueBool validates and unmarshals JSON into a ComparisonFilterValueBool.
-func DecodeComparisonFilterValueBool(data []byte) (ComparisonFilterValueBool, error) {
-	var zero ComparisonFilterValueBool
+// DecodeCompactionBody validates and unmarshals JSON into a CompactionBody.
+func DecodeCompactionBody(data []byte) (CompactionBody, error) {
+	var zero CompactionBody
 	if err := zero.Validate(data); err != nil {
-		return ComparisonFilterValueBool{}, err
+		return CompactionBody{}, err
 	}
-	var result ComparisonFilterValueBool
+	var result CompactionBody
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComparisonFilterValueBool{}, err
+		return CompactionBody{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueFloat64.
-func (ComparisonFilterValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValueFloat64") }
+// NewCompactionBody creates a new CompactionBody with required fields and auto-filled const/default values.
+func NewCompactionBody(type_ CompactionBodyType, id string, encryptedContent string) *CompactionBody {
+	return &CompactionBody{
+		Type: type_,
+		ID: id,
+		EncryptedContent: encryptedContent,
+	}
+}
 
-// Validate checks whether raw JSON conforms to the ComparisonFilterValueFloat64 schema.
-func (ComparisonFilterValueFloat64) Validate(data []byte) error {
-	sch := compschemaValidator("ComparisonFilterValueFloat64")
+// JSONSchemaBytes returns the JSON Schema definition for CompactionSummaryItemParam.
+func (CompactionSummaryItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompactionSummaryItemParam") }
+
+// Validate checks whether raw JSON conforms to the CompactionSummaryItemParam schema.
+func (CompactionSummaryItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("CompactionSummaryItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -490,25 +2198,33 @@ func (ComparisonFilterValueFloat64) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComparisonFilterValueFloat64 validates and unmarshals JSON into a ComparisonFilterValueFloat64.
-func DecodeComparisonFilterValueFloat64(data []byte) (ComparisonFilterValueFloat64, error) {
-	var zero ComparisonFilterValueFloat64
+// DecodeCompactionSummaryItemParam validates and unmarshals JSON into a CompactionSummaryItemParam.
+func DecodeCompactionSummaryItemParam(data []byte) (CompactionSummaryItemParam, error) {
+	var zero CompactionSummaryItemParam
 	if err := zero.Validate(data); err != nil {
-		return ComparisonFilterValueFloat64{}, err
+		return CompactionSummaryItemParam{}, err
 	}
-	var result ComparisonFilterValueFloat64
+	var result CompactionSummaryItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComparisonFilterValueFloat64{}, err
+		return CompactionSummaryItemParam{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueString.
-func (ComparisonFilterValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValueString") }
+// NewCompactionSummaryItemParam creates a new CompactionSummaryItemParam with required fields and auto-filled const/default values.
+func NewCompactionSummaryItemParam(type_ CompactionSummaryItemParamType, encryptedContent string) *CompactionSummaryItemParam {
+	return &CompactionSummaryItemParam{
+		Type: type_,
+		EncryptedContent: encryptedContent,
+	}
+}
 
-// Validate checks whether raw JSON conforms to the ComparisonFilterValueString schema.
-func (ComparisonFilterValueString) Validate(data []byte) error {
-	sch := compschemaValidator("ComparisonFilterValueString")
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldCONTAINS.
+func (ComparisonFilterFieldCONTAINS) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldCONTAINS") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldCONTAINS schema.
+func (ComparisonFilterFieldCONTAINS) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldCONTAINS")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -516,25 +2232,549 @@ func (ComparisonFilterValueString) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComparisonFilterValueString validates and unmarshals JSON into a ComparisonFilterValueString.
-func DecodeComparisonFilterValueString(data []byte) (ComparisonFilterValueString, error) {
-	var zero ComparisonFilterValueString
+// DecodeComparisonFilterFieldCONTAINS validates and unmarshals JSON into a ComparisonFilterFieldCONTAINS.
+func DecodeComparisonFilterFieldCONTAINS(data []byte) (ComparisonFilterFieldCONTAINS, error) {
+	var zero ComparisonFilterFieldCONTAINS
 	if err := zero.Validate(data); err != nil {
-		return ComparisonFilterValueString{}, err
+		return ComparisonFilterFieldCONTAINS{}, err
 	}
-	var result ComparisonFilterValueString
+	var result ComparisonFilterFieldCONTAINS
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComparisonFilterValueString{}, err
+		return ComparisonFilterFieldCONTAINS{}, err
 	}
 	return result, nil
 }
 
-// ComparisonFilterValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterValue union.
-func ComparisonFilterValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValue") }
+// NewComparisonFilterFieldCONTAINS creates a new ComparisonFilterFieldCONTAINS with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldCONTAINS(value any, type_ ComparisonFilterFieldCONTAINSType, key string) *ComparisonFilterFieldCONTAINS {
+	return &ComparisonFilterFieldCONTAINS{
+		Value: &value,
+		Type: type_,
+		Key: key,
+	}
+}
 
-// DecodeComparisonFilterValue validates and unmarshals JSON into the correct ComparisonFilterValue variant.
-func DecodeComparisonFilterValue(data []byte) (ComparisonFilterValue, error) {
-	sch := compschemaValidator("ComparisonFilterValue")
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldCONTAINSANY.
+func (ComparisonFilterFieldCONTAINSANY) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldCONTAINSANY") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldCONTAINSANY schema.
+func (ComparisonFilterFieldCONTAINSANY) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldCONTAINSANY")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldCONTAINSANY validates and unmarshals JSON into a ComparisonFilterFieldCONTAINSANY.
+func DecodeComparisonFilterFieldCONTAINSANY(data []byte) (ComparisonFilterFieldCONTAINSANY, error) {
+	var zero ComparisonFilterFieldCONTAINSANY
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldCONTAINSANY{}, err
+	}
+	var result ComparisonFilterFieldCONTAINSANY
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldCONTAINSANY{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldCONTAINSANY creates a new ComparisonFilterFieldCONTAINSANY with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldCONTAINSANY(key string, value any, type_ ComparisonFilterFieldCONTAINSANYType) *ComparisonFilterFieldCONTAINSANY {
+	return &ComparisonFilterFieldCONTAINSANY{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldEQ.
+func (ComparisonFilterFieldEQ) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldEQ") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldEQ schema.
+func (ComparisonFilterFieldEQ) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldEQ")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldEQ validates and unmarshals JSON into a ComparisonFilterFieldEQ.
+func DecodeComparisonFilterFieldEQ(data []byte) (ComparisonFilterFieldEQ, error) {
+	var zero ComparisonFilterFieldEQ
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldEQ{}, err
+	}
+	var result ComparisonFilterFieldEQ
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldEQ{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldEQ creates a new ComparisonFilterFieldEQ with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldEQ(type_ ComparisonFilterFieldEQType, key string, value any) *ComparisonFilterFieldEQ {
+	return &ComparisonFilterFieldEQ{
+		Type: type_,
+		Key: key,
+		Value: &value,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldGT.
+func (ComparisonFilterFieldGT) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldGT") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldGT schema.
+func (ComparisonFilterFieldGT) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldGT")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldGT validates and unmarshals JSON into a ComparisonFilterFieldGT.
+func DecodeComparisonFilterFieldGT(data []byte) (ComparisonFilterFieldGT, error) {
+	var zero ComparisonFilterFieldGT
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldGT{}, err
+	}
+	var result ComparisonFilterFieldGT
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldGT{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldGT creates a new ComparisonFilterFieldGT with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldGT(value any, type_ ComparisonFilterFieldGTType, key string) *ComparisonFilterFieldGT {
+	return &ComparisonFilterFieldGT{
+		Value: &value,
+		Type: type_,
+		Key: key,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldGTE.
+func (ComparisonFilterFieldGTE) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldGTE") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldGTE schema.
+func (ComparisonFilterFieldGTE) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldGTE")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldGTE validates and unmarshals JSON into a ComparisonFilterFieldGTE.
+func DecodeComparisonFilterFieldGTE(data []byte) (ComparisonFilterFieldGTE, error) {
+	var zero ComparisonFilterFieldGTE
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldGTE{}, err
+	}
+	var result ComparisonFilterFieldGTE
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldGTE{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldGTE creates a new ComparisonFilterFieldGTE with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldGTE(key string, value any, type_ ComparisonFilterFieldGTEType) *ComparisonFilterFieldGTE {
+	return &ComparisonFilterFieldGTE{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldIN.
+func (ComparisonFilterFieldIN) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldIN") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldIN schema.
+func (ComparisonFilterFieldIN) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldIN")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldIN validates and unmarshals JSON into a ComparisonFilterFieldIN.
+func DecodeComparisonFilterFieldIN(data []byte) (ComparisonFilterFieldIN, error) {
+	var zero ComparisonFilterFieldIN
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldIN{}, err
+	}
+	var result ComparisonFilterFieldIN
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldIN{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldIN creates a new ComparisonFilterFieldIN with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldIN(key string, value any, type_ ComparisonFilterFieldINType) *ComparisonFilterFieldIN {
+	return &ComparisonFilterFieldIN{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldLT.
+func (ComparisonFilterFieldLT) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldLT") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldLT schema.
+func (ComparisonFilterFieldLT) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldLT")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldLT validates and unmarshals JSON into a ComparisonFilterFieldLT.
+func DecodeComparisonFilterFieldLT(data []byte) (ComparisonFilterFieldLT, error) {
+	var zero ComparisonFilterFieldLT
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldLT{}, err
+	}
+	var result ComparisonFilterFieldLT
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldLT{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldLT creates a new ComparisonFilterFieldLT with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldLT(value any, type_ ComparisonFilterFieldLTType, key string) *ComparisonFilterFieldLT {
+	return &ComparisonFilterFieldLT{
+		Value: &value,
+		Type: type_,
+		Key: key,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldLTE.
+func (ComparisonFilterFieldLTE) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldLTE") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldLTE schema.
+func (ComparisonFilterFieldLTE) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldLTE")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldLTE validates and unmarshals JSON into a ComparisonFilterFieldLTE.
+func DecodeComparisonFilterFieldLTE(data []byte) (ComparisonFilterFieldLTE, error) {
+	var zero ComparisonFilterFieldLTE
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldLTE{}, err
+	}
+	var result ComparisonFilterFieldLTE
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldLTE{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldLTE creates a new ComparisonFilterFieldLTE with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldLTE(key string, value any, type_ ComparisonFilterFieldLTEType) *ComparisonFilterFieldLTE {
+	return &ComparisonFilterFieldLTE{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldNCONTAINS.
+func (ComparisonFilterFieldNCONTAINS) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldNCONTAINS") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldNCONTAINS schema.
+func (ComparisonFilterFieldNCONTAINS) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldNCONTAINS")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldNCONTAINS validates and unmarshals JSON into a ComparisonFilterFieldNCONTAINS.
+func DecodeComparisonFilterFieldNCONTAINS(data []byte) (ComparisonFilterFieldNCONTAINS, error) {
+	var zero ComparisonFilterFieldNCONTAINS
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldNCONTAINS{}, err
+	}
+	var result ComparisonFilterFieldNCONTAINS
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldNCONTAINS{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldNCONTAINS creates a new ComparisonFilterFieldNCONTAINS with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldNCONTAINS(key string, value any, type_ ComparisonFilterFieldNCONTAINSType) *ComparisonFilterFieldNCONTAINS {
+	return &ComparisonFilterFieldNCONTAINS{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldNCONTAINSANY.
+func (ComparisonFilterFieldNCONTAINSANY) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldNCONTAINSANY") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldNCONTAINSANY schema.
+func (ComparisonFilterFieldNCONTAINSANY) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldNCONTAINSANY")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldNCONTAINSANY validates and unmarshals JSON into a ComparisonFilterFieldNCONTAINSANY.
+func DecodeComparisonFilterFieldNCONTAINSANY(data []byte) (ComparisonFilterFieldNCONTAINSANY, error) {
+	var zero ComparisonFilterFieldNCONTAINSANY
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldNCONTAINSANY{}, err
+	}
+	var result ComparisonFilterFieldNCONTAINSANY
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldNCONTAINSANY{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldNCONTAINSANY creates a new ComparisonFilterFieldNCONTAINSANY with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldNCONTAINSANY(key string, value any, type_ ComparisonFilterFieldNCONTAINSANYType) *ComparisonFilterFieldNCONTAINSANY {
+	return &ComparisonFilterFieldNCONTAINSANY{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldNE.
+func (ComparisonFilterFieldNE) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldNE") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldNE schema.
+func (ComparisonFilterFieldNE) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldNE")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldNE validates and unmarshals JSON into a ComparisonFilterFieldNE.
+func DecodeComparisonFilterFieldNE(data []byte) (ComparisonFilterFieldNE, error) {
+	var zero ComparisonFilterFieldNE
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldNE{}, err
+	}
+	var result ComparisonFilterFieldNE
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldNE{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldNE creates a new ComparisonFilterFieldNE with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldNE(key string, value any, type_ ComparisonFilterFieldNEType) *ComparisonFilterFieldNE {
+	return &ComparisonFilterFieldNE{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterFieldNIN.
+func (ComparisonFilterFieldNIN) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterFieldNIN") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterFieldNIN schema.
+func (ComparisonFilterFieldNIN) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterFieldNIN")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterFieldNIN validates and unmarshals JSON into a ComparisonFilterFieldNIN.
+func DecodeComparisonFilterFieldNIN(data []byte) (ComparisonFilterFieldNIN, error) {
+	var zero ComparisonFilterFieldNIN
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterFieldNIN{}, err
+	}
+	var result ComparisonFilterFieldNIN
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterFieldNIN{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterFieldNIN creates a new ComparisonFilterFieldNIN with required fields and auto-filled const/default values.
+func NewComparisonFilterFieldNIN(key string, value any, type_ ComparisonFilterFieldNINType) *ComparisonFilterFieldNIN {
+	return &ComparisonFilterFieldNIN{
+		Key: key,
+		Value: &value,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParamValueBool.
+func (ComparisonFilterParamContainsAnyParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParamValueBool schema.
+func (ComparisonFilterParamContainsAnyParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsAnyParamValueBool validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParamValueBool.
+func DecodeComparisonFilterParamContainsAnyParamValueBool(data []byte) (ComparisonFilterParamContainsAnyParamValueBool, error) {
+	var zero ComparisonFilterParamContainsAnyParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueBool{}, err
+	}
+	var result ComparisonFilterParamContainsAnyParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParamValueFloat64.
+func (ComparisonFilterParamContainsAnyParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParamValueFloat64 schema.
+func (ComparisonFilterParamContainsAnyParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsAnyParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParamValueFloat64.
+func DecodeComparisonFilterParamContainsAnyParamValueFloat64(data []byte) (ComparisonFilterParamContainsAnyParamValueFloat64, error) {
+	var zero ComparisonFilterParamContainsAnyParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamContainsAnyParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParamValueInt64.
+func (ComparisonFilterParamContainsAnyParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParamValueInt64 schema.
+func (ComparisonFilterParamContainsAnyParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsAnyParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParamValueInt64.
+func DecodeComparisonFilterParamContainsAnyParamValueInt64(data []byte) (ComparisonFilterParamContainsAnyParamValueInt64, error) {
+	var zero ComparisonFilterParamContainsAnyParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamContainsAnyParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParamValueSliceany.
+func (ComparisonFilterParamContainsAnyParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParamValueSliceany schema.
+func (ComparisonFilterParamContainsAnyParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsAnyParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParamValueSliceany.
+func DecodeComparisonFilterParamContainsAnyParamValueSliceany(data []byte) (ComparisonFilterParamContainsAnyParamValueSliceany, error) {
+	var zero ComparisonFilterParamContainsAnyParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamContainsAnyParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParamValueString.
+func (ComparisonFilterParamContainsAnyParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParamValueString schema.
+func (ComparisonFilterParamContainsAnyParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsAnyParamValueString validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParamValueString.
+func DecodeComparisonFilterParamContainsAnyParamValueString(data []byte) (ComparisonFilterParamContainsAnyParamValueString, error) {
+	var zero ComparisonFilterParamContainsAnyParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueString{}, err
+	}
+	var result ComparisonFilterParamContainsAnyParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsAnyParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamContainsAnyParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamContainsAnyParamValue union.
+func ComparisonFilterParamContainsAnyParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParamValue") }
+
+// DecodeComparisonFilterParamContainsAnyParamValue validates and unmarshals JSON into the correct ComparisonFilterParamContainsAnyParamValue variant.
+func DecodeComparisonFilterParamContainsAnyParamValue(data []byte) (ComparisonFilterParamContainsAnyParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParamValue")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -543,36 +2783,48 @@ func DecodeComparisonFilterValue(data []byte) (ComparisonFilterValue, error) {
 		return nil, err
 	}
 	{
-		var val ComparisonFilterValueBool
+		var val ComparisonFilterParamContainsAnyParamValueBool
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
 	{
-		var val ComparisonFilterValueFloat64
+		var val ComparisonFilterParamContainsAnyParamValueFloat64
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
 	{
-		var val ComparisonFilterValueString
+		var val ComparisonFilterParamContainsAnyParamValueInt64
 		if err := json.Unmarshal(data, &val); err == nil {
 			return &val, nil
 		}
 	}
-	return nil, fmt.Errorf("no matching variant for ComparisonFilterValue")
+	{
+		var val ComparisonFilterParamContainsAnyParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsAnyParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamContainsAnyParamValue")
 }
 
-// ComparisonFilterValueAs extracts a variant from a ComparisonFilterValue union value, like errors.As.
-// Only types whose pointer implements ComparisonFilterValue can be used as target (compile-time checked).
+// ComparisonFilterParamContainsAnyParamValueAs extracts a variant from a ComparisonFilterParamContainsAnyParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamContainsAnyParamValue can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if ComparisonFilterValueAs(shape, &circle) {
+//	if ComparisonFilterParamContainsAnyParamValueAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ComparisonFilterValueAs[T any, P interface{ *T; ComparisonFilterValue }](v ComparisonFilterValue, target *T) bool {
+func ComparisonFilterParamContainsAnyParamValueAs[T any, P interface{ *T; ComparisonFilterParamContainsAnyParamValue }](v ComparisonFilterParamContainsAnyParamValue, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -580,12 +2832,12 @@ func ComparisonFilterValueAs[T any, P interface{ *T; ComparisonFilterValue }](v 
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilter.
-func (ComparisonFilter) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilter") }
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsAnyParam.
+func (ComparisonFilterParamContainsAnyParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsAnyParam") }
 
-// Validate checks whether raw JSON conforms to the ComparisonFilter schema.
-func (ComparisonFilter) Validate(data []byte) error {
-	sch := compschemaValidator("ComparisonFilter")
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsAnyParam schema.
+func (ComparisonFilterParamContainsAnyParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsAnyParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -593,34 +2845,33 @@ func (ComparisonFilter) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComparisonFilter validates and unmarshals JSON into a ComparisonFilter.
-func DecodeComparisonFilter(data []byte) (ComparisonFilter, error) {
-	var zero ComparisonFilter
+// DecodeComparisonFilterParamContainsAnyParam validates and unmarshals JSON into a ComparisonFilterParamContainsAnyParam.
+func DecodeComparisonFilterParamContainsAnyParam(data []byte) (ComparisonFilterParamContainsAnyParam, error) {
+	var zero ComparisonFilterParamContainsAnyParam
 	if err := zero.Validate(data); err != nil {
-		return ComparisonFilter{}, err
+		return ComparisonFilterParamContainsAnyParam{}, err
 	}
-	var result ComparisonFilter
+	var result ComparisonFilterParamContainsAnyParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComparisonFilter{}, err
+		return ComparisonFilterParamContainsAnyParam{}, err
 	}
 	return result, nil
 }
 
-// NewComparisonFilter creates a new ComparisonFilter with required fields and auto-filled const/default values.
-func NewComparisonFilter(type_ ComparisonFilterType, key string, value ComparisonFilterValue) *ComparisonFilter {
-	return &ComparisonFilter{
+// NewComparisonFilterParamContainsAnyParam creates a new ComparisonFilterParamContainsAnyParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamContainsAnyParam(type_ ComparisonFilterParamContainsAnyParamType, key string) *ComparisonFilterParamContainsAnyParam {
+	return &ComparisonFilterParamContainsAnyParam{
 		Type: type_,
 		Key: key,
-		Value: value,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CompoundFilter.
-func (CompoundFilter) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilter") }
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParamValueBool.
+func (ComparisonFilterParamContainsParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValueBool") }
 
-// Validate checks whether raw JSON conforms to the CompoundFilter schema.
-func (CompoundFilter) Validate(data []byte) error {
-	sch := compschemaValidator("CompoundFilter")
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParamValueBool schema.
+func (ComparisonFilterParamContainsParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValueBool")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -628,33 +2879,2657 @@ func (CompoundFilter) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCompoundFilter validates and unmarshals JSON into a CompoundFilter.
-func DecodeCompoundFilter(data []byte) (CompoundFilter, error) {
-	var zero CompoundFilter
+// DecodeComparisonFilterParamContainsParamValueBool validates and unmarshals JSON into a ComparisonFilterParamContainsParamValueBool.
+func DecodeComparisonFilterParamContainsParamValueBool(data []byte) (ComparisonFilterParamContainsParamValueBool, error) {
+	var zero ComparisonFilterParamContainsParamValueBool
 	if err := zero.Validate(data); err != nil {
-		return CompoundFilter{}, err
+		return ComparisonFilterParamContainsParamValueBool{}, err
 	}
-	var result CompoundFilter
+	var result ComparisonFilterParamContainsParamValueBool
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CompoundFilter{}, err
+		return ComparisonFilterParamContainsParamValueBool{}, err
 	}
 	return result, nil
 }
 
-// NewCompoundFilter creates a new CompoundFilter with required fields and auto-filled const/default values.
-func NewCompoundFilter(type_ CompoundFilterType, filters []any) *CompoundFilter {
-	return &CompoundFilter{
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParamValueFloat64.
+func (ComparisonFilterParamContainsParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParamValueFloat64 schema.
+func (ComparisonFilterParamContainsParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamContainsParamValueFloat64.
+func DecodeComparisonFilterParamContainsParamValueFloat64(data []byte) (ComparisonFilterParamContainsParamValueFloat64, error) {
+	var zero ComparisonFilterParamContainsParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamContainsParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParamValueInt64.
+func (ComparisonFilterParamContainsParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParamValueInt64 schema.
+func (ComparisonFilterParamContainsParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamContainsParamValueInt64.
+func DecodeComparisonFilterParamContainsParamValueInt64(data []byte) (ComparisonFilterParamContainsParamValueInt64, error) {
+	var zero ComparisonFilterParamContainsParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamContainsParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParamValueSliceany.
+func (ComparisonFilterParamContainsParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParamValueSliceany schema.
+func (ComparisonFilterParamContainsParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamContainsParamValueSliceany.
+func DecodeComparisonFilterParamContainsParamValueSliceany(data []byte) (ComparisonFilterParamContainsParamValueSliceany, error) {
+	var zero ComparisonFilterParamContainsParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamContainsParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParamValueString.
+func (ComparisonFilterParamContainsParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParamValueString schema.
+func (ComparisonFilterParamContainsParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsParamValueString validates and unmarshals JSON into a ComparisonFilterParamContainsParamValueString.
+func DecodeComparisonFilterParamContainsParamValueString(data []byte) (ComparisonFilterParamContainsParamValueString, error) {
+	var zero ComparisonFilterParamContainsParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsParamValueString{}, err
+	}
+	var result ComparisonFilterParamContainsParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamContainsParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamContainsParamValue union.
+func ComparisonFilterParamContainsParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParamValue") }
+
+// DecodeComparisonFilterParamContainsParamValue validates and unmarshals JSON into the correct ComparisonFilterParamContainsParamValue variant.
+func DecodeComparisonFilterParamContainsParamValue(data []byte) (ComparisonFilterParamContainsParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamContainsParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamContainsParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamContainsParamValue")
+}
+
+// ComparisonFilterParamContainsParamValueAs extracts a variant from a ComparisonFilterParamContainsParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamContainsParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamContainsParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamContainsParamValueAs[T any, P interface{ *T; ComparisonFilterParamContainsParamValue }](v ComparisonFilterParamContainsParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamContainsParam.
+func (ComparisonFilterParamContainsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamContainsParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamContainsParam schema.
+func (ComparisonFilterParamContainsParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamContainsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamContainsParam validates and unmarshals JSON into a ComparisonFilterParamContainsParam.
+func DecodeComparisonFilterParamContainsParam(data []byte) (ComparisonFilterParamContainsParam, error) {
+	var zero ComparisonFilterParamContainsParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamContainsParam{}, err
+	}
+	var result ComparisonFilterParamContainsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamContainsParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamContainsParam creates a new ComparisonFilterParamContainsParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamContainsParam(key string, type_ ComparisonFilterParamContainsParamType) *ComparisonFilterParamContainsParam {
+	return &ComparisonFilterParamContainsParam{
+		Key: key,
 		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParamValueBool.
+func (ComparisonFilterParamEQParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParamValueBool schema.
+func (ComparisonFilterParamEQParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParamValueBool validates and unmarshals JSON into a ComparisonFilterParamEQParamValueBool.
+func DecodeComparisonFilterParamEQParamValueBool(data []byte) (ComparisonFilterParamEQParamValueBool, error) {
+	var zero ComparisonFilterParamEQParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParamValueBool{}, err
+	}
+	var result ComparisonFilterParamEQParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParamValueFloat64.
+func (ComparisonFilterParamEQParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParamValueFloat64 schema.
+func (ComparisonFilterParamEQParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamEQParamValueFloat64.
+func DecodeComparisonFilterParamEQParamValueFloat64(data []byte) (ComparisonFilterParamEQParamValueFloat64, error) {
+	var zero ComparisonFilterParamEQParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamEQParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParamValueInt64.
+func (ComparisonFilterParamEQParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParamValueInt64 schema.
+func (ComparisonFilterParamEQParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamEQParamValueInt64.
+func DecodeComparisonFilterParamEQParamValueInt64(data []byte) (ComparisonFilterParamEQParamValueInt64, error) {
+	var zero ComparisonFilterParamEQParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamEQParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParamValueSliceany.
+func (ComparisonFilterParamEQParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParamValueSliceany schema.
+func (ComparisonFilterParamEQParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamEQParamValueSliceany.
+func DecodeComparisonFilterParamEQParamValueSliceany(data []byte) (ComparisonFilterParamEQParamValueSliceany, error) {
+	var zero ComparisonFilterParamEQParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamEQParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParamValueString.
+func (ComparisonFilterParamEQParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParamValueString schema.
+func (ComparisonFilterParamEQParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParamValueString validates and unmarshals JSON into a ComparisonFilterParamEQParamValueString.
+func DecodeComparisonFilterParamEQParamValueString(data []byte) (ComparisonFilterParamEQParamValueString, error) {
+	var zero ComparisonFilterParamEQParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParamValueString{}, err
+	}
+	var result ComparisonFilterParamEQParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamEQParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamEQParamValue union.
+func ComparisonFilterParamEQParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParamValue") }
+
+// DecodeComparisonFilterParamEQParamValue validates and unmarshals JSON into the correct ComparisonFilterParamEQParamValue variant.
+func DecodeComparisonFilterParamEQParamValue(data []byte) (ComparisonFilterParamEQParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamEQParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamEQParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamEQParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamEQParamValue")
+}
+
+// ComparisonFilterParamEQParamValueAs extracts a variant from a ComparisonFilterParamEQParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamEQParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamEQParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamEQParamValueAs[T any, P interface{ *T; ComparisonFilterParamEQParamValue }](v ComparisonFilterParamEQParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamEQParam.
+func (ComparisonFilterParamEQParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamEQParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamEQParam schema.
+func (ComparisonFilterParamEQParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamEQParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamEQParam validates and unmarshals JSON into a ComparisonFilterParamEQParam.
+func DecodeComparisonFilterParamEQParam(data []byte) (ComparisonFilterParamEQParam, error) {
+	var zero ComparisonFilterParamEQParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamEQParam{}, err
+	}
+	var result ComparisonFilterParamEQParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamEQParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamEQParam creates a new ComparisonFilterParamEQParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamEQParam(key string, type_ ComparisonFilterParamEQParamType) *ComparisonFilterParamEQParam {
+	return &ComparisonFilterParamEQParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParamValueBool.
+func (ComparisonFilterParamGTEParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParamValueBool schema.
+func (ComparisonFilterParamGTEParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParamValueBool validates and unmarshals JSON into a ComparisonFilterParamGTEParamValueBool.
+func DecodeComparisonFilterParamGTEParamValueBool(data []byte) (ComparisonFilterParamGTEParamValueBool, error) {
+	var zero ComparisonFilterParamGTEParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParamValueBool{}, err
+	}
+	var result ComparisonFilterParamGTEParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParamValueFloat64.
+func (ComparisonFilterParamGTEParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParamValueFloat64 schema.
+func (ComparisonFilterParamGTEParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamGTEParamValueFloat64.
+func DecodeComparisonFilterParamGTEParamValueFloat64(data []byte) (ComparisonFilterParamGTEParamValueFloat64, error) {
+	var zero ComparisonFilterParamGTEParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamGTEParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParamValueInt64.
+func (ComparisonFilterParamGTEParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParamValueInt64 schema.
+func (ComparisonFilterParamGTEParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamGTEParamValueInt64.
+func DecodeComparisonFilterParamGTEParamValueInt64(data []byte) (ComparisonFilterParamGTEParamValueInt64, error) {
+	var zero ComparisonFilterParamGTEParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamGTEParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParamValueSliceany.
+func (ComparisonFilterParamGTEParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParamValueSliceany schema.
+func (ComparisonFilterParamGTEParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamGTEParamValueSliceany.
+func DecodeComparisonFilterParamGTEParamValueSliceany(data []byte) (ComparisonFilterParamGTEParamValueSliceany, error) {
+	var zero ComparisonFilterParamGTEParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamGTEParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParamValueString.
+func (ComparisonFilterParamGTEParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParamValueString schema.
+func (ComparisonFilterParamGTEParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParamValueString validates and unmarshals JSON into a ComparisonFilterParamGTEParamValueString.
+func DecodeComparisonFilterParamGTEParamValueString(data []byte) (ComparisonFilterParamGTEParamValueString, error) {
+	var zero ComparisonFilterParamGTEParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParamValueString{}, err
+	}
+	var result ComparisonFilterParamGTEParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamGTEParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamGTEParamValue union.
+func ComparisonFilterParamGTEParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParamValue") }
+
+// DecodeComparisonFilterParamGTEParamValue validates and unmarshals JSON into the correct ComparisonFilterParamGTEParamValue variant.
+func DecodeComparisonFilterParamGTEParamValue(data []byte) (ComparisonFilterParamGTEParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamGTEParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamGTEParamValue")
+}
+
+// ComparisonFilterParamGTEParamValueAs extracts a variant from a ComparisonFilterParamGTEParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamGTEParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamGTEParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamGTEParamValueAs[T any, P interface{ *T; ComparisonFilterParamGTEParamValue }](v ComparisonFilterParamGTEParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTEParam.
+func (ComparisonFilterParamGTEParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTEParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTEParam schema.
+func (ComparisonFilterParamGTEParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTEParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTEParam validates and unmarshals JSON into a ComparisonFilterParamGTEParam.
+func DecodeComparisonFilterParamGTEParam(data []byte) (ComparisonFilterParamGTEParam, error) {
+	var zero ComparisonFilterParamGTEParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTEParam{}, err
+	}
+	var result ComparisonFilterParamGTEParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTEParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamGTEParam creates a new ComparisonFilterParamGTEParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamGTEParam(type_ ComparisonFilterParamGTEParamType, key string) *ComparisonFilterParamGTEParam {
+	return &ComparisonFilterParamGTEParam{
+		Type: type_,
+		Key: key,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParamValueBool.
+func (ComparisonFilterParamGTParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParamValueBool schema.
+func (ComparisonFilterParamGTParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParamValueBool validates and unmarshals JSON into a ComparisonFilterParamGTParamValueBool.
+func DecodeComparisonFilterParamGTParamValueBool(data []byte) (ComparisonFilterParamGTParamValueBool, error) {
+	var zero ComparisonFilterParamGTParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParamValueBool{}, err
+	}
+	var result ComparisonFilterParamGTParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParamValueFloat64.
+func (ComparisonFilterParamGTParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParamValueFloat64 schema.
+func (ComparisonFilterParamGTParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamGTParamValueFloat64.
+func DecodeComparisonFilterParamGTParamValueFloat64(data []byte) (ComparisonFilterParamGTParamValueFloat64, error) {
+	var zero ComparisonFilterParamGTParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamGTParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParamValueInt64.
+func (ComparisonFilterParamGTParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParamValueInt64 schema.
+func (ComparisonFilterParamGTParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamGTParamValueInt64.
+func DecodeComparisonFilterParamGTParamValueInt64(data []byte) (ComparisonFilterParamGTParamValueInt64, error) {
+	var zero ComparisonFilterParamGTParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamGTParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParamValueSliceany.
+func (ComparisonFilterParamGTParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParamValueSliceany schema.
+func (ComparisonFilterParamGTParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamGTParamValueSliceany.
+func DecodeComparisonFilterParamGTParamValueSliceany(data []byte) (ComparisonFilterParamGTParamValueSliceany, error) {
+	var zero ComparisonFilterParamGTParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamGTParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParamValueString.
+func (ComparisonFilterParamGTParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParamValueString schema.
+func (ComparisonFilterParamGTParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParamValueString validates and unmarshals JSON into a ComparisonFilterParamGTParamValueString.
+func DecodeComparisonFilterParamGTParamValueString(data []byte) (ComparisonFilterParamGTParamValueString, error) {
+	var zero ComparisonFilterParamGTParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParamValueString{}, err
+	}
+	var result ComparisonFilterParamGTParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamGTParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamGTParamValue union.
+func ComparisonFilterParamGTParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParamValue") }
+
+// DecodeComparisonFilterParamGTParamValue validates and unmarshals JSON into the correct ComparisonFilterParamGTParamValue variant.
+func DecodeComparisonFilterParamGTParamValue(data []byte) (ComparisonFilterParamGTParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamGTParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamGTParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamGTParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamGTParamValue")
+}
+
+// ComparisonFilterParamGTParamValueAs extracts a variant from a ComparisonFilterParamGTParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamGTParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamGTParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamGTParamValueAs[T any, P interface{ *T; ComparisonFilterParamGTParamValue }](v ComparisonFilterParamGTParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamGTParam.
+func (ComparisonFilterParamGTParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamGTParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamGTParam schema.
+func (ComparisonFilterParamGTParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamGTParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamGTParam validates and unmarshals JSON into a ComparisonFilterParamGTParam.
+func DecodeComparisonFilterParamGTParam(data []byte) (ComparisonFilterParamGTParam, error) {
+	var zero ComparisonFilterParamGTParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamGTParam{}, err
+	}
+	var result ComparisonFilterParamGTParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamGTParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamGTParam creates a new ComparisonFilterParamGTParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamGTParam(key string, type_ ComparisonFilterParamGTParamType) *ComparisonFilterParamGTParam {
+	return &ComparisonFilterParamGTParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParamValueBool.
+func (ComparisonFilterParamINParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParamValueBool schema.
+func (ComparisonFilterParamINParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParamValueBool validates and unmarshals JSON into a ComparisonFilterParamINParamValueBool.
+func DecodeComparisonFilterParamINParamValueBool(data []byte) (ComparisonFilterParamINParamValueBool, error) {
+	var zero ComparisonFilterParamINParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParamValueBool{}, err
+	}
+	var result ComparisonFilterParamINParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParamValueFloat64.
+func (ComparisonFilterParamINParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParamValueFloat64 schema.
+func (ComparisonFilterParamINParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamINParamValueFloat64.
+func DecodeComparisonFilterParamINParamValueFloat64(data []byte) (ComparisonFilterParamINParamValueFloat64, error) {
+	var zero ComparisonFilterParamINParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamINParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParamValueInt64.
+func (ComparisonFilterParamINParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParamValueInt64 schema.
+func (ComparisonFilterParamINParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamINParamValueInt64.
+func DecodeComparisonFilterParamINParamValueInt64(data []byte) (ComparisonFilterParamINParamValueInt64, error) {
+	var zero ComparisonFilterParamINParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamINParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParamValueSliceany.
+func (ComparisonFilterParamINParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParamValueSliceany schema.
+func (ComparisonFilterParamINParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamINParamValueSliceany.
+func DecodeComparisonFilterParamINParamValueSliceany(data []byte) (ComparisonFilterParamINParamValueSliceany, error) {
+	var zero ComparisonFilterParamINParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamINParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParamValueString.
+func (ComparisonFilterParamINParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParamValueString schema.
+func (ComparisonFilterParamINParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParamValueString validates and unmarshals JSON into a ComparisonFilterParamINParamValueString.
+func DecodeComparisonFilterParamINParamValueString(data []byte) (ComparisonFilterParamINParamValueString, error) {
+	var zero ComparisonFilterParamINParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParamValueString{}, err
+	}
+	var result ComparisonFilterParamINParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamINParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamINParamValue union.
+func ComparisonFilterParamINParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParamValue") }
+
+// DecodeComparisonFilterParamINParamValue validates and unmarshals JSON into the correct ComparisonFilterParamINParamValue variant.
+func DecodeComparisonFilterParamINParamValue(data []byte) (ComparisonFilterParamINParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamINParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamINParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamINParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamINParamValue")
+}
+
+// ComparisonFilterParamINParamValueAs extracts a variant from a ComparisonFilterParamINParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamINParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamINParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamINParamValueAs[T any, P interface{ *T; ComparisonFilterParamINParamValue }](v ComparisonFilterParamINParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamINParam.
+func (ComparisonFilterParamINParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamINParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamINParam schema.
+func (ComparisonFilterParamINParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamINParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamINParam validates and unmarshals JSON into a ComparisonFilterParamINParam.
+func DecodeComparisonFilterParamINParam(data []byte) (ComparisonFilterParamINParam, error) {
+	var zero ComparisonFilterParamINParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamINParam{}, err
+	}
+	var result ComparisonFilterParamINParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamINParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamINParam creates a new ComparisonFilterParamINParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamINParam(key string, type_ ComparisonFilterParamINParamType) *ComparisonFilterParamINParam {
+	return &ComparisonFilterParamINParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParamValueBool.
+func (ComparisonFilterParamLTEParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParamValueBool schema.
+func (ComparisonFilterParamLTEParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParamValueBool validates and unmarshals JSON into a ComparisonFilterParamLTEParamValueBool.
+func DecodeComparisonFilterParamLTEParamValueBool(data []byte) (ComparisonFilterParamLTEParamValueBool, error) {
+	var zero ComparisonFilterParamLTEParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParamValueBool{}, err
+	}
+	var result ComparisonFilterParamLTEParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParamValueFloat64.
+func (ComparisonFilterParamLTEParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParamValueFloat64 schema.
+func (ComparisonFilterParamLTEParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamLTEParamValueFloat64.
+func DecodeComparisonFilterParamLTEParamValueFloat64(data []byte) (ComparisonFilterParamLTEParamValueFloat64, error) {
+	var zero ComparisonFilterParamLTEParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamLTEParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParamValueInt64.
+func (ComparisonFilterParamLTEParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParamValueInt64 schema.
+func (ComparisonFilterParamLTEParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamLTEParamValueInt64.
+func DecodeComparisonFilterParamLTEParamValueInt64(data []byte) (ComparisonFilterParamLTEParamValueInt64, error) {
+	var zero ComparisonFilterParamLTEParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamLTEParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParamValueSliceany.
+func (ComparisonFilterParamLTEParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParamValueSliceany schema.
+func (ComparisonFilterParamLTEParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamLTEParamValueSliceany.
+func DecodeComparisonFilterParamLTEParamValueSliceany(data []byte) (ComparisonFilterParamLTEParamValueSliceany, error) {
+	var zero ComparisonFilterParamLTEParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamLTEParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParamValueString.
+func (ComparisonFilterParamLTEParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParamValueString schema.
+func (ComparisonFilterParamLTEParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParamValueString validates and unmarshals JSON into a ComparisonFilterParamLTEParamValueString.
+func DecodeComparisonFilterParamLTEParamValueString(data []byte) (ComparisonFilterParamLTEParamValueString, error) {
+	var zero ComparisonFilterParamLTEParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParamValueString{}, err
+	}
+	var result ComparisonFilterParamLTEParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamLTEParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamLTEParamValue union.
+func ComparisonFilterParamLTEParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParamValue") }
+
+// DecodeComparisonFilterParamLTEParamValue validates and unmarshals JSON into the correct ComparisonFilterParamLTEParamValue variant.
+func DecodeComparisonFilterParamLTEParamValue(data []byte) (ComparisonFilterParamLTEParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamLTEParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamLTEParamValue")
+}
+
+// ComparisonFilterParamLTEParamValueAs extracts a variant from a ComparisonFilterParamLTEParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamLTEParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamLTEParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamLTEParamValueAs[T any, P interface{ *T; ComparisonFilterParamLTEParamValue }](v ComparisonFilterParamLTEParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTEParam.
+func (ComparisonFilterParamLTEParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTEParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTEParam schema.
+func (ComparisonFilterParamLTEParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTEParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTEParam validates and unmarshals JSON into a ComparisonFilterParamLTEParam.
+func DecodeComparisonFilterParamLTEParam(data []byte) (ComparisonFilterParamLTEParam, error) {
+	var zero ComparisonFilterParamLTEParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTEParam{}, err
+	}
+	var result ComparisonFilterParamLTEParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTEParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamLTEParam creates a new ComparisonFilterParamLTEParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamLTEParam(type_ ComparisonFilterParamLTEParamType, key string) *ComparisonFilterParamLTEParam {
+	return &ComparisonFilterParamLTEParam{
+		Type: type_,
+		Key: key,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParamValueBool.
+func (ComparisonFilterParamLTParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParamValueBool schema.
+func (ComparisonFilterParamLTParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParamValueBool validates and unmarshals JSON into a ComparisonFilterParamLTParamValueBool.
+func DecodeComparisonFilterParamLTParamValueBool(data []byte) (ComparisonFilterParamLTParamValueBool, error) {
+	var zero ComparisonFilterParamLTParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParamValueBool{}, err
+	}
+	var result ComparisonFilterParamLTParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParamValueFloat64.
+func (ComparisonFilterParamLTParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParamValueFloat64 schema.
+func (ComparisonFilterParamLTParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamLTParamValueFloat64.
+func DecodeComparisonFilterParamLTParamValueFloat64(data []byte) (ComparisonFilterParamLTParamValueFloat64, error) {
+	var zero ComparisonFilterParamLTParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamLTParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParamValueInt64.
+func (ComparisonFilterParamLTParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParamValueInt64 schema.
+func (ComparisonFilterParamLTParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamLTParamValueInt64.
+func DecodeComparisonFilterParamLTParamValueInt64(data []byte) (ComparisonFilterParamLTParamValueInt64, error) {
+	var zero ComparisonFilterParamLTParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamLTParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParamValueSliceany.
+func (ComparisonFilterParamLTParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParamValueSliceany schema.
+func (ComparisonFilterParamLTParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamLTParamValueSliceany.
+func DecodeComparisonFilterParamLTParamValueSliceany(data []byte) (ComparisonFilterParamLTParamValueSliceany, error) {
+	var zero ComparisonFilterParamLTParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamLTParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParamValueString.
+func (ComparisonFilterParamLTParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParamValueString schema.
+func (ComparisonFilterParamLTParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParamValueString validates and unmarshals JSON into a ComparisonFilterParamLTParamValueString.
+func DecodeComparisonFilterParamLTParamValueString(data []byte) (ComparisonFilterParamLTParamValueString, error) {
+	var zero ComparisonFilterParamLTParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParamValueString{}, err
+	}
+	var result ComparisonFilterParamLTParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamLTParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamLTParamValue union.
+func ComparisonFilterParamLTParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParamValue") }
+
+// DecodeComparisonFilterParamLTParamValue validates and unmarshals JSON into the correct ComparisonFilterParamLTParamValue variant.
+func DecodeComparisonFilterParamLTParamValue(data []byte) (ComparisonFilterParamLTParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamLTParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamLTParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamLTParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamLTParamValue")
+}
+
+// ComparisonFilterParamLTParamValueAs extracts a variant from a ComparisonFilterParamLTParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamLTParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamLTParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamLTParamValueAs[T any, P interface{ *T; ComparisonFilterParamLTParamValue }](v ComparisonFilterParamLTParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamLTParam.
+func (ComparisonFilterParamLTParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamLTParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamLTParam schema.
+func (ComparisonFilterParamLTParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamLTParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamLTParam validates and unmarshals JSON into a ComparisonFilterParamLTParam.
+func DecodeComparisonFilterParamLTParam(data []byte) (ComparisonFilterParamLTParam, error) {
+	var zero ComparisonFilterParamLTParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamLTParam{}, err
+	}
+	var result ComparisonFilterParamLTParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamLTParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamLTParam creates a new ComparisonFilterParamLTParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamLTParam(type_ ComparisonFilterParamLTParamType, key string) *ComparisonFilterParamLTParam {
+	return &ComparisonFilterParamLTParam{
+		Type: type_,
+		Key: key,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParamValueBool.
+func (ComparisonFilterParamNContainsAnyParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParamValueBool schema.
+func (ComparisonFilterParamNContainsAnyParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParamValueBool validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParamValueBool.
+func DecodeComparisonFilterParamNContainsAnyParamValueBool(data []byte) (ComparisonFilterParamNContainsAnyParamValueBool, error) {
+	var zero ComparisonFilterParamNContainsAnyParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueBool{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParamValueFloat64.
+func (ComparisonFilterParamNContainsAnyParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParamValueFloat64 schema.
+func (ComparisonFilterParamNContainsAnyParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParamValueFloat64.
+func DecodeComparisonFilterParamNContainsAnyParamValueFloat64(data []byte) (ComparisonFilterParamNContainsAnyParamValueFloat64, error) {
+	var zero ComparisonFilterParamNContainsAnyParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParamValueInt64.
+func (ComparisonFilterParamNContainsAnyParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParamValueInt64 schema.
+func (ComparisonFilterParamNContainsAnyParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParamValueInt64.
+func DecodeComparisonFilterParamNContainsAnyParamValueInt64(data []byte) (ComparisonFilterParamNContainsAnyParamValueInt64, error) {
+	var zero ComparisonFilterParamNContainsAnyParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParamValueSliceany.
+func (ComparisonFilterParamNContainsAnyParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParamValueSliceany schema.
+func (ComparisonFilterParamNContainsAnyParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParamValueSliceany.
+func DecodeComparisonFilterParamNContainsAnyParamValueSliceany(data []byte) (ComparisonFilterParamNContainsAnyParamValueSliceany, error) {
+	var zero ComparisonFilterParamNContainsAnyParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParamValueString.
+func (ComparisonFilterParamNContainsAnyParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParamValueString schema.
+func (ComparisonFilterParamNContainsAnyParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParamValueString validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParamValueString.
+func DecodeComparisonFilterParamNContainsAnyParamValueString(data []byte) (ComparisonFilterParamNContainsAnyParamValueString, error) {
+	var zero ComparisonFilterParamNContainsAnyParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueString{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamNContainsAnyParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamNContainsAnyParamValue union.
+func ComparisonFilterParamNContainsAnyParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParamValue") }
+
+// DecodeComparisonFilterParamNContainsAnyParamValue validates and unmarshals JSON into the correct ComparisonFilterParamNContainsAnyParamValue variant.
+func DecodeComparisonFilterParamNContainsAnyParamValue(data []byte) (ComparisonFilterParamNContainsAnyParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsAnyParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNContainsAnyParamValue")
+}
+
+// ComparisonFilterParamNContainsAnyParamValueAs extracts a variant from a ComparisonFilterParamNContainsAnyParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamNContainsAnyParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamNContainsAnyParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamNContainsAnyParamValueAs[T any, P interface{ *T; ComparisonFilterParamNContainsAnyParamValue }](v ComparisonFilterParamNContainsAnyParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsAnyParam.
+func (ComparisonFilterParamNContainsAnyParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsAnyParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsAnyParam schema.
+func (ComparisonFilterParamNContainsAnyParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsAnyParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsAnyParam validates and unmarshals JSON into a ComparisonFilterParamNContainsAnyParam.
+func DecodeComparisonFilterParamNContainsAnyParam(data []byte) (ComparisonFilterParamNContainsAnyParam, error) {
+	var zero ComparisonFilterParamNContainsAnyParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsAnyParam{}, err
+	}
+	var result ComparisonFilterParamNContainsAnyParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsAnyParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamNContainsAnyParam creates a new ComparisonFilterParamNContainsAnyParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamNContainsAnyParam(key string, type_ ComparisonFilterParamNContainsAnyParamType) *ComparisonFilterParamNContainsAnyParam {
+	return &ComparisonFilterParamNContainsAnyParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParamValueBool.
+func (ComparisonFilterParamNContainsParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParamValueBool schema.
+func (ComparisonFilterParamNContainsParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParamValueBool validates and unmarshals JSON into a ComparisonFilterParamNContainsParamValueBool.
+func DecodeComparisonFilterParamNContainsParamValueBool(data []byte) (ComparisonFilterParamNContainsParamValueBool, error) {
+	var zero ComparisonFilterParamNContainsParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParamValueBool{}, err
+	}
+	var result ComparisonFilterParamNContainsParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParamValueFloat64.
+func (ComparisonFilterParamNContainsParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParamValueFloat64 schema.
+func (ComparisonFilterParamNContainsParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamNContainsParamValueFloat64.
+func DecodeComparisonFilterParamNContainsParamValueFloat64(data []byte) (ComparisonFilterParamNContainsParamValueFloat64, error) {
+	var zero ComparisonFilterParamNContainsParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamNContainsParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParamValueInt64.
+func (ComparisonFilterParamNContainsParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParamValueInt64 schema.
+func (ComparisonFilterParamNContainsParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamNContainsParamValueInt64.
+func DecodeComparisonFilterParamNContainsParamValueInt64(data []byte) (ComparisonFilterParamNContainsParamValueInt64, error) {
+	var zero ComparisonFilterParamNContainsParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamNContainsParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParamValueSliceany.
+func (ComparisonFilterParamNContainsParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParamValueSliceany schema.
+func (ComparisonFilterParamNContainsParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamNContainsParamValueSliceany.
+func DecodeComparisonFilterParamNContainsParamValueSliceany(data []byte) (ComparisonFilterParamNContainsParamValueSliceany, error) {
+	var zero ComparisonFilterParamNContainsParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamNContainsParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParamValueString.
+func (ComparisonFilterParamNContainsParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParamValueString schema.
+func (ComparisonFilterParamNContainsParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParamValueString validates and unmarshals JSON into a ComparisonFilterParamNContainsParamValueString.
+func DecodeComparisonFilterParamNContainsParamValueString(data []byte) (ComparisonFilterParamNContainsParamValueString, error) {
+	var zero ComparisonFilterParamNContainsParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParamValueString{}, err
+	}
+	var result ComparisonFilterParamNContainsParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamNContainsParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamNContainsParamValue union.
+func ComparisonFilterParamNContainsParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParamValue") }
+
+// DecodeComparisonFilterParamNContainsParamValue validates and unmarshals JSON into the correct ComparisonFilterParamNContainsParamValue variant.
+func DecodeComparisonFilterParamNContainsParamValue(data []byte) (ComparisonFilterParamNContainsParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNContainsParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNContainsParamValue")
+}
+
+// ComparisonFilterParamNContainsParamValueAs extracts a variant from a ComparisonFilterParamNContainsParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamNContainsParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamNContainsParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamNContainsParamValueAs[T any, P interface{ *T; ComparisonFilterParamNContainsParamValue }](v ComparisonFilterParamNContainsParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNContainsParam.
+func (ComparisonFilterParamNContainsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNContainsParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNContainsParam schema.
+func (ComparisonFilterParamNContainsParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNContainsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNContainsParam validates and unmarshals JSON into a ComparisonFilterParamNContainsParam.
+func DecodeComparisonFilterParamNContainsParam(data []byte) (ComparisonFilterParamNContainsParam, error) {
+	var zero ComparisonFilterParamNContainsParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNContainsParam{}, err
+	}
+	var result ComparisonFilterParamNContainsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNContainsParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamNContainsParam creates a new ComparisonFilterParamNContainsParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamNContainsParam(key string, type_ ComparisonFilterParamNContainsParamType) *ComparisonFilterParamNContainsParam {
+	return &ComparisonFilterParamNContainsParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParamValueBool.
+func (ComparisonFilterParamNEParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParamValueBool schema.
+func (ComparisonFilterParamNEParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParamValueBool validates and unmarshals JSON into a ComparisonFilterParamNEParamValueBool.
+func DecodeComparisonFilterParamNEParamValueBool(data []byte) (ComparisonFilterParamNEParamValueBool, error) {
+	var zero ComparisonFilterParamNEParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParamValueBool{}, err
+	}
+	var result ComparisonFilterParamNEParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParamValueFloat64.
+func (ComparisonFilterParamNEParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParamValueFloat64 schema.
+func (ComparisonFilterParamNEParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamNEParamValueFloat64.
+func DecodeComparisonFilterParamNEParamValueFloat64(data []byte) (ComparisonFilterParamNEParamValueFloat64, error) {
+	var zero ComparisonFilterParamNEParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamNEParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParamValueInt64.
+func (ComparisonFilterParamNEParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParamValueInt64 schema.
+func (ComparisonFilterParamNEParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamNEParamValueInt64.
+func DecodeComparisonFilterParamNEParamValueInt64(data []byte) (ComparisonFilterParamNEParamValueInt64, error) {
+	var zero ComparisonFilterParamNEParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamNEParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParamValueSliceany.
+func (ComparisonFilterParamNEParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParamValueSliceany schema.
+func (ComparisonFilterParamNEParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamNEParamValueSliceany.
+func DecodeComparisonFilterParamNEParamValueSliceany(data []byte) (ComparisonFilterParamNEParamValueSliceany, error) {
+	var zero ComparisonFilterParamNEParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamNEParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParamValueString.
+func (ComparisonFilterParamNEParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParamValueString schema.
+func (ComparisonFilterParamNEParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParamValueString validates and unmarshals JSON into a ComparisonFilterParamNEParamValueString.
+func DecodeComparisonFilterParamNEParamValueString(data []byte) (ComparisonFilterParamNEParamValueString, error) {
+	var zero ComparisonFilterParamNEParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParamValueString{}, err
+	}
+	var result ComparisonFilterParamNEParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamNEParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamNEParamValue union.
+func ComparisonFilterParamNEParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParamValue") }
+
+// DecodeComparisonFilterParamNEParamValue validates and unmarshals JSON into the correct ComparisonFilterParamNEParamValue variant.
+func DecodeComparisonFilterParamNEParamValue(data []byte) (ComparisonFilterParamNEParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamNEParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamNEParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNEParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNEParamValue")
+}
+
+// ComparisonFilterParamNEParamValueAs extracts a variant from a ComparisonFilterParamNEParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamNEParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamNEParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamNEParamValueAs[T any, P interface{ *T; ComparisonFilterParamNEParamValue }](v ComparisonFilterParamNEParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNEParam.
+func (ComparisonFilterParamNEParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNEParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNEParam schema.
+func (ComparisonFilterParamNEParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNEParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNEParam validates and unmarshals JSON into a ComparisonFilterParamNEParam.
+func DecodeComparisonFilterParamNEParam(data []byte) (ComparisonFilterParamNEParam, error) {
+	var zero ComparisonFilterParamNEParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNEParam{}, err
+	}
+	var result ComparisonFilterParamNEParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNEParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamNEParam creates a new ComparisonFilterParamNEParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamNEParam(key string, type_ ComparisonFilterParamNEParamType) *ComparisonFilterParamNEParam {
+	return &ComparisonFilterParamNEParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParamValueBool.
+func (ComparisonFilterParamNINParamValueBool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValueBool") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParamValueBool schema.
+func (ComparisonFilterParamNINParamValueBool) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValueBool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParamValueBool validates and unmarshals JSON into a ComparisonFilterParamNINParamValueBool.
+func DecodeComparisonFilterParamNINParamValueBool(data []byte) (ComparisonFilterParamNINParamValueBool, error) {
+	var zero ComparisonFilterParamNINParamValueBool
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParamValueBool{}, err
+	}
+	var result ComparisonFilterParamNINParamValueBool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParamValueBool{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParamValueFloat64.
+func (ComparisonFilterParamNINParamValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValueFloat64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParamValueFloat64 schema.
+func (ComparisonFilterParamNINParamValueFloat64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValueFloat64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParamValueFloat64 validates and unmarshals JSON into a ComparisonFilterParamNINParamValueFloat64.
+func DecodeComparisonFilterParamNINParamValueFloat64(data []byte) (ComparisonFilterParamNINParamValueFloat64, error) {
+	var zero ComparisonFilterParamNINParamValueFloat64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParamValueFloat64{}, err
+	}
+	var result ComparisonFilterParamNINParamValueFloat64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParamValueFloat64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParamValueInt64.
+func (ComparisonFilterParamNINParamValueInt64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValueInt64") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParamValueInt64 schema.
+func (ComparisonFilterParamNINParamValueInt64) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValueInt64")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParamValueInt64 validates and unmarshals JSON into a ComparisonFilterParamNINParamValueInt64.
+func DecodeComparisonFilterParamNINParamValueInt64(data []byte) (ComparisonFilterParamNINParamValueInt64, error) {
+	var zero ComparisonFilterParamNINParamValueInt64
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParamValueInt64{}, err
+	}
+	var result ComparisonFilterParamNINParamValueInt64
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParamValueInt64{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParamValueSliceany.
+func (ComparisonFilterParamNINParamValueSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValueSliceany") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParamValueSliceany schema.
+func (ComparisonFilterParamNINParamValueSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValueSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParamValueSliceany validates and unmarshals JSON into a ComparisonFilterParamNINParamValueSliceany.
+func DecodeComparisonFilterParamNINParamValueSliceany(data []byte) (ComparisonFilterParamNINParamValueSliceany, error) {
+	var zero ComparisonFilterParamNINParamValueSliceany
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParamValueSliceany{}, err
+	}
+	var result ComparisonFilterParamNINParamValueSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParamValueSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParamValueString.
+func (ComparisonFilterParamNINParamValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValueString") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParamValueString schema.
+func (ComparisonFilterParamNINParamValueString) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValueString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParamValueString validates and unmarshals JSON into a ComparisonFilterParamNINParamValueString.
+func DecodeComparisonFilterParamNINParamValueString(data []byte) (ComparisonFilterParamNINParamValueString, error) {
+	var zero ComparisonFilterParamNINParamValueString
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParamValueString{}, err
+	}
+	var result ComparisonFilterParamNINParamValueString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParamValueString{}, err
+	}
+	return result, nil
+}
+
+// ComparisonFilterParamNINParamValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterParamNINParamValue union.
+func ComparisonFilterParamNINParamValueJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParamValue") }
+
+// DecodeComparisonFilterParamNINParamValue validates and unmarshals JSON into the correct ComparisonFilterParamNINParamValue variant.
+func DecodeComparisonFilterParamNINParamValue(data []byte) (ComparisonFilterParamNINParamValue, error) {
+	sch := compschemaValidator("ComparisonFilterParamNINParamValue")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val ComparisonFilterParamNINParamValueBool
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueFloat64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueInt64
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val ComparisonFilterParamNINParamValueString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ComparisonFilterParamNINParamValue")
+}
+
+// ComparisonFilterParamNINParamValueAs extracts a variant from a ComparisonFilterParamNINParamValue union value, like errors.As.
+// Only types whose pointer implements ComparisonFilterParamNINParamValue can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComparisonFilterParamNINParamValueAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComparisonFilterParamNINParamValueAs[T any, P interface{ *T; ComparisonFilterParamNINParamValue }](v ComparisonFilterParamNINParamValue, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterParamNINParam.
+func (ComparisonFilterParamNINParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterParamNINParam") }
+
+// Validate checks whether raw JSON conforms to the ComparisonFilterParamNINParam schema.
+func (ComparisonFilterParamNINParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComparisonFilterParamNINParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComparisonFilterParamNINParam validates and unmarshals JSON into a ComparisonFilterParamNINParam.
+func DecodeComparisonFilterParamNINParam(data []byte) (ComparisonFilterParamNINParam, error) {
+	var zero ComparisonFilterParamNINParam
+	if err := zero.Validate(data); err != nil {
+		return ComparisonFilterParamNINParam{}, err
+	}
+	var result ComparisonFilterParamNINParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComparisonFilterParamNINParam{}, err
+	}
+	return result, nil
+}
+
+// NewComparisonFilterParamNINParam creates a new ComparisonFilterParamNINParam with required fields and auto-filled const/default values.
+func NewComparisonFilterParamNINParam(key string, type_ ComparisonFilterParamNINParamType) *ComparisonFilterParamNINParam {
+	return &ComparisonFilterParamNINParam{
+		Key: key,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CompoundFilterFieldOR.
+func (CompoundFilterFieldOR) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilterFieldOR") }
+
+// Validate checks whether raw JSON conforms to the CompoundFilterFieldOR schema.
+func (CompoundFilterFieldOR) Validate(data []byte) error {
+	sch := compschemaValidator("CompoundFilterFieldOR")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCompoundFilterFieldOR validates and unmarshals JSON into a CompoundFilterFieldOR.
+func DecodeCompoundFilterFieldOR(data []byte) (CompoundFilterFieldOR, error) {
+	var zero CompoundFilterFieldOR
+	if err := zero.Validate(data); err != nil {
+		return CompoundFilterFieldOR{}, err
+	}
+	var result CompoundFilterFieldOR
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CompoundFilterFieldOR{}, err
+	}
+	return result, nil
+}
+
+// NewCompoundFilterFieldOR creates a new CompoundFilterFieldOR with required fields and auto-filled const/default values.
+func NewCompoundFilterFieldOR(filters []Filters, type_ CompoundFilterFieldORType) *CompoundFilterFieldOR {
+	return &CompoundFilterFieldOR{
 		Filters: filters,
+		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for DoubleClick.
-func (DoubleClick) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DoubleClick") }
+// FiltersJSONSchemaBytes returns the JSON Schema for the Filters union.
+func FiltersJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Filters") }
 
-// Validate checks whether raw JSON conforms to the DoubleClick schema.
-func (DoubleClick) Validate(data []byte) error {
-	sch := compschemaValidator("DoubleClick")
+// DecodeFilters validates and unmarshals JSON into the correct Filters variant.
+// Dispatches on the "type" discriminator field.
+func DecodeFilters(data []byte) (Filters, error) {
+	sch := compschemaValidator("Filters")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "contains":
+		var val ComparisonFilterFieldCONTAINS
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "containsany":
+		var val ComparisonFilterFieldCONTAINSANY
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "eq":
+		var val ComparisonFilterFieldEQ
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gt":
+		var val ComparisonFilterFieldGT
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gte":
+		var val ComparisonFilterFieldGTE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "in":
+		var val ComparisonFilterFieldIN
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lt":
+		var val ComparisonFilterFieldLT
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lte":
+		var val ComparisonFilterFieldLTE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontains":
+		var val ComparisonFilterFieldNCONTAINS
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontainsany":
+		var val ComparisonFilterFieldNCONTAINSANY
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ne":
+		var val ComparisonFilterFieldNE
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "nin":
+		var val ComparisonFilterFieldNIN
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "and":
+		var val CompoundFilterFieldAND
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "or":
+		var val CompoundFilterFieldOR
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for Filters", disc.D)
+	}
+}
+
+// FiltersAs extracts a variant from a Filters union value, like errors.As.
+// Only types whose pointer implements Filters can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FiltersAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FiltersAs[T any, P interface{ *T; Filters }](v Filters, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CompoundFilterFieldAND.
+func (CompoundFilterFieldAND) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilterFieldAND") }
+
+// Validate checks whether raw JSON conforms to the CompoundFilterFieldAND schema.
+func (CompoundFilterFieldAND) Validate(data []byte) error {
+	sch := compschemaValidator("CompoundFilterFieldAND")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -662,34 +5537,162 @@ func (DoubleClick) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeDoubleClick validates and unmarshals JSON into a DoubleClick.
-func DecodeDoubleClick(data []byte) (DoubleClick, error) {
-	var zero DoubleClick
+// DecodeCompoundFilterFieldAND validates and unmarshals JSON into a CompoundFilterFieldAND.
+func DecodeCompoundFilterFieldAND(data []byte) (CompoundFilterFieldAND, error) {
+	var zero CompoundFilterFieldAND
 	if err := zero.Validate(data); err != nil {
-		return DoubleClick{}, err
+		return CompoundFilterFieldAND{}, err
 	}
-	var result DoubleClick
+	var result CompoundFilterFieldAND
 	if err := json.Unmarshal(data, &result); err != nil {
-		return DoubleClick{}, err
+		return CompoundFilterFieldAND{}, err
 	}
 	return result, nil
 }
 
-// NewDoubleClick creates a new DoubleClick with required fields and auto-filled const/default values.
-func NewDoubleClick(type_ DoubleClickType, x int64, y int64) *DoubleClick {
-	return &DoubleClick{
+// NewCompoundFilterFieldAND creates a new CompoundFilterFieldAND with required fields and auto-filled const/default values.
+func NewCompoundFilterFieldAND(filters []Filters, type_ CompoundFilterFieldANDType) *CompoundFilterFieldAND {
+	return &CompoundFilterFieldAND{
+		Filters: filters,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CompoundFilterParamAndParam.
+func (CompoundFilterParamAndParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilterParamAndParam") }
+
+// Validate checks whether raw JSON conforms to the CompoundFilterParamAndParam schema.
+func (CompoundFilterParamAndParam) Validate(data []byte) error {
+	sch := compschemaValidator("CompoundFilterParamAndParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCompoundFilterParamAndParam validates and unmarshals JSON into a CompoundFilterParamAndParam.
+func DecodeCompoundFilterParamAndParam(data []byte) (CompoundFilterParamAndParam, error) {
+	var zero CompoundFilterParamAndParam
+	if err := zero.Validate(data); err != nil {
+		return CompoundFilterParamAndParam{}, err
+	}
+	var result CompoundFilterParamAndParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CompoundFilterParamAndParam{}, err
+	}
+	return result, nil
+}
+
+// NewCompoundFilterParamAndParam creates a new CompoundFilterParamAndParam with required fields and auto-filled const/default values.
+func NewCompoundFilterParamAndParam(filters []any, type_ CompoundFilterParamAndParamType) *CompoundFilterParamAndParam {
+	return &CompoundFilterParamAndParam{
+		Filters: filters,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CompoundFilterParamOrParam.
+func (CompoundFilterParamOrParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CompoundFilterParamOrParam") }
+
+// Validate checks whether raw JSON conforms to the CompoundFilterParamOrParam schema.
+func (CompoundFilterParamOrParam) Validate(data []byte) error {
+	sch := compschemaValidator("CompoundFilterParamOrParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCompoundFilterParamOrParam validates and unmarshals JSON into a CompoundFilterParamOrParam.
+func DecodeCompoundFilterParamOrParam(data []byte) (CompoundFilterParamOrParam, error) {
+	var zero CompoundFilterParamOrParam
+	if err := zero.Validate(data); err != nil {
+		return CompoundFilterParamOrParam{}, err
+	}
+	var result CompoundFilterParamOrParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CompoundFilterParamOrParam{}, err
+	}
+	return result, nil
+}
+
+// NewCompoundFilterParamOrParam creates a new CompoundFilterParamOrParam with required fields and auto-filled const/default values.
+func NewCompoundFilterParamOrParam(filters []any, type_ CompoundFilterParamOrParamType) *CompoundFilterParamOrParam {
+	return &CompoundFilterParamOrParam{
+		Filters: filters,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerCallActionEmptyAction.
+func (ComputerCallActionEmptyAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallActionEmptyAction") }
+
+// Validate checks whether raw JSON conforms to the ComputerCallActionEmptyAction schema.
+func (ComputerCallActionEmptyAction) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerCallActionEmptyAction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerCallActionEmptyAction validates and unmarshals JSON into a ComputerCallActionEmptyAction.
+func DecodeComputerCallActionEmptyAction(data []byte) (ComputerCallActionEmptyAction, error) {
+	var zero ComputerCallActionEmptyAction
+	if err := zero.Validate(data); err != nil {
+		return ComputerCallActionEmptyAction{}, err
+	}
+	var result ComputerCallActionEmptyAction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerCallActionEmptyAction{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DoubleClickAction.
+func (DoubleClickAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DoubleClickAction") }
+
+// Validate checks whether raw JSON conforms to the DoubleClickAction schema.
+func (DoubleClickAction) Validate(data []byte) error {
+	sch := compschemaValidator("DoubleClickAction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDoubleClickAction validates and unmarshals JSON into a DoubleClickAction.
+func DecodeDoubleClickAction(data []byte) (DoubleClickAction, error) {
+	var zero DoubleClickAction
+	if err := zero.Validate(data); err != nil {
+		return DoubleClickAction{}, err
+	}
+	var result DoubleClickAction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DoubleClickAction{}, err
+	}
+	return result, nil
+}
+
+// NewDoubleClickAction creates a new DoubleClickAction with required fields and auto-filled const/default values.
+func NewDoubleClickAction(type_ DoubleClickActionType, x int64, y int64) *DoubleClickAction {
+	return &DoubleClickAction{
 		Type: type_,
 		X: x,
 		Y: y,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Coordinate.
-func (Coordinate) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Coordinate") }
+// JSONSchemaBytes returns the JSON Schema definition for DragPoint.
+func (DragPoint) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DragPoint") }
 
-// Validate checks whether raw JSON conforms to the Coordinate schema.
-func (Coordinate) Validate(data []byte) error {
-	sch := compschemaValidator("Coordinate")
+// Validate checks whether raw JSON conforms to the DragPoint schema.
+func (DragPoint) Validate(data []byte) error {
+	sch := compschemaValidator("DragPoint")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -697,33 +5700,33 @@ func (Coordinate) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCoordinate validates and unmarshals JSON into a Coordinate.
-func DecodeCoordinate(data []byte) (Coordinate, error) {
-	var zero Coordinate
+// DecodeDragPoint validates and unmarshals JSON into a DragPoint.
+func DecodeDragPoint(data []byte) (DragPoint, error) {
+	var zero DragPoint
 	if err := zero.Validate(data); err != nil {
-		return Coordinate{}, err
+		return DragPoint{}, err
 	}
-	var result Coordinate
+	var result DragPoint
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Coordinate{}, err
+		return DragPoint{}, err
 	}
 	return result, nil
 }
 
-// NewCoordinate creates a new Coordinate with required fields and auto-filled const/default values.
-func NewCoordinate(x int64, y int64) *Coordinate {
-	return &Coordinate{
+// NewDragPoint creates a new DragPoint with required fields and auto-filled const/default values.
+func NewDragPoint(x int64, y int64) *DragPoint {
+	return &DragPoint{
 		X: x,
 		Y: y,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Drag.
-func (Drag) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Drag") }
+// JSONSchemaBytes returns the JSON Schema definition for DragAction.
+func (DragAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DragAction") }
 
-// Validate checks whether raw JSON conforms to the Drag schema.
-func (Drag) Validate(data []byte) error {
-	sch := compschemaValidator("Drag")
+// Validate checks whether raw JSON conforms to the DragAction schema.
+func (DragAction) Validate(data []byte) error {
+	sch := compschemaValidator("DragAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -731,33 +5734,33 @@ func (Drag) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeDrag validates and unmarshals JSON into a Drag.
-func DecodeDrag(data []byte) (Drag, error) {
-	var zero Drag
+// DecodeDragAction validates and unmarshals JSON into a DragAction.
+func DecodeDragAction(data []byte) (DragAction, error) {
+	var zero DragAction
 	if err := zero.Validate(data); err != nil {
-		return Drag{}, err
+		return DragAction{}, err
 	}
-	var result Drag
+	var result DragAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Drag{}, err
+		return DragAction{}, err
 	}
 	return result, nil
 }
 
-// NewDrag creates a new Drag with required fields and auto-filled const/default values.
-func NewDrag(type_ DragType, path []Coordinate) *Drag {
-	return &Drag{
+// NewDragAction creates a new DragAction with required fields and auto-filled const/default values.
+func NewDragAction(type_ DragActionType, path []DragPoint) *DragAction {
+	return &DragAction{
 		Type: type_,
 		Path: path,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for KeyPress.
-func (KeyPress) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("KeyPress") }
+// JSONSchemaBytes returns the JSON Schema definition for KeyPressAction.
+func (KeyPressAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("KeyPressAction") }
 
-// Validate checks whether raw JSON conforms to the KeyPress schema.
-func (KeyPress) Validate(data []byte) error {
-	sch := compschemaValidator("KeyPress")
+// Validate checks whether raw JSON conforms to the KeyPressAction schema.
+func (KeyPressAction) Validate(data []byte) error {
+	sch := compschemaValidator("KeyPressAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -765,33 +5768,33 @@ func (KeyPress) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeKeyPress validates and unmarshals JSON into a KeyPress.
-func DecodeKeyPress(data []byte) (KeyPress, error) {
-	var zero KeyPress
+// DecodeKeyPressAction validates and unmarshals JSON into a KeyPressAction.
+func DecodeKeyPressAction(data []byte) (KeyPressAction, error) {
+	var zero KeyPressAction
 	if err := zero.Validate(data); err != nil {
-		return KeyPress{}, err
+		return KeyPressAction{}, err
 	}
-	var result KeyPress
+	var result KeyPressAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return KeyPress{}, err
+		return KeyPressAction{}, err
 	}
 	return result, nil
 }
 
-// NewKeyPress creates a new KeyPress with required fields and auto-filled const/default values.
-func NewKeyPress(type_ KeyPressType, keys []string) *KeyPress {
-	return &KeyPress{
+// NewKeyPressAction creates a new KeyPressAction with required fields and auto-filled const/default values.
+func NewKeyPressAction(type_ KeyPressActionType, keys []string) *KeyPressAction {
+	return &KeyPressAction{
 		Type: type_,
 		Keys: keys,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Move.
-func (Move) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Move") }
+// JSONSchemaBytes returns the JSON Schema definition for MoveAction.
+func (MoveAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MoveAction") }
 
-// Validate checks whether raw JSON conforms to the Move schema.
-func (Move) Validate(data []byte) error {
-	sch := compschemaValidator("Move")
+// Validate checks whether raw JSON conforms to the MoveAction schema.
+func (MoveAction) Validate(data []byte) error {
+	sch := compschemaValidator("MoveAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -799,34 +5802,34 @@ func (Move) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeMove validates and unmarshals JSON into a Move.
-func DecodeMove(data []byte) (Move, error) {
-	var zero Move
+// DecodeMoveAction validates and unmarshals JSON into a MoveAction.
+func DecodeMoveAction(data []byte) (MoveAction, error) {
+	var zero MoveAction
 	if err := zero.Validate(data); err != nil {
-		return Move{}, err
+		return MoveAction{}, err
 	}
-	var result Move
+	var result MoveAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Move{}, err
+		return MoveAction{}, err
 	}
 	return result, nil
 }
 
-// NewMove creates a new Move with required fields and auto-filled const/default values.
-func NewMove(y int64, type_ MoveType, x int64) *Move {
-	return &Move{
-		Y: y,
+// NewMoveAction creates a new MoveAction with required fields and auto-filled const/default values.
+func NewMoveAction(type_ MoveActionType, x int64, y int64) *MoveAction {
+	return &MoveAction{
 		Type: type_,
 		X: x,
+		Y: y,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Screenshot.
-func (Screenshot) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Screenshot") }
+// JSONSchemaBytes returns the JSON Schema definition for ScreenshotAction.
+func (ScreenshotAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ScreenshotAction") }
 
-// Validate checks whether raw JSON conforms to the Screenshot schema.
-func (Screenshot) Validate(data []byte) error {
-	sch := compschemaValidator("Screenshot")
+// Validate checks whether raw JSON conforms to the ScreenshotAction schema.
+func (ScreenshotAction) Validate(data []byte) error {
+	sch := compschemaValidator("ScreenshotAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -834,32 +5837,32 @@ func (Screenshot) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeScreenshot validates and unmarshals JSON into a Screenshot.
-func DecodeScreenshot(data []byte) (Screenshot, error) {
-	var zero Screenshot
+// DecodeScreenshotAction validates and unmarshals JSON into a ScreenshotAction.
+func DecodeScreenshotAction(data []byte) (ScreenshotAction, error) {
+	var zero ScreenshotAction
 	if err := zero.Validate(data); err != nil {
-		return Screenshot{}, err
+		return ScreenshotAction{}, err
 	}
-	var result Screenshot
+	var result ScreenshotAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Screenshot{}, err
+		return ScreenshotAction{}, err
 	}
 	return result, nil
 }
 
-// NewScreenshot creates a new Screenshot with required fields and auto-filled const/default values.
-func NewScreenshot(type_ ScreenshotType) *Screenshot {
-	return &Screenshot{
+// NewScreenshotAction creates a new ScreenshotAction with required fields and auto-filled const/default values.
+func NewScreenshotAction(type_ ScreenshotActionType) *ScreenshotAction {
+	return &ScreenshotAction{
 		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Scroll.
-func (Scroll) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Scroll") }
+// JSONSchemaBytes returns the JSON Schema definition for ScrollAction.
+func (ScrollAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ScrollAction") }
 
-// Validate checks whether raw JSON conforms to the Scroll schema.
-func (Scroll) Validate(data []byte) error {
-	sch := compschemaValidator("Scroll")
+// Validate checks whether raw JSON conforms to the ScrollAction schema.
+func (ScrollAction) Validate(data []byte) error {
+	sch := compschemaValidator("ScrollAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -867,36 +5870,36 @@ func (Scroll) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeScroll validates and unmarshals JSON into a Scroll.
-func DecodeScroll(data []byte) (Scroll, error) {
-	var zero Scroll
+// DecodeScrollAction validates and unmarshals JSON into a ScrollAction.
+func DecodeScrollAction(data []byte) (ScrollAction, error) {
+	var zero ScrollAction
 	if err := zero.Validate(data); err != nil {
-		return Scroll{}, err
+		return ScrollAction{}, err
 	}
-	var result Scroll
+	var result ScrollAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Scroll{}, err
+		return ScrollAction{}, err
 	}
 	return result, nil
 }
 
-// NewScroll creates a new Scroll with required fields and auto-filled const/default values.
-func NewScroll(scrollY int64, type_ ScrollType, x int64, y int64, scrollX int64) *Scroll {
-	return &Scroll{
-		ScrollY: scrollY,
-		Type: type_,
+// NewScrollAction creates a new ScrollAction with required fields and auto-filled const/default values.
+func NewScrollAction(x int64, y int64, scrollX int64, scrollY int64, type_ ScrollActionType) *ScrollAction {
+	return &ScrollAction{
 		X: x,
 		Y: y,
 		ScrollX: scrollX,
+		ScrollY: scrollY,
+		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Type.
-func (Type) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Type") }
+// JSONSchemaBytes returns the JSON Schema definition for TypeAction.
+func (TypeAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TypeAction") }
 
-// Validate checks whether raw JSON conforms to the Type schema.
-func (Type) Validate(data []byte) error {
-	sch := compschemaValidator("Type")
+// Validate checks whether raw JSON conforms to the TypeAction schema.
+func (TypeAction) Validate(data []byte) error {
+	sch := compschemaValidator("TypeAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -904,33 +5907,33 @@ func (Type) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeType validates and unmarshals JSON into a Type.
-func DecodeType(data []byte) (Type, error) {
-	var zero Type
+// DecodeTypeAction validates and unmarshals JSON into a TypeAction.
+func DecodeTypeAction(data []byte) (TypeAction, error) {
+	var zero TypeAction
 	if err := zero.Validate(data); err != nil {
-		return Type{}, err
+		return TypeAction{}, err
 	}
-	var result Type
+	var result TypeAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Type{}, err
+		return TypeAction{}, err
 	}
 	return result, nil
 }
 
-// NewType creates a new Type with required fields and auto-filled const/default values.
-func NewType(type_ TypeType, text string) *Type {
-	return &Type{
+// NewTypeAction creates a new TypeAction with required fields and auto-filled const/default values.
+func NewTypeAction(type_ TypeActionType, text string) *TypeAction {
+	return &TypeAction{
 		Type: type_,
 		Text: text,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Wait.
-func (Wait) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Wait") }
+// JSONSchemaBytes returns the JSON Schema definition for WaitAction.
+func (WaitAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WaitAction") }
 
-// Validate checks whether raw JSON conforms to the Wait schema.
-func (Wait) Validate(data []byte) error {
-	sch := compschemaValidator("Wait")
+// Validate checks whether raw JSON conforms to the WaitAction schema.
+func (WaitAction) Validate(data []byte) error {
+	sch := compschemaValidator("WaitAction")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -938,33 +5941,33 @@ func (Wait) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeWait validates and unmarshals JSON into a Wait.
-func DecodeWait(data []byte) (Wait, error) {
-	var zero Wait
+// DecodeWaitAction validates and unmarshals JSON into a WaitAction.
+func DecodeWaitAction(data []byte) (WaitAction, error) {
+	var zero WaitAction
 	if err := zero.Validate(data); err != nil {
-		return Wait{}, err
+		return WaitAction{}, err
 	}
-	var result Wait
+	var result WaitAction
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Wait{}, err
+		return WaitAction{}, err
 	}
 	return result, nil
 }
 
-// NewWait creates a new Wait with required fields and auto-filled const/default values.
-func NewWait(type_ WaitType) *Wait {
-	return &Wait{
+// NewWaitAction creates a new WaitAction with required fields and auto-filled const/default values.
+func NewWaitAction(type_ WaitActionType) *WaitAction {
+	return &WaitAction{
 		Type: type_,
 	}
 }
 
-// ComputerActionJSONSchemaBytes returns the JSON Schema for the ComputerAction union.
-func ComputerActionJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerAction") }
+// ComputerCallActionJSONSchemaBytes returns the JSON Schema for the ComputerCallAction union.
+func ComputerCallActionJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallAction") }
 
-// DecodeComputerAction validates and unmarshals JSON into the correct ComputerAction variant.
+// DecodeComputerCallAction validates and unmarshals JSON into the correct ComputerCallAction variant.
 // Dispatches on the "type" discriminator field.
-func DecodeComputerAction(data []byte) (ComputerAction, error) {
-	sch := compschemaValidator("ComputerAction")
+func DecodeComputerCallAction(data []byte) (ComputerCallAction, error) {
+	sch := compschemaValidator("ComputerCallAction")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -980,74 +5983,74 @@ func DecodeComputerAction(data []byte) (ComputerAction, error) {
 	}
 	switch disc.D {
 	case "click":
-		var val Click
+		var val ClickAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "double_click":
-		var val DoubleClick
+		var val DoubleClickAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "drag":
-		var val Drag
+		var val DragAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "keypress":
-		var val KeyPress
+		var val KeyPressAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "move":
-		var val Move
+		var val MoveAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "screenshot":
-		var val Screenshot
+		var val ScreenshotAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "scroll":
-		var val Scroll
+		var val ScrollAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "type":
-		var val Type
+		var val TypeAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	case "wait":
-		var val Wait
+		var val WaitAction
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for ComputerAction", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ComputerCallAction", disc.D)
 	}
 }
 
-// ComputerActionAs extracts a variant from a ComputerAction union value, like errors.As.
-// Only types whose pointer implements ComputerAction can be used as target (compile-time checked).
+// ComputerCallActionAs extracts a variant from a ComputerCallAction union value, like errors.As.
+// Only types whose pointer implements ComputerCallAction can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if ComputerActionAs(shape, &circle) {
+//	if ComputerCallActionAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ComputerActionAs[T any, P interface{ *T; ComputerAction }](v ComputerAction, target *T) bool {
+func ComputerCallActionAs[T any, P interface{ *T; ComputerCallAction }](v ComputerCallAction, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -1055,12 +6058,12 @@ func ComputerActionAs[T any, P interface{ *T; ComputerAction }](v ComputerAction
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComputerScreenshotImage.
-func (ComputerScreenshotImage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerScreenshotImage") }
+// JSONSchemaBytes returns the JSON Schema definition for SafetyCheck.
+func (SafetyCheck) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SafetyCheck") }
 
-// Validate checks whether raw JSON conforms to the ComputerScreenshotImage schema.
-func (ComputerScreenshotImage) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerScreenshotImage")
+// Validate checks whether raw JSON conforms to the SafetyCheck schema.
+func (SafetyCheck) Validate(data []byte) error {
+	sch := compschemaValidator("SafetyCheck")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1068,24 +6071,468 @@ func (ComputerScreenshotImage) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComputerScreenshotImage validates and unmarshals JSON into a ComputerScreenshotImage.
-func DecodeComputerScreenshotImage(data []byte) (ComputerScreenshotImage, error) {
-	var zero ComputerScreenshotImage
+// DecodeSafetyCheck validates and unmarshals JSON into a SafetyCheck.
+func DecodeSafetyCheck(data []byte) (SafetyCheck, error) {
+	var zero SafetyCheck
 	if err := zero.Validate(data); err != nil {
-		return ComputerScreenshotImage{}, err
+		return SafetyCheck{}, err
 	}
-	var result ComputerScreenshotImage
+	var result SafetyCheck
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerScreenshotImage{}, err
+		return SafetyCheck{}, err
 	}
 	return result, nil
 }
 
-// NewComputerScreenshotImage creates a new ComputerScreenshotImage with required fields and auto-filled const/default values.
-func NewComputerScreenshotImage(type_ ComputerScreenshotImageType) *ComputerScreenshotImage {
-	return &ComputerScreenshotImage{
+// NewSafetyCheck creates a new SafetyCheck with required fields and auto-filled const/default values.
+func NewSafetyCheck(id string, code string, message string) *SafetyCheck {
+	return &SafetyCheck{
+		ID: id,
+		Code: code,
+		Message: &message,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerCall.
+func (ComputerCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCall") }
+
+// Validate checks whether raw JSON conforms to the ComputerCall schema.
+func (ComputerCall) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerCall validates and unmarshals JSON into a ComputerCall.
+func DecodeComputerCall(data []byte) (ComputerCall, error) {
+	var zero ComputerCall
+	if err := zero.Validate(data); err != nil {
+		return ComputerCall{}, err
+	}
+	var result ComputerCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerCall{}, err
+	}
+	return result, nil
+}
+
+// NewComputerCall creates a new ComputerCall with required fields and auto-filled const/default values.
+func NewComputerCall(type_ ComputerCallType, id string, callID string, pendingSafetyChecks []SafetyCheck) *ComputerCall {
+	return &ComputerCall{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		PendingSafetyChecks: pendingSafetyChecks,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DoubleClickParam.
+func (DoubleClickParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DoubleClickParam") }
+
+// Validate checks whether raw JSON conforms to the DoubleClickParam schema.
+func (DoubleClickParam) Validate(data []byte) error {
+	sch := compschemaValidator("DoubleClickParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDoubleClickParam validates and unmarshals JSON into a DoubleClickParam.
+func DecodeDoubleClickParam(data []byte) (DoubleClickParam, error) {
+	var zero DoubleClickParam
+	if err := zero.Validate(data); err != nil {
+		return DoubleClickParam{}, err
+	}
+	var result DoubleClickParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DoubleClickParam{}, err
+	}
+	return result, nil
+}
+
+// NewDoubleClickParam creates a new DoubleClickParam with required fields and auto-filled const/default values.
+func NewDoubleClickParam(type_ DoubleClickParamType, x int64, y int64) *DoubleClickParam {
+	return &DoubleClickParam{
+		Type: type_,
+		X: x,
+		Y: y,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CoordParam.
+func (CoordParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CoordParam") }
+
+// Validate checks whether raw JSON conforms to the CoordParam schema.
+func (CoordParam) Validate(data []byte) error {
+	sch := compschemaValidator("CoordParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCoordParam validates and unmarshals JSON into a CoordParam.
+func DecodeCoordParam(data []byte) (CoordParam, error) {
+	var zero CoordParam
+	if err := zero.Validate(data); err != nil {
+		return CoordParam{}, err
+	}
+	var result CoordParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CoordParam{}, err
+	}
+	return result, nil
+}
+
+// NewCoordParam creates a new CoordParam with required fields and auto-filled const/default values.
+func NewCoordParam(x int64, y int64) *CoordParam {
+	return &CoordParam{
+		X: x,
+		Y: y,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DragParam.
+func (DragParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DragParam") }
+
+// Validate checks whether raw JSON conforms to the DragParam schema.
+func (DragParam) Validate(data []byte) error {
+	sch := compschemaValidator("DragParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDragParam validates and unmarshals JSON into a DragParam.
+func DecodeDragParam(data []byte) (DragParam, error) {
+	var zero DragParam
+	if err := zero.Validate(data); err != nil {
+		return DragParam{}, err
+	}
+	var result DragParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DragParam{}, err
+	}
+	return result, nil
+}
+
+// NewDragParam creates a new DragParam with required fields and auto-filled const/default values.
+func NewDragParam(type_ DragParamType, path []CoordParam) *DragParam {
+	return &DragParam{
+		Type: type_,
+		Path: path,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for KeyPressParam.
+func (KeyPressParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("KeyPressParam") }
+
+// Validate checks whether raw JSON conforms to the KeyPressParam schema.
+func (KeyPressParam) Validate(data []byte) error {
+	sch := compschemaValidator("KeyPressParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeKeyPressParam validates and unmarshals JSON into a KeyPressParam.
+func DecodeKeyPressParam(data []byte) (KeyPressParam, error) {
+	var zero KeyPressParam
+	if err := zero.Validate(data); err != nil {
+		return KeyPressParam{}, err
+	}
+	var result KeyPressParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return KeyPressParam{}, err
+	}
+	return result, nil
+}
+
+// NewKeyPressParam creates a new KeyPressParam with required fields and auto-filled const/default values.
+func NewKeyPressParam(type_ KeyPressParamType, keys []string) *KeyPressParam {
+	return &KeyPressParam{
+		Type: type_,
+		Keys: keys,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MoveParam.
+func (MoveParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MoveParam") }
+
+// Validate checks whether raw JSON conforms to the MoveParam schema.
+func (MoveParam) Validate(data []byte) error {
+	sch := compschemaValidator("MoveParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMoveParam validates and unmarshals JSON into a MoveParam.
+func DecodeMoveParam(data []byte) (MoveParam, error) {
+	var zero MoveParam
+	if err := zero.Validate(data); err != nil {
+		return MoveParam{}, err
+	}
+	var result MoveParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MoveParam{}, err
+	}
+	return result, nil
+}
+
+// NewMoveParam creates a new MoveParam with required fields and auto-filled const/default values.
+func NewMoveParam(type_ MoveParamType, x int64, y int64) *MoveParam {
+	return &MoveParam{
+		Type: type_,
+		X: x,
+		Y: y,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ScreenshotParam.
+func (ScreenshotParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ScreenshotParam") }
+
+// Validate checks whether raw JSON conforms to the ScreenshotParam schema.
+func (ScreenshotParam) Validate(data []byte) error {
+	sch := compschemaValidator("ScreenshotParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeScreenshotParam validates and unmarshals JSON into a ScreenshotParam.
+func DecodeScreenshotParam(data []byte) (ScreenshotParam, error) {
+	var zero ScreenshotParam
+	if err := zero.Validate(data); err != nil {
+		return ScreenshotParam{}, err
+	}
+	var result ScreenshotParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ScreenshotParam{}, err
+	}
+	return result, nil
+}
+
+// NewScreenshotParam creates a new ScreenshotParam with required fields and auto-filled const/default values.
+func NewScreenshotParam(type_ ScreenshotParamType) *ScreenshotParam {
+	return &ScreenshotParam{
 		Type: type_,
 	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ScrollParam.
+func (ScrollParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ScrollParam") }
+
+// Validate checks whether raw JSON conforms to the ScrollParam schema.
+func (ScrollParam) Validate(data []byte) error {
+	sch := compschemaValidator("ScrollParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeScrollParam validates and unmarshals JSON into a ScrollParam.
+func DecodeScrollParam(data []byte) (ScrollParam, error) {
+	var zero ScrollParam
+	if err := zero.Validate(data); err != nil {
+		return ScrollParam{}, err
+	}
+	var result ScrollParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ScrollParam{}, err
+	}
+	return result, nil
+}
+
+// NewScrollParam creates a new ScrollParam with required fields and auto-filled const/default values.
+func NewScrollParam(type_ ScrollParamType, x int64, y int64, scrollX int64, scrollY int64) *ScrollParam {
+	return &ScrollParam{
+		Type: type_,
+		X: x,
+		Y: y,
+		ScrollX: scrollX,
+		ScrollY: scrollY,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for TypeParam.
+func (TypeParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TypeParam") }
+
+// Validate checks whether raw JSON conforms to the TypeParam schema.
+func (TypeParam) Validate(data []byte) error {
+	sch := compschemaValidator("TypeParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTypeParam validates and unmarshals JSON into a TypeParam.
+func DecodeTypeParam(data []byte) (TypeParam, error) {
+	var zero TypeParam
+	if err := zero.Validate(data); err != nil {
+		return TypeParam{}, err
+	}
+	var result TypeParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TypeParam{}, err
+	}
+	return result, nil
+}
+
+// NewTypeParam creates a new TypeParam with required fields and auto-filled const/default values.
+func NewTypeParam(type_ TypeParamType, text string) *TypeParam {
+	return &TypeParam{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WaitParam.
+func (WaitParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WaitParam") }
+
+// Validate checks whether raw JSON conforms to the WaitParam schema.
+func (WaitParam) Validate(data []byte) error {
+	sch := compschemaValidator("WaitParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWaitParam validates and unmarshals JSON into a WaitParam.
+func DecodeWaitParam(data []byte) (WaitParam, error) {
+	var zero WaitParam
+	if err := zero.Validate(data); err != nil {
+		return WaitParam{}, err
+	}
+	var result WaitParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WaitParam{}, err
+	}
+	return result, nil
+}
+
+// NewWaitParam creates a new WaitParam with required fields and auto-filled const/default values.
+func NewWaitParam(type_ WaitParamType) *WaitParam {
+	return &WaitParam{
+		Type: type_,
+	}
+}
+
+// ComputerCallItemParamActionJSONSchemaBytes returns the JSON Schema for the ComputerCallItemParamAction union.
+func ComputerCallItemParamActionJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallItemParamAction") }
+
+// DecodeComputerCallItemParamAction validates and unmarshals JSON into the correct ComputerCallItemParamAction variant.
+// Dispatches on the "type" discriminator field.
+func DecodeComputerCallItemParamAction(data []byte) (ComputerCallItemParamAction, error) {
+	sch := compschemaValidator("ComputerCallItemParamAction")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "click":
+		var val ClickParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "double_click":
+		var val DoubleClickParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "drag":
+		var val DragParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "keypress":
+		var val KeyPressParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "move":
+		var val MoveParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "screenshot":
+		var val ScreenshotParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "scroll":
+		var val ScrollParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "type":
+		var val TypeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "wait":
+		var val WaitParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ComputerCallItemParamAction", disc.D)
+	}
+}
+
+// ComputerCallItemParamActionAs extracts a variant from a ComputerCallItemParamAction union value, like errors.As.
+// Only types whose pointer implements ComputerCallItemParamAction can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ComputerCallItemParamActionAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ComputerCallItemParamActionAs[T any, P interface{ *T; ComputerCallItemParamAction }](v ComputerCallItemParamAction, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ComputerCallSafetyCheckParam.
@@ -1121,12 +6568,12 @@ func NewComputerCallSafetyCheckParam(id string) *ComputerCallSafetyCheckParam {
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutputItemParam.
-func (ComputerCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallOutputItemParam") }
+// JSONSchemaBytes returns the JSON Schema definition for ComputerCallItemParam.
+func (ComputerCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallItemParam") }
 
-// Validate checks whether raw JSON conforms to the ComputerCallOutputItemParam schema.
-func (ComputerCallOutputItemParam) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerCallOutputItemParam")
+// Validate checks whether raw JSON conforms to the ComputerCallItemParam schema.
+func (ComputerCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerCallItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1134,857 +6581,61 @@ func (ComputerCallOutputItemParam) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeComputerCallOutputItemParam validates and unmarshals JSON into a ComputerCallOutputItemParam.
-func DecodeComputerCallOutputItemParam(data []byte) (ComputerCallOutputItemParam, error) {
-	var zero ComputerCallOutputItemParam
+// DecodeComputerCallItemParam validates and unmarshals JSON into a ComputerCallItemParam.
+func DecodeComputerCallItemParam(data []byte) (ComputerCallItemParam, error) {
+	var zero ComputerCallItemParam
 	if err := zero.Validate(data); err != nil {
-		return ComputerCallOutputItemParam{}, err
+		return ComputerCallItemParam{}, err
 	}
-	var result ComputerCallOutputItemParam
+	var result ComputerCallItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerCallOutputItemParam{}, err
+		return ComputerCallItemParam{}, err
 	}
 	return result, nil
 }
 
-// NewComputerCallOutputItemParam creates a new ComputerCallOutputItemParam with required fields and auto-filled const/default values.
-func NewComputerCallOutputItemParam(callID string, type_ ComputerCallOutputItemParamType, output ComputerScreenshotImage) *ComputerCallOutputItemParam {
-	return &ComputerCallOutputItemParam{
+// NewComputerCallItemParam creates a new ComputerCallItemParam with required fields and auto-filled const/default values.
+func NewComputerCallItemParam(callID string, type_ ComputerCallItemParamType, action ComputerCallItemParamAction) *ComputerCallItemParam {
+	return &ComputerCallItemParam{
 		CallID: callID,
 		Type: type_,
-		Output: output,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallSafetyCheck.
-func (ComputerToolCallSafetyCheck) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCallSafetyCheck") }
-
-// Validate checks whether raw JSON conforms to the ComputerToolCallSafetyCheck schema.
-func (ComputerToolCallSafetyCheck) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerToolCallSafetyCheck")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeComputerToolCallSafetyCheck validates and unmarshals JSON into a ComputerToolCallSafetyCheck.
-func DecodeComputerToolCallSafetyCheck(data []byte) (ComputerToolCallSafetyCheck, error) {
-	var zero ComputerToolCallSafetyCheck
-	if err := zero.Validate(data); err != nil {
-		return ComputerToolCallSafetyCheck{}, err
-	}
-	var result ComputerToolCallSafetyCheck
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerToolCallSafetyCheck{}, err
-	}
-	return result, nil
-}
-
-// NewComputerToolCallSafetyCheck creates a new ComputerToolCallSafetyCheck with required fields and auto-filled const/default values.
-func NewComputerToolCallSafetyCheck(message string, id string, code string) *ComputerToolCallSafetyCheck {
-	return &ComputerToolCallSafetyCheck{
-		Message: message,
-		ID: id,
-		Code: code,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ComputerToolCall.
-func (ComputerToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCall") }
-
-// Validate checks whether raw JSON conforms to the ComputerToolCall schema.
-func (ComputerToolCall) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerToolCall")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeComputerToolCall validates and unmarshals JSON into a ComputerToolCall.
-func DecodeComputerToolCall(data []byte) (ComputerToolCall, error) {
-	var zero ComputerToolCall
-	if err := zero.Validate(data); err != nil {
-		return ComputerToolCall{}, err
-	}
-	var result ComputerToolCall
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerToolCall{}, err
-	}
-	return result, nil
-}
-
-// NewComputerToolCall creates a new ComputerToolCall with required fields and auto-filled const/default values.
-func NewComputerToolCall(id string, callID string, action ComputerAction, pendingSafetyChecks []ComputerToolCallSafetyCheck, status ComputerToolCallStatus, type_ ComputerToolCallType) *ComputerToolCall {
-	return &ComputerToolCall{
-		ID: id,
-		CallID: callID,
 		Action: action,
-		PendingSafetyChecks: pendingSafetyChecks,
-		Status: status,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerScreenshotContent.
+func (ComputerScreenshotContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerScreenshotContent") }
+
+// Validate checks whether raw JSON conforms to the ComputerScreenshotContent schema.
+func (ComputerScreenshotContent) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerScreenshotContent")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerScreenshotContent validates and unmarshals JSON into a ComputerScreenshotContent.
+func DecodeComputerScreenshotContent(data []byte) (ComputerScreenshotContent, error) {
+	var zero ComputerScreenshotContent
+	if err := zero.Validate(data); err != nil {
+		return ComputerScreenshotContent{}, err
+	}
+	var result ComputerScreenshotContent
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerScreenshotContent{}, err
+	}
+	return result, nil
+}
+
+// NewComputerScreenshotContent creates a new ComputerScreenshotContent with required fields and auto-filled const/default values.
+func NewComputerScreenshotContent(type_ ComputerScreenshotContentType, imageURL string, fileID string) *ComputerScreenshotContent {
+	return &ComputerScreenshotContent{
 		Type: type_,
+		ImageURL: &imageURL,
+		FileID: &fileID,
 	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutput.
-func (ComputerToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCallOutput") }
-
-// Validate checks whether raw JSON conforms to the ComputerToolCallOutput schema.
-func (ComputerToolCallOutput) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerToolCallOutput")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeComputerToolCallOutput validates and unmarshals JSON into a ComputerToolCallOutput.
-func DecodeComputerToolCallOutput(data []byte) (ComputerToolCallOutput, error) {
-	var zero ComputerToolCallOutput
-	if err := zero.Validate(data); err != nil {
-		return ComputerToolCallOutput{}, err
-	}
-	var result ComputerToolCallOutput
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerToolCallOutput{}, err
-	}
-	return result, nil
-}
-
-// NewComputerToolCallOutput creates a new ComputerToolCallOutput with required fields and auto-filled const/default values.
-func NewComputerToolCallOutput(output ComputerScreenshotImage, type_ ComputerToolCallOutputType, callID string) *ComputerToolCallOutput {
-	return &ComputerToolCallOutput{
-		Output: output,
-		Type: type_,
-		CallID: callID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ComputerToolCallOutputResource.
-func (ComputerToolCallOutputResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolCallOutputResource") }
-
-// Validate checks whether raw JSON conforms to the ComputerToolCallOutputResource schema.
-func (ComputerToolCallOutputResource) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerToolCallOutputResource")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeComputerToolCallOutputResource validates and unmarshals JSON into a ComputerToolCallOutputResource.
-func DecodeComputerToolCallOutputResource(data []byte) (ComputerToolCallOutputResource, error) {
-	var zero ComputerToolCallOutputResource
-	if err := zero.Validate(data); err != nil {
-		return ComputerToolCallOutputResource{}, err
-	}
-	var result ComputerToolCallOutputResource
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerToolCallOutputResource{}, err
-	}
-	return result, nil
-}
-
-// NewComputerToolCallOutputResource creates a new ComputerToolCallOutputResource with required fields and auto-filled const/default values.
-func NewComputerToolCallOutputResource(callID string, output ComputerScreenshotImage, type_ ComputerToolCallOutputResourceType, id string) *ComputerToolCallOutputResource {
-	return &ComputerToolCallOutputResource{
-		CallID: callID,
-		Output: output,
-		Type: type_,
-		ID: id,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewTool.
-func (ComputerUsePreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerUsePreviewTool") }
-
-// Validate checks whether raw JSON conforms to the ComputerUsePreviewTool schema.
-func (ComputerUsePreviewTool) Validate(data []byte) error {
-	sch := compschemaValidator("ComputerUsePreviewTool")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeComputerUsePreviewTool validates and unmarshals JSON into a ComputerUsePreviewTool.
-func DecodeComputerUsePreviewTool(data []byte) (ComputerUsePreviewTool, error) {
-	var zero ComputerUsePreviewTool
-	if err := zero.Validate(data); err != nil {
-		return ComputerUsePreviewTool{}, err
-	}
-	var result ComputerUsePreviewTool
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ComputerUsePreviewTool{}, err
-	}
-	return result, nil
-}
-
-// NewComputerUsePreviewTool creates a new ComputerUsePreviewTool with required fields and auto-filled const/default values.
-func NewComputerUsePreviewTool(type_ ComputerUsePreviewToolType, environment ComputerUsePreviewToolEnvironment, displayWidth int64, displayHeight int64) *ComputerUsePreviewTool {
-	return &ComputerUsePreviewTool{
-		Type: type_,
-		Environment: environment,
-		DisplayWidth: displayWidth,
-		DisplayHeight: displayHeight,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema for Metadata.
-func (Metadata) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Metadata") }
-
-// JSONSchemaBytes returns the JSON Schema for ServiceTier.
-func (ServiceTier) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ServiceTier") }
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateModelResponseProperties.
-func (CreateModelResponseProperties) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateModelResponseProperties") }
-
-// Validate checks whether raw JSON conforms to the CreateModelResponseProperties schema.
-func (CreateModelResponseProperties) Validate(data []byte) error {
-	sch := compschemaValidator("CreateModelResponseProperties")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateModelResponseProperties validates and unmarshals JSON into a CreateModelResponseProperties.
-func DecodeCreateModelResponseProperties(data []byte) (CreateModelResponseProperties, error) {
-	var zero CreateModelResponseProperties
-	if err := zero.Validate(data); err != nil {
-		return CreateModelResponseProperties{}, err
-	}
-	var result CreateModelResponseProperties
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateModelResponseProperties{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for RankingOptions.
-func (RankingOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RankingOptions") }
-
-// Validate checks whether raw JSON conforms to the RankingOptions schema.
-func (RankingOptions) Validate(data []byte) error {
-	sch := compschemaValidator("RankingOptions")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeRankingOptions validates and unmarshals JSON into a RankingOptions.
-func DecodeRankingOptions(data []byte) (RankingOptions, error) {
-	var zero RankingOptions
-	if err := zero.Validate(data); err != nil {
-		return RankingOptions{}, err
-	}
-	var result RankingOptions
-	if err := json.Unmarshal(data, &result); err != nil {
-		return RankingOptions{}, err
-	}
-	return result, nil
-}
-
-// FiltersJSONSchemaBytes returns the JSON Schema for the Filters union.
-func FiltersJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Filters") }
-
-// DecodeFilters validates and unmarshals JSON into the correct Filters variant.
-// Dispatches on the "type" discriminator field.
-func DecodeFilters(data []byte) (Filters, error) {
-	sch := compschemaValidator("Filters")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "eq", "gt", "gte", "lt", "lte", "ne":
-		var val ComparisonFilter
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "and", "or":
-		var val CompoundFilter
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for Filters", disc.D)
-	}
-}
-
-// FiltersAs extracts a variant from a Filters union value, like errors.As.
-// Only types whose pointer implements Filters can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if FiltersAs(shape, &circle) {
-//		// circle is populated
-//	}
-func FiltersAs[T any, P interface{ *T; Filters }](v Filters, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FileSearchTool.
-func (FileSearchTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchTool") }
-
-// Validate checks whether raw JSON conforms to the FileSearchTool schema.
-func (FileSearchTool) Validate(data []byte) error {
-	sch := compschemaValidator("FileSearchTool")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFileSearchTool validates and unmarshals JSON into a FileSearchTool.
-func DecodeFileSearchTool(data []byte) (FileSearchTool, error) {
-	var zero FileSearchTool
-	if err := zero.Validate(data); err != nil {
-		return FileSearchTool{}, err
-	}
-	var result FileSearchTool
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FileSearchTool{}, err
-	}
-	return result, nil
-}
-
-// NewFileSearchTool creates a new FileSearchTool with required fields and auto-filled const/default values.
-func NewFileSearchTool(vectorStoreIds []string, type_ FileSearchToolType) *FileSearchTool {
-	return &FileSearchTool{
-		VectorStoreIds: vectorStoreIds,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionTool.
-func (FunctionTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionTool") }
-
-// Validate checks whether raw JSON conforms to the FunctionTool schema.
-func (FunctionTool) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionTool")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionTool validates and unmarshals JSON into a FunctionTool.
-func DecodeFunctionTool(data []byte) (FunctionTool, error) {
-	var zero FunctionTool
-	if err := zero.Validate(data); err != nil {
-		return FunctionTool{}, err
-	}
-	var result FunctionTool
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionTool{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionTool creates a new FunctionTool with required fields and auto-filled const/default values.
-func NewFunctionTool(name string, parameters map[string]FunctionTool, strict bool, type_ FunctionToolType) *FunctionTool {
-	return &FunctionTool{
-		Name: name,
-		Parameters: parameters,
-		Strict: &strict,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewTool.
-func (WebSearchPreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchPreviewTool") }
-
-// Validate checks whether raw JSON conforms to the WebSearchPreviewTool schema.
-func (WebSearchPreviewTool) Validate(data []byte) error {
-	sch := compschemaValidator("WebSearchPreviewTool")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeWebSearchPreviewTool validates and unmarshals JSON into a WebSearchPreviewTool.
-func DecodeWebSearchPreviewTool(data []byte) (WebSearchPreviewTool, error) {
-	var zero WebSearchPreviewTool
-	if err := zero.Validate(data); err != nil {
-		return WebSearchPreviewTool{}, err
-	}
-	var result WebSearchPreviewTool
-	if err := json.Unmarshal(data, &result); err != nil {
-		return WebSearchPreviewTool{}, err
-	}
-	return result, nil
-}
-
-// NewWebSearchPreviewTool creates a new WebSearchPreviewTool with required fields and auto-filled const/default values.
-func NewWebSearchPreviewTool(type_ WebSearchPreviewToolType) *WebSearchPreviewTool {
-	return &WebSearchPreviewTool{
-		Type: type_,
-	}
-}
-
-// ToolJSONSchemaBytes returns the JSON Schema for the Tool union.
-func ToolJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Tool") }
-
-// DecodeTool validates and unmarshals JSON into the correct Tool variant.
-// Dispatches on the "type" discriminator field.
-func DecodeTool(data []byte) (Tool, error) {
-	sch := compschemaValidator("Tool")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "computer_use_preview":
-		var val ComputerUsePreviewTool
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search":
-		var val FileSearchTool
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function":
-		var val FunctionTool
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_preview", "web_search_preview_2025_03_11":
-		var val WebSearchPreviewTool
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for Tool", disc.D)
-	}
-}
-
-// ToolAs extracts a variant from a Tool union value, like errors.As.
-// Only types whose pointer implements Tool can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if ToolAs(shape, &circle) {
-//		// circle is populated
-//	}
-func ToolAs[T any, P interface{ *T; Tool }](v Tool, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for Reasoning.
-func (Reasoning) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Reasoning") }
-
-// Validate checks whether raw JSON conforms to the Reasoning schema.
-func (Reasoning) Validate(data []byte) error {
-	sch := compschemaValidator("Reasoning")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeReasoning validates and unmarshals JSON into a Reasoning.
-func DecodeReasoning(data []byte) (Reasoning, error) {
-	var zero Reasoning
-	if err := zero.Validate(data); err != nil {
-		return Reasoning{}, err
-	}
-	var result Reasoning
-	if err := json.Unmarshal(data, &result); err != nil {
-		return Reasoning{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatJsonObject.
-func (ResponseFormatJsonObject) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonObject") }
-
-// Validate checks whether raw JSON conforms to the ResponseFormatJsonObject schema.
-func (ResponseFormatJsonObject) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFormatJsonObject")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFormatJsonObject validates and unmarshals JSON into a ResponseFormatJsonObject.
-func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, error) {
-	var zero ResponseFormatJsonObject
-	if err := zero.Validate(data); err != nil {
-		return ResponseFormatJsonObject{}, err
-	}
-	var result ResponseFormatJsonObject
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFormatJsonObject{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFormatJsonObject creates a new ResponseFormatJsonObject with required fields and auto-filled const/default values.
-func NewResponseFormatJsonObject(type_ ResponseFormatJsonObjectType) *ResponseFormatJsonObject {
-	return &ResponseFormatJsonObject{
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
-func (ResponseFormatText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatText") }
-
-// Validate checks whether raw JSON conforms to the ResponseFormatText schema.
-func (ResponseFormatText) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFormatText")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFormatText validates and unmarshals JSON into a ResponseFormatText.
-func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
-	var zero ResponseFormatText
-	if err := zero.Validate(data); err != nil {
-		return ResponseFormatText{}, err
-	}
-	var result ResponseFormatText
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFormatText{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFormatText creates a new ResponseFormatText with required fields and auto-filled const/default values.
-func NewResponseFormatText(type_ ResponseFormatTextType) *ResponseFormatText {
-	return &ResponseFormatText{
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
-func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonSchemaSchema") }
-
-// JSONSchemaBytes returns the JSON Schema definition for TextResponseFormatJsonSchema.
-func (TextResponseFormatJsonSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatJsonSchema") }
-
-// Validate checks whether raw JSON conforms to the TextResponseFormatJsonSchema schema.
-func (TextResponseFormatJsonSchema) Validate(data []byte) error {
-	sch := compschemaValidator("TextResponseFormatJsonSchema")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeTextResponseFormatJsonSchema validates and unmarshals JSON into a TextResponseFormatJsonSchema.
-func DecodeTextResponseFormatJsonSchema(data []byte) (TextResponseFormatJsonSchema, error) {
-	var zero TextResponseFormatJsonSchema
-	if err := zero.Validate(data); err != nil {
-		return TextResponseFormatJsonSchema{}, err
-	}
-	var result TextResponseFormatJsonSchema
-	if err := json.Unmarshal(data, &result); err != nil {
-		return TextResponseFormatJsonSchema{}, err
-	}
-	return result, nil
-}
-
-// NewTextResponseFormatJsonSchema creates a new TextResponseFormatJsonSchema with required fields and auto-filled const/default values.
-func NewTextResponseFormatJsonSchema(type_ TextResponseFormatJsonSchemaType, name string, schema ResponseFormatJsonSchemaSchema) *TextResponseFormatJsonSchema {
-	return &TextResponseFormatJsonSchema{
-		Type: type_,
-		Name: name,
-		Schema: schema,
-	}
-}
-
-// TextResponseFormatConfigurationJSONSchemaBytes returns the JSON Schema for the TextResponseFormatConfiguration union.
-func TextResponseFormatConfigurationJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatConfiguration") }
-
-// DecodeTextResponseFormatConfiguration validates and unmarshals JSON into the correct TextResponseFormatConfiguration variant.
-// Dispatches on the "type" discriminator field.
-func DecodeTextResponseFormatConfiguration(data []byte) (TextResponseFormatConfiguration, error) {
-	sch := compschemaValidator("TextResponseFormatConfiguration")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "json_object":
-		var val ResponseFormatJsonObject
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "text":
-		var val ResponseFormatText
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "json_schema":
-		var val TextResponseFormatJsonSchema
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for TextResponseFormatConfiguration", disc.D)
-	}
-}
-
-// TextResponseFormatConfigurationAs extracts a variant from a TextResponseFormatConfiguration union value, like errors.As.
-// Only types whose pointer implements TextResponseFormatConfiguration can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if TextResponseFormatConfigurationAs(shape, &circle) {
-//		// circle is populated
-//	}
-func TextResponseFormatConfigurationAs[T any, P interface{ *T; TextResponseFormatConfiguration }](v TextResponseFormatConfiguration, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseText.
-func (CreateResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseText") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseText schema.
-func (CreateResponseText) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseText")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponseText validates and unmarshals JSON into a CreateResponseText.
-func DecodeCreateResponseText(data []byte) (CreateResponseText, error) {
-	var zero CreateResponseText
-	if err := zero.Validate(data); err != nil {
-		return CreateResponseText{}, err
-	}
-	var result CreateResponseText
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseText{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema for ToolChoiceOptions.
-func (ToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceOptions") }
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseToolChoiceToolChoiceOptions.
-func (CreateResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoiceToolChoiceOptions") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseToolChoiceToolChoiceOptions schema.
-func (CreateResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseToolChoiceToolChoiceOptions")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a CreateResponseToolChoiceToolChoiceOptions.
-func DecodeCreateResponseToolChoiceToolChoiceOptions(data []byte) (CreateResponseToolChoiceToolChoiceOptions, error) {
-	var zero CreateResponseToolChoiceToolChoiceOptions
-	if err := zero.Validate(data); err != nil {
-		return CreateResponseToolChoiceToolChoiceOptions{}, err
-	}
-	var result CreateResponseToolChoiceToolChoiceOptions
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseToolChoiceToolChoiceOptions{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceFunction.
-func (ToolChoiceFunction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceFunction") }
-
-// Validate checks whether raw JSON conforms to the ToolChoiceFunction schema.
-func (ToolChoiceFunction) Validate(data []byte) error {
-	sch := compschemaValidator("ToolChoiceFunction")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeToolChoiceFunction validates and unmarshals JSON into a ToolChoiceFunction.
-func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
-	var zero ToolChoiceFunction
-	if err := zero.Validate(data); err != nil {
-		return ToolChoiceFunction{}, err
-	}
-	var result ToolChoiceFunction
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ToolChoiceFunction{}, err
-	}
-	return result, nil
-}
-
-// NewToolChoiceFunction creates a new ToolChoiceFunction with required fields and auto-filled const/default values.
-func NewToolChoiceFunction(type_ ToolChoiceFunctionType, name string) *ToolChoiceFunction {
-	return &ToolChoiceFunction{
-		Type: type_,
-		Name: name,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
-func (ToolChoiceTypes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceTypes") }
-
-// Validate checks whether raw JSON conforms to the ToolChoiceTypes schema.
-func (ToolChoiceTypes) Validate(data []byte) error {
-	sch := compschemaValidator("ToolChoiceTypes")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeToolChoiceTypes validates and unmarshals JSON into a ToolChoiceTypes.
-func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
-	var zero ToolChoiceTypes
-	if err := zero.Validate(data); err != nil {
-		return ToolChoiceTypes{}, err
-	}
-	var result ToolChoiceTypes
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ToolChoiceTypes{}, err
-	}
-	return result, nil
-}
-
-// NewToolChoiceTypes creates a new ToolChoiceTypes with required fields and auto-filled const/default values.
-func NewToolChoiceTypes(type_ ToolChoiceTypesType) *ToolChoiceTypes {
-	return &ToolChoiceTypes{
-		Type: type_,
-	}
-}
-
-// CreateResponseToolChoiceJSONSchemaBytes returns the JSON Schema for the CreateResponseToolChoice union.
-func CreateResponseToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoice") }
-
-// DecodeCreateResponseToolChoice validates and unmarshals JSON into the correct CreateResponseToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func DecodeCreateResponseToolChoice(data []byte) (CreateResponseToolChoice, error) {
-	sch := compschemaValidator("CreateResponseToolChoice")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_use_preview", "file_search", "web_search_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for CreateResponseToolChoice", disc.D)
-	}
-}
-
-// CreateResponseToolChoiceAs extracts a variant from a CreateResponseToolChoice union value, like errors.As.
-// Only types whose pointer implements CreateResponseToolChoice can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if CreateResponseToolChoiceAs(shape, &circle) {
-//		// circle is populated
-//	}
-func CreateResponseToolChoiceAs[T any, P interface{ *T; CreateResponseToolChoice }](v CreateResponseToolChoice, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for InputFileContent.
@@ -2014,9 +6665,10 @@ func DecodeInputFileContent(data []byte) (InputFileContent, error) {
 }
 
 // NewInputFileContent creates a new InputFileContent with required fields and auto-filled const/default values.
-func NewInputFileContent(type_ InputFileContentType) *InputFileContent {
+func NewInputFileContent(type_ InputFileContentType, fileID string) *InputFileContent {
 	return &InputFileContent{
 		Type: type_,
+		FileID: &fileID,
 	}
 }
 
@@ -2047,9 +6699,11 @@ func DecodeInputImageContent(data []byte) (InputImageContent, error) {
 }
 
 // NewInputImageContent creates a new InputImageContent with required fields and auto-filled const/default values.
-func NewInputImageContent(type_ InputImageContentType, detail InputImageContentDetail) *InputImageContent {
+func NewInputImageContent(type_ InputImageContentType, imageURL string, fileID string, detail ImageDetail) *InputImageContent {
 	return &InputImageContent{
 		Type: type_,
+		ImageURL: &imageURL,
+		FileID: &fileID,
 		Detail: detail,
 	}
 }
@@ -2088,76 +6742,12 @@ func NewInputTextContent(type_ InputTextContentType, text string) *InputTextCont
 	}
 }
 
-// InputContentJSONSchemaBytes returns the JSON Schema for the InputContent union.
-func InputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputContent") }
+// JSONSchemaBytes returns the JSON Schema definition for TopLogProb.
+func (TopLogProb) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TopLogProb") }
 
-// DecodeInputContent validates and unmarshals JSON into the correct InputContent variant.
-// Dispatches on the "type" discriminator field.
-func DecodeInputContent(data []byte) (InputContent, error) {
-	sch := compschemaValidator("InputContent")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "input_file":
-		var val InputFileContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "input_image":
-		var val InputImageContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "input_text":
-		var val InputTextContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for InputContent", disc.D)
-	}
-}
-
-// InputContentAs extracts a variant from a InputContent union value, like errors.As.
-// Only types whose pointer implements InputContent can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if InputContentAs(shape, &circle) {
-//		// circle is populated
-//	}
-func InputContentAs[T any, P interface{ *T; InputContent }](v InputContent, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageContentList.
-func (InputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessageContentList") }
-
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentInputMessageContentList.
-func (EasyInputMessageContentInputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentInputMessageContentList") }
-
-// Validate checks whether raw JSON conforms to the EasyInputMessageContentInputMessageContentList schema.
-func (EasyInputMessageContentInputMessageContentList) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessageContentInputMessageContentList")
+// Validate checks whether raw JSON conforms to the TopLogProb schema.
+func (TopLogProb) Validate(data []byte) error {
+	sch := compschemaValidator("TopLogProb")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2165,25 +6755,34 @@ func (EasyInputMessageContentInputMessageContentList) Validate(data []byte) erro
 	return sch.Validate(v)
 }
 
-// DecodeEasyInputMessageContentInputMessageContentList validates and unmarshals JSON into a EasyInputMessageContentInputMessageContentList.
-func DecodeEasyInputMessageContentInputMessageContentList(data []byte) (EasyInputMessageContentInputMessageContentList, error) {
-	var zero EasyInputMessageContentInputMessageContentList
+// DecodeTopLogProb validates and unmarshals JSON into a TopLogProb.
+func DecodeTopLogProb(data []byte) (TopLogProb, error) {
+	var zero TopLogProb
 	if err := zero.Validate(data); err != nil {
-		return EasyInputMessageContentInputMessageContentList{}, err
+		return TopLogProb{}, err
 	}
-	var result EasyInputMessageContentInputMessageContentList
+	var result TopLogProb
 	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessageContentInputMessageContentList{}, err
+		return TopLogProb{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentString.
-func (EasyInputMessageContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentString") }
+// NewTopLogProb creates a new TopLogProb with required fields and auto-filled const/default values.
+func NewTopLogProb(token string, logprob float64, bytes []int64) *TopLogProb {
+	return &TopLogProb{
+		Token: token,
+		Logprob: logprob,
+		Bytes: bytes,
+	}
+}
 
-// Validate checks whether raw JSON conforms to the EasyInputMessageContentString schema.
-func (EasyInputMessageContentString) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessageContentString")
+// JSONSchemaBytes returns the JSON Schema definition for LogProb.
+func (LogProb) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LogProb") }
+
+// Validate checks whether raw JSON conforms to the LogProb schema.
+func (LogProb) Validate(data []byte) error {
+	sch := compschemaValidator("LogProb")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2191,236 +6790,26 @@ func (EasyInputMessageContentString) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeEasyInputMessageContentString validates and unmarshals JSON into a EasyInputMessageContentString.
-func DecodeEasyInputMessageContentString(data []byte) (EasyInputMessageContentString, error) {
-	var zero EasyInputMessageContentString
+// DecodeLogProb validates and unmarshals JSON into a LogProb.
+func DecodeLogProb(data []byte) (LogProb, error) {
+	var zero LogProb
 	if err := zero.Validate(data); err != nil {
-		return EasyInputMessageContentString{}, err
+		return LogProb{}, err
 	}
-	var result EasyInputMessageContentString
+	var result LogProb
 	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessageContentString{}, err
+		return LogProb{}, err
 	}
 	return result, nil
 }
 
-// EasyInputMessageContentJSONSchemaBytes returns the JSON Schema for the EasyInputMessageContent union.
-func EasyInputMessageContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContent") }
-
-// DecodeEasyInputMessageContent validates and unmarshals JSON into the correct EasyInputMessageContent variant.
-func DecodeEasyInputMessageContent(data []byte) (EasyInputMessageContent, error) {
-	sch := compschemaValidator("EasyInputMessageContent")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	{
-		var val EasyInputMessageContentInputMessageContentList
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val EasyInputMessageContentString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for EasyInputMessageContent")
-}
-
-// EasyInputMessageContentAs extracts a variant from a EasyInputMessageContent union value, like errors.As.
-// Only types whose pointer implements EasyInputMessageContent can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if EasyInputMessageContentAs(shape, &circle) {
-//		// circle is populated
-//	}
-func EasyInputMessageContentAs[T any, P interface{ *T; EasyInputMessageContent }](v EasyInputMessageContent, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessage.
-func (EasyInputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessage") }
-
-// Validate checks whether raw JSON conforms to the EasyInputMessage schema.
-func (EasyInputMessage) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessage")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeEasyInputMessage validates and unmarshals JSON into a EasyInputMessage.
-func DecodeEasyInputMessage(data []byte) (EasyInputMessage, error) {
-	var zero EasyInputMessage
-	if err := zero.Validate(data); err != nil {
-		return EasyInputMessage{}, err
-	}
-	var result EasyInputMessage
-	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessage{}, err
-	}
-	return result, nil
-}
-
-// NewEasyInputMessage creates a new EasyInputMessage with required fields and auto-filled const/default values.
-func NewEasyInputMessage(role EasyInputMessageRole, content EasyInputMessageContent) *EasyInputMessage {
-	return &EasyInputMessage{
-		Role: role,
-		Content: content,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FileSearchToolCall.
-func (FileSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolCall") }
-
-// Validate checks whether raw JSON conforms to the FileSearchToolCall schema.
-func (FileSearchToolCall) Validate(data []byte) error {
-	sch := compschemaValidator("FileSearchToolCall")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFileSearchToolCall validates and unmarshals JSON into a FileSearchToolCall.
-func DecodeFileSearchToolCall(data []byte) (FileSearchToolCall, error) {
-	var zero FileSearchToolCall
-	if err := zero.Validate(data); err != nil {
-		return FileSearchToolCall{}, err
-	}
-	var result FileSearchToolCall
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FileSearchToolCall{}, err
-	}
-	return result, nil
-}
-
-// NewFileSearchToolCall creates a new FileSearchToolCall with required fields and auto-filled const/default values.
-func NewFileSearchToolCall(id string, type_ FileSearchToolCallType, status FileSearchToolCallStatus, queries []string) *FileSearchToolCall {
-	return &FileSearchToolCall{
-		ID: id,
-		Type: type_,
-		Status: status,
-		Queries: queries,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParam.
-func (FunctionCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputItemParam") }
-
-// Validate checks whether raw JSON conforms to the FunctionCallOutputItemParam schema.
-func (FunctionCallOutputItemParam) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionCallOutputItemParam")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionCallOutputItemParam validates and unmarshals JSON into a FunctionCallOutputItemParam.
-func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam, error) {
-	var zero FunctionCallOutputItemParam
-	if err := zero.Validate(data); err != nil {
-		return FunctionCallOutputItemParam{}, err
-	}
-	var result FunctionCallOutputItemParam
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionCallOutputItemParam{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionCallOutputItemParam creates a new FunctionCallOutputItemParam with required fields and auto-filled const/default values.
-func NewFunctionCallOutputItemParam(callID string, type_ FunctionCallOutputItemParamType, output string) *FunctionCallOutputItemParam {
-	return &FunctionCallOutputItemParam{
-		CallID: callID,
-		Type: type_,
-		Output: output,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCall.
-func (FunctionToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCall") }
-
-// Validate checks whether raw JSON conforms to the FunctionToolCall schema.
-func (FunctionToolCall) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCall")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionToolCall validates and unmarshals JSON into a FunctionToolCall.
-func DecodeFunctionToolCall(data []byte) (FunctionToolCall, error) {
-	var zero FunctionToolCall
-	if err := zero.Validate(data); err != nil {
-		return FunctionToolCall{}, err
-	}
-	var result FunctionToolCall
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCall{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionToolCall creates a new FunctionToolCall with required fields and auto-filled const/default values.
-func NewFunctionToolCall(type_ FunctionToolCallType, callID string, name string, arguments string) *FunctionToolCall {
-	return &FunctionToolCall{
-		Type: type_,
-		CallID: callID,
-		Name: name,
-		Arguments: arguments,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for InputMessage.
-func (InputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessage") }
-
-// Validate checks whether raw JSON conforms to the InputMessage schema.
-func (InputMessage) Validate(data []byte) error {
-	sch := compschemaValidator("InputMessage")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeInputMessage validates and unmarshals JSON into a InputMessage.
-func DecodeInputMessage(data []byte) (InputMessage, error) {
-	var zero InputMessage
-	if err := zero.Validate(data); err != nil {
-		return InputMessage{}, err
-	}
-	var result InputMessage
-	if err := json.Unmarshal(data, &result); err != nil {
-		return InputMessage{}, err
-	}
-	return result, nil
-}
-
-// NewInputMessage creates a new InputMessage with required fields and auto-filled const/default values.
-func NewInputMessage(role InputMessageRole, content InputMessageContentList) *InputMessage {
-	return &InputMessage{
-		Role: role,
-		Content: content,
+// NewLogProb creates a new LogProb with required fields and auto-filled const/default values.
+func NewLogProb(topLogprobs []TopLogProb, token string, logprob float64, bytes []int64) *LogProb {
+	return &LogProb{
+		TopLogprobs: topLogprobs,
+		Token: token,
+		Logprob: logprob,
+		Bytes: bytes,
 	}
 }
 
@@ -2451,9 +6840,43 @@ func DecodeOutputTextContent(data []byte) (OutputTextContent, error) {
 }
 
 // NewOutputTextContent creates a new OutputTextContent with required fields and auto-filled const/default values.
-func NewOutputTextContent(annotations []Annotation, type_ OutputTextContentType, text string) *OutputTextContent {
+func NewOutputTextContent(type_ OutputTextContentType, text string, annotations []Annotation) *OutputTextContent {
 	return &OutputTextContent{
+		Type: type_,
+		Text: text,
 		Annotations: annotations,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ReasoningTextContent.
+func (ReasoningTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningTextContent") }
+
+// Validate checks whether raw JSON conforms to the ReasoningTextContent schema.
+func (ReasoningTextContent) Validate(data []byte) error {
+	sch := compschemaValidator("ReasoningTextContent")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoningTextContent validates and unmarshals JSON into a ReasoningTextContent.
+func DecodeReasoningTextContent(data []byte) (ReasoningTextContent, error) {
+	var zero ReasoningTextContent
+	if err := zero.Validate(data); err != nil {
+		return ReasoningTextContent{}, err
+	}
+	var result ReasoningTextContent
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ReasoningTextContent{}, err
+	}
+	return result, nil
+}
+
+// NewReasoningTextContent creates a new ReasoningTextContent with required fields and auto-filled const/default values.
+func NewReasoningTextContent(type_ ReasoningTextContentType, text string) *ReasoningTextContent {
+	return &ReasoningTextContent{
 		Type: type_,
 		Text: text,
 	}
@@ -2493,13 +6916,81 @@ func NewRefusalContent(type_ RefusalContentType, refusal string) *RefusalContent
 	}
 }
 
-// OutputContentJSONSchemaBytes returns the JSON Schema for the OutputContent union.
-func OutputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputContent") }
+// JSONSchemaBytes returns the JSON Schema definition for SummaryTextContent.
+func (SummaryTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SummaryTextContent") }
 
-// DecodeOutputContent validates and unmarshals JSON into the correct OutputContent variant.
+// Validate checks whether raw JSON conforms to the SummaryTextContent schema.
+func (SummaryTextContent) Validate(data []byte) error {
+	sch := compschemaValidator("SummaryTextContent")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSummaryTextContent validates and unmarshals JSON into a SummaryTextContent.
+func DecodeSummaryTextContent(data []byte) (SummaryTextContent, error) {
+	var zero SummaryTextContent
+	if err := zero.Validate(data); err != nil {
+		return SummaryTextContent{}, err
+	}
+	var result SummaryTextContent
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SummaryTextContent{}, err
+	}
+	return result, nil
+}
+
+// NewSummaryTextContent creates a new SummaryTextContent with required fields and auto-filled const/default values.
+func NewSummaryTextContent(type_ SummaryTextContentType, text string) *SummaryTextContent {
+	return &SummaryTextContent{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for TextContent.
+func (TextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextContent") }
+
+// Validate checks whether raw JSON conforms to the TextContent schema.
+func (TextContent) Validate(data []byte) error {
+	sch := compschemaValidator("TextContent")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTextContent validates and unmarshals JSON into a TextContent.
+func DecodeTextContent(data []byte) (TextContent, error) {
+	var zero TextContent
+	if err := zero.Validate(data); err != nil {
+		return TextContent{}, err
+	}
+	var result TextContent
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TextContent{}, err
+	}
+	return result, nil
+}
+
+// NewTextContent creates a new TextContent with required fields and auto-filled const/default values.
+func NewTextContent(type_ TextContentType, text string) *TextContent {
+	return &TextContent{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// ComputerCallOutputOutputJSONSchemaBytes returns the JSON Schema for the ComputerCallOutputOutput union.
+func ComputerCallOutputOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallOutputOutput") }
+
+// DecodeComputerCallOutputOutput validates and unmarshals JSON into the correct ComputerCallOutputOutput variant.
 // Dispatches on the "type" discriminator field.
-func DecodeOutputContent(data []byte) (OutputContent, error) {
-	sch := compschemaValidator("OutputContent")
+func DecodeComputerCallOutputOutput(data []byte) (ComputerCallOutputOutput, error) {
+	sch := compschemaValidator("ComputerCallOutputOutput")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -2514,8 +7005,38 @@ func DecodeOutputContent(data []byte) (OutputContent, error) {
 		return nil, err
 	}
 	switch disc.D {
+	case "computer_screenshot":
+		var val ComputerScreenshotContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "input_file":
+		var val InputFileContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "input_image":
+		var val InputImageContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "input_text":
+		var val InputTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
 	case "output_text":
 		var val OutputTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning_text":
+		var val ReasoningTextContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
@@ -2526,21 +7047,33 @@ func DecodeOutputContent(data []byte) (OutputContent, error) {
 			return nil, err
 		}
 		return &val, nil
+	case "summary_text":
+		var val SummaryTextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val TextContent
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for OutputContent", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ComputerCallOutputOutput", disc.D)
 	}
 }
 
-// OutputContentAs extracts a variant from a OutputContent union value, like errors.As.
-// Only types whose pointer implements OutputContent can be used as target (compile-time checked).
+// ComputerCallOutputOutputAs extracts a variant from a ComputerCallOutputOutput union value, like errors.As.
+// Only types whose pointer implements ComputerCallOutputOutput can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if OutputContentAs(shape, &circle) {
+//	if ComputerCallOutputOutputAs(shape, &circle) {
 //		// circle is populated
 //	}
-func OutputContentAs[T any, P interface{ *T; OutputContent }](v OutputContent, target *T) bool {
+func ComputerCallOutputOutputAs[T any, P interface{ *T; ComputerCallOutputOutput }](v ComputerCallOutputOutput, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -2548,12 +7081,12 @@ func OutputContentAs[T any, P interface{ *T; OutputContent }](v OutputContent, t
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for OutputMessage.
-func (OutputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputMessage") }
+// JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutput.
+func (ComputerCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallOutput") }
 
-// Validate checks whether raw JSON conforms to the OutputMessage schema.
-func (OutputMessage) Validate(data []byte) error {
-	sch := compschemaValidator("OutputMessage")
+// Validate checks whether raw JSON conforms to the ComputerCallOutput schema.
+func (ComputerCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerCallOutput")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2561,36 +7094,43 @@ func (OutputMessage) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeOutputMessage validates and unmarshals JSON into a OutputMessage.
-func DecodeOutputMessage(data []byte) (OutputMessage, error) {
-	var zero OutputMessage
+// DecodeComputerCallOutput validates and unmarshals JSON into a ComputerCallOutput.
+func DecodeComputerCallOutput(data []byte) (ComputerCallOutput, error) {
+	var zero ComputerCallOutput
 	if err := zero.Validate(data); err != nil {
-		return OutputMessage{}, err
+		return ComputerCallOutput{}, err
 	}
-	var result OutputMessage
+	var result ComputerCallOutput
 	if err := json.Unmarshal(data, &result); err != nil {
-		return OutputMessage{}, err
+		return ComputerCallOutput{}, err
 	}
 	return result, nil
 }
 
-// NewOutputMessage creates a new OutputMessage with required fields and auto-filled const/default values.
-func NewOutputMessage(type_ OutputMessageType, role OutputMessageRole, content []OutputContent, status OutputMessageStatus, id string) *OutputMessage {
-	return &OutputMessage{
+// NewComputerCallOutput creates a new ComputerCallOutput with required fields and auto-filled const/default values.
+func NewComputerCallOutput(type_ ComputerCallOutputType, id string, callID string, output ComputerCallOutputOutput, status ComputerCallOutputStatus, currentURL string) *ComputerCallOutput {
+	return &ComputerCallOutput{
 		Type: type_,
-		Role: role,
-		Content: content,
+		ID: id,
+		CallID: callID,
+		Output: output,
 		Status: status,
-		ID: id,
+		CurrentURL: &currentURL,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ReasoningItem.
-func (ReasoningItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningItem") }
+// JSONSchemaBytes returns the JSON Schema for FunctionCallItemStatus.
+func (FunctionCallItemStatus) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallItemStatus") }
 
-// Validate checks whether raw JSON conforms to the ReasoningItem schema.
-func (ReasoningItem) Validate(data []byte) error {
-	sch := compschemaValidator("ReasoningItem")
+// JSONSchemaBytes returns the JSON Schema for DetailEnum.
+func (DetailEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DetailEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerScreenshotParam.
+func (ComputerScreenshotParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerScreenshotParam") }
+
+// Validate checks whether raw JSON conforms to the ComputerScreenshotParam schema.
+func (ComputerScreenshotParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerScreenshotParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2598,34 +7138,309 @@ func (ReasoningItem) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeReasoningItem validates and unmarshals JSON into a ReasoningItem.
-func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
-	var zero ReasoningItem
+// DecodeComputerScreenshotParam validates and unmarshals JSON into a ComputerScreenshotParam.
+func DecodeComputerScreenshotParam(data []byte) (ComputerScreenshotParam, error) {
+	var zero ComputerScreenshotParam
 	if err := zero.Validate(data); err != nil {
-		return ReasoningItem{}, err
+		return ComputerScreenshotParam{}, err
 	}
-	var result ReasoningItem
+	var result ComputerScreenshotParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ReasoningItem{}, err
+		return ComputerScreenshotParam{}, err
 	}
 	return result, nil
 }
 
-// NewReasoningItem creates a new ReasoningItem with required fields and auto-filled const/default values.
-func NewReasoningItem(type_ ReasoningItemType, id string, summary []any) *ReasoningItem {
-	return &ReasoningItem{
+// NewComputerScreenshotParam creates a new ComputerScreenshotParam with required fields and auto-filled const/default values.
+func NewComputerScreenshotParam(type_ ComputerScreenshotParamType) *ComputerScreenshotParam {
+	return &ComputerScreenshotParam{
 		Type: type_,
-		ID: id,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerCallOutputItemParam.
+func (ComputerCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the ComputerCallOutputItemParam schema.
+func (ComputerCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerCallOutputItemParam validates and unmarshals JSON into a ComputerCallOutputItemParam.
+func DecodeComputerCallOutputItemParam(data []byte) (ComputerCallOutputItemParam, error) {
+	var zero ComputerCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return ComputerCallOutputItemParam{}, err
+	}
+	var result ComputerCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewComputerCallOutputItemParam creates a new ComputerCallOutputItemParam with required fields and auto-filled const/default values.
+func NewComputerCallOutputItemParam(callID string, type_ ComputerCallOutputItemParamType, output ComputerScreenshotParam) *ComputerCallOutputItemParam {
+	return &ComputerCallOutputItemParam{
+		CallID: callID,
+		Type: type_,
+		Output: output,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for ComputerEnvironment.
+func (ComputerEnvironment) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerEnvironment") }
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerToolChoice.
+func (ComputerToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolChoice") }
+
+// Validate checks whether raw JSON conforms to the ComputerToolChoice schema.
+func (ComputerToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerToolChoice validates and unmarshals JSON into a ComputerToolChoice.
+func DecodeComputerToolChoice(data []byte) (ComputerToolChoice, error) {
+	var zero ComputerToolChoice
+	if err := zero.Validate(data); err != nil {
+		return ComputerToolChoice{}, err
+	}
+	var result ComputerToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewComputerToolChoice creates a new ComputerToolChoice with required fields and auto-filled const/default values.
+func NewComputerToolChoice(type_ ComputerToolChoiceType) *ComputerToolChoice {
+	return &ComputerToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerToolParam.
+func (ComputerToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerToolParam") }
+
+// Validate checks whether raw JSON conforms to the ComputerToolParam schema.
+func (ComputerToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerToolParam validates and unmarshals JSON into a ComputerToolParam.
+func DecodeComputerToolParam(data []byte) (ComputerToolParam, error) {
+	var zero ComputerToolParam
+	if err := zero.Validate(data); err != nil {
+		return ComputerToolParam{}, err
+	}
+	var result ComputerToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewComputerToolParam creates a new ComputerToolParam with required fields and auto-filled const/default values.
+func NewComputerToolParam(type_ ComputerToolParamType, displayWidth int64, displayHeight int64, environment ComputerEnvironment) *ComputerToolParam {
+	return &ComputerToolParam{
+		Type: type_,
+		DisplayWidth: displayWidth,
+		DisplayHeight: displayHeight,
+		Environment: environment,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewTool.
+func (ComputerUsePreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerUsePreviewTool") }
+
+// Validate checks whether raw JSON conforms to the ComputerUsePreviewTool schema.
+func (ComputerUsePreviewTool) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerUsePreviewTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerUsePreviewTool validates and unmarshals JSON into a ComputerUsePreviewTool.
+func DecodeComputerUsePreviewTool(data []byte) (ComputerUsePreviewTool, error) {
+	var zero ComputerUsePreviewTool
+	if err := zero.Validate(data); err != nil {
+		return ComputerUsePreviewTool{}, err
+	}
+	var result ComputerUsePreviewTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerUsePreviewTool{}, err
+	}
+	return result, nil
+}
+
+// NewComputerUsePreviewTool creates a new ComputerUsePreviewTool with required fields and auto-filled const/default values.
+func NewComputerUsePreviewTool(type_ ComputerUsePreviewToolType, environment ComputerEnvironment1, displayWidth int64, displayHeight int64) *ComputerUsePreviewTool {
+	return &ComputerUsePreviewTool{
+		Type: type_,
+		Environment: environment,
+		DisplayWidth: displayWidth,
+		DisplayHeight: displayHeight,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ComputerUsePreviewToolParam.
+func (ComputerUsePreviewToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComputerUsePreviewToolParam") }
+
+// Validate checks whether raw JSON conforms to the ComputerUsePreviewToolParam schema.
+func (ComputerUsePreviewToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("ComputerUsePreviewToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeComputerUsePreviewToolParam validates and unmarshals JSON into a ComputerUsePreviewToolParam.
+func DecodeComputerUsePreviewToolParam(data []byte) (ComputerUsePreviewToolParam, error) {
+	var zero ComputerUsePreviewToolParam
+	if err := zero.Validate(data); err != nil {
+		return ComputerUsePreviewToolParam{}, err
+	}
+	var result ComputerUsePreviewToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ComputerUsePreviewToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewComputerUsePreviewToolParam creates a new ComputerUsePreviewToolParam with required fields and auto-filled const/default values.
+func NewComputerUsePreviewToolParam(type_ ComputerUsePreviewToolParamType, displayWidth int64, displayHeight int64, environment ComputerEnvironment) *ComputerUsePreviewToolParam {
+	return &ComputerUsePreviewToolParam{
+		Type: type_,
+		DisplayWidth: displayWidth,
+		DisplayHeight: displayHeight,
+		Environment: environment,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ContainerFileCitationParam.
+func (ContainerFileCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ContainerFileCitationParam") }
+
+// Validate checks whether raw JSON conforms to the ContainerFileCitationParam schema.
+func (ContainerFileCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ContainerFileCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeContainerFileCitationParam validates and unmarshals JSON into a ContainerFileCitationParam.
+func DecodeContainerFileCitationParam(data []byte) (ContainerFileCitationParam, error) {
+	var zero ContainerFileCitationParam
+	if err := zero.Validate(data); err != nil {
+		return ContainerFileCitationParam{}, err
+	}
+	var result ContainerFileCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ContainerFileCitationParam{}, err
+	}
+	return result, nil
+}
+
+// NewContainerFileCitationParam creates a new ContainerFileCitationParam with required fields and auto-filled const/default values.
+func NewContainerFileCitationParam(type_ ContainerFileCitationParamType, startIndex int64, endIndex int64, containerID string, fileID string, filename string) *ContainerFileCitationParam {
+	return &ContainerFileCitationParam{
+		Type: type_,
+		StartIndex: startIndex,
+		EndIndex: endIndex,
+		ContainerID: containerID,
+		FileID: fileID,
+		Filename: filename,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ContextEditDetails.
+func (ContextEditDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ContextEditDetails") }
+
+// Validate checks whether raw JSON conforms to the ContextEditDetails schema.
+func (ContextEditDetails) Validate(data []byte) error {
+	sch := compschemaValidator("ContextEditDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeContextEditDetails validates and unmarshals JSON into a ContextEditDetails.
+func DecodeContextEditDetails(data []byte) (ContextEditDetails, error) {
+	var zero ContextEditDetails
+	if err := zero.Validate(data); err != nil {
+		return ContextEditDetails{}, err
+	}
+	var result ContextEditDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ContextEditDetails{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ContextEdit.
+func (ContextEdit) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ContextEdit") }
+
+// Validate checks whether raw JSON conforms to the ContextEdit schema.
+func (ContextEdit) Validate(data []byte) error {
+	sch := compschemaValidator("ContextEdit")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeContextEdit validates and unmarshals JSON into a ContextEdit.
+func DecodeContextEdit(data []byte) (ContextEdit, error) {
+	var zero ContextEdit
+	if err := zero.Validate(data); err != nil {
+		return ContextEdit{}, err
+	}
+	var result ContextEdit
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ContextEdit{}, err
+	}
+	return result, nil
+}
+
+// NewContextEdit creates a new ContextEdit with required fields and auto-filled const/default values.
+func NewContextEdit(type_ string, summary string) *ContextEdit {
+	return &ContextEdit{
+		Type: type_,
 		Summary: summary,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for WebSearchToolCall.
-func (WebSearchToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolCall") }
+// JSONSchemaBytes returns the JSON Schema definition for Conversation.
+func (Conversation) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Conversation") }
 
-// Validate checks whether raw JSON conforms to the WebSearchToolCall schema.
-func (WebSearchToolCall) Validate(data []byte) error {
-	sch := compschemaValidator("WebSearchToolCall")
+// Validate checks whether raw JSON conforms to the Conversation schema.
+func (Conversation) Validate(data []byte) error {
+	sch := compschemaValidator("Conversation")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2633,35 +7448,144 @@ func (WebSearchToolCall) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeWebSearchToolCall validates and unmarshals JSON into a WebSearchToolCall.
-func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
-	var zero WebSearchToolCall
+// DecodeConversation validates and unmarshals JSON into a Conversation.
+func DecodeConversation(data []byte) (Conversation, error) {
+	var zero Conversation
 	if err := zero.Validate(data); err != nil {
-		return WebSearchToolCall{}, err
+		return Conversation{}, err
 	}
-	var result WebSearchToolCall
+	var result Conversation
 	if err := json.Unmarshal(data, &result); err != nil {
-		return WebSearchToolCall{}, err
+		return Conversation{}, err
 	}
 	return result, nil
 }
 
-// NewWebSearchToolCall creates a new WebSearchToolCall with required fields and auto-filled const/default values.
-func NewWebSearchToolCall(id string, type_ WebSearchToolCallType, status WebSearchToolCallStatus) *WebSearchToolCall {
-	return &WebSearchToolCall{
+// NewConversation creates a new Conversation with required fields and auto-filled const/default values.
+func NewConversation(id string) *Conversation {
+	return &Conversation{
 		ID: id,
-		Type: type_,
-		Status: status,
 	}
 }
 
-// ItemJSONSchemaBytes returns the JSON Schema for the Item union.
-func ItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Item") }
+// JSONSchemaBytes returns the JSON Schema definition for ConversationParam.
+func (ConversationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ConversationParam") }
 
-// DecodeItem validates and unmarshals JSON into the correct Item variant.
+// Validate checks whether raw JSON conforms to the ConversationParam schema.
+func (ConversationParam) Validate(data []byte) error {
+	sch := compschemaValidator("ConversationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeConversationParam validates and unmarshals JSON into a ConversationParam.
+func DecodeConversationParam(data []byte) (ConversationParam, error) {
+	var zero ConversationParam
+	if err := zero.Validate(data); err != nil {
+		return ConversationParam{}, err
+	}
+	var result ConversationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ConversationParam{}, err
+	}
+	return result, nil
+}
+
+// NewConversationParam creates a new ConversationParam with required fields and auto-filled const/default values.
+func NewConversationParam(id string) *ConversationParam {
+	return &ConversationParam{
+		ID: id,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for StreamOptionsParam.
+func (StreamOptionsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("StreamOptionsParam") }
+
+// Validate checks whether raw JSON conforms to the StreamOptionsParam schema.
+func (StreamOptionsParam) Validate(data []byte) error {
+	sch := compschemaValidator("StreamOptionsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeStreamOptionsParam validates and unmarshals JSON into a StreamOptionsParam.
+func DecodeStreamOptionsParam(data []byte) (StreamOptionsParam, error) {
+	var zero StreamOptionsParam
+	if err := zero.Validate(data); err != nil {
+		return StreamOptionsParam{}, err
+	}
+	var result StreamOptionsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return StreamOptionsParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceParamSpecificToolChoiceParam.
+func (ToolChoiceParamSpecificToolChoiceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceParamSpecificToolChoiceParam") }
+
+// Validate checks whether raw JSON conforms to the ToolChoiceParamSpecificToolChoiceParam schema.
+func (ToolChoiceParamSpecificToolChoiceParam) Validate(data []byte) error {
+	sch := compschemaValidator("ToolChoiceParamSpecificToolChoiceParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeToolChoiceParamSpecificToolChoiceParam validates and unmarshals JSON into a ToolChoiceParamSpecificToolChoiceParam.
+func DecodeToolChoiceParamSpecificToolChoiceParam(data []byte) (ToolChoiceParamSpecificToolChoiceParam, error) {
+	var zero ToolChoiceParamSpecificToolChoiceParam
+	if err := zero.Validate(data); err != nil {
+		return ToolChoiceParamSpecificToolChoiceParam{}, err
+	}
+	var result ToolChoiceParamSpecificToolChoiceParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ToolChoiceParamSpecificToolChoiceParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceParamToolChoiceValueEnum.
+func (ToolChoiceParamToolChoiceValueEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceParamToolChoiceValueEnum") }
+
+// Validate checks whether raw JSON conforms to the ToolChoiceParamToolChoiceValueEnum schema.
+func (ToolChoiceParamToolChoiceValueEnum) Validate(data []byte) error {
+	sch := compschemaValidator("ToolChoiceParamToolChoiceValueEnum")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeToolChoiceParamToolChoiceValueEnum validates and unmarshals JSON into a ToolChoiceParamToolChoiceValueEnum.
+func DecodeToolChoiceParamToolChoiceValueEnum(data []byte) (ToolChoiceParamToolChoiceValueEnum, error) {
+	var zero ToolChoiceParamToolChoiceValueEnum
+	if err := zero.Validate(data); err != nil {
+		return ToolChoiceParamToolChoiceValueEnum{}, err
+	}
+	var result ToolChoiceParamToolChoiceValueEnum
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ToolChoiceParamToolChoiceValueEnum{}, err
+	}
+	return result, nil
+}
+
+// ToolChoiceParamJSONSchemaBytes returns the JSON Schema for the ToolChoiceParam union.
+func ToolChoiceParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceParam") }
+
+// DecodeToolChoiceParam validates and unmarshals JSON into the correct ToolChoiceParam variant.
 // Dispatches on the "type" discriminator field.
-func DecodeItem(data []byte) (Item, error) {
-	sch := compschemaValidator("Item")
+func DecodeToolChoiceParam(data []byte) (ToolChoiceParam, error) {
+	sch := compschemaValidator("ToolChoiceParam")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -2676,69 +7600,27 @@ func DecodeItem(data []byte) (Item, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "computer_call_output":
-		var val ComputerCallOutputItemParam
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_call":
-		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call_output":
-		var val FunctionCallOutputItemParam
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "message":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "reasoning":
-		var val ReasoningItem
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
+	case "allowed_tools":
+		var val AllowedToolsParam
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for Item", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ToolChoiceParam", disc.D)
 	}
 }
 
-// ItemAs extracts a variant from a Item union value, like errors.As.
-// Only types whose pointer implements Item can be used as target (compile-time checked).
+// ToolChoiceParamAs extracts a variant from a ToolChoiceParam union value, like errors.As.
+// Only types whose pointer implements ToolChoiceParam can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if ItemAs(shape, &circle) {
+//	if ToolChoiceParamAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ItemAs[T any, P interface{ *T; Item }](v Item, target *T) bool {
+func ToolChoiceParamAs[T any, P interface{ *T; ToolChoiceParam }](v ToolChoiceParam, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -2746,12 +7628,12 @@ func ItemAs[T any, P interface{ *T; Item }](v Item, target *T) bool {
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for InputItemItem.
-func (InputItemItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItemItem") }
+// JSONSchemaBytes returns the JSON Schema definition for CustomGrammarFormatParam.
+func (CustomGrammarFormatParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomGrammarFormatParam") }
 
-// Validate checks whether raw JSON conforms to the InputItemItem schema.
-func (InputItemItem) Validate(data []byte) error {
-	sch := compschemaValidator("InputItemItem")
+// Validate checks whether raw JSON conforms to the CustomGrammarFormatParam schema.
+func (CustomGrammarFormatParam) Validate(data []byte) error {
+	sch := compschemaValidator("CustomGrammarFormatParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2759,17 +7641,4289 @@ func (InputItemItem) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeInputItemItem validates and unmarshals JSON into a InputItemItem.
-func DecodeInputItemItem(data []byte) (InputItemItem, error) {
-	var zero InputItemItem
+// DecodeCustomGrammarFormatParam validates and unmarshals JSON into a CustomGrammarFormatParam.
+func DecodeCustomGrammarFormatParam(data []byte) (CustomGrammarFormatParam, error) {
+	var zero CustomGrammarFormatParam
 	if err := zero.Validate(data); err != nil {
-		return InputItemItem{}, err
+		return CustomGrammarFormatParam{}, err
 	}
-	var result InputItemItem
+	var result CustomGrammarFormatParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return InputItemItem{}, err
+		return CustomGrammarFormatParam{}, err
 	}
 	return result, nil
+}
+
+// NewCustomGrammarFormatParam creates a new CustomGrammarFormatParam with required fields and auto-filled const/default values.
+func NewCustomGrammarFormatParam(type_ CustomGrammarFormatParamType, syntax GrammarSyntax, definition string) *CustomGrammarFormatParam {
+	return &CustomGrammarFormatParam{
+		Type: type_,
+		Syntax: syntax,
+		Definition: definition,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomTextFormatParam.
+func (CustomTextFormatParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomTextFormatParam") }
+
+// Validate checks whether raw JSON conforms to the CustomTextFormatParam schema.
+func (CustomTextFormatParam) Validate(data []byte) error {
+	sch := compschemaValidator("CustomTextFormatParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomTextFormatParam validates and unmarshals JSON into a CustomTextFormatParam.
+func DecodeCustomTextFormatParam(data []byte) (CustomTextFormatParam, error) {
+	var zero CustomTextFormatParam
+	if err := zero.Validate(data); err != nil {
+		return CustomTextFormatParam{}, err
+	}
+	var result CustomTextFormatParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomTextFormatParam{}, err
+	}
+	return result, nil
+}
+
+// NewCustomTextFormatParam creates a new CustomTextFormatParam with required fields and auto-filled const/default values.
+func NewCustomTextFormatParam(type_ CustomTextFormatParamType) *CustomTextFormatParam {
+	return &CustomTextFormatParam{
+		Type: type_,
+	}
+}
+
+// CustomToolParamFormatJSONSchemaBytes returns the JSON Schema for the CustomToolParamFormat union.
+func CustomToolParamFormatJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolParamFormat") }
+
+// DecodeCustomToolParamFormat validates and unmarshals JSON into the correct CustomToolParamFormat variant.
+// Dispatches on the "type" discriminator field.
+func DecodeCustomToolParamFormat(data []byte) (CustomToolParamFormat, error) {
+	sch := compschemaValidator("CustomToolParamFormat")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "grammar":
+		var val CustomGrammarFormatParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val CustomTextFormatParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for CustomToolParamFormat", disc.D)
+	}
+}
+
+// CustomToolParamFormatAs extracts a variant from a CustomToolParamFormat union value, like errors.As.
+// Only types whose pointer implements CustomToolParamFormat can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CustomToolParamFormatAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CustomToolParamFormatAs[T any, P interface{ *T; CustomToolParamFormat }](v CustomToolParamFormat, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolParam.
+func (CustomToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolParam") }
+
+// Validate checks whether raw JSON conforms to the CustomToolParam schema.
+func (CustomToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolParam validates and unmarshals JSON into a CustomToolParam.
+func DecodeCustomToolParam(data []byte) (CustomToolParam, error) {
+	var zero CustomToolParam
+	if err := zero.Validate(data); err != nil {
+		return CustomToolParam{}, err
+	}
+	var result CustomToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolParam creates a new CustomToolParam with required fields and auto-filled const/default values.
+func NewCustomToolParam(type_ CustomToolParamType, name string) *CustomToolParam {
+	return &CustomToolParam{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for RankerVersionType.
+func (RankerVersionType) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RankerVersionType") }
+
+// JSONSchemaBytes returns the JSON Schema definition for HybridSearchOptionsParam.
+func (HybridSearchOptionsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("HybridSearchOptionsParam") }
+
+// Validate checks whether raw JSON conforms to the HybridSearchOptionsParam schema.
+func (HybridSearchOptionsParam) Validate(data []byte) error {
+	sch := compschemaValidator("HybridSearchOptionsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeHybridSearchOptionsParam validates and unmarshals JSON into a HybridSearchOptionsParam.
+func DecodeHybridSearchOptionsParam(data []byte) (HybridSearchOptionsParam, error) {
+	var zero HybridSearchOptionsParam
+	if err := zero.Validate(data); err != nil {
+		return HybridSearchOptionsParam{}, err
+	}
+	var result HybridSearchOptionsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return HybridSearchOptionsParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchRankingOptionsParam.
+func (FileSearchRankingOptionsParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchRankingOptionsParam") }
+
+// Validate checks whether raw JSON conforms to the FileSearchRankingOptionsParam schema.
+func (FileSearchRankingOptionsParam) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchRankingOptionsParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchRankingOptionsParam validates and unmarshals JSON into a FileSearchRankingOptionsParam.
+func DecodeFileSearchRankingOptionsParam(data []byte) (FileSearchRankingOptionsParam, error) {
+	var zero FileSearchRankingOptionsParam
+	if err := zero.Validate(data); err != nil {
+		return FileSearchRankingOptionsParam{}, err
+	}
+	var result FileSearchRankingOptionsParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchRankingOptionsParam{}, err
+	}
+	return result, nil
+}
+
+// FileSearchToolParamFiltersJSONSchemaBytes returns the JSON Schema for the FileSearchToolParamFilters union.
+func FileSearchToolParamFiltersJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolParamFilters") }
+
+// DecodeFileSearchToolParamFilters validates and unmarshals JSON into the correct FileSearchToolParamFilters variant.
+// Dispatches on the "type" discriminator field.
+func DecodeFileSearchToolParamFilters(data []byte) (FileSearchToolParamFilters, error) {
+	sch := compschemaValidator("FileSearchToolParamFilters")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "containsany":
+		var val ComparisonFilterParamContainsAnyParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "contains":
+		var val ComparisonFilterParamContainsParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "eq":
+		var val ComparisonFilterParamEQParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gte":
+		var val ComparisonFilterParamGTEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "gt":
+		var val ComparisonFilterParamGTParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "in":
+		var val ComparisonFilterParamINParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lte":
+		var val ComparisonFilterParamLTEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "lt":
+		var val ComparisonFilterParamLTParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontainsany":
+		var val ComparisonFilterParamNContainsAnyParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ncontains":
+		var val ComparisonFilterParamNContainsParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "ne":
+		var val ComparisonFilterParamNEParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "nin":
+		var val ComparisonFilterParamNINParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "and":
+		var val CompoundFilterParamAndParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "or":
+		var val CompoundFilterParamOrParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FileSearchToolParamFilters", disc.D)
+	}
+}
+
+// FileSearchToolParamFiltersAs extracts a variant from a FileSearchToolParamFilters union value, like errors.As.
+// Only types whose pointer implements FileSearchToolParamFilters can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FileSearchToolParamFiltersAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FileSearchToolParamFiltersAs[T any, P interface{ *T; FileSearchToolParamFilters }](v FileSearchToolParamFilters, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchToolParam.
+func (FileSearchToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolParam") }
+
+// Validate checks whether raw JSON conforms to the FileSearchToolParam schema.
+func (FileSearchToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchToolParam validates and unmarshals JSON into a FileSearchToolParam.
+func DecodeFileSearchToolParam(data []byte) (FileSearchToolParam, error) {
+	var zero FileSearchToolParam
+	if err := zero.Validate(data); err != nil {
+		return FileSearchToolParam{}, err
+	}
+	var result FileSearchToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchToolParam creates a new FileSearchToolParam with required fields and auto-filled const/default values.
+func NewFileSearchToolParam(type_ FileSearchToolParamType, vectorStoreIds []string) *FileSearchToolParam {
+	return &FileSearchToolParam{
+		Type: type_,
+		VectorStoreIds: vectorStoreIds,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellToolParam.
+func (FunctionShellToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellToolParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellToolParam schema.
+func (FunctionShellToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellToolParam validates and unmarshals JSON into a FunctionShellToolParam.
+func DecodeFunctionShellToolParam(data []byte) (FunctionShellToolParam, error) {
+	var zero FunctionShellToolParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellToolParam{}, err
+	}
+	var result FunctionShellToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellToolParam creates a new FunctionShellToolParam with required fields and auto-filled const/default values.
+func NewFunctionShellToolParam(type_ FunctionShellToolParamType) *FunctionShellToolParam {
+	return &FunctionShellToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionToolParam.
+func (FunctionToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionToolParam schema.
+func (FunctionToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionToolParam validates and unmarshals JSON into a FunctionToolParam.
+func DecodeFunctionToolParam(data []byte) (FunctionToolParam, error) {
+	var zero FunctionToolParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionToolParam{}, err
+	}
+	var result FunctionToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionToolParam creates a new FunctionToolParam with required fields and auto-filled const/default values.
+func NewFunctionToolParam(type_ FunctionToolParamType, name string) *FunctionToolParam {
+	return &FunctionToolParam{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for ImageSize.
+func (ImageSize) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageSize") }
+
+// JSONSchemaBytes returns the JSON Schema for ImageOutputFormat.
+func (ImageOutputFormat) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageOutputFormat") }
+
+// JSONSchemaBytes returns the JSON Schema definition for InputImageMaskContentParam.
+func (InputImageMaskContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageMaskContentParam") }
+
+// Validate checks whether raw JSON conforms to the InputImageMaskContentParam schema.
+func (InputImageMaskContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("InputImageMaskContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeInputImageMaskContentParam validates and unmarshals JSON into a InputImageMaskContentParam.
+func DecodeInputImageMaskContentParam(data []byte) (InputImageMaskContentParam, error) {
+	var zero InputImageMaskContentParam
+	if err := zero.Validate(data); err != nil {
+		return InputImageMaskContentParam{}, err
+	}
+	var result InputImageMaskContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return InputImageMaskContentParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema for ImageGenToolModel.
+func (ImageGenToolModel) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenToolModel") }
+
+// JSONSchemaBytes returns the JSON Schema for ImageQuality.
+func (ImageQuality) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageQuality") }
+
+// JSONSchemaBytes returns the JSON Schema for ImageModeration.
+func (ImageModeration) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageModeration") }
+
+// JSONSchemaBytes returns the JSON Schema for ImageBackground.
+func (ImageBackground) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageBackground") }
+
+// JSONSchemaBytes returns the JSON Schema definition for ImageGenToolParam.
+func (ImageGenToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenToolParam") }
+
+// Validate checks whether raw JSON conforms to the ImageGenToolParam schema.
+func (ImageGenToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("ImageGenToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImageGenToolParam validates and unmarshals JSON into a ImageGenToolParam.
+func DecodeImageGenToolParam(data []byte) (ImageGenToolParam, error) {
+	var zero ImageGenToolParam
+	if err := zero.Validate(data); err != nil {
+		return ImageGenToolParam{}, err
+	}
+	var result ImageGenToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImageGenToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewImageGenToolParam creates a new ImageGenToolParam with required fields and auto-filled const/default values.
+func NewImageGenToolParam(type_ ImageGenToolParamType) *ImageGenToolParam {
+	return &ImageGenToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellToolParam.
+func (LocalShellToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellToolParam") }
+
+// Validate checks whether raw JSON conforms to the LocalShellToolParam schema.
+func (LocalShellToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeLocalShellToolParam validates and unmarshals JSON into a LocalShellToolParam.
+func DecodeLocalShellToolParam(data []byte) (LocalShellToolParam, error) {
+	var zero LocalShellToolParam
+	if err := zero.Validate(data); err != nil {
+		return LocalShellToolParam{}, err
+	}
+	var result LocalShellToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return LocalShellToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewLocalShellToolParam creates a new LocalShellToolParam with required fields and auto-filled const/default values.
+func NewLocalShellToolParam(type_ LocalShellToolParamType) *LocalShellToolParam {
+	return &LocalShellToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolFilterParam.
+func (MCPToolFilterParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolFilterParam") }
+
+// Validate checks whether raw JSON conforms to the MCPToolFilterParam schema.
+func (MCPToolFilterParam) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolFilterParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolFilterParam validates and unmarshals JSON into a MCPToolFilterParam.
+func DecodeMCPToolFilterParam(data []byte) (MCPToolFilterParam, error) {
+	var zero MCPToolFilterParam
+	if err := zero.Validate(data); err != nil {
+		return MCPToolFilterParam{}, err
+	}
+	var result MCPToolFilterParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolFilterParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolParamAllowedToolsSlicestring.
+func (MCPToolParamAllowedToolsSlicestring) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolParamAllowedToolsSlicestring") }
+
+// Validate checks whether raw JSON conforms to the MCPToolParamAllowedToolsSlicestring schema.
+func (MCPToolParamAllowedToolsSlicestring) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolParamAllowedToolsSlicestring")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolParamAllowedToolsSlicestring validates and unmarshals JSON into a MCPToolParamAllowedToolsSlicestring.
+func DecodeMCPToolParamAllowedToolsSlicestring(data []byte) (MCPToolParamAllowedToolsSlicestring, error) {
+	var zero MCPToolParamAllowedToolsSlicestring
+	if err := zero.Validate(data); err != nil {
+		return MCPToolParamAllowedToolsSlicestring{}, err
+	}
+	var result MCPToolParamAllowedToolsSlicestring
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolParamAllowedToolsSlicestring{}, err
+	}
+	return result, nil
+}
+
+// MCPToolParamAllowedToolsJSONSchemaBytes returns the JSON Schema for the MCPToolParamAllowedTools union.
+func MCPToolParamAllowedToolsJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolParamAllowedTools") }
+
+// DecodeMCPToolParamAllowedTools validates and unmarshals JSON into the correct MCPToolParamAllowedTools variant.
+func DecodeMCPToolParamAllowedTools(data []byte) (MCPToolParamAllowedTools, error) {
+	sch := compschemaValidator("MCPToolParamAllowedTools")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val MCPToolFilterParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val MCPToolParamAllowedToolsSlicestring
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for MCPToolParamAllowedTools")
+}
+
+// MCPToolParamAllowedToolsAs extracts a variant from a MCPToolParamAllowedTools union value, like errors.As.
+// Only types whose pointer implements MCPToolParamAllowedTools can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if MCPToolParamAllowedToolsAs(shape, &circle) {
+//		// circle is populated
+//	}
+func MCPToolParamAllowedToolsAs[T any, P interface{ *T; MCPToolParamAllowedTools }](v MCPToolParamAllowedTools, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPRequireApprovalFilterParam.
+func (MCPRequireApprovalFilterParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPRequireApprovalFilterParam") }
+
+// Validate checks whether raw JSON conforms to the MCPRequireApprovalFilterParam schema.
+func (MCPRequireApprovalFilterParam) Validate(data []byte) error {
+	sch := compschemaValidator("MCPRequireApprovalFilterParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPRequireApprovalFilterParam validates and unmarshals JSON into a MCPRequireApprovalFilterParam.
+func DecodeMCPRequireApprovalFilterParam(data []byte) (MCPRequireApprovalFilterParam, error) {
+	var zero MCPRequireApprovalFilterParam
+	if err := zero.Validate(data); err != nil {
+		return MCPRequireApprovalFilterParam{}, err
+	}
+	var result MCPRequireApprovalFilterParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPRequireApprovalFilterParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolParamRequireApprovalMCPRequireApprovalApiEnum.
+func (MCPToolParamRequireApprovalMCPRequireApprovalApiEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolParamRequireApprovalMCPRequireApprovalApiEnum") }
+
+// Validate checks whether raw JSON conforms to the MCPToolParamRequireApprovalMCPRequireApprovalApiEnum schema.
+func (MCPToolParamRequireApprovalMCPRequireApprovalApiEnum) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolParamRequireApprovalMCPRequireApprovalApiEnum")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolParamRequireApprovalMCPRequireApprovalApiEnum validates and unmarshals JSON into a MCPToolParamRequireApprovalMCPRequireApprovalApiEnum.
+func DecodeMCPToolParamRequireApprovalMCPRequireApprovalApiEnum(data []byte) (MCPToolParamRequireApprovalMCPRequireApprovalApiEnum, error) {
+	var zero MCPToolParamRequireApprovalMCPRequireApprovalApiEnum
+	if err := zero.Validate(data); err != nil {
+		return MCPToolParamRequireApprovalMCPRequireApprovalApiEnum{}, err
+	}
+	var result MCPToolParamRequireApprovalMCPRequireApprovalApiEnum
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolParamRequireApprovalMCPRequireApprovalApiEnum{}, err
+	}
+	return result, nil
+}
+
+// MCPToolParamRequireApprovalJSONSchemaBytes returns the JSON Schema for the MCPToolParamRequireApproval union.
+func MCPToolParamRequireApprovalJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolParamRequireApproval") }
+
+// DecodeMCPToolParamRequireApproval validates and unmarshals JSON into the correct MCPToolParamRequireApproval variant.
+func DecodeMCPToolParamRequireApproval(data []byte) (MCPToolParamRequireApproval, error) {
+	sch := compschemaValidator("MCPToolParamRequireApproval")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val MCPRequireApprovalFilterParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val MCPToolParamRequireApprovalMCPRequireApprovalApiEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for MCPToolParamRequireApproval")
+}
+
+// MCPToolParamRequireApprovalAs extracts a variant from a MCPToolParamRequireApproval union value, like errors.As.
+// Only types whose pointer implements MCPToolParamRequireApproval can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if MCPToolParamRequireApprovalAs(shape, &circle) {
+//		// circle is populated
+//	}
+func MCPToolParamRequireApprovalAs[T any, P interface{ *T; MCPToolParamRequireApproval }](v MCPToolParamRequireApproval, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolParam.
+func (MCPToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolParam") }
+
+// Validate checks whether raw JSON conforms to the MCPToolParam schema.
+func (MCPToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolParam validates and unmarshals JSON into a MCPToolParam.
+func DecodeMCPToolParam(data []byte) (MCPToolParam, error) {
+	var zero MCPToolParam
+	if err := zero.Validate(data); err != nil {
+		return MCPToolParam{}, err
+	}
+	var result MCPToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewMCPToolParam creates a new MCPToolParam with required fields and auto-filled const/default values.
+func NewMCPToolParam(type_ MCPToolParamType, serverLabel string) *MCPToolParam {
+	return &MCPToolParam{
+		Type: type_,
+		ServerLabel: serverLabel,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for SearchContextSize.
+func (SearchContextSize) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SearchContextSize") }
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchGADeprecatedToolParam.
+func (WebSearchGADeprecatedToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchGADeprecatedToolParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchGADeprecatedToolParam schema.
+func (WebSearchGADeprecatedToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchGADeprecatedToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchGADeprecatedToolParam validates and unmarshals JSON into a WebSearchGADeprecatedToolParam.
+func DecodeWebSearchGADeprecatedToolParam(data []byte) (WebSearchGADeprecatedToolParam, error) {
+	var zero WebSearchGADeprecatedToolParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchGADeprecatedToolParam{}, err
+	}
+	var result WebSearchGADeprecatedToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchGADeprecatedToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchGADeprecatedToolParam creates a new WebSearchGADeprecatedToolParam with required fields and auto-filled const/default values.
+func NewWebSearchGADeprecatedToolParam(type_ WebSearchGADeprecatedToolParamType) *WebSearchGADeprecatedToolParam {
+	return &WebSearchGADeprecatedToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewToolParam.
+func (WebSearchPreviewToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchPreviewToolParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchPreviewToolParam schema.
+func (WebSearchPreviewToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchPreviewToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchPreviewToolParam validates and unmarshals JSON into a WebSearchPreviewToolParam.
+func DecodeWebSearchPreviewToolParam(data []byte) (WebSearchPreviewToolParam, error) {
+	var zero WebSearchPreviewToolParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchPreviewToolParam{}, err
+	}
+	var result WebSearchPreviewToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchPreviewToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchPreviewToolParam creates a new WebSearchPreviewToolParam with required fields and auto-filled const/default values.
+func NewWebSearchPreviewToolParam(type_ WebSearchPreviewToolParamType) *WebSearchPreviewToolParam {
+	return &WebSearchPreviewToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewToolParam20250311Param.
+func (WebSearchPreviewToolParam20250311Param) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchPreviewToolParam20250311Param") }
+
+// Validate checks whether raw JSON conforms to the WebSearchPreviewToolParam20250311Param schema.
+func (WebSearchPreviewToolParam20250311Param) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchPreviewToolParam20250311Param")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchPreviewToolParam20250311Param validates and unmarshals JSON into a WebSearchPreviewToolParam20250311Param.
+func DecodeWebSearchPreviewToolParam20250311Param(data []byte) (WebSearchPreviewToolParam20250311Param, error) {
+	var zero WebSearchPreviewToolParam20250311Param
+	if err := zero.Validate(data); err != nil {
+		return WebSearchPreviewToolParam20250311Param{}, err
+	}
+	var result WebSearchPreviewToolParam20250311Param
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchPreviewToolParam20250311Param{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchPreviewToolParam20250311Param creates a new WebSearchPreviewToolParam20250311Param with required fields and auto-filled const/default values.
+func NewWebSearchPreviewToolParam20250311Param(type_ WebSearchPreviewToolParam20250311ParamType) *WebSearchPreviewToolParam20250311Param {
+	return &WebSearchPreviewToolParam20250311Param{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchToolParam.
+func (WebSearchToolParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchToolParam schema.
+func (WebSearchToolParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchToolParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchToolParam validates and unmarshals JSON into a WebSearchToolParam.
+func DecodeWebSearchToolParam(data []byte) (WebSearchToolParam, error) {
+	var zero WebSearchToolParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchToolParam{}, err
+	}
+	var result WebSearchToolParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchToolParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchToolParam creates a new WebSearchToolParam with required fields and auto-filled const/default values.
+func NewWebSearchToolParam(type_ WebSearchToolParamType) *WebSearchToolParam {
+	return &WebSearchToolParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchToolParam20250814Param.
+func (WebSearchToolParam20250814Param) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolParam20250814Param") }
+
+// Validate checks whether raw JSON conforms to the WebSearchToolParam20250814Param schema.
+func (WebSearchToolParam20250814Param) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchToolParam20250814Param")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchToolParam20250814Param validates and unmarshals JSON into a WebSearchToolParam20250814Param.
+func DecodeWebSearchToolParam20250814Param(data []byte) (WebSearchToolParam20250814Param, error) {
+	var zero WebSearchToolParam20250814Param
+	if err := zero.Validate(data); err != nil {
+		return WebSearchToolParam20250814Param{}, err
+	}
+	var result WebSearchToolParam20250814Param
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchToolParam20250814Param{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchToolParam20250814Param creates a new WebSearchToolParam20250814Param with required fields and auto-filled const/default values.
+func NewWebSearchToolParam20250814Param(type_ WebSearchToolParam20250814ParamType) *WebSearchToolParam20250814Param {
+	return &WebSearchToolParam20250814Param{
+		Type: type_,
+	}
+}
+
+// ResponsesToolParamJSONSchemaBytes returns the JSON Schema for the ResponsesToolParam union.
+func ResponsesToolParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsesToolParam") }
+
+// DecodeResponsesToolParam validates and unmarshals JSON into the correct ResponsesToolParam variant.
+// Dispatches on the "type" discriminator field.
+func DecodeResponsesToolParam(data []byte) (ResponsesToolParam, error) {
+	sch := compschemaValidator("ResponsesToolParam")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "apply_patch":
+		var val ApplyPatchToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "code_interpreter":
+		var val CodeInterpreterToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer-preview":
+		var val ComputerToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview":
+		var val ComputerUsePreviewToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val CustomToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "file_search":
+		var val FileSearchToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val FunctionShellToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function":
+		var val FunctionToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation":
+		var val ImageGenToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell":
+		var val LocalShellToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val MCPToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_ga":
+		var val WebSearchGADeprecatedToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview":
+		var val WebSearchPreviewToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview_2025_03_11":
+		var val WebSearchPreviewToolParam20250311Param
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search":
+		var val WebSearchToolParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_2025_08_26":
+		var val WebSearchToolParam20250814Param
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ResponsesToolParam", disc.D)
+	}
+}
+
+// ResponsesToolParamAs extracts a variant from a ResponsesToolParam union value, like errors.As.
+// Only types whose pointer implements ResponsesToolParam can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ResponsesToolParamAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ResponsesToolParamAs[T any, P interface{ *T; ResponsesToolParam }](v ResponsesToolParam, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema for PromptCacheRetentionEnum.
+func (PromptCacheRetentionEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("PromptCacheRetentionEnum") }
+
+// JSONSchemaBytes returns the JSON Schema for MetadataParam.
+func (MetadataParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MetadataParam") }
+
+// JSONSchemaBytes returns the JSON Schema for VerbosityEnum.
+func (VerbosityEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("VerbosityEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for TextParam.
+func (TextParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextParam") }
+
+// Validate checks whether raw JSON conforms to the TextParam schema.
+func (TextParam) Validate(data []byte) error {
+	sch := compschemaValidator("TextParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTextParam validates and unmarshals JSON into a TextParam.
+func DecodeTextParam(data []byte) (TextParam, error) {
+	var zero TextParam
+	if err := zero.Validate(data); err != nil {
+		return TextParam{}, err
+	}
+	var result TextParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TextParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema for ReasoningSummaryEnum.
+func (ReasoningSummaryEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningSummaryEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for ReasoningParam.
+func (ReasoningParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningParam") }
+
+// Validate checks whether raw JSON conforms to the ReasoningParam schema.
+func (ReasoningParam) Validate(data []byte) error {
+	sch := compschemaValidator("ReasoningParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoningParam validates and unmarshals JSON into a ReasoningParam.
+func DecodeReasoningParam(data []byte) (ReasoningParam, error) {
+	var zero ReasoningParam
+	if err := zero.Validate(data); err != nil {
+		return ReasoningParam{}, err
+	}
+	var result ReasoningParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ReasoningParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema for TruncationEnum.
+func (TruncationEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TruncationEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponseBody.
+func (CreateResponseBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseBody") }
+
+// Validate checks whether raw JSON conforms to the CreateResponseBody schema.
+func (CreateResponseBody) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponseBody")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponseBody validates and unmarshals JSON into a CreateResponseBody.
+func DecodeCreateResponseBody(data []byte) (CreateResponseBody, error) {
+	var zero CreateResponseBody
+	if err := zero.Validate(data); err != nil {
+		return CreateResponseBody{}, err
+	}
+	var result CreateResponseBody
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponseBody{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomGrammarFormatField.
+func (CustomGrammarFormatField) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomGrammarFormatField") }
+
+// Validate checks whether raw JSON conforms to the CustomGrammarFormatField schema.
+func (CustomGrammarFormatField) Validate(data []byte) error {
+	sch := compschemaValidator("CustomGrammarFormatField")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomGrammarFormatField validates and unmarshals JSON into a CustomGrammarFormatField.
+func DecodeCustomGrammarFormatField(data []byte) (CustomGrammarFormatField, error) {
+	var zero CustomGrammarFormatField
+	if err := zero.Validate(data); err != nil {
+		return CustomGrammarFormatField{}, err
+	}
+	var result CustomGrammarFormatField
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomGrammarFormatField{}, err
+	}
+	return result, nil
+}
+
+// NewCustomGrammarFormatField creates a new CustomGrammarFormatField with required fields and auto-filled const/default values.
+func NewCustomGrammarFormatField(syntax GrammarSyntax1, definition string, type_ CustomGrammarFormatFieldType) *CustomGrammarFormatField {
+	return &CustomGrammarFormatField{
+		Syntax: syntax,
+		Definition: definition,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomTextFormatField.
+func (CustomTextFormatField) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomTextFormatField") }
+
+// Validate checks whether raw JSON conforms to the CustomTextFormatField schema.
+func (CustomTextFormatField) Validate(data []byte) error {
+	sch := compschemaValidator("CustomTextFormatField")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomTextFormatField validates and unmarshals JSON into a CustomTextFormatField.
+func DecodeCustomTextFormatField(data []byte) (CustomTextFormatField, error) {
+	var zero CustomTextFormatField
+	if err := zero.Validate(data); err != nil {
+		return CustomTextFormatField{}, err
+	}
+	var result CustomTextFormatField
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomTextFormatField{}, err
+	}
+	return result, nil
+}
+
+// NewCustomTextFormatField creates a new CustomTextFormatField with required fields and auto-filled const/default values.
+func NewCustomTextFormatField(type_ CustomTextFormatFieldType) *CustomTextFormatField {
+	return &CustomTextFormatField{
+		Type: type_,
+	}
+}
+
+// CustomToolFormatJSONSchemaBytes returns the JSON Schema for the CustomToolFormat union.
+func CustomToolFormatJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolFormat") }
+
+// DecodeCustomToolFormat validates and unmarshals JSON into the correct CustomToolFormat variant.
+// Dispatches on the "type" discriminator field.
+func DecodeCustomToolFormat(data []byte) (CustomToolFormat, error) {
+	sch := compschemaValidator("CustomToolFormat")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "grammar":
+		var val CustomGrammarFormatField
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val CustomTextFormatField
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for CustomToolFormat", disc.D)
+	}
+}
+
+// CustomToolFormatAs extracts a variant from a CustomToolFormat union value, like errors.As.
+// Only types whose pointer implements CustomToolFormat can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CustomToolFormatAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CustomToolFormatAs[T any, P interface{ *T; CustomToolFormat }](v CustomToolFormat, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomTool.
+func (CustomTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomTool") }
+
+// Validate checks whether raw JSON conforms to the CustomTool schema.
+func (CustomTool) Validate(data []byte) error {
+	sch := compschemaValidator("CustomTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomTool validates and unmarshals JSON into a CustomTool.
+func DecodeCustomTool(data []byte) (CustomTool, error) {
+	var zero CustomTool
+	if err := zero.Validate(data); err != nil {
+		return CustomTool{}, err
+	}
+	var result CustomTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomTool{}, err
+	}
+	return result, nil
+}
+
+// NewCustomTool creates a new CustomTool with required fields and auto-filled const/default values.
+func NewCustomTool(type_ CustomToolType, name string, description string, format CustomToolFormat) *CustomTool {
+	return &CustomTool{
+		Type: type_,
+		Name: name,
+		Description: &description,
+		Format: format,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for FunctionCallStatus.
+func (FunctionCallStatus) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallStatus") }
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCall.
+func (CustomToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCall") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCall schema.
+func (CustomToolCall) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCall validates and unmarshals JSON into a CustomToolCall.
+func DecodeCustomToolCall(data []byte) (CustomToolCall, error) {
+	var zero CustomToolCall
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCall{}, err
+	}
+	var result CustomToolCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCall{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolCall creates a new CustomToolCall with required fields and auto-filled const/default values.
+func NewCustomToolCall(input string, status FunctionCallStatus, type_ CustomToolCallType, id string, callID string, name string) *CustomToolCall {
+	return &CustomToolCall{
+		Input: input,
+		Status: status,
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallItemParam.
+func (CustomToolCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallItemParam schema.
+func (CustomToolCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallItemParam validates and unmarshals JSON into a CustomToolCallItemParam.
+func DecodeCustomToolCallItemParam(data []byte) (CustomToolCallItemParam, error) {
+	var zero CustomToolCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallItemParam{}, err
+	}
+	var result CustomToolCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolCallItemParam creates a new CustomToolCallItemParam with required fields and auto-filled const/default values.
+func NewCustomToolCallItemParam(callID string, type_ CustomToolCallItemParamType, name string, input string) *CustomToolCallItemParam {
+	return &CustomToolCallItemParam{
+		CallID: callID,
+		Type: type_,
+		Name: name,
+		Input: input,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutputOutputSliceany.
+func (CustomToolCallOutputOutputSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputOutputSliceany") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutputOutputSliceany schema.
+func (CustomToolCallOutputOutputSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutputOutputSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutputOutputSliceany validates and unmarshals JSON into a CustomToolCallOutputOutputSliceany.
+func DecodeCustomToolCallOutputOutputSliceany(data []byte) (CustomToolCallOutputOutputSliceany, error) {
+	var zero CustomToolCallOutputOutputSliceany
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutputOutputSliceany{}, err
+	}
+	var result CustomToolCallOutputOutputSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutputOutputSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutputOutputString.
+func (CustomToolCallOutputOutputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputOutputString") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutputOutputString schema.
+func (CustomToolCallOutputOutputString) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutputOutputString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutputOutputString validates and unmarshals JSON into a CustomToolCallOutputOutputString.
+func DecodeCustomToolCallOutputOutputString(data []byte) (CustomToolCallOutputOutputString, error) {
+	var zero CustomToolCallOutputOutputString
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutputOutputString{}, err
+	}
+	var result CustomToolCallOutputOutputString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutputOutputString{}, err
+	}
+	return result, nil
+}
+
+// CustomToolCallOutputOutputJSONSchemaBytes returns the JSON Schema for the CustomToolCallOutputOutput union.
+func CustomToolCallOutputOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputOutput") }
+
+// DecodeCustomToolCallOutputOutput validates and unmarshals JSON into the correct CustomToolCallOutputOutput variant.
+func DecodeCustomToolCallOutputOutput(data []byte) (CustomToolCallOutputOutput, error) {
+	sch := compschemaValidator("CustomToolCallOutputOutput")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val CustomToolCallOutputOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CustomToolCallOutputOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CustomToolCallOutputOutput")
+}
+
+// CustomToolCallOutputOutputAs extracts a variant from a CustomToolCallOutputOutput union value, like errors.As.
+// Only types whose pointer implements CustomToolCallOutputOutput can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CustomToolCallOutputOutputAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CustomToolCallOutputOutputAs[T any, P interface{ *T; CustomToolCallOutputOutput }](v CustomToolCallOutputOutput, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema for FunctionCallOutputStatusEnum.
+func (FunctionCallOutputStatusEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputStatusEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutput.
+func (CustomToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutput") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutput schema.
+func (CustomToolCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutput validates and unmarshals JSON into a CustomToolCallOutput.
+func DecodeCustomToolCallOutput(data []byte) (CustomToolCallOutput, error) {
+	var zero CustomToolCallOutput
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutput{}, err
+	}
+	var result CustomToolCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolCallOutput creates a new CustomToolCallOutput with required fields and auto-filled const/default values.
+func NewCustomToolCallOutput(id string, callID string, output CustomToolCallOutputOutput, status FunctionCallOutputStatusEnum, type_ CustomToolCallOutputType) *CustomToolCallOutput {
+	return &CustomToolCallOutput{
+		ID: id,
+		CallID: callID,
+		Output: output,
+		Status: status,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutputItemParamOutputSliceany.
+func (CustomToolCallOutputItemParamOutputSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputItemParamOutputSliceany") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutputItemParamOutputSliceany schema.
+func (CustomToolCallOutputItemParamOutputSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutputItemParamOutputSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutputItemParamOutputSliceany validates and unmarshals JSON into a CustomToolCallOutputItemParamOutputSliceany.
+func DecodeCustomToolCallOutputItemParamOutputSliceany(data []byte) (CustomToolCallOutputItemParamOutputSliceany, error) {
+	var zero CustomToolCallOutputItemParamOutputSliceany
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutputItemParamOutputSliceany{}, err
+	}
+	var result CustomToolCallOutputItemParamOutputSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutputItemParamOutputSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutputItemParamOutputString.
+func (CustomToolCallOutputItemParamOutputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputItemParamOutputString") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutputItemParamOutputString schema.
+func (CustomToolCallOutputItemParamOutputString) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutputItemParamOutputString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutputItemParamOutputString validates and unmarshals JSON into a CustomToolCallOutputItemParamOutputString.
+func DecodeCustomToolCallOutputItemParamOutputString(data []byte) (CustomToolCallOutputItemParamOutputString, error) {
+	var zero CustomToolCallOutputItemParamOutputString
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutputItemParamOutputString{}, err
+	}
+	var result CustomToolCallOutputItemParamOutputString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutputItemParamOutputString{}, err
+	}
+	return result, nil
+}
+
+// CustomToolCallOutputItemParamOutputJSONSchemaBytes returns the JSON Schema for the CustomToolCallOutputItemParamOutput union.
+func CustomToolCallOutputItemParamOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputItemParamOutput") }
+
+// DecodeCustomToolCallOutputItemParamOutput validates and unmarshals JSON into the correct CustomToolCallOutputItemParamOutput variant.
+func DecodeCustomToolCallOutputItemParamOutput(data []byte) (CustomToolCallOutputItemParamOutput, error) {
+	sch := compschemaValidator("CustomToolCallOutputItemParamOutput")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val CustomToolCallOutputItemParamOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CustomToolCallOutputItemParamOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CustomToolCallOutputItemParamOutput")
+}
+
+// CustomToolCallOutputItemParamOutputAs extracts a variant from a CustomToolCallOutputItemParamOutput union value, like errors.As.
+// Only types whose pointer implements CustomToolCallOutputItemParamOutput can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CustomToolCallOutputItemParamOutputAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CustomToolCallOutputItemParamOutputAs[T any, P interface{ *T; CustomToolCallOutputItemParamOutput }](v CustomToolCallOutputItemParamOutput, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolCallOutputItemParam.
+func (CustomToolCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the CustomToolCallOutputItemParam schema.
+func (CustomToolCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolCallOutputItemParam validates and unmarshals JSON into a CustomToolCallOutputItemParam.
+func DecodeCustomToolCallOutputItemParam(data []byte) (CustomToolCallOutputItemParam, error) {
+	var zero CustomToolCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return CustomToolCallOutputItemParam{}, err
+	}
+	var result CustomToolCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolCallOutputItemParam creates a new CustomToolCallOutputItemParam with required fields and auto-filled const/default values.
+func NewCustomToolCallOutputItemParam(callID string, type_ CustomToolCallOutputItemParamType, output CustomToolCallOutputItemParamOutput) *CustomToolCallOutputItemParam {
+	return &CustomToolCallOutputItemParam{
+		CallID: callID,
+		Type: type_,
+		Output: output,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CustomToolChoice.
+func (CustomToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CustomToolChoice") }
+
+// Validate checks whether raw JSON conforms to the CustomToolChoice schema.
+func (CustomToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("CustomToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCustomToolChoice validates and unmarshals JSON into a CustomToolChoice.
+func DecodeCustomToolChoice(data []byte) (CustomToolChoice, error) {
+	var zero CustomToolChoice
+	if err := zero.Validate(data); err != nil {
+		return CustomToolChoice{}, err
+	}
+	var result CustomToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CustomToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewCustomToolChoice creates a new CustomToolChoice with required fields and auto-filled const/default values.
+func NewCustomToolChoice(type_ CustomToolChoiceType) *CustomToolChoice {
+	return &CustomToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DeveloperMessageItemParamContentSliceany.
+func (DeveloperMessageItemParamContentSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DeveloperMessageItemParamContentSliceany") }
+
+// Validate checks whether raw JSON conforms to the DeveloperMessageItemParamContentSliceany schema.
+func (DeveloperMessageItemParamContentSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("DeveloperMessageItemParamContentSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDeveloperMessageItemParamContentSliceany validates and unmarshals JSON into a DeveloperMessageItemParamContentSliceany.
+func DecodeDeveloperMessageItemParamContentSliceany(data []byte) (DeveloperMessageItemParamContentSliceany, error) {
+	var zero DeveloperMessageItemParamContentSliceany
+	if err := zero.Validate(data); err != nil {
+		return DeveloperMessageItemParamContentSliceany{}, err
+	}
+	var result DeveloperMessageItemParamContentSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DeveloperMessageItemParamContentSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DeveloperMessageItemParamContentString.
+func (DeveloperMessageItemParamContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DeveloperMessageItemParamContentString") }
+
+// Validate checks whether raw JSON conforms to the DeveloperMessageItemParamContentString schema.
+func (DeveloperMessageItemParamContentString) Validate(data []byte) error {
+	sch := compschemaValidator("DeveloperMessageItemParamContentString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDeveloperMessageItemParamContentString validates and unmarshals JSON into a DeveloperMessageItemParamContentString.
+func DecodeDeveloperMessageItemParamContentString(data []byte) (DeveloperMessageItemParamContentString, error) {
+	var zero DeveloperMessageItemParamContentString
+	if err := zero.Validate(data); err != nil {
+		return DeveloperMessageItemParamContentString{}, err
+	}
+	var result DeveloperMessageItemParamContentString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DeveloperMessageItemParamContentString{}, err
+	}
+	return result, nil
+}
+
+// DeveloperMessageItemParamContentJSONSchemaBytes returns the JSON Schema for the DeveloperMessageItemParamContent union.
+func DeveloperMessageItemParamContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DeveloperMessageItemParamContent") }
+
+// DecodeDeveloperMessageItemParamContent validates and unmarshals JSON into the correct DeveloperMessageItemParamContent variant.
+func DecodeDeveloperMessageItemParamContent(data []byte) (DeveloperMessageItemParamContent, error) {
+	sch := compschemaValidator("DeveloperMessageItemParamContent")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val DeveloperMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val DeveloperMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for DeveloperMessageItemParamContent")
+}
+
+// DeveloperMessageItemParamContentAs extracts a variant from a DeveloperMessageItemParamContent union value, like errors.As.
+// Only types whose pointer implements DeveloperMessageItemParamContent can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if DeveloperMessageItemParamContentAs(shape, &circle) {
+//		// circle is populated
+//	}
+func DeveloperMessageItemParamContentAs[T any, P interface{ *T; DeveloperMessageItemParamContent }](v DeveloperMessageItemParamContent, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for DeveloperMessageItemParam.
+func (DeveloperMessageItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("DeveloperMessageItemParam") }
+
+// Validate checks whether raw JSON conforms to the DeveloperMessageItemParam schema.
+func (DeveloperMessageItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("DeveloperMessageItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeDeveloperMessageItemParam validates and unmarshals JSON into a DeveloperMessageItemParam.
+func DecodeDeveloperMessageItemParam(data []byte) (DeveloperMessageItemParam, error) {
+	var zero DeveloperMessageItemParam
+	if err := zero.Validate(data); err != nil {
+		return DeveloperMessageItemParam{}, err
+	}
+	var result DeveloperMessageItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return DeveloperMessageItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewDeveloperMessageItemParam creates a new DeveloperMessageItemParam with required fields and auto-filled const/default values.
+func NewDeveloperMessageItemParam(type_ DeveloperMessageItemParamType, role DeveloperMessageItemParamRole, content DeveloperMessageItemParamContent) *DeveloperMessageItemParam {
+	return &DeveloperMessageItemParam{
+		Type: type_,
+		Role: role,
+		Content: content,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for Error.
+func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
+
+// Validate checks whether raw JSON conforms to the Error schema.
+func (Error) Validate(data []byte) error {
+	sch := compschemaValidator("Error")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeError validates and unmarshals JSON into a Error.
+func DecodeError(data []byte) (Error, error) {
+	var zero Error
+	if err := zero.Validate(data); err != nil {
+		return Error{}, err
+	}
+	var result Error
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Error{}, err
+	}
+	return result, nil
+}
+
+// NewError creates a new Error with required fields and auto-filled const/default values.
+func NewError(code string, message string) *Error {
+	return &Error{
+		Code: code,
+		Message: message,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileCitationParam.
+func (FileCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileCitationParam") }
+
+// Validate checks whether raw JSON conforms to the FileCitationParam schema.
+func (FileCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("FileCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileCitationParam validates and unmarshals JSON into a FileCitationParam.
+func DecodeFileCitationParam(data []byte) (FileCitationParam, error) {
+	var zero FileCitationParam
+	if err := zero.Validate(data); err != nil {
+		return FileCitationParam{}, err
+	}
+	var result FileCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileCitationParam{}, err
+	}
+	return result, nil
+}
+
+// NewFileCitationParam creates a new FileCitationParam with required fields and auto-filled const/default values.
+func NewFileCitationParam(type_ FileCitationParamType, index int64, fileID string, filename string) *FileCitationParam {
+	return &FileCitationParam{
+		Type: type_,
+		Index: index,
+		FileID: fileID,
+		Filename: filename,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchResult.
+func (FileSearchResult) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchResult") }
+
+// Validate checks whether raw JSON conforms to the FileSearchResult schema.
+func (FileSearchResult) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchResult")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchResult validates and unmarshals JSON into a FileSearchResult.
+func DecodeFileSearchResult(data []byte) (FileSearchResult, error) {
+	var zero FileSearchResult
+	if err := zero.Validate(data); err != nil {
+		return FileSearchResult{}, err
+	}
+	var result FileSearchResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchResult{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchResult creates a new FileSearchResult with required fields and auto-filled const/default values.
+func NewFileSearchResult(text string, attributes any, score float64, vectorStoreID string, fileID string, filename string) *FileSearchResult {
+	return &FileSearchResult{
+		Text: text,
+		Attributes: attributes,
+		Score: &score,
+		VectorStoreID: &vectorStoreID,
+		FileID: fileID,
+		Filename: filename,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchCall.
+func (FileSearchCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchCall") }
+
+// Validate checks whether raw JSON conforms to the FileSearchCall schema.
+func (FileSearchCall) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchCall validates and unmarshals JSON into a FileSearchCall.
+func DecodeFileSearchCall(data []byte) (FileSearchCall, error) {
+	var zero FileSearchCall
+	if err := zero.Validate(data); err != nil {
+		return FileSearchCall{}, err
+	}
+	var result FileSearchCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchCall{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchCall creates a new FileSearchCall with required fields and auto-filled const/default values.
+func NewFileSearchCall(type_ FileSearchCallType, id string, status FileSearchToolCallStatusEnum, queries []string, results []FileSearchResult) *FileSearchCall {
+	return &FileSearchCall{
+		Type: type_,
+		ID: id,
+		Status: status,
+		Queries: queries,
+		Results: results,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchRetrievedChunksParam.
+func (FileSearchRetrievedChunksParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchRetrievedChunksParam") }
+
+// Validate checks whether raw JSON conforms to the FileSearchRetrievedChunksParam schema.
+func (FileSearchRetrievedChunksParam) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchRetrievedChunksParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchRetrievedChunksParam validates and unmarshals JSON into a FileSearchRetrievedChunksParam.
+func DecodeFileSearchRetrievedChunksParam(data []byte) (FileSearchRetrievedChunksParam, error) {
+	var zero FileSearchRetrievedChunksParam
+	if err := zero.Validate(data); err != nil {
+		return FileSearchRetrievedChunksParam{}, err
+	}
+	var result FileSearchRetrievedChunksParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchRetrievedChunksParam{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchRetrievedChunksParam creates a new FileSearchRetrievedChunksParam with required fields and auto-filled const/default values.
+func NewFileSearchRetrievedChunksParam(text string, attributes any, fileID string, filename string) *FileSearchRetrievedChunksParam {
+	return &FileSearchRetrievedChunksParam{
+		Text: text,
+		Attributes: attributes,
+		FileID: fileID,
+		Filename: filename,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchCallItemParam.
+func (FileSearchCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the FileSearchCallItemParam schema.
+func (FileSearchCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchCallItemParam validates and unmarshals JSON into a FileSearchCallItemParam.
+func DecodeFileSearchCallItemParam(data []byte) (FileSearchCallItemParam, error) {
+	var zero FileSearchCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return FileSearchCallItemParam{}, err
+	}
+	var result FileSearchCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchCallItemParam creates a new FileSearchCallItemParam with required fields and auto-filled const/default values.
+func NewFileSearchCallItemParam(id string, type_ FileSearchCallItemParamType, queries []string) *FileSearchCallItemParam {
+	return &FileSearchCallItemParam{
+		ID: id,
+		Type: type_,
+		Queries: queries,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for HybridSearchOptions.
+func (HybridSearchOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("HybridSearchOptions") }
+
+// Validate checks whether raw JSON conforms to the HybridSearchOptions schema.
+func (HybridSearchOptions) Validate(data []byte) error {
+	sch := compschemaValidator("HybridSearchOptions")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeHybridSearchOptions validates and unmarshals JSON into a HybridSearchOptions.
+func DecodeHybridSearchOptions(data []byte) (HybridSearchOptions, error) {
+	var zero HybridSearchOptions
+	if err := zero.Validate(data); err != nil {
+		return HybridSearchOptions{}, err
+	}
+	var result HybridSearchOptions
+	if err := json.Unmarshal(data, &result); err != nil {
+		return HybridSearchOptions{}, err
+	}
+	return result, nil
+}
+
+// NewHybridSearchOptions creates a new HybridSearchOptions with required fields and auto-filled const/default values.
+func NewHybridSearchOptions(textWeight float64, embeddingWeight float64) *HybridSearchOptions {
+	return &HybridSearchOptions{
+		TextWeight: textWeight,
+		EmbeddingWeight: embeddingWeight,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for RankingOptions.
+func (RankingOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RankingOptions") }
+
+// Validate checks whether raw JSON conforms to the RankingOptions schema.
+func (RankingOptions) Validate(data []byte) error {
+	sch := compschemaValidator("RankingOptions")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeRankingOptions validates and unmarshals JSON into a RankingOptions.
+func DecodeRankingOptions(data []byte) (RankingOptions, error) {
+	var zero RankingOptions
+	if err := zero.Validate(data); err != nil {
+		return RankingOptions{}, err
+	}
+	var result RankingOptions
+	if err := json.Unmarshal(data, &result); err != nil {
+		return RankingOptions{}, err
+	}
+	return result, nil
+}
+
+// NewRankingOptions creates a new RankingOptions with required fields and auto-filled const/default values.
+func NewRankingOptions(ranker RankerVersionType, scoreThreshold float64) *RankingOptions {
+	return &RankingOptions{
+		Ranker: ranker,
+		ScoreThreshold: scoreThreshold,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchTool.
+func (FileSearchTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchTool") }
+
+// Validate checks whether raw JSON conforms to the FileSearchTool schema.
+func (FileSearchTool) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchTool validates and unmarshals JSON into a FileSearchTool.
+func DecodeFileSearchTool(data []byte) (FileSearchTool, error) {
+	var zero FileSearchTool
+	if err := zero.Validate(data); err != nil {
+		return FileSearchTool{}, err
+	}
+	var result FileSearchTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchTool{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchTool creates a new FileSearchTool with required fields and auto-filled const/default values.
+func NewFileSearchTool(rankingOptions RankingOptions, filters Filters, type_ FileSearchToolType, vectorStoreIds []string, maxNumResults int64) *FileSearchTool {
+	return &FileSearchTool{
+		RankingOptions: rankingOptions,
+		Filters: filters,
+		Type: type_,
+		VectorStoreIds: vectorStoreIds,
+		MaxNumResults: maxNumResults,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FileSearchToolChoice.
+func (FileSearchToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolChoice") }
+
+// Validate checks whether raw JSON conforms to the FileSearchToolChoice schema.
+func (FileSearchToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("FileSearchToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFileSearchToolChoice validates and unmarshals JSON into a FileSearchToolChoice.
+func DecodeFileSearchToolChoice(data []byte) (FileSearchToolChoice, error) {
+	var zero FileSearchToolChoice
+	if err := zero.Validate(data); err != nil {
+		return FileSearchToolChoice{}, err
+	}
+	var result FileSearchToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FileSearchToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewFileSearchToolChoice creates a new FileSearchToolChoice with required fields and auto-filled const/default values.
+func NewFileSearchToolChoice(type_ FileSearchToolChoiceType) *FileSearchToolChoice {
+	return &FileSearchToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCall.
+func (FunctionCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCall") }
+
+// Validate checks whether raw JSON conforms to the FunctionCall schema.
+func (FunctionCall) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCall validates and unmarshals JSON into a FunctionCall.
+func DecodeFunctionCall(data []byte) (FunctionCall, error) {
+	var zero FunctionCall
+	if err := zero.Validate(data); err != nil {
+		return FunctionCall{}, err
+	}
+	var result FunctionCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCall{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionCall creates a new FunctionCall with required fields and auto-filled const/default values.
+func NewFunctionCall(type_ FunctionCallType, id string, callID string, name string, arguments string, status FunctionCallStatus) *FunctionCall {
+	return &FunctionCall{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Name: name,
+		Arguments: arguments,
+		Status: status,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallItemParam.
+func (FunctionCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallItemParam schema.
+func (FunctionCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallItemParam validates and unmarshals JSON into a FunctionCallItemParam.
+func DecodeFunctionCallItemParam(data []byte) (FunctionCallItemParam, error) {
+	var zero FunctionCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallItemParam{}, err
+	}
+	var result FunctionCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionCallItemParam creates a new FunctionCallItemParam with required fields and auto-filled const/default values.
+func NewFunctionCallItemParam(type_ FunctionCallItemParamType, name string, arguments string, callID string) *FunctionCallItemParam {
+	return &FunctionCallItemParam{
+		Type: type_,
+		Name: name,
+		Arguments: arguments,
+		CallID: callID,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputOutputSliceany.
+func (FunctionCallOutputOutputSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputOutputSliceany") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutputOutputSliceany schema.
+func (FunctionCallOutputOutputSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutputOutputSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutputOutputSliceany validates and unmarshals JSON into a FunctionCallOutputOutputSliceany.
+func DecodeFunctionCallOutputOutputSliceany(data []byte) (FunctionCallOutputOutputSliceany, error) {
+	var zero FunctionCallOutputOutputSliceany
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutputOutputSliceany{}, err
+	}
+	var result FunctionCallOutputOutputSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutputOutputSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputOutputString.
+func (FunctionCallOutputOutputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputOutputString") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutputOutputString schema.
+func (FunctionCallOutputOutputString) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutputOutputString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutputOutputString validates and unmarshals JSON into a FunctionCallOutputOutputString.
+func DecodeFunctionCallOutputOutputString(data []byte) (FunctionCallOutputOutputString, error) {
+	var zero FunctionCallOutputOutputString
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutputOutputString{}, err
+	}
+	var result FunctionCallOutputOutputString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutputOutputString{}, err
+	}
+	return result, nil
+}
+
+// FunctionCallOutputOutputJSONSchemaBytes returns the JSON Schema for the FunctionCallOutputOutput union.
+func FunctionCallOutputOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputOutput") }
+
+// DecodeFunctionCallOutputOutput validates and unmarshals JSON into the correct FunctionCallOutputOutput variant.
+func DecodeFunctionCallOutputOutput(data []byte) (FunctionCallOutputOutput, error) {
+	sch := compschemaValidator("FunctionCallOutputOutput")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val FunctionCallOutputOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionCallOutputOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for FunctionCallOutputOutput")
+}
+
+// FunctionCallOutputOutputAs extracts a variant from a FunctionCallOutputOutput union value, like errors.As.
+// Only types whose pointer implements FunctionCallOutputOutput can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FunctionCallOutputOutputAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FunctionCallOutputOutputAs[T any, P interface{ *T; FunctionCallOutputOutput }](v FunctionCallOutputOutput, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutput.
+func (FunctionCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutput") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutput schema.
+func (FunctionCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutput validates and unmarshals JSON into a FunctionCallOutput.
+func DecodeFunctionCallOutput(data []byte) (FunctionCallOutput, error) {
+	var zero FunctionCallOutput
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutput{}, err
+	}
+	var result FunctionCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionCallOutput creates a new FunctionCallOutput with required fields and auto-filled const/default values.
+func NewFunctionCallOutput(id string, callID string, output FunctionCallOutputOutput, status FunctionCallOutputStatusEnum, type_ FunctionCallOutputType) *FunctionCallOutput {
+	return &FunctionCallOutput{
+		ID: id,
+		CallID: callID,
+		Output: output,
+		Status: status,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParamOutputSliceany.
+func (FunctionCallOutputItemParamOutputSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputItemParamOutputSliceany") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutputItemParamOutputSliceany schema.
+func (FunctionCallOutputItemParamOutputSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutputItemParamOutputSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutputItemParamOutputSliceany validates and unmarshals JSON into a FunctionCallOutputItemParamOutputSliceany.
+func DecodeFunctionCallOutputItemParamOutputSliceany(data []byte) (FunctionCallOutputItemParamOutputSliceany, error) {
+	var zero FunctionCallOutputItemParamOutputSliceany
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutputItemParamOutputSliceany{}, err
+	}
+	var result FunctionCallOutputItemParamOutputSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutputItemParamOutputSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParamOutputString.
+func (FunctionCallOutputItemParamOutputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputItemParamOutputString") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutputItemParamOutputString schema.
+func (FunctionCallOutputItemParamOutputString) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutputItemParamOutputString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutputItemParamOutputString validates and unmarshals JSON into a FunctionCallOutputItemParamOutputString.
+func DecodeFunctionCallOutputItemParamOutputString(data []byte) (FunctionCallOutputItemParamOutputString, error) {
+	var zero FunctionCallOutputItemParamOutputString
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutputItemParamOutputString{}, err
+	}
+	var result FunctionCallOutputItemParamOutputString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutputItemParamOutputString{}, err
+	}
+	return result, nil
+}
+
+// FunctionCallOutputItemParamOutputJSONSchemaBytes returns the JSON Schema for the FunctionCallOutputItemParamOutput union.
+func FunctionCallOutputItemParamOutputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputItemParamOutput") }
+
+// DecodeFunctionCallOutputItemParamOutput validates and unmarshals JSON into the correct FunctionCallOutputItemParamOutput variant.
+func DecodeFunctionCallOutputItemParamOutput(data []byte) (FunctionCallOutputItemParamOutput, error) {
+	sch := compschemaValidator("FunctionCallOutputItemParamOutput")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val FunctionCallOutputItemParamOutputSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val FunctionCallOutputItemParamOutputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for FunctionCallOutputItemParamOutput")
+}
+
+// FunctionCallOutputItemParamOutputAs extracts a variant from a FunctionCallOutputItemParamOutput union value, like errors.As.
+// Only types whose pointer implements FunctionCallOutputItemParamOutput can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FunctionCallOutputItemParamOutputAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FunctionCallOutputItemParamOutputAs[T any, P interface{ *T; FunctionCallOutputItemParamOutput }](v FunctionCallOutputItemParamOutput, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionCallOutputItemParam.
+func (FunctionCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionCallOutputItemParam schema.
+func (FunctionCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionCallOutputItemParam validates and unmarshals JSON into a FunctionCallOutputItemParam.
+func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam, error) {
+	var zero FunctionCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionCallOutputItemParam{}, err
+	}
+	var result FunctionCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionCallOutputItemParam creates a new FunctionCallOutputItemParam with required fields and auto-filled const/default values.
+func NewFunctionCallOutputItemParam(callID string, type_ FunctionCallOutputItemParamType, output FunctionCallOutputItemParamOutput) *FunctionCallOutputItemParam {
+	return &FunctionCallOutputItemParam{
+		CallID: callID,
+		Type: type_,
+		Output: output,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellAction.
+func (FunctionShellAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellAction") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellAction schema.
+func (FunctionShellAction) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellAction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellAction validates and unmarshals JSON into a FunctionShellAction.
+func DecodeFunctionShellAction(data []byte) (FunctionShellAction, error) {
+	var zero FunctionShellAction
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellAction{}, err
+	}
+	var result FunctionShellAction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellAction{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellAction creates a new FunctionShellAction with required fields and auto-filled const/default values.
+func NewFunctionShellAction(commands []string, timeoutMs int64, maxOutputLength int64) *FunctionShellAction {
+	return &FunctionShellAction{
+		Commands: commands,
+		TimeoutMs: &timeoutMs,
+		MaxOutputLength: &maxOutputLength,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellActionParam.
+func (FunctionShellActionParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellActionParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellActionParam schema.
+func (FunctionShellActionParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellActionParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellActionParam validates and unmarshals JSON into a FunctionShellActionParam.
+func DecodeFunctionShellActionParam(data []byte) (FunctionShellActionParam, error) {
+	var zero FunctionShellActionParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellActionParam{}, err
+	}
+	var result FunctionShellActionParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellActionParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellActionParam creates a new FunctionShellActionParam with required fields and auto-filled const/default values.
+func NewFunctionShellActionParam(commands []string) *FunctionShellActionParam {
+	return &FunctionShellActionParam{
+		Commands: commands,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for LocalShellCallStatus.
+func (LocalShellCallStatus) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCallStatus") }
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCall.
+func (FunctionShellCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCall") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCall schema.
+func (FunctionShellCall) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCall validates and unmarshals JSON into a FunctionShellCall.
+func DecodeFunctionShellCall(data []byte) (FunctionShellCall, error) {
+	var zero FunctionShellCall
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCall{}, err
+	}
+	var result FunctionShellCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCall{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCall creates a new FunctionShellCall with required fields and auto-filled const/default values.
+func NewFunctionShellCall(callID string, action FunctionShellAction, status LocalShellCallStatus, type_ FunctionShellCallType, id string) *FunctionShellCall {
+	return &FunctionShellCall{
+		CallID: callID,
+		Action: action,
+		Status: status,
+		Type: type_,
+		ID: id,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallItemParam.
+func (FunctionShellCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallItemParam schema.
+func (FunctionShellCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallItemParam validates and unmarshals JSON into a FunctionShellCallItemParam.
+func DecodeFunctionShellCallItemParam(data []byte) (FunctionShellCallItemParam, error) {
+	var zero FunctionShellCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallItemParam{}, err
+	}
+	var result FunctionShellCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallItemParam creates a new FunctionShellCallItemParam with required fields and auto-filled const/default values.
+func NewFunctionShellCallItemParam(action FunctionShellActionParam, callID string, type_ FunctionShellCallItemParamType) *FunctionShellCallItemParam {
+	return &FunctionShellCallItemParam{
+		Action: action,
+		CallID: callID,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputExitOutcome.
+func (FunctionShellCallOutputExitOutcome) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputExitOutcome") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputExitOutcome schema.
+func (FunctionShellCallOutputExitOutcome) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputExitOutcome")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputExitOutcome validates and unmarshals JSON into a FunctionShellCallOutputExitOutcome.
+func DecodeFunctionShellCallOutputExitOutcome(data []byte) (FunctionShellCallOutputExitOutcome, error) {
+	var zero FunctionShellCallOutputExitOutcome
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputExitOutcome{}, err
+	}
+	var result FunctionShellCallOutputExitOutcome
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputExitOutcome{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputExitOutcome creates a new FunctionShellCallOutputExitOutcome with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputExitOutcome(type_ FunctionShellCallOutputExitOutcomeType, exitCode int64) *FunctionShellCallOutputExitOutcome {
+	return &FunctionShellCallOutputExitOutcome{
+		Type: type_,
+		ExitCode: exitCode,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputTimeoutOutcome.
+func (FunctionShellCallOutputTimeoutOutcome) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputTimeoutOutcome") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputTimeoutOutcome schema.
+func (FunctionShellCallOutputTimeoutOutcome) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputTimeoutOutcome")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputTimeoutOutcome validates and unmarshals JSON into a FunctionShellCallOutputTimeoutOutcome.
+func DecodeFunctionShellCallOutputTimeoutOutcome(data []byte) (FunctionShellCallOutputTimeoutOutcome, error) {
+	var zero FunctionShellCallOutputTimeoutOutcome
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputTimeoutOutcome{}, err
+	}
+	var result FunctionShellCallOutputTimeoutOutcome
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputTimeoutOutcome{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputTimeoutOutcome creates a new FunctionShellCallOutputTimeoutOutcome with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputTimeoutOutcome(type_ FunctionShellCallOutputTimeoutOutcomeType) *FunctionShellCallOutputTimeoutOutcome {
+	return &FunctionShellCallOutputTimeoutOutcome{
+		Type: type_,
+	}
+}
+
+// FunctionShellCallOutputContentOutcomeJSONSchemaBytes returns the JSON Schema for the FunctionShellCallOutputContentOutcome union.
+func FunctionShellCallOutputContentOutcomeJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputContentOutcome") }
+
+// DecodeFunctionShellCallOutputContentOutcome validates and unmarshals JSON into the correct FunctionShellCallOutputContentOutcome variant.
+// Dispatches on the "type" discriminator field.
+func DecodeFunctionShellCallOutputContentOutcome(data []byte) (FunctionShellCallOutputContentOutcome, error) {
+	sch := compschemaValidator("FunctionShellCallOutputContentOutcome")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "exit":
+		var val FunctionShellCallOutputExitOutcome
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "timeout":
+		var val FunctionShellCallOutputTimeoutOutcome
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FunctionShellCallOutputContentOutcome", disc.D)
+	}
+}
+
+// FunctionShellCallOutputContentOutcomeAs extracts a variant from a FunctionShellCallOutputContentOutcome union value, like errors.As.
+// Only types whose pointer implements FunctionShellCallOutputContentOutcome can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FunctionShellCallOutputContentOutcomeAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FunctionShellCallOutputContentOutcomeAs[T any, P interface{ *T; FunctionShellCallOutputContentOutcome }](v FunctionShellCallOutputContentOutcome, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputContent.
+func (FunctionShellCallOutputContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputContent") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputContent schema.
+func (FunctionShellCallOutputContent) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputContent")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputContent validates and unmarshals JSON into a FunctionShellCallOutputContent.
+func DecodeFunctionShellCallOutputContent(data []byte) (FunctionShellCallOutputContent, error) {
+	var zero FunctionShellCallOutputContent
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputContent{}, err
+	}
+	var result FunctionShellCallOutputContent
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputContent{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputContent creates a new FunctionShellCallOutputContent with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputContent(stdout string, stderr string, outcome FunctionShellCallOutputContentOutcome) *FunctionShellCallOutputContent {
+	return &FunctionShellCallOutputContent{
+		Stdout: stdout,
+		Stderr: stderr,
+		Outcome: outcome,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutput.
+func (FunctionShellCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutput") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutput schema.
+func (FunctionShellCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutput validates and unmarshals JSON into a FunctionShellCallOutput.
+func DecodeFunctionShellCallOutput(data []byte) (FunctionShellCallOutput, error) {
+	var zero FunctionShellCallOutput
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutput{}, err
+	}
+	var result FunctionShellCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutput creates a new FunctionShellCallOutput with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutput(type_ FunctionShellCallOutputType, id string, callID string, output []FunctionShellCallOutputContent, maxOutputLength int64) *FunctionShellCallOutput {
+	return &FunctionShellCallOutput{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Output: output,
+		MaxOutputLength: &maxOutputLength,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputExitOutcomeParam.
+func (FunctionShellCallOutputExitOutcomeParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputExitOutcomeParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputExitOutcomeParam schema.
+func (FunctionShellCallOutputExitOutcomeParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputExitOutcomeParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputExitOutcomeParam validates and unmarshals JSON into a FunctionShellCallOutputExitOutcomeParam.
+func DecodeFunctionShellCallOutputExitOutcomeParam(data []byte) (FunctionShellCallOutputExitOutcomeParam, error) {
+	var zero FunctionShellCallOutputExitOutcomeParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputExitOutcomeParam{}, err
+	}
+	var result FunctionShellCallOutputExitOutcomeParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputExitOutcomeParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputExitOutcomeParam creates a new FunctionShellCallOutputExitOutcomeParam with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputExitOutcomeParam(type_ FunctionShellCallOutputExitOutcomeParamType, exitCode int64) *FunctionShellCallOutputExitOutcomeParam {
+	return &FunctionShellCallOutputExitOutcomeParam{
+		Type: type_,
+		ExitCode: exitCode,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputTimeoutOutcomeParam.
+func (FunctionShellCallOutputTimeoutOutcomeParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputTimeoutOutcomeParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputTimeoutOutcomeParam schema.
+func (FunctionShellCallOutputTimeoutOutcomeParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputTimeoutOutcomeParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputTimeoutOutcomeParam validates and unmarshals JSON into a FunctionShellCallOutputTimeoutOutcomeParam.
+func DecodeFunctionShellCallOutputTimeoutOutcomeParam(data []byte) (FunctionShellCallOutputTimeoutOutcomeParam, error) {
+	var zero FunctionShellCallOutputTimeoutOutcomeParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputTimeoutOutcomeParam{}, err
+	}
+	var result FunctionShellCallOutputTimeoutOutcomeParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputTimeoutOutcomeParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputTimeoutOutcomeParam creates a new FunctionShellCallOutputTimeoutOutcomeParam with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputTimeoutOutcomeParam(type_ FunctionShellCallOutputTimeoutOutcomeParamType) *FunctionShellCallOutputTimeoutOutcomeParam {
+	return &FunctionShellCallOutputTimeoutOutcomeParam{
+		Type: type_,
+	}
+}
+
+// FunctionShellCallOutputOutcomeParamJSONSchemaBytes returns the JSON Schema for the FunctionShellCallOutputOutcomeParam union.
+func FunctionShellCallOutputOutcomeParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputOutcomeParam") }
+
+// DecodeFunctionShellCallOutputOutcomeParam validates and unmarshals JSON into the correct FunctionShellCallOutputOutcomeParam variant.
+// Dispatches on the "type" discriminator field.
+func DecodeFunctionShellCallOutputOutcomeParam(data []byte) (FunctionShellCallOutputOutcomeParam, error) {
+	sch := compschemaValidator("FunctionShellCallOutputOutcomeParam")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "exit":
+		var val FunctionShellCallOutputExitOutcomeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "timeout":
+		var val FunctionShellCallOutputTimeoutOutcomeParam
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for FunctionShellCallOutputOutcomeParam", disc.D)
+	}
+}
+
+// FunctionShellCallOutputOutcomeParamAs extracts a variant from a FunctionShellCallOutputOutcomeParam union value, like errors.As.
+// Only types whose pointer implements FunctionShellCallOutputOutcomeParam can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if FunctionShellCallOutputOutcomeParamAs(shape, &circle) {
+//		// circle is populated
+//	}
+func FunctionShellCallOutputOutcomeParamAs[T any, P interface{ *T; FunctionShellCallOutputOutcomeParam }](v FunctionShellCallOutputOutcomeParam, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputContentParam.
+func (FunctionShellCallOutputContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputContentParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputContentParam schema.
+func (FunctionShellCallOutputContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputContentParam validates and unmarshals JSON into a FunctionShellCallOutputContentParam.
+func DecodeFunctionShellCallOutputContentParam(data []byte) (FunctionShellCallOutputContentParam, error) {
+	var zero FunctionShellCallOutputContentParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputContentParam{}, err
+	}
+	var result FunctionShellCallOutputContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputContentParam creates a new FunctionShellCallOutputContentParam with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputContentParam(stdout string, stderr string, outcome FunctionShellCallOutputOutcomeParam) *FunctionShellCallOutputContentParam {
+	return &FunctionShellCallOutputContentParam{
+		Stdout: stdout,
+		Stderr: stderr,
+		Outcome: outcome,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellCallOutputItemParam.
+func (FunctionShellCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellCallOutputItemParam schema.
+func (FunctionShellCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellCallOutputItemParam validates and unmarshals JSON into a FunctionShellCallOutputItemParam.
+func DecodeFunctionShellCallOutputItemParam(data []byte) (FunctionShellCallOutputItemParam, error) {
+	var zero FunctionShellCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellCallOutputItemParam{}, err
+	}
+	var result FunctionShellCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellCallOutputItemParam creates a new FunctionShellCallOutputItemParam with required fields and auto-filled const/default values.
+func NewFunctionShellCallOutputItemParam(callID string, type_ FunctionShellCallOutputItemParamType, output []FunctionShellCallOutputContentParam) *FunctionShellCallOutputItemParam {
+	return &FunctionShellCallOutputItemParam{
+		CallID: callID,
+		Type: type_,
+		Output: output,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellTool.
+func (FunctionShellTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellTool") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellTool schema.
+func (FunctionShellTool) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellTool validates and unmarshals JSON into a FunctionShellTool.
+func DecodeFunctionShellTool(data []byte) (FunctionShellTool, error) {
+	var zero FunctionShellTool
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellTool{}, err
+	}
+	var result FunctionShellTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellTool{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellTool creates a new FunctionShellTool with required fields and auto-filled const/default values.
+func NewFunctionShellTool(type_ FunctionShellToolType) *FunctionShellTool {
+	return &FunctionShellTool{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionShellToolChoice.
+func (FunctionShellToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionShellToolChoice") }
+
+// Validate checks whether raw JSON conforms to the FunctionShellToolChoice schema.
+func (FunctionShellToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionShellToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionShellToolChoice validates and unmarshals JSON into a FunctionShellToolChoice.
+func DecodeFunctionShellToolChoice(data []byte) (FunctionShellToolChoice, error) {
+	var zero FunctionShellToolChoice
+	if err := zero.Validate(data); err != nil {
+		return FunctionShellToolChoice{}, err
+	}
+	var result FunctionShellToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionShellToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionShellToolChoice creates a new FunctionShellToolChoice with required fields and auto-filled const/default values.
+func NewFunctionShellToolChoice(type_ FunctionShellToolChoiceType) *FunctionShellToolChoice {
+	return &FunctionShellToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionTool.
+func (FunctionTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionTool") }
+
+// Validate checks whether raw JSON conforms to the FunctionTool schema.
+func (FunctionTool) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionTool validates and unmarshals JSON into a FunctionTool.
+func DecodeFunctionTool(data []byte) (FunctionTool, error) {
+	var zero FunctionTool
+	if err := zero.Validate(data); err != nil {
+		return FunctionTool{}, err
+	}
+	var result FunctionTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionTool{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionTool creates a new FunctionTool with required fields and auto-filled const/default values.
+func NewFunctionTool(name string, description string, parameters map[string]any, strict bool, type_ FunctionToolType) *FunctionTool {
+	return &FunctionTool{
+		Name: name,
+		Description: &description,
+		Parameters: parameters,
+		Strict: &strict,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionToolChoice.
+func (FunctionToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolChoice") }
+
+// Validate checks whether raw JSON conforms to the FunctionToolChoice schema.
+func (FunctionToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionToolChoice validates and unmarshals JSON into a FunctionToolChoice.
+func DecodeFunctionToolChoice(data []byte) (FunctionToolChoice, error) {
+	var zero FunctionToolChoice
+	if err := zero.Validate(data); err != nil {
+		return FunctionToolChoice{}, err
+	}
+	var result FunctionToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionToolChoice creates a new FunctionToolChoice with required fields and auto-filled const/default values.
+func NewFunctionToolChoice(type_ FunctionToolChoiceType) *FunctionToolChoice {
+	return &FunctionToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for HTTPError.
+func (HTTPError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("HTTPError") }
+
+// Validate checks whether raw JSON conforms to the HTTPError schema.
+func (HTTPError) Validate(data []byte) error {
+	sch := compschemaValidator("HTTPError")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeHTTPError validates and unmarshals JSON into a HTTPError.
+func DecodeHTTPError(data []byte) (HTTPError, error) {
+	var zero HTTPError
+	if err := zero.Validate(data); err != nil {
+		return HTTPError{}, err
+	}
+	var result HTTPError
+	if err := json.Unmarshal(data, &result); err != nil {
+		return HTTPError{}, err
+	}
+	return result, nil
+}
+
+// NewHTTPError creates a new HTTPError with required fields and auto-filled const/default values.
+func NewHTTPError(type_ HTTPErrorType, code int64, message string) *HTTPError {
+	return &HTTPError{
+		Type: type_,
+		Code: code,
+		Message: message,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ImageGenCall.
+func (ImageGenCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenCall") }
+
+// Validate checks whether raw JSON conforms to the ImageGenCall schema.
+func (ImageGenCall) Validate(data []byte) error {
+	sch := compschemaValidator("ImageGenCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImageGenCall validates and unmarshals JSON into a ImageGenCall.
+func DecodeImageGenCall(data []byte) (ImageGenCall, error) {
+	var zero ImageGenCall
+	if err := zero.Validate(data); err != nil {
+		return ImageGenCall{}, err
+	}
+	var result ImageGenCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImageGenCall{}, err
+	}
+	return result, nil
+}
+
+// NewImageGenCall creates a new ImageGenCall with required fields and auto-filled const/default values.
+func NewImageGenCall(type_ ImageGenCallType, status ImageGenCallStatus, id string) *ImageGenCall {
+	return &ImageGenCall{
+		Type: type_,
+		Status: status,
+		ID: id,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ImageGenCallItemParam.
+func (ImageGenCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the ImageGenCallItemParam schema.
+func (ImageGenCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ImageGenCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImageGenCallItemParam validates and unmarshals JSON into a ImageGenCallItemParam.
+func DecodeImageGenCallItemParam(data []byte) (ImageGenCallItemParam, error) {
+	var zero ImageGenCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return ImageGenCallItemParam{}, err
+	}
+	var result ImageGenCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImageGenCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewImageGenCallItemParam creates a new ImageGenCallItemParam with required fields and auto-filled const/default values.
+func NewImageGenCallItemParam(id string, type_ ImageGenCallItemParamType) *ImageGenCallItemParam {
+	return &ImageGenCallItemParam{
+		ID: id,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ImageGenTool.
+func (ImageGenTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenTool") }
+
+// Validate checks whether raw JSON conforms to the ImageGenTool schema.
+func (ImageGenTool) Validate(data []byte) error {
+	sch := compschemaValidator("ImageGenTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImageGenTool validates and unmarshals JSON into a ImageGenTool.
+func DecodeImageGenTool(data []byte) (ImageGenTool, error) {
+	var zero ImageGenTool
+	if err := zero.Validate(data); err != nil {
+		return ImageGenTool{}, err
+	}
+	var result ImageGenTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImageGenTool{}, err
+	}
+	return result, nil
+}
+
+// NewImageGenTool creates a new ImageGenTool with required fields and auto-filled const/default values.
+func NewImageGenTool(outputCompression int64, moderation ImageModeration, background ImageBackground, type_ ImageGenToolType, n int64, model ImageGenToolModel, quality ImageQuality, size ImageSize, outputFormat ImageOutputFormat) *ImageGenTool {
+	return &ImageGenTool{
+		OutputCompression: outputCompression,
+		Moderation: &moderation,
+		Background: &background,
+		Type: type_,
+		N: n,
+		Model: &model,
+		Quality: &quality,
+		Size: &size,
+		OutputFormat: &outputFormat,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ImageGenToolChoice.
+func (ImageGenToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ImageGenToolChoice") }
+
+// Validate checks whether raw JSON conforms to the ImageGenToolChoice schema.
+func (ImageGenToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("ImageGenToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeImageGenToolChoice validates and unmarshals JSON into a ImageGenToolChoice.
+func DecodeImageGenToolChoice(data []byte) (ImageGenToolChoice, error) {
+	var zero ImageGenToolChoice
+	if err := zero.Validate(data); err != nil {
+		return ImageGenToolChoice{}, err
+	}
+	var result ImageGenToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ImageGenToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewImageGenToolChoice creates a new ImageGenToolChoice with required fields and auto-filled const/default values.
+func NewImageGenToolChoice(type_ ImageGenToolChoiceType) *ImageGenToolChoice {
+	return &ImageGenToolChoice{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for IncompleteDetails.
+func (IncompleteDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("IncompleteDetails") }
+
+// Validate checks whether raw JSON conforms to the IncompleteDetails schema.
+func (IncompleteDetails) Validate(data []byte) error {
+	sch := compschemaValidator("IncompleteDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeIncompleteDetails validates and unmarshals JSON into a IncompleteDetails.
+func DecodeIncompleteDetails(data []byte) (IncompleteDetails, error) {
+	var zero IncompleteDetails
+	if err := zero.Validate(data); err != nil {
+		return IncompleteDetails{}, err
+	}
+	var result IncompleteDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return IncompleteDetails{}, err
+	}
+	return result, nil
+}
+
+// NewIncompleteDetails creates a new IncompleteDetails with required fields and auto-filled const/default values.
+func NewIncompleteDetails(reason string) *IncompleteDetails {
+	return &IncompleteDetails{
+		Reason: reason,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for InputFileContentParam.
+func (InputFileContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputFileContentParam") }
+
+// Validate checks whether raw JSON conforms to the InputFileContentParam schema.
+func (InputFileContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("InputFileContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeInputFileContentParam validates and unmarshals JSON into a InputFileContentParam.
+func DecodeInputFileContentParam(data []byte) (InputFileContentParam, error) {
+	var zero InputFileContentParam
+	if err := zero.Validate(data); err != nil {
+		return InputFileContentParam{}, err
+	}
+	var result InputFileContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return InputFileContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewInputFileContentParam creates a new InputFileContentParam with required fields and auto-filled const/default values.
+func NewInputFileContentParam(type_ InputFileContentParamType) *InputFileContentParam {
+	return &InputFileContentParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for InputImageContentParamAutoParam.
+func (InputImageContentParamAutoParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageContentParamAutoParam") }
+
+// Validate checks whether raw JSON conforms to the InputImageContentParamAutoParam schema.
+func (InputImageContentParamAutoParam) Validate(data []byte) error {
+	sch := compschemaValidator("InputImageContentParamAutoParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeInputImageContentParamAutoParam validates and unmarshals JSON into a InputImageContentParamAutoParam.
+func DecodeInputImageContentParamAutoParam(data []byte) (InputImageContentParamAutoParam, error) {
+	var zero InputImageContentParamAutoParam
+	if err := zero.Validate(data); err != nil {
+		return InputImageContentParamAutoParam{}, err
+	}
+	var result InputImageContentParamAutoParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return InputImageContentParamAutoParam{}, err
+	}
+	return result, nil
+}
+
+// NewInputImageContentParamAutoParam creates a new InputImageContentParamAutoParam with required fields and auto-filled const/default values.
+func NewInputImageContentParamAutoParam(type_ InputImageContentParamAutoParamType) *InputImageContentParamAutoParam {
+	return &InputImageContentParamAutoParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for InputTextContentParam.
+func (InputTextContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTextContentParam") }
+
+// Validate checks whether raw JSON conforms to the InputTextContentParam schema.
+func (InputTextContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("InputTextContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeInputTextContentParam validates and unmarshals JSON into a InputTextContentParam.
+func DecodeInputTextContentParam(data []byte) (InputTextContentParam, error) {
+	var zero InputTextContentParam
+	if err := zero.Validate(data); err != nil {
+		return InputTextContentParam{}, err
+	}
+	var result InputTextContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return InputTextContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewInputTextContentParam creates a new InputTextContentParam with required fields and auto-filled const/default values.
+func NewInputTextContentParam(type_ InputTextContentParamType, text string) *InputTextContentParam {
+	return &InputTextContentParam{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for InputTokensDetails.
+func (InputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTokensDetails") }
+
+// Validate checks whether raw JSON conforms to the InputTokensDetails schema.
+func (InputTokensDetails) Validate(data []byte) error {
+	sch := compschemaValidator("InputTokensDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeInputTokensDetails validates and unmarshals JSON into a InputTokensDetails.
+func DecodeInputTokensDetails(data []byte) (InputTokensDetails, error) {
+	var zero InputTokensDetails
+	if err := zero.Validate(data); err != nil {
+		return InputTokensDetails{}, err
+	}
+	var result InputTokensDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return InputTokensDetails{}, err
+	}
+	return result, nil
+}
+
+// NewInputTokensDetails creates a new InputTokensDetails with required fields and auto-filled const/default values.
+func NewInputTokensDetails(cachedTokens int64) *InputTokensDetails {
+	return &InputTokensDetails{
+		CachedTokens: cachedTokens,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellExecAction.
+func (LocalShellExecAction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellExecAction") }
+
+// Validate checks whether raw JSON conforms to the LocalShellExecAction schema.
+func (LocalShellExecAction) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellExecAction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeLocalShellExecAction validates and unmarshals JSON into a LocalShellExecAction.
+func DecodeLocalShellExecAction(data []byte) (LocalShellExecAction, error) {
+	var zero LocalShellExecAction
+	if err := zero.Validate(data); err != nil {
+		return LocalShellExecAction{}, err
+	}
+	var result LocalShellExecAction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return LocalShellExecAction{}, err
+	}
+	return result, nil
+}
+
+// NewLocalShellExecAction creates a new LocalShellExecAction with required fields and auto-filled const/default values.
+func NewLocalShellExecAction(env map[string]string, type_ LocalShellExecActionType, command []string) *LocalShellExecAction {
+	return &LocalShellExecAction{
+		Env: env,
+		Type: type_,
+		Command: command,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellCall.
+func (LocalShellCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCall") }
+
+// Validate checks whether raw JSON conforms to the LocalShellCall schema.
+func (LocalShellCall) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeLocalShellCall validates and unmarshals JSON into a LocalShellCall.
+func DecodeLocalShellCall(data []byte) (LocalShellCall, error) {
+	var zero LocalShellCall
+	if err := zero.Validate(data); err != nil {
+		return LocalShellCall{}, err
+	}
+	var result LocalShellCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return LocalShellCall{}, err
+	}
+	return result, nil
+}
+
+// NewLocalShellCall creates a new LocalShellCall with required fields and auto-filled const/default values.
+func NewLocalShellCall(type_ LocalShellCallType, id string, callID string, action LocalShellExecAction, status LocalShellCallStatus) *LocalShellCall {
+	return &LocalShellCall{
+		Type: type_,
+		ID: id,
+		CallID: callID,
+		Action: action,
+		Status: status,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellCallOutput.
+func (LocalShellCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCallOutput") }
+
+// Validate checks whether raw JSON conforms to the LocalShellCallOutput schema.
+func (LocalShellCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeLocalShellCallOutput validates and unmarshals JSON into a LocalShellCallOutput.
+func DecodeLocalShellCallOutput(data []byte) (LocalShellCallOutput, error) {
+	var zero LocalShellCallOutput
+	if err := zero.Validate(data); err != nil {
+		return LocalShellCallOutput{}, err
+	}
+	var result LocalShellCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return LocalShellCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewLocalShellCallOutput creates a new LocalShellCallOutput with required fields and auto-filled const/default values.
+func NewLocalShellCallOutput(output string, status LocalShellCallOutputStatusEnum, type_ LocalShellCallOutputType, id string, callID string) *LocalShellCallOutput {
+	return &LocalShellCallOutput{
+		Output: output,
+		Status: status,
+		Type: type_,
+		ID: id,
+		CallID: callID,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPApprovalRequest.
+func (MCPApprovalRequest) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPApprovalRequest") }
+
+// Validate checks whether raw JSON conforms to the MCPApprovalRequest schema.
+func (MCPApprovalRequest) Validate(data []byte) error {
+	sch := compschemaValidator("MCPApprovalRequest")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPApprovalRequest validates and unmarshals JSON into a MCPApprovalRequest.
+func DecodeMCPApprovalRequest(data []byte) (MCPApprovalRequest, error) {
+	var zero MCPApprovalRequest
+	if err := zero.Validate(data); err != nil {
+		return MCPApprovalRequest{}, err
+	}
+	var result MCPApprovalRequest
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPApprovalRequest{}, err
+	}
+	return result, nil
+}
+
+// NewMCPApprovalRequest creates a new MCPApprovalRequest with required fields and auto-filled const/default values.
+func NewMCPApprovalRequest(type_ MCPApprovalRequestType, id string, serverLabel string, name string, arguments string) *MCPApprovalRequest {
+	return &MCPApprovalRequest{
+		Type: type_,
+		ID: id,
+		ServerLabel: serverLabel,
+		Name: name,
+		Arguments: arguments,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPApprovalResponse.
+func (MCPApprovalResponse) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPApprovalResponse") }
+
+// Validate checks whether raw JSON conforms to the MCPApprovalResponse schema.
+func (MCPApprovalResponse) Validate(data []byte) error {
+	sch := compschemaValidator("MCPApprovalResponse")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPApprovalResponse validates and unmarshals JSON into a MCPApprovalResponse.
+func DecodeMCPApprovalResponse(data []byte) (MCPApprovalResponse, error) {
+	var zero MCPApprovalResponse
+	if err := zero.Validate(data); err != nil {
+		return MCPApprovalResponse{}, err
+	}
+	var result MCPApprovalResponse
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPApprovalResponse{}, err
+	}
+	return result, nil
+}
+
+// NewMCPApprovalResponse creates a new MCPApprovalResponse with required fields and auto-filled const/default values.
+func NewMCPApprovalResponse(type_ MCPApprovalResponseType, id string, approvalRequestID string, approve bool, reason string) *MCPApprovalResponse {
+	return &MCPApprovalResponse{
+		Type: type_,
+		ID: id,
+		ApprovalRequestID: approvalRequestID,
+		Approve: approve,
+		Reason: &reason,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPListToolsTool.
+func (MCPListToolsTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPListToolsTool") }
+
+// Validate checks whether raw JSON conforms to the MCPListToolsTool schema.
+func (MCPListToolsTool) Validate(data []byte) error {
+	sch := compschemaValidator("MCPListToolsTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPListToolsTool validates and unmarshals JSON into a MCPListToolsTool.
+func DecodeMCPListToolsTool(data []byte) (MCPListToolsTool, error) {
+	var zero MCPListToolsTool
+	if err := zero.Validate(data); err != nil {
+		return MCPListToolsTool{}, err
+	}
+	var result MCPListToolsTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPListToolsTool{}, err
+	}
+	return result, nil
+}
+
+// NewMCPListToolsTool creates a new MCPListToolsTool with required fields and auto-filled const/default values.
+func NewMCPListToolsTool(annotations any, name string, description string, inputSchema any) *MCPListToolsTool {
+	return &MCPListToolsTool{
+		Annotations: &annotations,
+		Name: name,
+		Description: &description,
+		InputSchema: inputSchema,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPListTools.
+func (MCPListTools) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPListTools") }
+
+// Validate checks whether raw JSON conforms to the MCPListTools schema.
+func (MCPListTools) Validate(data []byte) error {
+	sch := compschemaValidator("MCPListTools")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPListTools validates and unmarshals JSON into a MCPListTools.
+func DecodeMCPListTools(data []byte) (MCPListTools, error) {
+	var zero MCPListTools
+	if err := zero.Validate(data); err != nil {
+		return MCPListTools{}, err
+	}
+	var result MCPListTools
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPListTools{}, err
+	}
+	return result, nil
+}
+
+// NewMCPListTools creates a new MCPListTools with required fields and auto-filled const/default values.
+func NewMCPListTools(tools []MCPListToolsTool, type_ MCPListToolsType, id string, serverLabel string) *MCPListTools {
+	return &MCPListTools{
+		Tools: tools,
+		Type: type_,
+		ID: id,
+		ServerLabel: serverLabel,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolCall.
+func (MCPToolCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolCall") }
+
+// Validate checks whether raw JSON conforms to the MCPToolCall schema.
+func (MCPToolCall) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolCall validates and unmarshals JSON into a MCPToolCall.
+func DecodeMCPToolCall(data []byte) (MCPToolCall, error) {
+	var zero MCPToolCall
+	if err := zero.Validate(data); err != nil {
+		return MCPToolCall{}, err
+	}
+	var result MCPToolCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolCall{}, err
+	}
+	return result, nil
+}
+
+// NewMCPToolCall creates a new MCPToolCall with required fields and auto-filled const/default values.
+func NewMCPToolCall(type_ MCPToolCallType, id string, serverLabel string, arguments string, status MCPToolCallStatus, approvalRequestID string, name string, output string, error any) *MCPToolCall {
+	return &MCPToolCall{
+		Type: type_,
+		ID: id,
+		ServerLabel: serverLabel,
+		Arguments: arguments,
+		Status: status,
+		ApprovalRequestID: &approvalRequestID,
+		Name: name,
+		Output: &output,
+		Error: &error,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for MessageRole.
+func (MessageRole) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MessageRole") }
+
+// JSONSchemaBytes returns the JSON Schema definition for Message.
+func (Message) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Message") }
+
+// Validate checks whether raw JSON conforms to the Message schema.
+func (Message) Validate(data []byte) error {
+	sch := compschemaValidator("Message")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMessage validates and unmarshals JSON into a Message.
+func DecodeMessage(data []byte) (Message, error) {
+	var zero Message
+	if err := zero.Validate(data); err != nil {
+		return Message{}, err
+	}
+	var result Message
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Message{}, err
+	}
+	return result, nil
+}
+
+// NewMessage creates a new Message with required fields and auto-filled const/default values.
+func NewMessage(type_ MessageType, id string, status MessageStatus, role MessageRole, content []any) *Message {
+	return &Message{
+		Type: type_,
+		ID: id,
+		Status: status,
+		Role: role,
+		Content: content,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ReasoningBody.
+func (ReasoningBody) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningBody") }
+
+// Validate checks whether raw JSON conforms to the ReasoningBody schema.
+func (ReasoningBody) Validate(data []byte) error {
+	sch := compschemaValidator("ReasoningBody")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoningBody validates and unmarshals JSON into a ReasoningBody.
+func DecodeReasoningBody(data []byte) (ReasoningBody, error) {
+	var zero ReasoningBody
+	if err := zero.Validate(data); err != nil {
+		return ReasoningBody{}, err
+	}
+	var result ReasoningBody
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ReasoningBody{}, err
+	}
+	return result, nil
+}
+
+// NewReasoningBody creates a new ReasoningBody with required fields and auto-filled const/default values.
+func NewReasoningBody(type_ ReasoningBodyType, id string, summary []any) *ReasoningBody {
+	return &ReasoningBody{
+		Type: type_,
+		ID: id,
+		Summary: summary,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionFindInPage.
+func (WebSearchCallActionFindInPage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionFindInPage") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionFindInPage schema.
+func (WebSearchCallActionFindInPage) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionFindInPage")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionFindInPage validates and unmarshals JSON into a WebSearchCallActionFindInPage.
+func DecodeWebSearchCallActionFindInPage(data []byte) (WebSearchCallActionFindInPage, error) {
+	var zero WebSearchCallActionFindInPage
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionFindInPage{}, err
+	}
+	var result WebSearchCallActionFindInPage
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionFindInPage{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionFindInPage creates a new WebSearchCallActionFindInPage with required fields and auto-filled const/default values.
+func NewWebSearchCallActionFindInPage(type_ WebSearchCallActionFindInPageType) *WebSearchCallActionFindInPage {
+	return &WebSearchCallActionFindInPage{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionOpenPage.
+func (WebSearchCallActionOpenPage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionOpenPage") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionOpenPage schema.
+func (WebSearchCallActionOpenPage) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionOpenPage")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionOpenPage validates and unmarshals JSON into a WebSearchCallActionOpenPage.
+func DecodeWebSearchCallActionOpenPage(data []byte) (WebSearchCallActionOpenPage, error) {
+	var zero WebSearchCallActionOpenPage
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionOpenPage{}, err
+	}
+	var result WebSearchCallActionOpenPage
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionOpenPage{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionOpenPage creates a new WebSearchCallActionOpenPage with required fields and auto-filled const/default values.
+func NewWebSearchCallActionOpenPage(type_ WebSearchCallActionOpenPageType) *WebSearchCallActionOpenPage {
+	return &WebSearchCallActionOpenPage{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionSearch.
+func (WebSearchCallActionSearch) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionSearch") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionSearch schema.
+func (WebSearchCallActionSearch) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionSearch")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionSearch validates and unmarshals JSON into a WebSearchCallActionSearch.
+func DecodeWebSearchCallActionSearch(data []byte) (WebSearchCallActionSearch, error) {
+	var zero WebSearchCallActionSearch
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionSearch{}, err
+	}
+	var result WebSearchCallActionSearch
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionSearch{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionSearch creates a new WebSearchCallActionSearch with required fields and auto-filled const/default values.
+func NewWebSearchCallActionSearch(type_ WebSearchCallActionSearchType) *WebSearchCallActionSearch {
+	return &WebSearchCallActionSearch{
+		Type: type_,
+	}
+}
+
+// WebSearchCallActionJSONSchemaBytes returns the JSON Schema for the WebSearchCallAction union.
+func WebSearchCallActionJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallAction") }
+
+// DecodeWebSearchCallAction validates and unmarshals JSON into the correct WebSearchCallAction variant.
+// Dispatches on the "type" discriminator field.
+func DecodeWebSearchCallAction(data []byte) (WebSearchCallAction, error) {
+	sch := compschemaValidator("WebSearchCallAction")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "find_in_page":
+		var val WebSearchCallActionFindInPage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "open_page":
+		var val WebSearchCallActionOpenPage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "search":
+		var val WebSearchCallActionSearch
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for WebSearchCallAction", disc.D)
+	}
+}
+
+// WebSearchCallActionAs extracts a variant from a WebSearchCallAction union value, like errors.As.
+// Only types whose pointer implements WebSearchCallAction can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if WebSearchCallActionAs(shape, &circle) {
+//		// circle is populated
+//	}
+func WebSearchCallActionAs[T any, P interface{ *T; WebSearchCallAction }](v WebSearchCallAction, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCall.
+func (WebSearchCall) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCall") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCall schema.
+func (WebSearchCall) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCall")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCall validates and unmarshals JSON into a WebSearchCall.
+func DecodeWebSearchCall(data []byte) (WebSearchCall, error) {
+	var zero WebSearchCall
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCall{}, err
+	}
+	var result WebSearchCall
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCall{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCall creates a new WebSearchCall with required fields and auto-filled const/default values.
+func NewWebSearchCall(status WebSearchCallStatus, type_ WebSearchCallType, id string) *WebSearchCall {
+	return &WebSearchCall{
+		Status: status,
+		Type: type_,
+		ID: id,
+	}
+}
+
+// ItemFieldJSONSchemaBytes returns the JSON Schema for the ItemField union.
+func ItemFieldJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemField") }
+
+// DecodeItemField validates and unmarshals JSON into the correct ItemField variant.
+// Dispatches on the "type" discriminator field.
+func DecodeItemField(data []byte) (ItemField, error) {
+	sch := compschemaValidator("ItemField")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "apply_patch_call":
+		var val ApplyPatchToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "apply_patch_call_output":
+		var val ApplyPatchToolCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "code_interpreter_call":
+		var val CodeInterpreterCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "compaction":
+		var val CompactionBody
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_call":
+		var val ComputerCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_call_output":
+		var val ComputerCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call":
+		var val CustomToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom_tool_call_output":
+		var val CustomToolCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "file_search_call":
+		var val FileSearchCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call":
+		var val FunctionCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function_call_output":
+		var val FunctionCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call":
+		var val FunctionShellCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell_call_output":
+		var val FunctionShellCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation_call":
+		var val ImageGenCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call":
+		var val LocalShellCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "local_shell_call_output":
+		var val LocalShellCallOutput
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_request":
+		var val MCPApprovalRequest
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_approval_response":
+		var val MCPApprovalResponse
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_list_tools":
+		var val MCPListTools
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp_call":
+		var val MCPToolCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "message":
+		var val Message
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning":
+		var val ReasoningBody
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_call":
+		var val WebSearchCall
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ItemField", disc.D)
+	}
+}
+
+// ItemFieldAs extracts a variant from a ItemField union value, like errors.As.
+// Only types whose pointer implements ItemField can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ItemFieldAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ItemFieldAs[T any, P interface{ *T; ItemField }](v ItemField, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ItemReferenceParam.
@@ -2805,61 +11959,12 @@ func NewItemReferenceParam(id string) *ItemReferenceParam {
 	}
 }
 
-// InputItemJSONSchemaBytes returns the JSON Schema for the InputItem union.
-func InputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItem") }
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellExecActionParam.
+func (LocalShellExecActionParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellExecActionParam") }
 
-// DecodeInputItem validates and unmarshals JSON into the correct InputItem variant.
-// Dispatches on the "role" discriminator field.
-func DecodeInputItem(data []byte) (InputItem, error) {
-	sch := compschemaValidator("InputItem")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"role"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "assistant", "developer", "system", "user":
-		var val EasyInputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown role %q for InputItem", disc.D)
-	}
-}
-
-// InputItemAs extracts a variant from a InputItem union value, like errors.As.
-// Only types whose pointer implements InputItem can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if InputItemAs(shape, &circle) {
-//		// circle is populated
-//	}
-func InputItemAs[T any, P interface{ *T; InputItem }](v InputItem, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputSliceInputItem.
-func (CreateResponseInputSliceInputItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputSliceInputItem") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseInputSliceInputItem schema.
-func (CreateResponseInputSliceInputItem) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseInputSliceInputItem")
+// Validate checks whether raw JSON conforms to the LocalShellExecActionParam schema.
+func (LocalShellExecActionParam) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellExecActionParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2867,169 +11972,37 @@ func (CreateResponseInputSliceInputItem) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCreateResponseInputSliceInputItem validates and unmarshals JSON into a CreateResponseInputSliceInputItem.
-func DecodeCreateResponseInputSliceInputItem(data []byte) (CreateResponseInputSliceInputItem, error) {
-	var zero CreateResponseInputSliceInputItem
+// DecodeLocalShellExecActionParam validates and unmarshals JSON into a LocalShellExecActionParam.
+func DecodeLocalShellExecActionParam(data []byte) (LocalShellExecActionParam, error) {
+	var zero LocalShellExecActionParam
 	if err := zero.Validate(data); err != nil {
-		return CreateResponseInputSliceInputItem{}, err
+		return LocalShellExecActionParam{}, err
 	}
-	var result CreateResponseInputSliceInputItem
+	var result LocalShellExecActionParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseInputSliceInputItem{}, err
+		return LocalShellExecActionParam{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputString.
-func (CreateResponseInputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputString") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseInputString schema.
-func (CreateResponseInputString) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseInputString")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponseInputString validates and unmarshals JSON into a CreateResponseInputString.
-func DecodeCreateResponseInputString(data []byte) (CreateResponseInputString, error) {
-	var zero CreateResponseInputString
-	if err := zero.Validate(data); err != nil {
-		return CreateResponseInputString{}, err
-	}
-	var result CreateResponseInputString
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseInputString{}, err
-	}
-	return result, nil
-}
-
-// CreateResponseInputJSONSchemaBytes returns the JSON Schema for the CreateResponseInput union.
-func CreateResponseInputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInput") }
-
-// DecodeCreateResponseInput validates and unmarshals JSON into the correct CreateResponseInput variant.
-func DecodeCreateResponseInput(data []byte) (CreateResponseInput, error) {
-	sch := compschemaValidator("CreateResponseInput")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	{
-		var val CreateResponseInputSliceInputItem
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val CreateResponseInputString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for CreateResponseInput")
-}
-
-// CreateResponseInputAs extracts a variant from a CreateResponseInput union value, like errors.As.
-// Only types whose pointer implements CreateResponseInput can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if CreateResponseInputAs(shape, &circle) {
-//		// circle is populated
-//	}
-func CreateResponseInputAs[T any, P interface{ *T; CreateResponseInput }](v CreateResponseInput, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema for ModelIdsResponses.
-func (ModelIdsResponses) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ModelIdsResponses") }
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponse.
-func (CreateResponse) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponse") }
-
-// Validate checks whether raw JSON conforms to the CreateResponse schema.
-func (CreateResponse) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponse")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponse validates and unmarshals JSON into a CreateResponse.
-func DecodeCreateResponse(data []byte) (CreateResponse, error) {
-	var zero CreateResponse
-	if err := zero.Validate(data); err != nil {
-		return CreateResponse{}, err
-	}
-	var result CreateResponse
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponse{}, err
-	}
-	return result, nil
-}
-
-// NewCreateResponse creates a new CreateResponse with required fields and auto-filled const/default values.
-func NewCreateResponse(input CreateResponseInput, model ModelIdsResponses) *CreateResponse {
-	return &CreateResponse{
-		Input: input,
-		Model: model,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for Error.
-func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
-
-// Validate checks whether raw JSON conforms to the Error schema.
-func (Error) Validate(data []byte) error {
-	sch := compschemaValidator("Error")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeError validates and unmarshals JSON into a Error.
-func DecodeError(data []byte) (Error, error) {
-	var zero Error
-	if err := zero.Validate(data); err != nil {
-		return Error{}, err
-	}
-	var result Error
-	if err := json.Unmarshal(data, &result); err != nil {
-		return Error{}, err
-	}
-	return result, nil
-}
-
-// NewError creates a new Error with required fields and auto-filled const/default values.
-func NewError(code string, message string, param string, type_ string) *Error {
-	return &Error{
-		Code: &code,
-		Message: message,
-		Param: &param,
+// NewLocalShellExecActionParam creates a new LocalShellExecActionParam with required fields and auto-filled const/default values.
+func NewLocalShellExecActionParam(env map[string]string, type_ LocalShellExecActionParamType, command []string) *LocalShellExecActionParam {
+	return &LocalShellExecActionParam{
+		Env: env,
 		Type: type_,
+		Command: command,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
-func (FunctionToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutput") }
+// JSONSchemaBytes returns the JSON Schema for LocalShellCallItemStatus.
+func (LocalShellCallItemStatus) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCallItemStatus") }
 
-// Validate checks whether raw JSON conforms to the FunctionToolCallOutput schema.
-func (FunctionToolCallOutput) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallOutput")
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellCallItemParam.
+func (LocalShellCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the LocalShellCallItemParam schema.
+func (LocalShellCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellCallItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3037,34 +12010,69 @@ func (FunctionToolCallOutput) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeFunctionToolCallOutput validates and unmarshals JSON into a FunctionToolCallOutput.
-func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
-	var zero FunctionToolCallOutput
+// DecodeLocalShellCallItemParam validates and unmarshals JSON into a LocalShellCallItemParam.
+func DecodeLocalShellCallItemParam(data []byte) (LocalShellCallItemParam, error) {
+	var zero LocalShellCallItemParam
 	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallOutput{}, err
+		return LocalShellCallItemParam{}, err
 	}
-	var result FunctionToolCallOutput
+	var result LocalShellCallItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallOutput{}, err
+		return LocalShellCallItemParam{}, err
 	}
 	return result, nil
 }
 
-// NewFunctionToolCallOutput creates a new FunctionToolCallOutput with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutput(type_ FunctionToolCallOutputType, callID string, output string) *FunctionToolCallOutput {
-	return &FunctionToolCallOutput{
-		Type: type_,
+// NewLocalShellCallItemParam creates a new LocalShellCallItemParam with required fields and auto-filled const/default values.
+func NewLocalShellCallItemParam(callID string, type_ LocalShellCallItemParamType, action LocalShellExecActionParam) *LocalShellCallItemParam {
+	return &LocalShellCallItemParam{
 		CallID: callID,
+		Type: type_,
+		Action: action,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellCallOutputItemParam.
+func (LocalShellCallOutputItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellCallOutputItemParam") }
+
+// Validate checks whether raw JSON conforms to the LocalShellCallOutputItemParam schema.
+func (LocalShellCallOutputItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellCallOutputItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeLocalShellCallOutputItemParam validates and unmarshals JSON into a LocalShellCallOutputItemParam.
+func DecodeLocalShellCallOutputItemParam(data []byte) (LocalShellCallOutputItemParam, error) {
+	var zero LocalShellCallOutputItemParam
+	if err := zero.Validate(data); err != nil {
+		return LocalShellCallOutputItemParam{}, err
+	}
+	var result LocalShellCallOutputItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return LocalShellCallOutputItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewLocalShellCallOutputItemParam creates a new LocalShellCallOutputItemParam with required fields and auto-filled const/default values.
+func NewLocalShellCallOutputItemParam(callID string, type_ LocalShellCallOutputItemParamType, output string) *LocalShellCallOutputItemParam {
+	return &LocalShellCallOutputItemParam{
+		CallID: callID,
+		Type: type_,
 		Output: output,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
-func (FunctionToolCallOutputResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutputResource") }
+// JSONSchemaBytes returns the JSON Schema definition for MCPApprovalRequestItemParam.
+func (MCPApprovalRequestItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPApprovalRequestItemParam") }
 
-// Validate checks whether raw JSON conforms to the FunctionToolCallOutputResource schema.
-func (FunctionToolCallOutputResource) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallOutputResource")
+// Validate checks whether raw JSON conforms to the MCPApprovalRequestItemParam schema.
+func (MCPApprovalRequestItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("MCPApprovalRequestItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3072,72 +12080,35 @@ func (FunctionToolCallOutputResource) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeFunctionToolCallOutputResource validates and unmarshals JSON into a FunctionToolCallOutputResource.
-func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputResource, error) {
-	var zero FunctionToolCallOutputResource
+// DecodeMCPApprovalRequestItemParam validates and unmarshals JSON into a MCPApprovalRequestItemParam.
+func DecodeMCPApprovalRequestItemParam(data []byte) (MCPApprovalRequestItemParam, error) {
+	var zero MCPApprovalRequestItemParam
 	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallOutputResource{}, err
+		return MCPApprovalRequestItemParam{}, err
 	}
-	var result FunctionToolCallOutputResource
+	var result MCPApprovalRequestItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallOutputResource{}, err
+		return MCPApprovalRequestItemParam{}, err
 	}
 	return result, nil
 }
 
-// NewFunctionToolCallOutputResource creates a new FunctionToolCallOutputResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutputResource(id string, type_ FunctionToolCallOutputResourceType, callID string, output string) *FunctionToolCallOutputResource {
-	return &FunctionToolCallOutputResource{
-		ID: id,
-		Type: type_,
-		CallID: callID,
-		Output: output,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
-func (FunctionToolCallResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallResource") }
-
-// Validate checks whether raw JSON conforms to the FunctionToolCallResource schema.
-func (FunctionToolCallResource) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallResource")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionToolCallResource validates and unmarshals JSON into a FunctionToolCallResource.
-func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, error) {
-	var zero FunctionToolCallResource
-	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallResource{}, err
-	}
-	var result FunctionToolCallResource
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallResource{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionToolCallResource creates a new FunctionToolCallResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallResource(id string, type_ FunctionToolCallResourceType, callID string, name string, arguments string) *FunctionToolCallResource {
-	return &FunctionToolCallResource{
-		ID: id,
-		Type: type_,
-		CallID: callID,
-		Name: name,
+// NewMCPApprovalRequestItemParam creates a new MCPApprovalRequestItemParam with required fields and auto-filled const/default values.
+func NewMCPApprovalRequestItemParam(arguments string, type_ MCPApprovalRequestItemParamType, serverLabel string, name string) *MCPApprovalRequestItemParam {
+	return &MCPApprovalRequestItemParam{
 		Arguments: arguments,
+		Type: type_,
+		ServerLabel: serverLabel,
+		Name: name,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for InputMessageResource.
-func (InputMessageResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessageResource") }
+// JSONSchemaBytes returns the JSON Schema definition for MCPApprovalResponseItemParam.
+func (MCPApprovalResponseItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPApprovalResponseItemParam") }
 
-// Validate checks whether raw JSON conforms to the InputMessageResource schema.
-func (InputMessageResource) Validate(data []byte) error {
-	sch := compschemaValidator("InputMessageResource")
+// Validate checks whether raw JSON conforms to the MCPApprovalResponseItemParam schema.
+func (MCPApprovalResponseItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("MCPApprovalResponseItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3145,35 +12116,286 @@ func (InputMessageResource) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeInputMessageResource validates and unmarshals JSON into a InputMessageResource.
-func DecodeInputMessageResource(data []byte) (InputMessageResource, error) {
-	var zero InputMessageResource
+// DecodeMCPApprovalResponseItemParam validates and unmarshals JSON into a MCPApprovalResponseItemParam.
+func DecodeMCPApprovalResponseItemParam(data []byte) (MCPApprovalResponseItemParam, error) {
+	var zero MCPApprovalResponseItemParam
 	if err := zero.Validate(data); err != nil {
-		return InputMessageResource{}, err
+		return MCPApprovalResponseItemParam{}, err
 	}
-	var result InputMessageResource
+	var result MCPApprovalResponseItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return InputMessageResource{}, err
+		return MCPApprovalResponseItemParam{}, err
 	}
 	return result, nil
 }
 
-// NewInputMessageResource creates a new InputMessageResource with required fields and auto-filled const/default values.
-func NewInputMessageResource(content InputMessageContentList, id string, role InputMessageResourceRole) *InputMessageResource {
-	return &InputMessageResource{
-		Content: content,
-		ID: id,
+// NewMCPApprovalResponseItemParam creates a new MCPApprovalResponseItemParam with required fields and auto-filled const/default values.
+func NewMCPApprovalResponseItemParam(type_ MCPApprovalResponseItemParamType, approvalRequestID string, approve bool) *MCPApprovalResponseItemParam {
+	return &MCPApprovalResponseItemParam{
+		Type: type_,
+		ApprovalRequestID: approvalRequestID,
+		Approve: approve,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ReasoningSummaryContentParam.
+func (ReasoningSummaryContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningSummaryContentParam") }
+
+// Validate checks whether raw JSON conforms to the ReasoningSummaryContentParam schema.
+func (ReasoningSummaryContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("ReasoningSummaryContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoningSummaryContentParam validates and unmarshals JSON into a ReasoningSummaryContentParam.
+func DecodeReasoningSummaryContentParam(data []byte) (ReasoningSummaryContentParam, error) {
+	var zero ReasoningSummaryContentParam
+	if err := zero.Validate(data); err != nil {
+		return ReasoningSummaryContentParam{}, err
+	}
+	var result ReasoningSummaryContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ReasoningSummaryContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewReasoningSummaryContentParam creates a new ReasoningSummaryContentParam with required fields and auto-filled const/default values.
+func NewReasoningSummaryContentParam(type_ ReasoningSummaryContentParamType, text string) *ReasoningSummaryContentParam {
+	return &ReasoningSummaryContentParam{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ReasoningItemParam.
+func (ReasoningItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningItemParam") }
+
+// Validate checks whether raw JSON conforms to the ReasoningItemParam schema.
+func (ReasoningItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("ReasoningItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoningItemParam validates and unmarshals JSON into a ReasoningItemParam.
+func DecodeReasoningItemParam(data []byte) (ReasoningItemParam, error) {
+	var zero ReasoningItemParam
+	if err := zero.Validate(data); err != nil {
+		return ReasoningItemParam{}, err
+	}
+	var result ReasoningItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ReasoningItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewReasoningItemParam creates a new ReasoningItemParam with required fields and auto-filled const/default values.
+func NewReasoningItemParam(type_ ReasoningItemParamType, summary []ReasoningSummaryContentParam) *ReasoningItemParam {
+	return &ReasoningItemParam{
+		Type: type_,
+		Summary: summary,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SystemMessageItemParamContentSliceany.
+func (SystemMessageItemParamContentSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SystemMessageItemParamContentSliceany") }
+
+// Validate checks whether raw JSON conforms to the SystemMessageItemParamContentSliceany schema.
+func (SystemMessageItemParamContentSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("SystemMessageItemParamContentSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSystemMessageItemParamContentSliceany validates and unmarshals JSON into a SystemMessageItemParamContentSliceany.
+func DecodeSystemMessageItemParamContentSliceany(data []byte) (SystemMessageItemParamContentSliceany, error) {
+	var zero SystemMessageItemParamContentSliceany
+	if err := zero.Validate(data); err != nil {
+		return SystemMessageItemParamContentSliceany{}, err
+	}
+	var result SystemMessageItemParamContentSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SystemMessageItemParamContentSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SystemMessageItemParamContentString.
+func (SystemMessageItemParamContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SystemMessageItemParamContentString") }
+
+// Validate checks whether raw JSON conforms to the SystemMessageItemParamContentString schema.
+func (SystemMessageItemParamContentString) Validate(data []byte) error {
+	sch := compschemaValidator("SystemMessageItemParamContentString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSystemMessageItemParamContentString validates and unmarshals JSON into a SystemMessageItemParamContentString.
+func DecodeSystemMessageItemParamContentString(data []byte) (SystemMessageItemParamContentString, error) {
+	var zero SystemMessageItemParamContentString
+	if err := zero.Validate(data); err != nil {
+		return SystemMessageItemParamContentString{}, err
+	}
+	var result SystemMessageItemParamContentString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SystemMessageItemParamContentString{}, err
+	}
+	return result, nil
+}
+
+// SystemMessageItemParamContentJSONSchemaBytes returns the JSON Schema for the SystemMessageItemParamContent union.
+func SystemMessageItemParamContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SystemMessageItemParamContent") }
+
+// DecodeSystemMessageItemParamContent validates and unmarshals JSON into the correct SystemMessageItemParamContent variant.
+func DecodeSystemMessageItemParamContent(data []byte) (SystemMessageItemParamContent, error) {
+	sch := compschemaValidator("SystemMessageItemParamContent")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val SystemMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val SystemMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for SystemMessageItemParamContent")
+}
+
+// SystemMessageItemParamContentAs extracts a variant from a SystemMessageItemParamContent union value, like errors.As.
+// Only types whose pointer implements SystemMessageItemParamContent can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if SystemMessageItemParamContentAs(shape, &circle) {
+//		// circle is populated
+//	}
+func SystemMessageItemParamContentAs[T any, P interface{ *T; SystemMessageItemParamContent }](v SystemMessageItemParamContent, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for SystemMessageItemParam.
+func (SystemMessageItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("SystemMessageItemParam") }
+
+// Validate checks whether raw JSON conforms to the SystemMessageItemParam schema.
+func (SystemMessageItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("SystemMessageItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeSystemMessageItemParam validates and unmarshals JSON into a SystemMessageItemParam.
+func DecodeSystemMessageItemParam(data []byte) (SystemMessageItemParam, error) {
+	var zero SystemMessageItemParam
+	if err := zero.Validate(data); err != nil {
+		return SystemMessageItemParam{}, err
+	}
+	var result SystemMessageItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return SystemMessageItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewSystemMessageItemParam creates a new SystemMessageItemParam with required fields and auto-filled const/default values.
+func NewSystemMessageItemParam(type_ SystemMessageItemParamType, role SystemMessageItemParamRole, content SystemMessageItemParamContent) *SystemMessageItemParam {
+	return &SystemMessageItemParam{
+		Type: type_,
 		Role: role,
+		Content: content,
 	}
 }
 
-// ItemResourceJSONSchemaBytes returns the JSON Schema for the ItemResource union.
-func ItemResourceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemResource") }
+// JSONSchemaBytes returns the JSON Schema definition for UserMessageItemParamContentSliceany.
+func (UserMessageItemParamContentSliceany) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UserMessageItemParamContentSliceany") }
 
-// DecodeItemResource validates and unmarshals JSON into the correct ItemResource variant.
-// Dispatches on the "type" discriminator field.
-func DecodeItemResource(data []byte) (ItemResource, error) {
-	sch := compschemaValidator("ItemResource")
+// Validate checks whether raw JSON conforms to the UserMessageItemParamContentSliceany schema.
+func (UserMessageItemParamContentSliceany) Validate(data []byte) error {
+	sch := compschemaValidator("UserMessageItemParamContentSliceany")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeUserMessageItemParamContentSliceany validates and unmarshals JSON into a UserMessageItemParamContentSliceany.
+func DecodeUserMessageItemParamContentSliceany(data []byte) (UserMessageItemParamContentSliceany, error) {
+	var zero UserMessageItemParamContentSliceany
+	if err := zero.Validate(data); err != nil {
+		return UserMessageItemParamContentSliceany{}, err
+	}
+	var result UserMessageItemParamContentSliceany
+	if err := json.Unmarshal(data, &result); err != nil {
+		return UserMessageItemParamContentSliceany{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for UserMessageItemParamContentString.
+func (UserMessageItemParamContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UserMessageItemParamContentString") }
+
+// Validate checks whether raw JSON conforms to the UserMessageItemParamContentString schema.
+func (UserMessageItemParamContentString) Validate(data []byte) error {
+	sch := compschemaValidator("UserMessageItemParamContentString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeUserMessageItemParamContentString validates and unmarshals JSON into a UserMessageItemParamContentString.
+func DecodeUserMessageItemParamContentString(data []byte) (UserMessageItemParamContentString, error) {
+	var zero UserMessageItemParamContentString
+	if err := zero.Validate(data); err != nil {
+		return UserMessageItemParamContentString{}, err
+	}
+	var result UserMessageItemParamContentString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return UserMessageItemParamContentString{}, err
+	}
+	return result, nil
+}
+
+// UserMessageItemParamContentJSONSchemaBytes returns the JSON Schema for the UserMessageItemParamContent union.
+func UserMessageItemParamContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UserMessageItemParamContent") }
+
+// DecodeUserMessageItemParamContent validates and unmarshals JSON into the correct UserMessageItemParamContent variant.
+func DecodeUserMessageItemParamContent(data []byte) (UserMessageItemParamContent, error) {
+	sch := compschemaValidator("UserMessageItemParamContent")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -3181,70 +12403,31 @@ func DecodeItemResource(data []byte) (ItemResource, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var disc struct {
-		D string `json:"type"`
+	{
+		var val UserMessageItemParamContentSliceany
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
 	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
+	{
+		var val UserMessageItemParamContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
 	}
-	switch disc.D {
-	case "computer_call":
-		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_call_output":
-		var val ComputerToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call_output":
-		var val FunctionToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCallResource
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "message":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ItemResource", disc.D)
-	}
+	return nil, fmt.Errorf("no matching variant for UserMessageItemParamContent")
 }
 
-// ItemResourceAs extracts a variant from a ItemResource union value, like errors.As.
-// Only types whose pointer implements ItemResource can be used as target (compile-time checked).
+// UserMessageItemParamContentAs extracts a variant from a UserMessageItemParamContent union value, like errors.As.
+// Only types whose pointer implements UserMessageItemParamContent can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if ItemResourceAs(shape, &circle) {
+//	if UserMessageItemParamContentAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ItemResourceAs[T any, P interface{ *T; ItemResource }](v ItemResource, target *T) bool {
+func UserMessageItemParamContentAs[T any, P interface{ *T; UserMessageItemParamContent }](v UserMessageItemParamContent, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -3252,15 +12435,12 @@ func ItemResourceAs[T any, P interface{ *T; ItemResource }](v ItemResource, targ
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema for ModelIdsShared.
-func (ModelIdsShared) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ModelIdsShared") }
+// JSONSchemaBytes returns the JSON Schema definition for UserMessageItemParam.
+func (UserMessageItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UserMessageItemParam") }
 
-// JSONSchemaBytes returns the JSON Schema definition for ModelResponseProperties.
-func (ModelResponseProperties) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ModelResponseProperties") }
-
-// Validate checks whether raw JSON conforms to the ModelResponseProperties schema.
-func (ModelResponseProperties) Validate(data []byte) error {
-	sch := compschemaValidator("ModelResponseProperties")
+// Validate checks whether raw JSON conforms to the UserMessageItemParam schema.
+func (UserMessageItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("UserMessageItemParam")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3268,26 +12448,67 @@ func (ModelResponseProperties) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeModelResponseProperties validates and unmarshals JSON into a ModelResponseProperties.
-func DecodeModelResponseProperties(data []byte) (ModelResponseProperties, error) {
-	var zero ModelResponseProperties
+// DecodeUserMessageItemParam validates and unmarshals JSON into a UserMessageItemParam.
+func DecodeUserMessageItemParam(data []byte) (UserMessageItemParam, error) {
+	var zero UserMessageItemParam
 	if err := zero.Validate(data); err != nil {
-		return ModelResponseProperties{}, err
+		return UserMessageItemParam{}, err
 	}
-	var result ModelResponseProperties
+	var result UserMessageItemParam
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ModelResponseProperties{}, err
+		return UserMessageItemParam{}, err
 	}
 	return result, nil
 }
 
-// OutputItemJSONSchemaBytes returns the JSON Schema for the OutputItem union.
-func OutputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputItem") }
+// NewUserMessageItemParam creates a new UserMessageItemParam with required fields and auto-filled const/default values.
+func NewUserMessageItemParam(type_ UserMessageItemParamType, role UserMessageItemParamRole, content UserMessageItemParamContent) *UserMessageItemParam {
+	return &UserMessageItemParam{
+		Type: type_,
+		Role: role,
+		Content: content,
+	}
+}
 
-// DecodeOutputItem validates and unmarshals JSON into the correct OutputItem variant.
-// Dispatches on the "type" discriminator field.
-func DecodeOutputItem(data []byte) (OutputItem, error) {
-	sch := compschemaValidator("OutputItem")
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallItemParam.
+func (WebSearchCallItemParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallItemParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallItemParam schema.
+func (WebSearchCallItemParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallItemParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallItemParam validates and unmarshals JSON into a WebSearchCallItemParam.
+func DecodeWebSearchCallItemParam(data []byte) (WebSearchCallItemParam, error) {
+	var zero WebSearchCallItemParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallItemParam{}, err
+	}
+	var result WebSearchCallItemParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallItemParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallItemParam creates a new WebSearchCallItemParam with required fields and auto-filled const/default values.
+func NewWebSearchCallItemParam(type_ WebSearchCallItemParamType) *WebSearchCallItemParam {
+	return &WebSearchCallItemParam{
+		Type: type_,
+	}
+}
+
+// ItemParamJSONSchemaBytes returns the JSON Schema for the ItemParam union.
+func ItemParamJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemParam") }
+
+// DecodeItemParam validates and unmarshals JSON into the correct ItemParam variant.
+func DecodeItemParam(data []byte) (ItemParam, error) {
+	sch := compschemaValidator("ItemParam")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -3295,64 +12516,179 @@ func DecodeOutputItem(data []byte) (OutputItem, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var disc struct {
-		D string `json:"type"`
+	var keys map[string]bool
+	{
+		var obj map[string]json.RawMessage
+		if err := json.Unmarshal(data, &obj); err == nil {
+			keys = make(map[string]bool, len(obj))
+			for k := range obj {
+				keys[k] = true
+			}
+		}
 	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
+	if keys["call_id"] && keys["type"] && keys["name"] && keys["input"] {
+		var val CustomToolCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
 	}
-	switch disc.D {
-	case "computer_call":
-		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
+	if keys["arguments"] && keys["type"] && keys["server_label"] && keys["name"] {
+		var val MCPApprovalRequestItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
 		}
-		return &val, nil
-	case "file_search_call":
-		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "function_call":
-		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "message":
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "reasoning":
-		var val ReasoningItem
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "web_search_call":
-		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for OutputItem", disc.D)
 	}
+	if keys["type"] && keys["call_id"] && keys["status"] && keys["operation"] {
+		var val ApplyPatchToolCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["type"] && keys["container_id"] && keys["code"] {
+		var val CodeInterpreterCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["name"] && keys["arguments"] && keys["call_id"] {
+		var val FunctionCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["output"] {
+		var val FunctionCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["output"] {
+		var val FunctionShellCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["action"] {
+		var val ComputerCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["output"] {
+		var val CustomToolCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["role"] && keys["content"] {
+		var val DeveloperMessageItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["type"] && keys["queries"] {
+		var val FileSearchCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["role"] && keys["content"] {
+		var val UserMessageItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["role"] && keys["content"] {
+		var val AssistantMessageItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["action"] && keys["call_id"] && keys["type"] {
+		var val FunctionShellCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["output"] {
+		var val ComputerCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["role"] && keys["content"] {
+		var val SystemMessageItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["approval_request_id"] && keys["approve"] {
+		var val MCPApprovalResponseItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["action"] {
+		var val LocalShellCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["type"] && keys["output"] {
+		var val LocalShellCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["call_id"] && keys["status"] && keys["type"] {
+		var val ApplyPatchToolCallOutputItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["summary"] {
+		var val ReasoningItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] && keys["type"] {
+		var val ImageGenCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] && keys["encrypted_content"] {
+		var val CompactionSummaryItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["id"] {
+		var val ItemReferenceParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["type"] {
+		var val WebSearchCallItemParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for ItemParam")
 }
 
-// OutputItemAs extracts a variant from a OutputItem union value, like errors.As.
-// Only types whose pointer implements OutputItem can be used as target (compile-time checked).
+// ItemParamAs extracts a variant from a ItemParam union value, like errors.As.
+// Only types whose pointer implements ItemParam can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if OutputItemAs(shape, &circle) {
+//	if ItemParamAs(shape, &circle) {
 //		// circle is populated
 //	}
-func OutputItemAs[T any, P interface{ *T; OutputItem }](v OutputItem, target *T) bool {
+func ItemParamAs[T any, P interface{ *T; ItemParam }](v ItemParam, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -3360,12 +12696,12 @@ func OutputItemAs[T any, P interface{ *T; OutputItem }](v OutputItem, target *T)
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteDetails.
-func (ResponseIncompleteDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseIncompleteDetails") }
+// JSONSchemaBytes returns the JSON Schema definition for JsonObjectResponseFormat.
+func (JsonObjectResponseFormat) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("JsonObjectResponseFormat") }
 
-// Validate checks whether raw JSON conforms to the ResponseIncompleteDetails schema.
-func (ResponseIncompleteDetails) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseIncompleteDetails")
+// Validate checks whether raw JSON conforms to the JsonObjectResponseFormat schema.
+func (JsonObjectResponseFormat) Validate(data []byte) error {
+	sch := compschemaValidator("JsonObjectResponseFormat")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3373,25 +12709,32 @@ func (ResponseIncompleteDetails) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseIncompleteDetails validates and unmarshals JSON into a ResponseIncompleteDetails.
-func DecodeResponseIncompleteDetails(data []byte) (ResponseIncompleteDetails, error) {
-	var zero ResponseIncompleteDetails
+// DecodeJsonObjectResponseFormat validates and unmarshals JSON into a JsonObjectResponseFormat.
+func DecodeJsonObjectResponseFormat(data []byte) (JsonObjectResponseFormat, error) {
+	var zero JsonObjectResponseFormat
 	if err := zero.Validate(data); err != nil {
-		return ResponseIncompleteDetails{}, err
+		return JsonObjectResponseFormat{}, err
 	}
-	var result ResponseIncompleteDetails
+	var result JsonObjectResponseFormat
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseIncompleteDetails{}, err
+		return JsonObjectResponseFormat{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseText.
-func (ResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseText") }
+// NewJsonObjectResponseFormat creates a new JsonObjectResponseFormat with required fields and auto-filled const/default values.
+func NewJsonObjectResponseFormat(type_ JsonObjectResponseFormatType) *JsonObjectResponseFormat {
+	return &JsonObjectResponseFormat{
+		Type: type_,
+	}
+}
 
-// Validate checks whether raw JSON conforms to the ResponseText schema.
-func (ResponseText) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseText")
+// JSONSchemaBytes returns the JSON Schema definition for JsonSchemaResponseFormat.
+func (JsonSchemaResponseFormat) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("JsonSchemaResponseFormat") }
+
+// Validate checks whether raw JSON conforms to the JsonSchemaResponseFormat schema.
+func (JsonSchemaResponseFormat) Validate(data []byte) error {
+	sch := compschemaValidator("JsonSchemaResponseFormat")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3399,25 +12742,36 @@ func (ResponseText) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseText validates and unmarshals JSON into a ResponseText.
-func DecodeResponseText(data []byte) (ResponseText, error) {
-	var zero ResponseText
+// DecodeJsonSchemaResponseFormat validates and unmarshals JSON into a JsonSchemaResponseFormat.
+func DecodeJsonSchemaResponseFormat(data []byte) (JsonSchemaResponseFormat, error) {
+	var zero JsonSchemaResponseFormat
 	if err := zero.Validate(data); err != nil {
-		return ResponseText{}, err
+		return JsonSchemaResponseFormat{}, err
 	}
-	var result ResponseText
+	var result JsonSchemaResponseFormat
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseText{}, err
+		return JsonSchemaResponseFormat{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseToolChoiceToolChoiceOptions.
-func (ResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseToolChoiceToolChoiceOptions") }
+// NewJsonSchemaResponseFormat creates a new JsonSchemaResponseFormat with required fields and auto-filled const/default values.
+func NewJsonSchemaResponseFormat(description string, schema any, strict bool, type_ JsonSchemaResponseFormatType, name string) *JsonSchemaResponseFormat {
+	return &JsonSchemaResponseFormat{
+		Description: &description,
+		Schema: &schema,
+		Strict: strict,
+		Type: type_,
+		Name: name,
+	}
+}
 
-// Validate checks whether raw JSON conforms to the ResponseToolChoiceToolChoiceOptions schema.
-func (ResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseToolChoiceToolChoiceOptions")
+// JSONSchemaBytes returns the JSON Schema definition for LocalShellToolChoice.
+func (LocalShellToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("LocalShellToolChoice") }
+
+// Validate checks whether raw JSON conforms to the LocalShellToolChoice schema.
+func (LocalShellToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("LocalShellToolChoice")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3425,80 +12779,32 @@ func (ResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponseToolChoiceToolChoiceOptions.
-func DecodeResponseToolChoiceToolChoiceOptions(data []byte) (ResponseToolChoiceToolChoiceOptions, error) {
-	var zero ResponseToolChoiceToolChoiceOptions
+// DecodeLocalShellToolChoice validates and unmarshals JSON into a LocalShellToolChoice.
+func DecodeLocalShellToolChoice(data []byte) (LocalShellToolChoice, error) {
+	var zero LocalShellToolChoice
 	if err := zero.Validate(data); err != nil {
-		return ResponseToolChoiceToolChoiceOptions{}, err
+		return LocalShellToolChoice{}, err
 	}
-	var result ResponseToolChoiceToolChoiceOptions
+	var result LocalShellToolChoice
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseToolChoiceToolChoiceOptions{}, err
+		return LocalShellToolChoice{}, err
 	}
 	return result, nil
 }
 
-// ResponseToolChoiceJSONSchemaBytes returns the JSON Schema for the ResponseToolChoice union.
-func ResponseToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseToolChoice") }
-
-// DecodeResponseToolChoice validates and unmarshals JSON into the correct ResponseToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func DecodeResponseToolChoice(data []byte) (ResponseToolChoice, error) {
-	sch := compschemaValidator("ResponseToolChoice")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_use_preview", "file_search", "web_search_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ResponseToolChoice", disc.D)
+// NewLocalShellToolChoice creates a new LocalShellToolChoice with required fields and auto-filled const/default values.
+func NewLocalShellToolChoice(type_ LocalShellToolChoiceType) *LocalShellToolChoice {
+	return &LocalShellToolChoice{
+		Type: type_,
 	}
 }
 
-// ResponseToolChoiceAs extracts a variant from a ResponseToolChoice union value, like errors.As.
-// Only types whose pointer implements ResponseToolChoice can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if ResponseToolChoiceAs(shape, &circle) {
-//		// circle is populated
-//	}
-func ResponseToolChoiceAs[T any, P interface{ *T; ResponseToolChoice }](v ResponseToolChoice, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
+// JSONSchemaBytes returns the JSON Schema definition for MCPProtocolError.
+func (MCPProtocolError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPProtocolError") }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseError.
-func (ResponseError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseError") }
-
-// Validate checks whether raw JSON conforms to the ResponseError schema.
-func (ResponseError) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseError")
+// Validate checks whether raw JSON conforms to the MCPProtocolError schema.
+func (MCPProtocolError) Validate(data []byte) error {
+	sch := compschemaValidator("MCPProtocolError")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3506,33 +12812,34 @@ func (ResponseError) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseError validates and unmarshals JSON into a ResponseError.
-func DecodeResponseError(data []byte) (ResponseError, error) {
-	var zero ResponseError
+// DecodeMCPProtocolError validates and unmarshals JSON into a MCPProtocolError.
+func DecodeMCPProtocolError(data []byte) (MCPProtocolError, error) {
+	var zero MCPProtocolError
 	if err := zero.Validate(data); err != nil {
-		return ResponseError{}, err
+		return MCPProtocolError{}, err
 	}
-	var result ResponseError
+	var result MCPProtocolError
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseError{}, err
+		return MCPProtocolError{}, err
 	}
 	return result, nil
 }
 
-// NewResponseError creates a new ResponseError with required fields and auto-filled const/default values.
-func NewResponseError(code ResponseErrorCode, message string) *ResponseError {
-	return &ResponseError{
+// NewMCPProtocolError creates a new MCPProtocolError with required fields and auto-filled const/default values.
+func NewMCPProtocolError(type_ MCPProtocolErrorType, code int64, message string) *MCPProtocolError {
+	return &MCPProtocolError{
+		Type: type_,
 		Code: code,
 		Message: message,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
-func (ResponseUsageInputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageInputTokensDetails") }
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolFilterField.
+func (MCPToolFilterField) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolFilterField") }
 
-// Validate checks whether raw JSON conforms to the ResponseUsageInputTokensDetails schema.
-func (ResponseUsageInputTokensDetails) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsageInputTokensDetails")
+// Validate checks whether raw JSON conforms to the MCPToolFilterField schema.
+func (MCPToolFilterField) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolFilterField")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3540,32 +12847,33 @@ func (ResponseUsageInputTokensDetails) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseUsageInputTokensDetails validates and unmarshals JSON into a ResponseUsageInputTokensDetails.
-func DecodeResponseUsageInputTokensDetails(data []byte) (ResponseUsageInputTokensDetails, error) {
-	var zero ResponseUsageInputTokensDetails
+// DecodeMCPToolFilterField validates and unmarshals JSON into a MCPToolFilterField.
+func DecodeMCPToolFilterField(data []byte) (MCPToolFilterField, error) {
+	var zero MCPToolFilterField
 	if err := zero.Validate(data); err != nil {
-		return ResponseUsageInputTokensDetails{}, err
+		return MCPToolFilterField{}, err
 	}
-	var result ResponseUsageInputTokensDetails
+	var result MCPToolFilterField
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsageInputTokensDetails{}, err
+		return MCPToolFilterField{}, err
 	}
 	return result, nil
 }
 
-// NewResponseUsageInputTokensDetails creates a new ResponseUsageInputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageInputTokensDetails(cachedTokens int64) *ResponseUsageInputTokensDetails {
-	return &ResponseUsageInputTokensDetails{
-		CachedTokens: cachedTokens,
+// NewMCPToolFilterField creates a new MCPToolFilterField with required fields and auto-filled const/default values.
+func NewMCPToolFilterField(toolNames []string, readOnly bool) *MCPToolFilterField {
+	return &MCPToolFilterField{
+		ToolNames: toolNames,
+		ReadOnly: &readOnly,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageOutputTokensDetails.
-func (ResponseUsageOutputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageOutputTokensDetails") }
+// JSONSchemaBytes returns the JSON Schema definition for MCPRequireApprovalFilterField.
+func (MCPRequireApprovalFilterField) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPRequireApprovalFilterField") }
 
-// Validate checks whether raw JSON conforms to the ResponseUsageOutputTokensDetails schema.
-func (ResponseUsageOutputTokensDetails) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsageOutputTokensDetails")
+// Validate checks whether raw JSON conforms to the MCPRequireApprovalFilterField schema.
+func (MCPRequireApprovalFilterField) Validate(data []byte) error {
+	sch := compschemaValidator("MCPRequireApprovalFilterField")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3573,32 +12881,455 @@ func (ResponseUsageOutputTokensDetails) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseUsageOutputTokensDetails validates and unmarshals JSON into a ResponseUsageOutputTokensDetails.
-func DecodeResponseUsageOutputTokensDetails(data []byte) (ResponseUsageOutputTokensDetails, error) {
-	var zero ResponseUsageOutputTokensDetails
+// DecodeMCPRequireApprovalFilterField validates and unmarshals JSON into a MCPRequireApprovalFilterField.
+func DecodeMCPRequireApprovalFilterField(data []byte) (MCPRequireApprovalFilterField, error) {
+	var zero MCPRequireApprovalFilterField
 	if err := zero.Validate(data); err != nil {
-		return ResponseUsageOutputTokensDetails{}, err
+		return MCPRequireApprovalFilterField{}, err
 	}
-	var result ResponseUsageOutputTokensDetails
+	var result MCPRequireApprovalFilterField
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsageOutputTokensDetails{}, err
+		return MCPRequireApprovalFilterField{}, err
 	}
 	return result, nil
 }
 
-// NewResponseUsageOutputTokensDetails creates a new ResponseUsageOutputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageOutputTokensDetails(reasoningTokens int64) *ResponseUsageOutputTokensDetails {
-	return &ResponseUsageOutputTokensDetails{
+// NewMCPRequireApprovalFilterField creates a new MCPRequireApprovalFilterField with required fields and auto-filled const/default values.
+func NewMCPRequireApprovalFilterField(always MCPToolFilterField, never MCPToolFilterField) *MCPRequireApprovalFilterField {
+	return &MCPRequireApprovalFilterField{
+		Always: &always,
+		Never: &never,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolRequireApprovalMCPRequireApprovalFieldEnum.
+func (MCPToolRequireApprovalMCPRequireApprovalFieldEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolRequireApprovalMCPRequireApprovalFieldEnum") }
+
+// Validate checks whether raw JSON conforms to the MCPToolRequireApprovalMCPRequireApprovalFieldEnum schema.
+func (MCPToolRequireApprovalMCPRequireApprovalFieldEnum) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolRequireApprovalMCPRequireApprovalFieldEnum")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolRequireApprovalMCPRequireApprovalFieldEnum validates and unmarshals JSON into a MCPToolRequireApprovalMCPRequireApprovalFieldEnum.
+func DecodeMCPToolRequireApprovalMCPRequireApprovalFieldEnum(data []byte) (MCPToolRequireApprovalMCPRequireApprovalFieldEnum, error) {
+	var zero MCPToolRequireApprovalMCPRequireApprovalFieldEnum
+	if err := zero.Validate(data); err != nil {
+		return MCPToolRequireApprovalMCPRequireApprovalFieldEnum{}, err
+	}
+	var result MCPToolRequireApprovalMCPRequireApprovalFieldEnum
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolRequireApprovalMCPRequireApprovalFieldEnum{}, err
+	}
+	return result, nil
+}
+
+// MCPToolRequireApprovalJSONSchemaBytes returns the JSON Schema for the MCPToolRequireApproval union.
+func MCPToolRequireApprovalJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolRequireApproval") }
+
+// DecodeMCPToolRequireApproval validates and unmarshals JSON into the correct MCPToolRequireApproval variant.
+func DecodeMCPToolRequireApproval(data []byte) (MCPToolRequireApproval, error) {
+	sch := compschemaValidator("MCPToolRequireApproval")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var keys map[string]bool
+	{
+		var obj map[string]json.RawMessage
+		if err := json.Unmarshal(data, &obj); err == nil {
+			keys = make(map[string]bool, len(obj))
+			for k := range obj {
+				keys[k] = true
+			}
+		}
+	}
+	if keys["always"] && keys["never"] {
+		var val MCPRequireApprovalFilterField
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	if keys["Value"] {
+		var val MCPToolRequireApprovalMCPRequireApprovalFieldEnum
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for MCPToolRequireApproval")
+}
+
+// MCPToolRequireApprovalAs extracts a variant from a MCPToolRequireApproval union value, like errors.As.
+// Only types whose pointer implements MCPToolRequireApproval can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if MCPToolRequireApprovalAs(shape, &circle) {
+//		// circle is populated
+//	}
+func MCPToolRequireApprovalAs[T any, P interface{ *T; MCPToolRequireApproval }](v MCPToolRequireApproval, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPTool.
+func (MCPTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPTool") }
+
+// Validate checks whether raw JSON conforms to the MCPTool schema.
+func (MCPTool) Validate(data []byte) error {
+	sch := compschemaValidator("MCPTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPTool validates and unmarshals JSON into a MCPTool.
+func DecodeMCPTool(data []byte) (MCPTool, error) {
+	var zero MCPTool
+	if err := zero.Validate(data); err != nil {
+		return MCPTool{}, err
+	}
+	var result MCPTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPTool{}, err
+	}
+	return result, nil
+}
+
+// NewMCPTool creates a new MCPTool with required fields and auto-filled const/default values.
+func NewMCPTool(type_ MCPToolType, serverLabel string, serverDescription string, serverURL string, headers any, allowedTools any, requireApproval MCPToolRequireApproval) *MCPTool {
+	return &MCPTool{
+		Type: type_,
+		ServerLabel: serverLabel,
+		ServerDescription: &serverDescription,
+		ServerURL: &serverURL,
+		Headers: &headers,
+		AllowedTools: &allowedTools,
+		RequireApproval: requireApproval,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolChoice.
+func (MCPToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolChoice") }
+
+// Validate checks whether raw JSON conforms to the MCPToolChoice schema.
+func (MCPToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolChoice validates and unmarshals JSON into a MCPToolChoice.
+func DecodeMCPToolChoice(data []byte) (MCPToolChoice, error) {
+	var zero MCPToolChoice
+	if err := zero.Validate(data); err != nil {
+		return MCPToolChoice{}, err
+	}
+	var result MCPToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewMCPToolChoice creates a new MCPToolChoice with required fields and auto-filled const/default values.
+func NewMCPToolChoice(type_ MCPToolChoiceType, serverLabel string, name string) *MCPToolChoice {
+	return &MCPToolChoice{
+		Type: type_,
+		ServerLabel: serverLabel,
+		Name: &name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for MCPToolExecutionError.
+func (MCPToolExecutionError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("MCPToolExecutionError") }
+
+// Validate checks whether raw JSON conforms to the MCPToolExecutionError schema.
+func (MCPToolExecutionError) Validate(data []byte) error {
+	sch := compschemaValidator("MCPToolExecutionError")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeMCPToolExecutionError validates and unmarshals JSON into a MCPToolExecutionError.
+func DecodeMCPToolExecutionError(data []byte) (MCPToolExecutionError, error) {
+	var zero MCPToolExecutionError
+	if err := zero.Validate(data); err != nil {
+		return MCPToolExecutionError{}, err
+	}
+	var result MCPToolExecutionError
+	if err := json.Unmarshal(data, &result); err != nil {
+		return MCPToolExecutionError{}, err
+	}
+	return result, nil
+}
+
+// NewMCPToolExecutionError creates a new MCPToolExecutionError with required fields and auto-filled const/default values.
+func NewMCPToolExecutionError(type_ MCPToolExecutionErrorType, content any) *MCPToolExecutionError {
+	return &MCPToolExecutionError{
+		Type: type_,
+		Content: content,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for OutputTextContentParamAnnotationsSliceContainerFileCitationParam.
+func (OutputTextContentParamAnnotationsSliceContainerFileCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContentParamAnnotationsSliceContainerFileCitationParam") }
+
+// Validate checks whether raw JSON conforms to the OutputTextContentParamAnnotationsSliceContainerFileCitationParam schema.
+func (OutputTextContentParamAnnotationsSliceContainerFileCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("OutputTextContentParamAnnotationsSliceContainerFileCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeOutputTextContentParamAnnotationsSliceContainerFileCitationParam validates and unmarshals JSON into a OutputTextContentParamAnnotationsSliceContainerFileCitationParam.
+func DecodeOutputTextContentParamAnnotationsSliceContainerFileCitationParam(data []byte) (OutputTextContentParamAnnotationsSliceContainerFileCitationParam, error) {
+	var zero OutputTextContentParamAnnotationsSliceContainerFileCitationParam
+	if err := zero.Validate(data); err != nil {
+		return OutputTextContentParamAnnotationsSliceContainerFileCitationParam{}, err
+	}
+	var result OutputTextContentParamAnnotationsSliceContainerFileCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return OutputTextContentParamAnnotationsSliceContainerFileCitationParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for OutputTextContentParamAnnotationsSliceFileCitationParam.
+func (OutputTextContentParamAnnotationsSliceFileCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContentParamAnnotationsSliceFileCitationParam") }
+
+// Validate checks whether raw JSON conforms to the OutputTextContentParamAnnotationsSliceFileCitationParam schema.
+func (OutputTextContentParamAnnotationsSliceFileCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("OutputTextContentParamAnnotationsSliceFileCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeOutputTextContentParamAnnotationsSliceFileCitationParam validates and unmarshals JSON into a OutputTextContentParamAnnotationsSliceFileCitationParam.
+func DecodeOutputTextContentParamAnnotationsSliceFileCitationParam(data []byte) (OutputTextContentParamAnnotationsSliceFileCitationParam, error) {
+	var zero OutputTextContentParamAnnotationsSliceFileCitationParam
+	if err := zero.Validate(data); err != nil {
+		return OutputTextContentParamAnnotationsSliceFileCitationParam{}, err
+	}
+	var result OutputTextContentParamAnnotationsSliceFileCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return OutputTextContentParamAnnotationsSliceFileCitationParam{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for UrlCitationParam.
+func (UrlCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UrlCitationParam") }
+
+// Validate checks whether raw JSON conforms to the UrlCitationParam schema.
+func (UrlCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("UrlCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeUrlCitationParam validates and unmarshals JSON into a UrlCitationParam.
+func DecodeUrlCitationParam(data []byte) (UrlCitationParam, error) {
+	var zero UrlCitationParam
+	if err := zero.Validate(data); err != nil {
+		return UrlCitationParam{}, err
+	}
+	var result UrlCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return UrlCitationParam{}, err
+	}
+	return result, nil
+}
+
+// NewUrlCitationParam creates a new UrlCitationParam with required fields and auto-filled const/default values.
+func NewUrlCitationParam(url string, title string, type_ UrlCitationParamType, startIndex int64, endIndex int64) *UrlCitationParam {
+	return &UrlCitationParam{
+		URL: url,
+		Title: title,
+		Type: type_,
+		StartIndex: startIndex,
+		EndIndex: endIndex,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for OutputTextContentParamAnnotationsSliceUrlCitationParam.
+func (OutputTextContentParamAnnotationsSliceUrlCitationParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContentParamAnnotationsSliceUrlCitationParam") }
+
+// Validate checks whether raw JSON conforms to the OutputTextContentParamAnnotationsSliceUrlCitationParam schema.
+func (OutputTextContentParamAnnotationsSliceUrlCitationParam) Validate(data []byte) error {
+	sch := compschemaValidator("OutputTextContentParamAnnotationsSliceUrlCitationParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeOutputTextContentParamAnnotationsSliceUrlCitationParam validates and unmarshals JSON into a OutputTextContentParamAnnotationsSliceUrlCitationParam.
+func DecodeOutputTextContentParamAnnotationsSliceUrlCitationParam(data []byte) (OutputTextContentParamAnnotationsSliceUrlCitationParam, error) {
+	var zero OutputTextContentParamAnnotationsSliceUrlCitationParam
+	if err := zero.Validate(data); err != nil {
+		return OutputTextContentParamAnnotationsSliceUrlCitationParam{}, err
+	}
+	var result OutputTextContentParamAnnotationsSliceUrlCitationParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return OutputTextContentParamAnnotationsSliceUrlCitationParam{}, err
+	}
+	return result, nil
+}
+
+// OutputTextContentParamAnnotationsJSONSchemaBytes returns the JSON Schema for the OutputTextContentParamAnnotations union.
+func OutputTextContentParamAnnotationsJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContentParamAnnotations") }
+
+// DecodeOutputTextContentParamAnnotations validates and unmarshals JSON into the correct OutputTextContentParamAnnotations variant.
+func DecodeOutputTextContentParamAnnotations(data []byte) (OutputTextContentParamAnnotations, error) {
+	sch := compschemaValidator("OutputTextContentParamAnnotations")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val OutputTextContentParamAnnotationsSliceContainerFileCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputTextContentParamAnnotationsSliceFileCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val OutputTextContentParamAnnotationsSliceUrlCitationParam
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for OutputTextContentParamAnnotations")
+}
+
+// OutputTextContentParamAnnotationsAs extracts a variant from a OutputTextContentParamAnnotations union value, like errors.As.
+// Only types whose pointer implements OutputTextContentParamAnnotations can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if OutputTextContentParamAnnotationsAs(shape, &circle) {
+//		// circle is populated
+//	}
+func OutputTextContentParamAnnotationsAs[T any, P interface{ *T; OutputTextContentParamAnnotations }](v OutputTextContentParamAnnotations, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for OutputTextContentParam.
+func (OutputTextContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTextContentParam") }
+
+// Validate checks whether raw JSON conforms to the OutputTextContentParam schema.
+func (OutputTextContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("OutputTextContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeOutputTextContentParam validates and unmarshals JSON into a OutputTextContentParam.
+func DecodeOutputTextContentParam(data []byte) (OutputTextContentParam, error) {
+	var zero OutputTextContentParam
+	if err := zero.Validate(data); err != nil {
+		return OutputTextContentParam{}, err
+	}
+	var result OutputTextContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return OutputTextContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewOutputTextContentParam creates a new OutputTextContentParam with required fields and auto-filled const/default values.
+func NewOutputTextContentParam(type_ OutputTextContentParamType, text string) *OutputTextContentParam {
+	return &OutputTextContentParam{
+		Type: type_,
+		Text: text,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for OutputTokensDetails.
+func (OutputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputTokensDetails") }
+
+// Validate checks whether raw JSON conforms to the OutputTokensDetails schema.
+func (OutputTokensDetails) Validate(data []byte) error {
+	sch := compschemaValidator("OutputTokensDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeOutputTokensDetails validates and unmarshals JSON into a OutputTokensDetails.
+func DecodeOutputTokensDetails(data []byte) (OutputTokensDetails, error) {
+	var zero OutputTokensDetails
+	if err := zero.Validate(data); err != nil {
+		return OutputTokensDetails{}, err
+	}
+	var result OutputTokensDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return OutputTokensDetails{}, err
+	}
+	return result, nil
+}
+
+// NewOutputTokensDetails creates a new OutputTokensDetails with required fields and auto-filled const/default values.
+func NewOutputTokensDetails(reasoningTokens int64) *OutputTokensDetails {
+	return &OutputTokensDetails{
 		ReasoningTokens: reasoningTokens,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsage.
-func (ResponseUsage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsage") }
+// JSONSchemaBytes returns the JSON Schema definition for PromptInstructionMessage.
+func (PromptInstructionMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("PromptInstructionMessage") }
 
-// Validate checks whether raw JSON conforms to the ResponseUsage schema.
-func (ResponseUsage) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsage")
+// Validate checks whether raw JSON conforms to the PromptInstructionMessage schema.
+func (PromptInstructionMessage) Validate(data []byte) error {
+	sch := compschemaValidator("PromptInstructionMessage")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3606,116 +13337,34 @@ func (ResponseUsage) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseUsage validates and unmarshals JSON into a ResponseUsage.
-func DecodeResponseUsage(data []byte) (ResponseUsage, error) {
-	var zero ResponseUsage
+// DecodePromptInstructionMessage validates and unmarshals JSON into a PromptInstructionMessage.
+func DecodePromptInstructionMessage(data []byte) (PromptInstructionMessage, error) {
+	var zero PromptInstructionMessage
 	if err := zero.Validate(data); err != nil {
-		return ResponseUsage{}, err
+		return PromptInstructionMessage{}, err
 	}
-	var result ResponseUsage
+	var result PromptInstructionMessage
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsage{}, err
+		return PromptInstructionMessage{}, err
 	}
 	return result, nil
 }
 
-// NewResponseUsage creates a new ResponseUsage with required fields and auto-filled const/default values.
-func NewResponseUsage(totalTokens int64, inputTokens int64, inputTokensDetails ResponseUsageInputTokensDetails, outputTokens int64, outputTokensDetails ResponseUsageOutputTokensDetails) *ResponseUsage {
-	return &ResponseUsage{
-		TotalTokens: totalTokens,
-		InputTokens: inputTokens,
-		InputTokensDetails: inputTokensDetails,
-		OutputTokens: outputTokens,
-		OutputTokensDetails: outputTokensDetails,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for Response.
-func (Response) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Response") }
-
-// Validate checks whether raw JSON conforms to the Response schema.
-func (Response) Validate(data []byte) error {
-	sch := compschemaValidator("Response")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponse validates and unmarshals JSON into a Response.
-func DecodeResponse(data []byte) (Response, error) {
-	var zero Response
-	if err := zero.Validate(data); err != nil {
-		return Response{}, err
-	}
-	var result Response
-	if err := json.Unmarshal(data, &result); err != nil {
-		return Response{}, err
-	}
-	return result, nil
-}
-
-// NewResponse creates a new Response with required fields and auto-filled const/default values.
-func NewResponse(instructions string, id string, incompleteDetails ResponseIncompleteDetails, output []OutputItem, parallelToolCalls bool, metadata Metadata, temperature float64, toolChoice ResponseToolChoice, createdAt float64, topP float64, tools []Tool, object ResponseObject, error ResponseError, model ModelIdsResponses) *Response {
-	return &Response{
-		Instructions: &instructions,
-		ID: id,
-		IncompleteDetails: incompleteDetails,
-		Output: output,
-		ParallelToolCalls: parallelToolCalls,
-		Metadata: metadata,
-		Temperature: &temperature,
-		ToolChoice: toolChoice,
-		CreatedAt: createdAt,
-		TopP: &topP,
-		Tools: tools,
-		Object: object,
-		Error: error,
-		Model: model,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDeltaEvent.
-func (ResponseAudioDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseAudioDeltaEvent schema.
-func (ResponseAudioDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseAudioDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseAudioDeltaEvent validates and unmarshals JSON into a ResponseAudioDeltaEvent.
-func DecodeResponseAudioDeltaEvent(data []byte) (ResponseAudioDeltaEvent, error) {
-	var zero ResponseAudioDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseAudioDeltaEvent{}, err
-	}
-	var result ResponseAudioDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseAudioDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseAudioDeltaEvent creates a new ResponseAudioDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseAudioDeltaEvent(type_ ResponseAudioDeltaEventType, delta string) *ResponseAudioDeltaEvent {
-	return &ResponseAudioDeltaEvent{
+// NewPromptInstructionMessage creates a new PromptInstructionMessage with required fields and auto-filled const/default values.
+func NewPromptInstructionMessage(type_ PromptInstructionMessageType, role MessageRole, content []any) *PromptInstructionMessage {
+	return &PromptInstructionMessage{
 		Type: type_,
-		Delta: delta,
+		Role: role,
+		Content: content,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseAudioDoneEvent.
-func (ResponseAudioDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioDoneEvent") }
+// JSONSchemaBytes returns the JSON Schema definition for Reasoning.
+func (Reasoning) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Reasoning") }
 
-// Validate checks whether raw JSON conforms to the ResponseAudioDoneEvent schema.
-func (ResponseAudioDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseAudioDoneEvent")
+// Validate checks whether raw JSON conforms to the Reasoning schema.
+func (Reasoning) Validate(data []byte) error {
+	sch := compschemaValidator("Reasoning")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -3723,1261 +13372,70 @@ func (ResponseAudioDoneEvent) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseAudioDoneEvent validates and unmarshals JSON into a ResponseAudioDoneEvent.
-func DecodeResponseAudioDoneEvent(data []byte) (ResponseAudioDoneEvent, error) {
-	var zero ResponseAudioDoneEvent
+// DecodeReasoning validates and unmarshals JSON into a Reasoning.
+func DecodeReasoning(data []byte) (Reasoning, error) {
+	var zero Reasoning
 	if err := zero.Validate(data); err != nil {
-		return ResponseAudioDoneEvent{}, err
+		return Reasoning{}, err
 	}
-	var result ResponseAudioDoneEvent
+	var result Reasoning
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseAudioDoneEvent{}, err
+		return Reasoning{}, err
 	}
 	return result, nil
 }
 
-// NewResponseAudioDoneEvent creates a new ResponseAudioDoneEvent with required fields and auto-filled const/default values.
-func NewResponseAudioDoneEvent(type_ ResponseAudioDoneEventType) *ResponseAudioDoneEvent {
-	return &ResponseAudioDoneEvent{
+// NewReasoning creates a new Reasoning with required fields and auto-filled const/default values.
+func NewReasoning(summary ReasoningSummaryEnum, effort string) *Reasoning {
+	return &Reasoning{
+		Summary: &summary,
+		Effort: &effort,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for ReasoningEffortEnum.
+func (ReasoningEffortEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ReasoningEffortEnum") }
+
+// JSONSchemaBytes returns the JSON Schema definition for RefusalContentParam.
+func (RefusalContentParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RefusalContentParam") }
+
+// Validate checks whether raw JSON conforms to the RefusalContentParam schema.
+func (RefusalContentParam) Validate(data []byte) error {
+	sch := compschemaValidator("RefusalContentParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeRefusalContentParam validates and unmarshals JSON into a RefusalContentParam.
+func DecodeRefusalContentParam(data []byte) (RefusalContentParam, error) {
+	var zero RefusalContentParam
+	if err := zero.Validate(data); err != nil {
+		return RefusalContentParam{}, err
+	}
+	var result RefusalContentParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return RefusalContentParam{}, err
+	}
+	return result, nil
+}
+
+// NewRefusalContentParam creates a new RefusalContentParam with required fields and auto-filled const/default values.
+func NewRefusalContentParam(type_ RefusalContentParamType, refusal string) *RefusalContentParam {
+	return &RefusalContentParam{
 		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDeltaEvent.
-func (ResponseAudioTranscriptDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioTranscriptDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseAudioTranscriptDeltaEvent schema.
-func (ResponseAudioTranscriptDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseAudioTranscriptDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseAudioTranscriptDeltaEvent validates and unmarshals JSON into a ResponseAudioTranscriptDeltaEvent.
-func DecodeResponseAudioTranscriptDeltaEvent(data []byte) (ResponseAudioTranscriptDeltaEvent, error) {
-	var zero ResponseAudioTranscriptDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseAudioTranscriptDeltaEvent{}, err
-	}
-	var result ResponseAudioTranscriptDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseAudioTranscriptDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseAudioTranscriptDeltaEvent creates a new ResponseAudioTranscriptDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseAudioTranscriptDeltaEvent(type_ ResponseAudioTranscriptDeltaEventType, delta string) *ResponseAudioTranscriptDeltaEvent {
-	return &ResponseAudioTranscriptDeltaEvent{
-		Type: type_,
-		Delta: delta,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseAudioTranscriptDoneEvent.
-func (ResponseAudioTranscriptDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseAudioTranscriptDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseAudioTranscriptDoneEvent schema.
-func (ResponseAudioTranscriptDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseAudioTranscriptDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseAudioTranscriptDoneEvent validates and unmarshals JSON into a ResponseAudioTranscriptDoneEvent.
-func DecodeResponseAudioTranscriptDoneEvent(data []byte) (ResponseAudioTranscriptDoneEvent, error) {
-	var zero ResponseAudioTranscriptDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseAudioTranscriptDoneEvent{}, err
-	}
-	var result ResponseAudioTranscriptDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseAudioTranscriptDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseAudioTranscriptDoneEvent creates a new ResponseAudioTranscriptDoneEvent with required fields and auto-filled const/default values.
-func NewResponseAudioTranscriptDoneEvent(type_ ResponseAudioTranscriptDoneEventType) *ResponseAudioTranscriptDoneEvent {
-	return &ResponseAudioTranscriptDoneEvent{
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDeltaEvent.
-func (ResponseCodeInterpreterCallCodeDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCodeInterpreterCallCodeDeltaEvent schema.
-func (ResponseCodeInterpreterCallCodeDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCodeInterpreterCallCodeDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCodeInterpreterCallCodeDeltaEvent validates and unmarshals JSON into a ResponseCodeInterpreterCallCodeDeltaEvent.
-func DecodeResponseCodeInterpreterCallCodeDeltaEvent(data []byte) (ResponseCodeInterpreterCallCodeDeltaEvent, error) {
-	var zero ResponseCodeInterpreterCallCodeDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCodeInterpreterCallCodeDeltaEvent{}, err
-	}
-	var result ResponseCodeInterpreterCallCodeDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCodeInterpreterCallCodeDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCodeInterpreterCallCodeDeltaEvent creates a new ResponseCodeInterpreterCallCodeDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCodeDeltaEvent(type_ ResponseCodeInterpreterCallCodeDeltaEventType, outputIndex int64, delta string) *ResponseCodeInterpreterCallCodeDeltaEvent {
-	return &ResponseCodeInterpreterCallCodeDeltaEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Delta: delta,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCodeDoneEvent.
-func (ResponseCodeInterpreterCallCodeDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallCodeDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCodeInterpreterCallCodeDoneEvent schema.
-func (ResponseCodeInterpreterCallCodeDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCodeInterpreterCallCodeDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCodeInterpreterCallCodeDoneEvent validates and unmarshals JSON into a ResponseCodeInterpreterCallCodeDoneEvent.
-func DecodeResponseCodeInterpreterCallCodeDoneEvent(data []byte) (ResponseCodeInterpreterCallCodeDoneEvent, error) {
-	var zero ResponseCodeInterpreterCallCodeDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCodeInterpreterCallCodeDoneEvent{}, err
-	}
-	var result ResponseCodeInterpreterCallCodeDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCodeInterpreterCallCodeDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCodeInterpreterCallCodeDoneEvent creates a new ResponseCodeInterpreterCallCodeDoneEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCodeDoneEvent(type_ ResponseCodeInterpreterCallCodeDoneEventType, outputIndex int64, code string) *ResponseCodeInterpreterCallCodeDoneEvent {
-	return &ResponseCodeInterpreterCallCodeDoneEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		Code: code,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallCompletedEvent.
-func (ResponseCodeInterpreterCallCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallCompletedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCodeInterpreterCallCompletedEvent schema.
-func (ResponseCodeInterpreterCallCompletedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCodeInterpreterCallCompletedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCodeInterpreterCallCompletedEvent validates and unmarshals JSON into a ResponseCodeInterpreterCallCompletedEvent.
-func DecodeResponseCodeInterpreterCallCompletedEvent(data []byte) (ResponseCodeInterpreterCallCompletedEvent, error) {
-	var zero ResponseCodeInterpreterCallCompletedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCodeInterpreterCallCompletedEvent{}, err
-	}
-	var result ResponseCodeInterpreterCallCompletedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCodeInterpreterCallCompletedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCodeInterpreterCallCompletedEvent creates a new ResponseCodeInterpreterCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallCompletedEvent(type_ ResponseCodeInterpreterCallCompletedEventType, outputIndex int64, codeInterpreterCall CodeInterpreterToolCall) *ResponseCodeInterpreterCallCompletedEvent {
-	return &ResponseCodeInterpreterCallCompletedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		CodeInterpreterCall: codeInterpreterCall,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInProgressEvent.
-func (ResponseCodeInterpreterCallInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallInProgressEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCodeInterpreterCallInProgressEvent schema.
-func (ResponseCodeInterpreterCallInProgressEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCodeInterpreterCallInProgressEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCodeInterpreterCallInProgressEvent validates and unmarshals JSON into a ResponseCodeInterpreterCallInProgressEvent.
-func DecodeResponseCodeInterpreterCallInProgressEvent(data []byte) (ResponseCodeInterpreterCallInProgressEvent, error) {
-	var zero ResponseCodeInterpreterCallInProgressEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCodeInterpreterCallInProgressEvent{}, err
-	}
-	var result ResponseCodeInterpreterCallInProgressEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCodeInterpreterCallInProgressEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCodeInterpreterCallInProgressEvent creates a new ResponseCodeInterpreterCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallInProgressEvent(codeInterpreterCall CodeInterpreterToolCall, type_ ResponseCodeInterpreterCallInProgressEventType, outputIndex int64) *ResponseCodeInterpreterCallInProgressEvent {
-	return &ResponseCodeInterpreterCallInProgressEvent{
-		CodeInterpreterCall: codeInterpreterCall,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCodeInterpreterCallInterpretingEvent.
-func (ResponseCodeInterpreterCallInterpretingEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCodeInterpreterCallInterpretingEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCodeInterpreterCallInterpretingEvent schema.
-func (ResponseCodeInterpreterCallInterpretingEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCodeInterpreterCallInterpretingEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCodeInterpreterCallInterpretingEvent validates and unmarshals JSON into a ResponseCodeInterpreterCallInterpretingEvent.
-func DecodeResponseCodeInterpreterCallInterpretingEvent(data []byte) (ResponseCodeInterpreterCallInterpretingEvent, error) {
-	var zero ResponseCodeInterpreterCallInterpretingEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCodeInterpreterCallInterpretingEvent{}, err
-	}
-	var result ResponseCodeInterpreterCallInterpretingEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCodeInterpreterCallInterpretingEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCodeInterpreterCallInterpretingEvent creates a new ResponseCodeInterpreterCallInterpretingEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallInterpretingEvent(codeInterpreterCall CodeInterpreterToolCall, type_ ResponseCodeInterpreterCallInterpretingEventType, outputIndex int64) *ResponseCodeInterpreterCallInterpretingEvent {
-	return &ResponseCodeInterpreterCallInterpretingEvent{
-		CodeInterpreterCall: codeInterpreterCall,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCompletedEvent.
-func (ResponseCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCompletedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCompletedEvent schema.
-func (ResponseCompletedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCompletedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCompletedEvent validates and unmarshals JSON into a ResponseCompletedEvent.
-func DecodeResponseCompletedEvent(data []byte) (ResponseCompletedEvent, error) {
-	var zero ResponseCompletedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCompletedEvent{}, err
-	}
-	var result ResponseCompletedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCompletedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCompletedEvent creates a new ResponseCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseCompletedEvent(type_ ResponseCompletedEventType, response Response) *ResponseCompletedEvent {
-	return &ResponseCompletedEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartAddedEvent.
-func (ResponseContentPartAddedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseContentPartAddedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseContentPartAddedEvent schema.
-func (ResponseContentPartAddedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseContentPartAddedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseContentPartAddedEvent validates and unmarshals JSON into a ResponseContentPartAddedEvent.
-func DecodeResponseContentPartAddedEvent(data []byte) (ResponseContentPartAddedEvent, error) {
-	var zero ResponseContentPartAddedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseContentPartAddedEvent{}, err
-	}
-	var result ResponseContentPartAddedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseContentPartAddedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseContentPartAddedEvent creates a new ResponseContentPartAddedEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartAddedEvent(itemID string, outputIndex int64, contentIndex int64, part OutputContent, type_ ResponseContentPartAddedEventType) *ResponseContentPartAddedEvent {
-	return &ResponseContentPartAddedEvent{
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Part: part,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseContentPartDoneEvent.
-func (ResponseContentPartDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseContentPartDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseContentPartDoneEvent schema.
-func (ResponseContentPartDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseContentPartDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseContentPartDoneEvent validates and unmarshals JSON into a ResponseContentPartDoneEvent.
-func DecodeResponseContentPartDoneEvent(data []byte) (ResponseContentPartDoneEvent, error) {
-	var zero ResponseContentPartDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseContentPartDoneEvent{}, err
-	}
-	var result ResponseContentPartDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseContentPartDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseContentPartDoneEvent creates a new ResponseContentPartDoneEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartDoneEvent(type_ ResponseContentPartDoneEventType, itemID string, outputIndex int64, contentIndex int64, part OutputContent) *ResponseContentPartDoneEvent {
-	return &ResponseContentPartDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Part: part,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseCreatedEvent.
-func (ResponseCreatedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseCreatedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseCreatedEvent schema.
-func (ResponseCreatedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseCreatedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseCreatedEvent validates and unmarshals JSON into a ResponseCreatedEvent.
-func DecodeResponseCreatedEvent(data []byte) (ResponseCreatedEvent, error) {
-	var zero ResponseCreatedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseCreatedEvent{}, err
-	}
-	var result ResponseCreatedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseCreatedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseCreatedEvent creates a new ResponseCreatedEvent with required fields and auto-filled const/default values.
-func NewResponseCreatedEvent(type_ ResponseCreatedEventType, response Response) *ResponseCreatedEvent {
-	return &ResponseCreatedEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseErrorEvent.
-func (ResponseErrorEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseErrorEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseErrorEvent schema.
-func (ResponseErrorEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseErrorEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseErrorEvent validates and unmarshals JSON into a ResponseErrorEvent.
-func DecodeResponseErrorEvent(data []byte) (ResponseErrorEvent, error) {
-	var zero ResponseErrorEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseErrorEvent{}, err
-	}
-	var result ResponseErrorEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseErrorEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseErrorEvent creates a new ResponseErrorEvent with required fields and auto-filled const/default values.
-func NewResponseErrorEvent(message string, param string, type_ ResponseErrorEventType, code string) *ResponseErrorEvent {
-	return &ResponseErrorEvent{
-		Message: message,
-		Param: &param,
-		Type: type_,
-		Code: &code,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFailedEvent.
-func (ResponseFailedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFailedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFailedEvent schema.
-func (ResponseFailedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFailedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFailedEvent validates and unmarshals JSON into a ResponseFailedEvent.
-func DecodeResponseFailedEvent(data []byte) (ResponseFailedEvent, error) {
-	var zero ResponseFailedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFailedEvent{}, err
-	}
-	var result ResponseFailedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFailedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFailedEvent creates a new ResponseFailedEvent with required fields and auto-filled const/default values.
-func NewResponseFailedEvent(type_ ResponseFailedEventType, response Response) *ResponseFailedEvent {
-	return &ResponseFailedEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallCompletedEvent.
-func (ResponseFileSearchCallCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFileSearchCallCompletedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFileSearchCallCompletedEvent schema.
-func (ResponseFileSearchCallCompletedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFileSearchCallCompletedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFileSearchCallCompletedEvent validates and unmarshals JSON into a ResponseFileSearchCallCompletedEvent.
-func DecodeResponseFileSearchCallCompletedEvent(data []byte) (ResponseFileSearchCallCompletedEvent, error) {
-	var zero ResponseFileSearchCallCompletedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFileSearchCallCompletedEvent{}, err
-	}
-	var result ResponseFileSearchCallCompletedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFileSearchCallCompletedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFileSearchCallCompletedEvent creates a new ResponseFileSearchCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallCompletedEvent(type_ ResponseFileSearchCallCompletedEventType, outputIndex int64, itemID string) *ResponseFileSearchCallCompletedEvent {
-	return &ResponseFileSearchCallCompletedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallInProgressEvent.
-func (ResponseFileSearchCallInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFileSearchCallInProgressEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFileSearchCallInProgressEvent schema.
-func (ResponseFileSearchCallInProgressEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFileSearchCallInProgressEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFileSearchCallInProgressEvent validates and unmarshals JSON into a ResponseFileSearchCallInProgressEvent.
-func DecodeResponseFileSearchCallInProgressEvent(data []byte) (ResponseFileSearchCallInProgressEvent, error) {
-	var zero ResponseFileSearchCallInProgressEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFileSearchCallInProgressEvent{}, err
-	}
-	var result ResponseFileSearchCallInProgressEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFileSearchCallInProgressEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFileSearchCallInProgressEvent creates a new ResponseFileSearchCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallInProgressEvent(type_ ResponseFileSearchCallInProgressEventType, outputIndex int64, itemID string) *ResponseFileSearchCallInProgressEvent {
-	return &ResponseFileSearchCallInProgressEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFileSearchCallSearchingEvent.
-func (ResponseFileSearchCallSearchingEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFileSearchCallSearchingEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFileSearchCallSearchingEvent schema.
-func (ResponseFileSearchCallSearchingEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFileSearchCallSearchingEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFileSearchCallSearchingEvent validates and unmarshals JSON into a ResponseFileSearchCallSearchingEvent.
-func DecodeResponseFileSearchCallSearchingEvent(data []byte) (ResponseFileSearchCallSearchingEvent, error) {
-	var zero ResponseFileSearchCallSearchingEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFileSearchCallSearchingEvent{}, err
-	}
-	var result ResponseFileSearchCallSearchingEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFileSearchCallSearchingEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFileSearchCallSearchingEvent creates a new ResponseFileSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallSearchingEvent(itemID string, type_ ResponseFileSearchCallSearchingEventType, outputIndex int64) *ResponseFileSearchCallSearchingEvent {
-	return &ResponseFileSearchCallSearchingEvent{
-		ItemID: itemID,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDeltaEvent.
-func (ResponseFunctionCallArgumentsDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFunctionCallArgumentsDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFunctionCallArgumentsDeltaEvent schema.
-func (ResponseFunctionCallArgumentsDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFunctionCallArgumentsDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFunctionCallArgumentsDeltaEvent validates and unmarshals JSON into a ResponseFunctionCallArgumentsDeltaEvent.
-func DecodeResponseFunctionCallArgumentsDeltaEvent(data []byte) (ResponseFunctionCallArgumentsDeltaEvent, error) {
-	var zero ResponseFunctionCallArgumentsDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFunctionCallArgumentsDeltaEvent{}, err
-	}
-	var result ResponseFunctionCallArgumentsDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFunctionCallArgumentsDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFunctionCallArgumentsDeltaEvent creates a new ResponseFunctionCallArgumentsDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseFunctionCallArgumentsDeltaEvent(delta string, type_ ResponseFunctionCallArgumentsDeltaEventType, itemID string, outputIndex int64) *ResponseFunctionCallArgumentsDeltaEvent {
-	return &ResponseFunctionCallArgumentsDeltaEvent{
-		Delta: delta,
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFunctionCallArgumentsDoneEvent.
-func (ResponseFunctionCallArgumentsDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFunctionCallArgumentsDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseFunctionCallArgumentsDoneEvent schema.
-func (ResponseFunctionCallArgumentsDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFunctionCallArgumentsDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFunctionCallArgumentsDoneEvent validates and unmarshals JSON into a ResponseFunctionCallArgumentsDoneEvent.
-func DecodeResponseFunctionCallArgumentsDoneEvent(data []byte) (ResponseFunctionCallArgumentsDoneEvent, error) {
-	var zero ResponseFunctionCallArgumentsDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseFunctionCallArgumentsDoneEvent{}, err
-	}
-	var result ResponseFunctionCallArgumentsDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFunctionCallArgumentsDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFunctionCallArgumentsDoneEvent creates a new ResponseFunctionCallArgumentsDoneEvent with required fields and auto-filled const/default values.
-func NewResponseFunctionCallArgumentsDoneEvent(type_ ResponseFunctionCallArgumentsDoneEventType, itemID string, outputIndex int64, arguments string) *ResponseFunctionCallArgumentsDoneEvent {
-	return &ResponseFunctionCallArgumentsDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		Arguments: arguments,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseInProgressEvent.
-func (ResponseInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseInProgressEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseInProgressEvent schema.
-func (ResponseInProgressEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseInProgressEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseInProgressEvent validates and unmarshals JSON into a ResponseInProgressEvent.
-func DecodeResponseInProgressEvent(data []byte) (ResponseInProgressEvent, error) {
-	var zero ResponseInProgressEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseInProgressEvent{}, err
-	}
-	var result ResponseInProgressEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseInProgressEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseInProgressEvent creates a new ResponseInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseInProgressEvent(type_ ResponseInProgressEventType, response Response) *ResponseInProgressEvent {
-	return &ResponseInProgressEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseIncompleteEvent.
-func (ResponseIncompleteEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseIncompleteEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseIncompleteEvent schema.
-func (ResponseIncompleteEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseIncompleteEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseIncompleteEvent validates and unmarshals JSON into a ResponseIncompleteEvent.
-func DecodeResponseIncompleteEvent(data []byte) (ResponseIncompleteEvent, error) {
-	var zero ResponseIncompleteEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseIncompleteEvent{}, err
-	}
-	var result ResponseIncompleteEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseIncompleteEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseIncompleteEvent creates a new ResponseIncompleteEvent with required fields and auto-filled const/default values.
-func NewResponseIncompleteEvent(type_ ResponseIncompleteEventType, response Response) *ResponseIncompleteEvent {
-	return &ResponseIncompleteEvent{
-		Type: type_,
-		Response: response,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseItemList.
-func (ResponseItemList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseItemList") }
-
-// Validate checks whether raw JSON conforms to the ResponseItemList schema.
-func (ResponseItemList) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseItemList")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseItemList validates and unmarshals JSON into a ResponseItemList.
-func DecodeResponseItemList(data []byte) (ResponseItemList, error) {
-	var zero ResponseItemList
-	if err := zero.Validate(data); err != nil {
-		return ResponseItemList{}, err
-	}
-	var result ResponseItemList
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseItemList{}, err
-	}
-	return result, nil
-}
-
-// NewResponseItemList creates a new ResponseItemList with required fields and auto-filled const/default values.
-func NewResponseItemList(data []ItemResource, hasMore bool, firstID string, lastID string, object ResponseItemListObject) *ResponseItemList {
-	return &ResponseItemList{
-		Data: data,
-		HasMore: hasMore,
-		FirstID: firstID,
-		LastID: lastID,
-		Object: object,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemAddedEvent.
-func (ResponseOutputItemAddedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseOutputItemAddedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseOutputItemAddedEvent schema.
-func (ResponseOutputItemAddedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseOutputItemAddedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseOutputItemAddedEvent validates and unmarshals JSON into a ResponseOutputItemAddedEvent.
-func DecodeResponseOutputItemAddedEvent(data []byte) (ResponseOutputItemAddedEvent, error) {
-	var zero ResponseOutputItemAddedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseOutputItemAddedEvent{}, err
-	}
-	var result ResponseOutputItemAddedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseOutputItemAddedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseOutputItemAddedEvent creates a new ResponseOutputItemAddedEvent with required fields and auto-filled const/default values.
-func NewResponseOutputItemAddedEvent(outputIndex int64, item OutputItem, type_ ResponseOutputItemAddedEventType) *ResponseOutputItemAddedEvent {
-	return &ResponseOutputItemAddedEvent{
-		OutputIndex: outputIndex,
-		Item: item,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseOutputItemDoneEvent.
-func (ResponseOutputItemDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseOutputItemDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseOutputItemDoneEvent schema.
-func (ResponseOutputItemDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseOutputItemDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseOutputItemDoneEvent validates and unmarshals JSON into a ResponseOutputItemDoneEvent.
-func DecodeResponseOutputItemDoneEvent(data []byte) (ResponseOutputItemDoneEvent, error) {
-	var zero ResponseOutputItemDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseOutputItemDoneEvent{}, err
-	}
-	var result ResponseOutputItemDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseOutputItemDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseOutputItemDoneEvent creates a new ResponseOutputItemDoneEvent with required fields and auto-filled const/default values.
-func NewResponseOutputItemDoneEvent(item OutputItem, type_ ResponseOutputItemDoneEventType, outputIndex int64) *ResponseOutputItemDoneEvent {
-	return &ResponseOutputItemDoneEvent{
-		Item: item,
-		Type: type_,
-		OutputIndex: outputIndex,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesText.
-func (ResponsePropertiesText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesText") }
-
-// Validate checks whether raw JSON conforms to the ResponsePropertiesText schema.
-func (ResponsePropertiesText) Validate(data []byte) error {
-	sch := compschemaValidator("ResponsePropertiesText")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponsePropertiesText validates and unmarshals JSON into a ResponsePropertiesText.
-func DecodeResponsePropertiesText(data []byte) (ResponsePropertiesText, error) {
-	var zero ResponsePropertiesText
-	if err := zero.Validate(data); err != nil {
-		return ResponsePropertiesText{}, err
-	}
-	var result ResponsePropertiesText
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponsePropertiesText{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesToolChoiceToolChoiceOptions.
-func (ResponsePropertiesToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesToolChoiceToolChoiceOptions") }
-
-// Validate checks whether raw JSON conforms to the ResponsePropertiesToolChoiceToolChoiceOptions schema.
-func (ResponsePropertiesToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("ResponsePropertiesToolChoiceToolChoiceOptions")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponsePropertiesToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponsePropertiesToolChoiceToolChoiceOptions.
-func DecodeResponsePropertiesToolChoiceToolChoiceOptions(data []byte) (ResponsePropertiesToolChoiceToolChoiceOptions, error) {
-	var zero ResponsePropertiesToolChoiceToolChoiceOptions
-	if err := zero.Validate(data); err != nil {
-		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
-	}
-	var result ResponsePropertiesToolChoiceToolChoiceOptions
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
-	}
-	return result, nil
-}
-
-// ResponsePropertiesToolChoiceJSONSchemaBytes returns the JSON Schema for the ResponsePropertiesToolChoice union.
-func ResponsePropertiesToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesToolChoice") }
-
-// DecodeResponsePropertiesToolChoice validates and unmarshals JSON into the correct ResponsePropertiesToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func DecodeResponsePropertiesToolChoice(data []byte) (ResponsePropertiesToolChoice, error) {
-	sch := compschemaValidator("ResponsePropertiesToolChoice")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_use_preview", "file_search", "web_search_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for ResponsePropertiesToolChoice", disc.D)
-	}
-}
-
-// ResponsePropertiesToolChoiceAs extracts a variant from a ResponsePropertiesToolChoice union value, like errors.As.
-// Only types whose pointer implements ResponsePropertiesToolChoice can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if ResponsePropertiesToolChoiceAs(shape, &circle) {
-//		// circle is populated
-//	}
-func ResponsePropertiesToolChoiceAs[T any, P interface{ *T; ResponsePropertiesToolChoice }](v ResponsePropertiesToolChoice, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseProperties.
-func (ResponseProperties) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseProperties") }
-
-// Validate checks whether raw JSON conforms to the ResponseProperties schema.
-func (ResponseProperties) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseProperties")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseProperties validates and unmarshals JSON into a ResponseProperties.
-func DecodeResponseProperties(data []byte) (ResponseProperties, error) {
-	var zero ResponseProperties
-	if err := zero.Validate(data); err != nil {
-		return ResponseProperties{}, err
-	}
-	var result ResponseProperties
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseProperties{}, err
-	}
-	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEventPart.
-func (ResponseReasoningSummaryPartAddedEventPart) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEventPart") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryPartAddedEventPart schema.
-func (ResponseReasoningSummaryPartAddedEventPart) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryPartAddedEventPart")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryPartAddedEventPart validates and unmarshals JSON into a ResponseReasoningSummaryPartAddedEventPart.
-func DecodeResponseReasoningSummaryPartAddedEventPart(data []byte) (ResponseReasoningSummaryPartAddedEventPart, error) {
-	var zero ResponseReasoningSummaryPartAddedEventPart
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryPartAddedEventPart{}, err
-	}
-	var result ResponseReasoningSummaryPartAddedEventPart
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryPartAddedEventPart{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryPartAddedEventPart creates a new ResponseReasoningSummaryPartAddedEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartAddedEventPart(type_ string, text string) *ResponseReasoningSummaryPartAddedEventPart {
-	return &ResponseReasoningSummaryPartAddedEventPart{
-		Type: type_,
-		Text: text,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEvent.
-func (ResponseReasoningSummaryPartAddedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartAddedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryPartAddedEvent schema.
-func (ResponseReasoningSummaryPartAddedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryPartAddedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryPartAddedEvent validates and unmarshals JSON into a ResponseReasoningSummaryPartAddedEvent.
-func DecodeResponseReasoningSummaryPartAddedEvent(data []byte) (ResponseReasoningSummaryPartAddedEvent, error) {
-	var zero ResponseReasoningSummaryPartAddedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryPartAddedEvent{}, err
-	}
-	var result ResponseReasoningSummaryPartAddedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryPartAddedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryPartAddedEvent creates a new ResponseReasoningSummaryPartAddedEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartAddedEvent(outputIndex int64, summaryIndex int64, part ResponseReasoningSummaryPartAddedEventPart, type_ ResponseReasoningSummaryPartAddedEventType, itemID string) *ResponseReasoningSummaryPartAddedEvent {
-	return &ResponseReasoningSummaryPartAddedEvent{
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Part: part,
-		Type: type_,
-		ItemID: itemID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEventPart.
-func (ResponseReasoningSummaryPartDoneEventPart) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEventPart") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryPartDoneEventPart schema.
-func (ResponseReasoningSummaryPartDoneEventPart) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryPartDoneEventPart")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryPartDoneEventPart validates and unmarshals JSON into a ResponseReasoningSummaryPartDoneEventPart.
-func DecodeResponseReasoningSummaryPartDoneEventPart(data []byte) (ResponseReasoningSummaryPartDoneEventPart, error) {
-	var zero ResponseReasoningSummaryPartDoneEventPart
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryPartDoneEventPart{}, err
-	}
-	var result ResponseReasoningSummaryPartDoneEventPart
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryPartDoneEventPart{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryPartDoneEventPart creates a new ResponseReasoningSummaryPartDoneEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartDoneEventPart(type_ string, text string) *ResponseReasoningSummaryPartDoneEventPart {
-	return &ResponseReasoningSummaryPartDoneEventPart{
-		Type: type_,
-		Text: text,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartDoneEvent.
-func (ResponseReasoningSummaryPartDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryPartDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryPartDoneEvent schema.
-func (ResponseReasoningSummaryPartDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryPartDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryPartDoneEvent validates and unmarshals JSON into a ResponseReasoningSummaryPartDoneEvent.
-func DecodeResponseReasoningSummaryPartDoneEvent(data []byte) (ResponseReasoningSummaryPartDoneEvent, error) {
-	var zero ResponseReasoningSummaryPartDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryPartDoneEvent{}, err
-	}
-	var result ResponseReasoningSummaryPartDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryPartDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryPartDoneEvent creates a new ResponseReasoningSummaryPartDoneEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartDoneEvent(outputIndex int64, summaryIndex int64, part ResponseReasoningSummaryPartDoneEventPart, type_ ResponseReasoningSummaryPartDoneEventType, itemID string) *ResponseReasoningSummaryPartDoneEvent {
-	return &ResponseReasoningSummaryPartDoneEvent{
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Part: part,
-		Type: type_,
-		ItemID: itemID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDeltaEvent.
-func (ResponseReasoningSummaryTextDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryTextDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryTextDeltaEvent schema.
-func (ResponseReasoningSummaryTextDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryTextDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryTextDeltaEvent validates and unmarshals JSON into a ResponseReasoningSummaryTextDeltaEvent.
-func DecodeResponseReasoningSummaryTextDeltaEvent(data []byte) (ResponseReasoningSummaryTextDeltaEvent, error) {
-	var zero ResponseReasoningSummaryTextDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryTextDeltaEvent{}, err
-	}
-	var result ResponseReasoningSummaryTextDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryTextDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryTextDeltaEvent creates a new ResponseReasoningSummaryTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryTextDeltaEvent(type_ ResponseReasoningSummaryTextDeltaEventType, itemID string, outputIndex int64, summaryIndex int64, delta string) *ResponseReasoningSummaryTextDeltaEvent {
-	return &ResponseReasoningSummaryTextDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Delta: delta,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryTextDoneEvent.
-func (ResponseReasoningSummaryTextDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseReasoningSummaryTextDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseReasoningSummaryTextDoneEvent schema.
-func (ResponseReasoningSummaryTextDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseReasoningSummaryTextDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseReasoningSummaryTextDoneEvent validates and unmarshals JSON into a ResponseReasoningSummaryTextDoneEvent.
-func DecodeResponseReasoningSummaryTextDoneEvent(data []byte) (ResponseReasoningSummaryTextDoneEvent, error) {
-	var zero ResponseReasoningSummaryTextDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseReasoningSummaryTextDoneEvent{}, err
-	}
-	var result ResponseReasoningSummaryTextDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseReasoningSummaryTextDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseReasoningSummaryTextDoneEvent creates a new ResponseReasoningSummaryTextDoneEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryTextDoneEvent(itemID string, outputIndex int64, summaryIndex int64, text string, type_ ResponseReasoningSummaryTextDoneEventType) *ResponseReasoningSummaryTextDoneEvent {
-	return &ResponseReasoningSummaryTextDoneEvent{
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		SummaryIndex: summaryIndex,
-		Text: text,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDeltaEvent.
-func (ResponseRefusalDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseRefusalDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseRefusalDeltaEvent schema.
-func (ResponseRefusalDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseRefusalDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseRefusalDeltaEvent validates and unmarshals JSON into a ResponseRefusalDeltaEvent.
-func DecodeResponseRefusalDeltaEvent(data []byte) (ResponseRefusalDeltaEvent, error) {
-	var zero ResponseRefusalDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseRefusalDeltaEvent{}, err
-	}
-	var result ResponseRefusalDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseRefusalDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseRefusalDeltaEvent creates a new ResponseRefusalDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseRefusalDeltaEvent(type_ ResponseRefusalDeltaEventType, itemID string, outputIndex int64, contentIndex int64, delta string) *ResponseRefusalDeltaEvent {
-	return &ResponseRefusalDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Delta: delta,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseRefusalDoneEvent.
-func (ResponseRefusalDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseRefusalDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseRefusalDoneEvent schema.
-func (ResponseRefusalDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseRefusalDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseRefusalDoneEvent validates and unmarshals JSON into a ResponseRefusalDoneEvent.
-func DecodeResponseRefusalDoneEvent(data []byte) (ResponseRefusalDoneEvent, error) {
-	var zero ResponseRefusalDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseRefusalDoneEvent{}, err
-	}
-	var result ResponseRefusalDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseRefusalDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseRefusalDoneEvent creates a new ResponseRefusalDoneEvent with required fields and auto-filled const/default values.
-func NewResponseRefusalDoneEvent(type_ ResponseRefusalDoneEventType, itemID string, outputIndex int64, contentIndex int64, refusal string) *ResponseRefusalDoneEvent {
-	return &ResponseRefusalDoneEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
 		Refusal: refusal,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseTextAnnotationDeltaEvent.
-func (ResponseTextAnnotationDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseTextAnnotationDeltaEvent") }
+// JSONSchemaBytes returns the JSON Schema definition for ResponseResourceToolChoiceToolChoiceValueEnum.
+func (ResponseResourceToolChoiceToolChoiceValueEnum) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseResourceToolChoiceToolChoiceValueEnum") }
 
-// Validate checks whether raw JSON conforms to the ResponseTextAnnotationDeltaEvent schema.
-func (ResponseTextAnnotationDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseTextAnnotationDeltaEvent")
+// Validate checks whether raw JSON conforms to the ResponseResourceToolChoiceToolChoiceValueEnum schema.
+func (ResponseResourceToolChoiceToolChoiceValueEnum) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseResourceToolChoiceToolChoiceValueEnum")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -4985,217 +13443,26 @@ func (ResponseTextAnnotationDeltaEvent) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseTextAnnotationDeltaEvent validates and unmarshals JSON into a ResponseTextAnnotationDeltaEvent.
-func DecodeResponseTextAnnotationDeltaEvent(data []byte) (ResponseTextAnnotationDeltaEvent, error) {
-	var zero ResponseTextAnnotationDeltaEvent
+// DecodeResponseResourceToolChoiceToolChoiceValueEnum validates and unmarshals JSON into a ResponseResourceToolChoiceToolChoiceValueEnum.
+func DecodeResponseResourceToolChoiceToolChoiceValueEnum(data []byte) (ResponseResourceToolChoiceToolChoiceValueEnum, error) {
+	var zero ResponseResourceToolChoiceToolChoiceValueEnum
 	if err := zero.Validate(data); err != nil {
-		return ResponseTextAnnotationDeltaEvent{}, err
+		return ResponseResourceToolChoiceToolChoiceValueEnum{}, err
 	}
-	var result ResponseTextAnnotationDeltaEvent
+	var result ResponseResourceToolChoiceToolChoiceValueEnum
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseTextAnnotationDeltaEvent{}, err
+		return ResponseResourceToolChoiceToolChoiceValueEnum{}, err
 	}
 	return result, nil
 }
 
-// NewResponseTextAnnotationDeltaEvent creates a new ResponseTextAnnotationDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseTextAnnotationDeltaEvent(type_ ResponseTextAnnotationDeltaEventType, itemID string, outputIndex int64, contentIndex int64, annotationIndex int64, annotation Annotation) *ResponseTextAnnotationDeltaEvent {
-	return &ResponseTextAnnotationDeltaEvent{
-		Type: type_,
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		AnnotationIndex: annotationIndex,
-		Annotation: annotation,
-	}
-}
+// ResponseResourceToolChoiceJSONSchemaBytes returns the JSON Schema for the ResponseResourceToolChoice union.
+func ResponseResourceToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseResourceToolChoice") }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseTextDeltaEvent.
-func (ResponseTextDeltaEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseTextDeltaEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseTextDeltaEvent schema.
-func (ResponseTextDeltaEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseTextDeltaEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseTextDeltaEvent validates and unmarshals JSON into a ResponseTextDeltaEvent.
-func DecodeResponseTextDeltaEvent(data []byte) (ResponseTextDeltaEvent, error) {
-	var zero ResponseTextDeltaEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseTextDeltaEvent{}, err
-	}
-	var result ResponseTextDeltaEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseTextDeltaEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseTextDeltaEvent creates a new ResponseTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseTextDeltaEvent(itemID string, outputIndex int64, contentIndex int64, delta string, type_ ResponseTextDeltaEventType) *ResponseTextDeltaEvent {
-	return &ResponseTextDeltaEvent{
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Delta: delta,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseTextDoneEvent.
-func (ResponseTextDoneEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseTextDoneEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseTextDoneEvent schema.
-func (ResponseTextDoneEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseTextDoneEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseTextDoneEvent validates and unmarshals JSON into a ResponseTextDoneEvent.
-func DecodeResponseTextDoneEvent(data []byte) (ResponseTextDoneEvent, error) {
-	var zero ResponseTextDoneEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseTextDoneEvent{}, err
-	}
-	var result ResponseTextDoneEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseTextDoneEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseTextDoneEvent creates a new ResponseTextDoneEvent with required fields and auto-filled const/default values.
-func NewResponseTextDoneEvent(itemID string, outputIndex int64, contentIndex int64, text string, type_ ResponseTextDoneEventType) *ResponseTextDoneEvent {
-	return &ResponseTextDoneEvent{
-		ItemID: itemID,
-		OutputIndex: outputIndex,
-		ContentIndex: contentIndex,
-		Text: text,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallCompletedEvent.
-func (ResponseWebSearchCallCompletedEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseWebSearchCallCompletedEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseWebSearchCallCompletedEvent schema.
-func (ResponseWebSearchCallCompletedEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseWebSearchCallCompletedEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseWebSearchCallCompletedEvent validates and unmarshals JSON into a ResponseWebSearchCallCompletedEvent.
-func DecodeResponseWebSearchCallCompletedEvent(data []byte) (ResponseWebSearchCallCompletedEvent, error) {
-	var zero ResponseWebSearchCallCompletedEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseWebSearchCallCompletedEvent{}, err
-	}
-	var result ResponseWebSearchCallCompletedEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseWebSearchCallCompletedEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseWebSearchCallCompletedEvent creates a new ResponseWebSearchCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallCompletedEvent(type_ ResponseWebSearchCallCompletedEventType, outputIndex int64, itemID string) *ResponseWebSearchCallCompletedEvent {
-	return &ResponseWebSearchCallCompletedEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallInProgressEvent.
-func (ResponseWebSearchCallInProgressEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseWebSearchCallInProgressEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseWebSearchCallInProgressEvent schema.
-func (ResponseWebSearchCallInProgressEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseWebSearchCallInProgressEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseWebSearchCallInProgressEvent validates and unmarshals JSON into a ResponseWebSearchCallInProgressEvent.
-func DecodeResponseWebSearchCallInProgressEvent(data []byte) (ResponseWebSearchCallInProgressEvent, error) {
-	var zero ResponseWebSearchCallInProgressEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseWebSearchCallInProgressEvent{}, err
-	}
-	var result ResponseWebSearchCallInProgressEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseWebSearchCallInProgressEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseWebSearchCallInProgressEvent creates a new ResponseWebSearchCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallInProgressEvent(outputIndex int64, itemID string, type_ ResponseWebSearchCallInProgressEventType) *ResponseWebSearchCallInProgressEvent {
-	return &ResponseWebSearchCallInProgressEvent{
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseWebSearchCallSearchingEvent.
-func (ResponseWebSearchCallSearchingEvent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseWebSearchCallSearchingEvent") }
-
-// Validate checks whether raw JSON conforms to the ResponseWebSearchCallSearchingEvent schema.
-func (ResponseWebSearchCallSearchingEvent) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseWebSearchCallSearchingEvent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseWebSearchCallSearchingEvent validates and unmarshals JSON into a ResponseWebSearchCallSearchingEvent.
-func DecodeResponseWebSearchCallSearchingEvent(data []byte) (ResponseWebSearchCallSearchingEvent, error) {
-	var zero ResponseWebSearchCallSearchingEvent
-	if err := zero.Validate(data); err != nil {
-		return ResponseWebSearchCallSearchingEvent{}, err
-	}
-	var result ResponseWebSearchCallSearchingEvent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseWebSearchCallSearchingEvent{}, err
-	}
-	return result, nil
-}
-
-// NewResponseWebSearchCallSearchingEvent creates a new ResponseWebSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallSearchingEvent(type_ ResponseWebSearchCallSearchingEventType, outputIndex int64, itemID string) *ResponseWebSearchCallSearchingEvent {
-	return &ResponseWebSearchCallSearchingEvent{
-		Type: type_,
-		OutputIndex: outputIndex,
-		ItemID: itemID,
-	}
-}
-
-// ResponseStreamEventJSONSchemaBytes returns the JSON Schema for the ResponseStreamEvent union.
-func ResponseStreamEventJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseStreamEvent") }
-
-// DecodeResponseStreamEvent validates and unmarshals JSON into the correct ResponseStreamEvent variant.
+// DecodeResponseResourceToolChoice validates and unmarshals JSON into the correct ResponseResourceToolChoice variant.
 // Dispatches on the "type" discriminator field.
-func DecodeResponseStreamEvent(data []byte) (ResponseStreamEvent, error) {
-	sch := compschemaValidator("ResponseStreamEvent")
+func DecodeResponseResourceToolChoice(data []byte) (ResponseResourceToolChoice, error) {
+	sch := compschemaValidator("ResponseResourceToolChoice")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -5210,237 +13477,27 @@ func DecodeResponseStreamEvent(data []byte) (ResponseStreamEvent, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "response.audio.delta":
-		var val ResponseAudioDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.done":
-		var val ResponseAudioDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.transcript.delta":
-		var val ResponseAudioTranscriptDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.audio.transcript.done":
-		var val ResponseAudioTranscriptDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.code.delta":
-		var val ResponseCodeInterpreterCallCodeDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.code.done":
-		var val ResponseCodeInterpreterCallCodeDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.completed":
-		var val ResponseCodeInterpreterCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.in_progress":
-		var val ResponseCodeInterpreterCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.code_interpreter_call.interpreting":
-		var val ResponseCodeInterpreterCallInterpretingEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.completed":
-		var val ResponseCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.content_part.added":
-		var val ResponseContentPartAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.content_part.done":
-		var val ResponseContentPartDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.created":
-		var val ResponseCreatedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "error":
-		var val ResponseErrorEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.failed":
-		var val ResponseFailedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.completed":
-		var val ResponseFileSearchCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.in_progress":
-		var val ResponseFileSearchCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.file_search_call.searching":
-		var val ResponseFileSearchCallSearchingEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.function_call_arguments.delta":
-		var val ResponseFunctionCallArgumentsDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.function_call_arguments.done":
-		var val ResponseFunctionCallArgumentsDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.in_progress":
-		var val ResponseInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.incomplete":
-		var val ResponseIncompleteEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_item.added":
-		var val ResponseOutputItemAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_item.done":
-		var val ResponseOutputItemDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_part.added":
-		var val ResponseReasoningSummaryPartAddedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_part.done":
-		var val ResponseReasoningSummaryPartDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_text.delta":
-		var val ResponseReasoningSummaryTextDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.reasoning_summary_text.done":
-		var val ResponseReasoningSummaryTextDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.refusal.delta":
-		var val ResponseRefusalDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.refusal.done":
-		var val ResponseRefusalDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.annotation.added":
-		var val ResponseTextAnnotationDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.delta":
-		var val ResponseTextDeltaEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.output_text.done":
-		var val ResponseTextDoneEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.completed":
-		var val ResponseWebSearchCallCompletedEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.in_progress":
-		var val ResponseWebSearchCallInProgressEvent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "response.web_search_call.searching":
-		var val ResponseWebSearchCallSearchingEvent
+	case "allowed_tools":
+		var val AllowedToolChoice
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for ResponseStreamEvent", disc.D)
+		return nil, fmt.Errorf("unknown type %q for ResponseResourceToolChoice", disc.D)
 	}
 }
 
-// ResponseStreamEventAs extracts a variant from a ResponseStreamEvent union value, like errors.As.
-// Only types whose pointer implements ResponseStreamEvent can be used as target (compile-time checked).
+// ResponseResourceToolChoiceAs extracts a variant from a ResponseResourceToolChoice union value, like errors.As.
+// Only types whose pointer implements ResponseResourceToolChoice can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if ResponseStreamEventAs(shape, &circle) {
+//	if ResponseResourceToolChoiceAs(shape, &circle) {
 //		// circle is populated
 //	}
-func ResponseStreamEventAs[T any, P interface{ *T; ResponseStreamEvent }](v ResponseStreamEvent, target *T) bool {
+func ResponseResourceToolChoiceAs[T any, P interface{ *T; ResponseResourceToolChoice }](v ResponseResourceToolChoice, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -5448,6 +13505,529 @@ func ResponseStreamEventAs[T any, P interface{ *T; ResponseStreamEvent }](v Resp
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema for VectorStoreFileAttributes.
-func (VectorStoreFileAttributes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("VectorStoreFileAttributes") }
+// JSONSchemaBytes returns the JSON Schema definition for TextResponseFormat.
+func (TextResponseFormat) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormat") }
+
+// Validate checks whether raw JSON conforms to the TextResponseFormat schema.
+func (TextResponseFormat) Validate(data []byte) error {
+	sch := compschemaValidator("TextResponseFormat")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTextResponseFormat validates and unmarshals JSON into a TextResponseFormat.
+func DecodeTextResponseFormat(data []byte) (TextResponseFormat, error) {
+	var zero TextResponseFormat
+	if err := zero.Validate(data); err != nil {
+		return TextResponseFormat{}, err
+	}
+	var result TextResponseFormat
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TextResponseFormat{}, err
+	}
+	return result, nil
+}
+
+// NewTextResponseFormat creates a new TextResponseFormat with required fields and auto-filled const/default values.
+func NewTextResponseFormat(type_ TextResponseFormatType) *TextResponseFormat {
+	return &TextResponseFormat{
+		Type: type_,
+	}
+}
+
+// TextFieldFormatJSONSchemaBytes returns the JSON Schema for the TextFieldFormat union.
+func TextFieldFormatJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextFieldFormat") }
+
+// DecodeTextFieldFormat validates and unmarshals JSON into the correct TextFieldFormat variant.
+// Dispatches on the "type" discriminator field.
+func DecodeTextFieldFormat(data []byte) (TextFieldFormat, error) {
+	sch := compschemaValidator("TextFieldFormat")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "json_object":
+		var val JsonObjectResponseFormat
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "json_schema":
+		var val JsonSchemaResponseFormat
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val TextResponseFormat
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for TextFieldFormat", disc.D)
+	}
+}
+
+// TextFieldFormatAs extracts a variant from a TextFieldFormat union value, like errors.As.
+// Only types whose pointer implements TextFieldFormat can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if TextFieldFormatAs(shape, &circle) {
+//		// circle is populated
+//	}
+func TextFieldFormatAs[T any, P interface{ *T; TextFieldFormat }](v TextFieldFormat, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for TextField.
+func (TextField) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextField") }
+
+// Validate checks whether raw JSON conforms to the TextField schema.
+func (TextField) Validate(data []byte) error {
+	sch := compschemaValidator("TextField")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTextField validates and unmarshals JSON into a TextField.
+func DecodeTextField(data []byte) (TextField, error) {
+	var zero TextField
+	if err := zero.Validate(data); err != nil {
+		return TextField{}, err
+	}
+	var result TextField
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TextField{}, err
+	}
+	return result, nil
+}
+
+// NewTextField creates a new TextField with required fields and auto-filled const/default values.
+func NewTextField(format TextFieldFormat) *TextField {
+	return &TextField{
+		Format: format,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchPreviewTool.
+func (WebSearchPreviewTool) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchPreviewTool") }
+
+// Validate checks whether raw JSON conforms to the WebSearchPreviewTool schema.
+func (WebSearchPreviewTool) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchPreviewTool")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchPreviewTool validates and unmarshals JSON into a WebSearchPreviewTool.
+func DecodeWebSearchPreviewTool(data []byte) (WebSearchPreviewTool, error) {
+	var zero WebSearchPreviewTool
+	if err := zero.Validate(data); err != nil {
+		return WebSearchPreviewTool{}, err
+	}
+	var result WebSearchPreviewTool
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchPreviewTool{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchPreviewTool creates a new WebSearchPreviewTool with required fields and auto-filled const/default values.
+func NewWebSearchPreviewTool(type_ WebSearchPreviewToolType, userLocation ApproximateLocation, searchContextSize SearchContextSize) *WebSearchPreviewTool {
+	return &WebSearchPreviewTool{
+		Type: type_,
+		UserLocation: &userLocation,
+		SearchContextSize: searchContextSize,
+	}
+}
+
+// ToolJSONSchemaBytes returns the JSON Schema for the Tool union.
+func ToolJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Tool") }
+
+// DecodeTool validates and unmarshals JSON into the correct Tool variant.
+// Dispatches on the "type" discriminator field.
+func DecodeTool(data []byte) (Tool, error) {
+	sch := compschemaValidator("Tool")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "apply_patch":
+		var val ApplyPatchTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview":
+		var val ComputerUsePreviewTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "custom":
+		var val CustomTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "file_search":
+		var val FileSearchTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "shell":
+		var val FunctionShellTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "function":
+		var val FunctionTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "image_generation":
+		var val ImageGenTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "mcp":
+		var val MCPTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_preview":
+		var val WebSearchPreviewTool
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for Tool", disc.D)
+	}
+}
+
+// ToolAs extracts a variant from a Tool union value, like errors.As.
+// Only types whose pointer implements Tool can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if ToolAs(shape, &circle) {
+//		// circle is populated
+//	}
+func ToolAs[T any, P interface{ *T; Tool }](v Tool, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for Usage.
+func (Usage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Usage") }
+
+// Validate checks whether raw JSON conforms to the Usage schema.
+func (Usage) Validate(data []byte) error {
+	sch := compschemaValidator("Usage")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeUsage validates and unmarshals JSON into a Usage.
+func DecodeUsage(data []byte) (Usage, error) {
+	var zero Usage
+	if err := zero.Validate(data); err != nil {
+		return Usage{}, err
+	}
+	var result Usage
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Usage{}, err
+	}
+	return result, nil
+}
+
+// NewUsage creates a new Usage with required fields and auto-filled const/default values.
+func NewUsage(inputTokens int64, outputTokens int64, totalTokens int64, inputTokensDetails InputTokensDetails, outputTokensDetails OutputTokensDetails) *Usage {
+	return &Usage{
+		InputTokens: inputTokens,
+		OutputTokens: outputTokens,
+		TotalTokens: totalTokens,
+		InputTokensDetails: inputTokensDetails,
+		OutputTokensDetails: outputTokensDetails,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseResource.
+func (ResponseResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseResource") }
+
+// Validate checks whether raw JSON conforms to the ResponseResource schema.
+func (ResponseResource) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseResource")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseResource validates and unmarshals JSON into a ResponseResource.
+func DecodeResponseResource(data []byte) (ResponseResource, error) {
+	var zero ResponseResource
+	if err := zero.Validate(data); err != nil {
+		return ResponseResource{}, err
+	}
+	var result ResponseResource
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseResource{}, err
+	}
+	return result, nil
+}
+
+// NewResponseResource creates a new ResponseResource with required fields and auto-filled const/default values.
+func NewResponseResource(incompleteDetails IncompleteDetails, output []ItemField, toolChoice ResponseResourceToolChoice, text TextField, reasoning Reasoning, instructions any, truncation TruncationEnum, maxOutputTokens int64, maxToolCalls int64, safetyIdentifier string, promptCacheKey string, error Error, tools []Tool, topLogprobs int64, usage Usage, completedAt int64, model string, createdAt int64, parallelToolCalls bool, presencePenalty float64, user string, id string, status string, serviceTier string, object ResponseResourceObject, previousResponseID string, topP float64, frequencyPenalty float64, temperature float64, store bool, background bool, metadata any) *ResponseResource {
+	return &ResponseResource{
+		IncompleteDetails: &incompleteDetails,
+		Output: output,
+		ToolChoice: toolChoice,
+		Text: text,
+		Reasoning: &reasoning,
+		Instructions: &instructions,
+		Truncation: truncation,
+		MaxOutputTokens: &maxOutputTokens,
+		MaxToolCalls: &maxToolCalls,
+		SafetyIdentifier: &safetyIdentifier,
+		PromptCacheKey: &promptCacheKey,
+		Error: &error,
+		Tools: tools,
+		TopLogprobs: topLogprobs,
+		Usage: &usage,
+		CompletedAt: &completedAt,
+		Model: model,
+		CreatedAt: createdAt,
+		ParallelToolCalls: parallelToolCalls,
+		PresencePenalty: presencePenalty,
+		User: &user,
+		ID: id,
+		Status: status,
+		ServiceTier: serviceTier,
+		Object: object,
+		PreviousResponseID: &previousResponseID,
+		TopP: topP,
+		FrequencyPenalty: frequencyPenalty,
+		Temperature: temperature,
+		Store: store,
+		Background: background,
+		Metadata: metadata,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for UrlSourceParam.
+func (UrlSourceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("UrlSourceParam") }
+
+// Validate checks whether raw JSON conforms to the UrlSourceParam schema.
+func (UrlSourceParam) Validate(data []byte) error {
+	sch := compschemaValidator("UrlSourceParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeUrlSourceParam validates and unmarshals JSON into a UrlSourceParam.
+func DecodeUrlSourceParam(data []byte) (UrlSourceParam, error) {
+	var zero UrlSourceParam
+	if err := zero.Validate(data); err != nil {
+		return UrlSourceParam{}, err
+	}
+	var result UrlSourceParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return UrlSourceParam{}, err
+	}
+	return result, nil
+}
+
+// NewUrlSourceParam creates a new UrlSourceParam with required fields and auto-filled const/default values.
+func NewUrlSourceParam(url string, type_ UrlSourceParamType) *UrlSourceParam {
+	return &UrlSourceParam{
+		URL: url,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionFindInPageParam.
+func (WebSearchCallActionFindInPageParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionFindInPageParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionFindInPageParam schema.
+func (WebSearchCallActionFindInPageParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionFindInPageParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionFindInPageParam validates and unmarshals JSON into a WebSearchCallActionFindInPageParam.
+func DecodeWebSearchCallActionFindInPageParam(data []byte) (WebSearchCallActionFindInPageParam, error) {
+	var zero WebSearchCallActionFindInPageParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionFindInPageParam{}, err
+	}
+	var result WebSearchCallActionFindInPageParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionFindInPageParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionFindInPageParam creates a new WebSearchCallActionFindInPageParam with required fields and auto-filled const/default values.
+func NewWebSearchCallActionFindInPageParam(type_ WebSearchCallActionFindInPageParamType) *WebSearchCallActionFindInPageParam {
+	return &WebSearchCallActionFindInPageParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionOpenPageParam.
+func (WebSearchCallActionOpenPageParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionOpenPageParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionOpenPageParam schema.
+func (WebSearchCallActionOpenPageParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionOpenPageParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionOpenPageParam validates and unmarshals JSON into a WebSearchCallActionOpenPageParam.
+func DecodeWebSearchCallActionOpenPageParam(data []byte) (WebSearchCallActionOpenPageParam, error) {
+	var zero WebSearchCallActionOpenPageParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionOpenPageParam{}, err
+	}
+	var result WebSearchCallActionOpenPageParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionOpenPageParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionOpenPageParam creates a new WebSearchCallActionOpenPageParam with required fields and auto-filled const/default values.
+func NewWebSearchCallActionOpenPageParam(type_ WebSearchCallActionOpenPageParamType) *WebSearchCallActionOpenPageParam {
+	return &WebSearchCallActionOpenPageParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchCallActionSearchParam.
+func (WebSearchCallActionSearchParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchCallActionSearchParam") }
+
+// Validate checks whether raw JSON conforms to the WebSearchCallActionSearchParam schema.
+func (WebSearchCallActionSearchParam) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchCallActionSearchParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchCallActionSearchParam validates and unmarshals JSON into a WebSearchCallActionSearchParam.
+func DecodeWebSearchCallActionSearchParam(data []byte) (WebSearchCallActionSearchParam, error) {
+	var zero WebSearchCallActionSearchParam
+	if err := zero.Validate(data); err != nil {
+		return WebSearchCallActionSearchParam{}, err
+	}
+	var result WebSearchCallActionSearchParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchCallActionSearchParam{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchCallActionSearchParam creates a new WebSearchCallActionSearchParam with required fields and auto-filled const/default values.
+func NewWebSearchCallActionSearchParam(type_ WebSearchCallActionSearchParamType) *WebSearchCallActionSearchParam {
+	return &WebSearchCallActionSearchParam{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for WebSearchToolChoice.
+func (WebSearchToolChoice) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("WebSearchToolChoice") }
+
+// Validate checks whether raw JSON conforms to the WebSearchToolChoice schema.
+func (WebSearchToolChoice) Validate(data []byte) error {
+	sch := compschemaValidator("WebSearchToolChoice")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeWebSearchToolChoice validates and unmarshals JSON into a WebSearchToolChoice.
+func DecodeWebSearchToolChoice(data []byte) (WebSearchToolChoice, error) {
+	var zero WebSearchToolChoice
+	if err := zero.Validate(data); err != nil {
+		return WebSearchToolChoice{}, err
+	}
+	var result WebSearchToolChoice
+	if err := json.Unmarshal(data, &result); err != nil {
+		return WebSearchToolChoice{}, err
+	}
+	return result, nil
+}
+
+// NewWebSearchToolChoice creates a new WebSearchToolChoice with required fields and auto-filled const/default values.
+func NewWebSearchToolChoice(type_ WebSearchToolChoiceType) *WebSearchToolChoice {
+	return &WebSearchToolChoice{
+		Type: type_,
+	}
+}
 
