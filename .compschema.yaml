@@ -16,6 +16,7 @@ pipelines:
       all: true
       validate: true
       test: true
+      examples: true
       constructors: true
       out: examples/openai
       packages:

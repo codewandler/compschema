@@ -407,13 +407,28 @@ func EmitStructUnmarshalJSON(b *strings.Builder, goName string, t *ir.Type, pkg 
 	// Dispatch each interface field.
 	for _, uf := range ifaceFields {
 		if uf.IsSlice {
-			b.WriteString(fmt.Sprintf("\tfor _, item := range raw.%s {\n", uf.GoName))
-			b.WriteString(fmt.Sprintf("\t\tparsed, err := Unmarshal%s(item)\n", uf.TypeName))
-			b.WriteString("\t\tif err != nil {\n")
-			b.WriteString("\t\t\treturn err\n")
-			b.WriteString("\t\t}\n")
-			b.WriteString(fmt.Sprintf("\t\tv.%s = append(v.%s, parsed)\n", uf.GoName, uf.GoName))
-			b.WriteString("\t}\n")
+			if uf.IsPointer {
+				// *NamedListType — allocate the named slice, then append to it.
+				b.WriteString(fmt.Sprintf("\tif len(raw.%s) > 0 {\n", uf.GoName))
+				b.WriteString(fmt.Sprintf("\t\tlist := make(%s, 0, len(raw.%s))\n", uf.SliceType, uf.GoName))
+				b.WriteString(fmt.Sprintf("\t\tfor _, item := range raw.%s {\n", uf.GoName))
+				b.WriteString(fmt.Sprintf("\t\t\tparsed, err := Unmarshal%s(item)\n", uf.TypeName))
+				b.WriteString("\t\t\tif err != nil {\n")
+				b.WriteString("\t\t\t\treturn err\n")
+				b.WriteString("\t\t\t}\n")
+				b.WriteString("\t\t\tlist = append(list, parsed)\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString(fmt.Sprintf("\t\tv.%s = &list\n", uf.GoName))
+				b.WriteString("\t}\n")
+			} else {
+				b.WriteString(fmt.Sprintf("\tfor _, item := range raw.%s {\n", uf.GoName))
+				b.WriteString(fmt.Sprintf("\t\tparsed, err := Unmarshal%s(item)\n", uf.TypeName))
+				b.WriteString("\t\tif err != nil {\n")
+				b.WriteString("\t\t\treturn err\n")
+				b.WriteString("\t\t}\n")
+				b.WriteString(fmt.Sprintf("\t\tv.%s = append(v.%s, parsed)\n", uf.GoName, uf.GoName))
+				b.WriteString("\t}\n")
+			}
 		} else {
 			b.WriteString(fmt.Sprintf("\tif len(raw.%s) > 0 && string(raw.%s) != \"null\" {\n", uf.GoName, uf.GoName))
 			b.WriteString(fmt.Sprintf("\t\tparsed, err := Unmarshal%s(raw.%s)\n", uf.TypeName, uf.GoName))
@@ -431,11 +446,12 @@ func EmitStructUnmarshalJSON(b *strings.Builder, goName string, t *ir.Type, pkg 
 
 // UnionFieldInfo describes a struct field that is typed as a union interface.
 type UnionFieldInfo struct {
-	GoName    string // Go field name
-	JSONName  string // JSON key
-	TypeName  string // union interface type name (Go)
-	IsSlice   bool   // []Interface
-	IsPointer bool   // *Interface
+	GoName       string // Go field name
+	JSONName     string // JSON key
+	TypeName     string // union interface type name (Go)
+	SliceType    string // named list type name (Go), set when IsSlice && IsPointer
+	IsSlice      bool   // []Interface
+	IsPointer    bool   // *Interface or *NamedListType
 }
 
 // DetectUnionField checks if a struct field is (or contains) a union interface.
@@ -457,14 +473,20 @@ func DetectUnionField(f ir.Field, pkg *ir.Package, r TypeResolver, emittedUnions
 
 	// Direct interface reference: Field SomeInterface
 	if f.Type.Name != "" && checkUnion(f.Type.Name) {
-		return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Name), false, false}
+		return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Name), "", false, false}
 	}
 
 	// Named list type whose items are a union: type FooList []SomeInterface
+	// When the field is optional (!Required), the importer renders it as *FooList.
 	if f.Type.Name != "" {
 		if listType, ok := pkg.Types[f.Type.Name]; ok && listType.Kind == ir.KindList && listType.Items != nil {
 			if listType.Items.Name != "" && checkUnion(listType.Items.Name) {
-				return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(listType.Items.Name), true, false}
+				isPtr := !f.Required
+				sliceType := ""
+				if isPtr {
+					sliceType = r.GoName(f.Type.Name)
+				}
+				return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(listType.Items.Name), sliceType, true, isPtr}
 			}
 		}
 	}
@@ -476,14 +498,23 @@ func DetectUnionField(f ir.Field, pkg *ir.Package, r TypeResolver, emittedUnions
 	// Pointer to interface: *SomeInterface
 	if f.Type.Inline.Kind == ir.KindNullable && f.Type.Inline.Inner != nil {
 		if f.Type.Inline.Inner.Name != "" && checkUnion(f.Type.Inline.Inner.Name) {
-			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Inner.Name), false, true}
+			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Inner.Name), "", false, true}
+		}
+
+		// Pointer to named list type whose items are a union: *FooList where type FooList []SomeInterface
+		if f.Type.Inline.Inner.Name != "" {
+			if listType, ok := pkg.Types[f.Type.Inline.Inner.Name]; ok && listType.Kind == ir.KindList && listType.Items != nil {
+				if listType.Items.Name != "" && checkUnion(listType.Items.Name) {
+					return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(listType.Items.Name), r.GoName(f.Type.Inline.Inner.Name), true, true}
+				}
+			}
 		}
 	}
 
 	// Slice of interface: []SomeInterface
 	if f.Type.Inline.Kind == ir.KindList && f.Type.Inline.Items != nil {
 		if f.Type.Inline.Items.Name != "" && checkUnion(f.Type.Inline.Items.Name) {
-			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Items.Name), true, false}
+			return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Inline.Items.Name), "", true, false}
 		}
 	}
 

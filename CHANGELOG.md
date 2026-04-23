@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.2] - 2026-04-24
+
+### Fixed
+- **Pointer-to-named-list union fields** — `UnmarshalJSON` codegen for struct fields typed as `*NamedListType` (e.g., `Actions *ComputerActionList` where `ComputerActionList = []ComputerAction`) now correctly allocates the slice and assigns via pointer. Previously generated `append(v.Field, ...)` on a pointer type, causing a compile error.
+- **`DetectUnionField` coverage** — union field detection now handles two additional patterns:
+  - Optional named list types (importer pointer-wraps `!Required` fields, producing `*FooList`)
+  - Pointer-to-named-list via inline nullable IR (`KindNullable` → named `KindList` → union items)
+
+### Changed
+- **`generate:openai` task** — now uses `compschema run openai` (pipeline runner) instead of calling `compschema generate` directly. The OpenAI example is generated via the extract → import → generate pipeline, not standalone analysis.
+- **`clean` task** — now removes all generated artifacts from `examples/openai/` including `types.gen.go` and `responses.schema.json`.
+- **Removed stale Taskfile vars** — `SPEC_FILE` and `SCHEMA_OUT` vars were unused after the pipeline migration.
+- **Pipeline config** — added `examples: true` to the openai generate step for consistent example generation.
+
 ## [3.4.1] - 2026-04-24
 
 ### Fixed

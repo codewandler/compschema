@@ -130,10 +130,10 @@
         }
       },
       "required": [
-        "x",
-        "y",
         "type",
-        "button"
+        "button",
+        "x",
+        "y"
       ],
       "title": "Click",
       "type": "object"
@@ -200,8 +200,8 @@
         }
       },
       "required": [
-        "type",
-        "logs"
+        "logs",
+        "type"
       ],
       "title": "CodeInterpreterTextOutput",
       "type": "object"
@@ -267,11 +267,11 @@
         }
       },
       "required": [
+        "results",
         "id",
         "type",
         "code",
-        "status",
-        "results"
+        "status"
       ],
       "title": "CodeInterpreterToolCall",
       "type": "object"
@@ -414,8 +414,8 @@
         }
       },
       "required": [
-        "filters",
-        "type"
+        "type",
+        "filters"
       ],
       "title": "CompoundFilter",
       "type": "object"
@@ -788,9 +788,9 @@
         }
       },
       "required": [
+        "output",
         "type",
-        "call_id",
-        "output"
+        "call_id"
       ],
       "title": "ComputerToolCallOutput",
       "type": "object"
@@ -871,10 +871,10 @@
         }
       },
       "required": [
-        "type",
-        "id",
         "call_id",
-        "output"
+        "output",
+        "type",
+        "id"
       ],
       "title": "ComputerToolCallOutputResource",
       "type": "object"
@@ -904,9 +904,9 @@
         }
       },
       "required": [
+        "message",
         "id",
-        "code",
-        "message"
+        "code"
       ],
       "title": "ComputerToolCallSafetyCheck",
       "type": "object"
@@ -1107,7 +1107,7 @@
         "include": {
           "description": "Specify additional output data to include in the model response. Currently supported values are: - 'file_search_call.results': Include the search results of the file search tool call. - 'message.input_image.image_url': Include image urls from the input message. - 'computer_call_output.output.image_url': Include image urls from the computer call output.",
           "items": {
-            "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n  - 'file_search_call.results': Include the search results of\n    the file search tool call.\n  - 'message.input_image.image_url': Include image urls from the input message.\n  - 'computer_call_output.output.image_url': Include image urls from the computer call output.",
+            "description": "Specify additional output data to include in the model response. Currently\nsupported values are:\n- 'file_search_call.results': Include the search results of\n  the file search tool call.\n- 'message.input_image.image_url': Include image urls from the input message.\n- 'computer_call_output.output.image_url': Include image urls from the computer call output.",
             "enum": [
               "file_search_call.results",
               "message.input_image.image_url",
@@ -1244,7 +1244,7 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
@@ -1269,8 +1269,8 @@
         }
       },
       "required": [
-        "model",
-        "input"
+        "input",
+        "model"
       ],
       "title": "CreateResponse",
       "type": "object"
@@ -1499,8 +1499,8 @@
         }
       },
       "required": [
-        "content",
-        "role"
+        "role",
+        "content"
       ],
       "title": "EasyInputMessage",
       "type": "object"
@@ -1612,9 +1612,9 @@
         }
       },
       "required": [
+        "index",
         "type",
-        "file_id",
-        "index"
+        "file_id"
       ],
       "title": "FileCitationBody",
       "type": "object"
@@ -1720,8 +1720,8 @@
         }
       },
       "required": [
-        "type",
-        "vector_store_ids"
+        "vector_store_ids",
+        "type"
       ],
       "title": "FileSearchTool",
       "type": "object"
@@ -1881,9 +1881,9 @@
         }
       },
       "required": [
-        "output",
         "call_id",
-        "type"
+        "type",
+        "output"
       ],
       "title": "FunctionCallOutputItemParam",
       "type": "object"
@@ -1947,10 +1947,10 @@
         }
       },
       "required": [
-        "type",
         "name",
         "parameters",
-        "strict"
+        "strict",
+        "type"
       ],
       "title": "FunctionTool",
       "type": "object"
@@ -2092,9 +2092,9 @@
         }
       },
       "required": [
+        "type",
         "call_id",
-        "output",
-        "type"
+        "output"
       ],
       "title": "FunctionToolCallOutput",
       "type": "object"
@@ -2158,10 +2158,10 @@
         }
       },
       "required": [
-        "output",
         "id",
         "type",
-        "call_id"
+        "call_id",
+        "output"
       ],
       "title": "FunctionToolCallOutputResource",
       "type": "object"
@@ -2230,11 +2230,11 @@
         }
       },
       "required": [
+        "id",
         "type",
         "call_id",
         "name",
-        "arguments",
-        "id"
+        "arguments"
       ],
       "title": "FunctionToolCallResource",
       "type": "object"
@@ -2367,8 +2367,8 @@
         }
       },
       "required": [
-        "detail",
-        "type"
+        "type",
+        "detail"
       ],
       "title": "InputImageContent",
       "type": "object"
@@ -2593,9 +2593,9 @@
         }
       },
       "required": [
-        "role",
         "content",
-        "id"
+        "id",
+        "role"
       ],
       "title": "InputMessageResource",
       "type": "object"
@@ -3208,11 +3208,11 @@
         }
       },
       "required": [
-        "status",
-        "id",
         "type",
         "role",
-        "content"
+        "content",
+        "status",
+        "id"
       ],
       "title": "OutputMessage",
       "type": "object"
@@ -3258,9 +3258,9 @@
         }
       },
       "required": [
+        "annotations",
         "type",
-        "text",
-        "annotations"
+        "text"
       ],
       "title": "OutputTextContent",
       "type": "object"
@@ -3722,7 +3722,7 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
@@ -3757,20 +3757,20 @@
         }
       },
       "required": [
-        "id",
-        "parallel_tool_calls",
-        "top_p",
-        "model",
-        "object",
-        "error",
-        "temperature",
         "instructions",
-        "created_at",
+        "id",
         "incomplete_details",
         "output",
+        "parallel_tool_calls",
         "metadata",
+        "temperature",
+        "tool_choice",
+        "created_at",
+        "top_p",
         "tools",
-        "tool_choice"
+        "object",
+        "error",
+        "model"
       ],
       "title": "Response",
       "type": "object"
@@ -3862,8 +3862,8 @@
         }
       },
       "required": [
-        "delta",
-        "type"
+        "type",
+        "delta"
       ],
       "title": "ResponseAudioTranscriptDeltaEvent",
       "type": "object"
@@ -4068,9 +4068,9 @@
         }
       },
       "required": [
-        "output_index",
         "code_interpreter_call",
-        "type"
+        "type",
+        "output_index"
       ],
       "title": "ResponseCodeInterpreterCallInProgressEvent",
       "type": "object"
@@ -4119,9 +4119,9 @@
         }
       },
       "required": [
+        "code_interpreter_call",
         "type",
-        "output_index",
-        "code_interpreter_call"
+        "output_index"
       ],
       "title": "ResponseCodeInterpreterCallInterpretingEvent",
       "type": "object"
@@ -4289,11 +4289,11 @@
         }
       },
       "required": [
-        "part",
-        "type",
         "item_id",
         "output_index",
-        "content_index"
+        "content_index",
+        "part",
+        "type"
       ],
       "title": "ResponseContentPartAddedEvent",
       "type": "object"
@@ -4563,10 +4563,10 @@
         }
       },
       "required": [
-        "type",
-        "code",
         "message",
-        "param"
+        "param",
+        "type",
+        "code"
       ],
       "title": "ResponseErrorEvent",
       "type": "object"
@@ -4715,9 +4715,9 @@
         }
       },
       "required": [
-        "item_id",
         "type",
-        "output_index"
+        "output_index",
+        "item_id"
       ],
       "title": "ResponseFileSearchCallCompletedEvent",
       "type": "object"
@@ -4901,10 +4901,10 @@
         }
       },
       "required": [
+        "delta",
         "type",
         "item_id",
-        "output_index",
-        "delta"
+        "output_index"
       ],
       "title": "ResponseFunctionCallArgumentsDeltaEvent",
       "type": "object"
@@ -5262,11 +5262,11 @@
         }
       },
       "required": [
+        "data",
         "has_more",
         "first_id",
         "last_id",
-        "object",
-        "data"
+        "object"
       ],
       "title": "ResponseItemList",
       "type": "object"
@@ -5320,9 +5320,9 @@
         }
       },
       "required": [
-        "type",
         "output_index",
-        "item"
+        "item",
+        "type"
       ],
       "title": "ResponseOutputItemAddedEvent",
       "type": "object"
@@ -5376,9 +5376,9 @@
         }
       },
       "required": [
+        "item",
         "type",
-        "output_index",
-        "item"
+        "output_index"
       ],
       "title": "ResponseOutputItemDoneEvent",
       "type": "object"
@@ -5484,7 +5484,7 @@
           "description": "The truncation strategy to use for the model response. - 'auto': If the context of this response and previous ones exceeds the model's context window size, the model will truncate the response to fit the context window by dropping input items in the middle of the conversation. - 'disabled' (default): If a model response will exceed the context window size for a model, the request will fail with a 400 error.",
           "oneOf": [
             {
-              "description": "The truncation strategy to use for the model response.\n  - 'auto': If the context of this response and previous ones exceeds\n    the model's context window size, the model will truncate the\n    response to fit the context window by dropping input items in the\n    middle of the conversation.\n  - 'disabled' (default): If a model response will exceed the context window\n    size for a model, the request will fail with a 400 error.",
+              "description": "The truncation strategy to use for the model response.\n- 'auto': If the context of this response and previous ones exceeds\n  the model's context window size, the model will truncate the\n  response to fit the context window by dropping input items in the\n  middle of the conversation.\n- 'disabled' (default): If a model response will exceed the context window\n  size for a model, the request will fail with a 400 error.",
               "enum": [
                 "auto",
                 "disabled"
@@ -5604,11 +5604,11 @@
         }
       },
       "required": [
-        "type",
-        "item_id",
         "output_index",
         "summary_index",
-        "part"
+        "part",
+        "type",
+        "item_id"
       ],
       "title": "ResponseReasoningSummaryPartAddedEvent",
       "type": "object"
@@ -5684,11 +5684,11 @@
         }
       },
       "required": [
-        "type",
-        "item_id",
         "output_index",
         "summary_index",
-        "part"
+        "part",
+        "type",
+        "item_id"
       ],
       "title": "ResponseReasoningSummaryPartDoneEvent",
       "type": "object"
@@ -5761,11 +5761,11 @@
         }
       },
       "required": [
-        "delta",
         "type",
         "item_id",
         "output_index",
-        "summary_index"
+        "summary_index",
+        "delta"
       ],
       "title": "ResponseReasoningSummaryTextDeltaEvent",
       "type": "object"
@@ -5812,11 +5812,11 @@
         }
       },
       "required": [
-        "type",
         "item_id",
         "output_index",
         "summary_index",
-        "text"
+        "text",
+        "type"
       ],
       "title": "ResponseReasoningSummaryTextDoneEvent",
       "type": "object"
@@ -5914,11 +5914,11 @@
         }
       },
       "required": [
-        "content_index",
-        "refusal",
         "type",
         "item_id",
-        "output_index"
+        "output_index",
+        "content_index",
+        "refusal"
       ],
       "title": "ResponseRefusalDoneEvent",
       "type": "object"
@@ -6216,11 +6216,11 @@
         }
       },
       "required": [
-        "type",
         "item_id",
         "output_index",
         "content_index",
-        "text"
+        "text",
+        "type"
       ],
       "title": "ResponseTextDoneEvent",
       "type": "object"
@@ -6301,11 +6301,11 @@
         }
       },
       "required": [
-        "output_tokens_details",
         "total_tokens",
         "input_tokens",
         "input_tokens_details",
-        "output_tokens"
+        "output_tokens",
+        "output_tokens_details"
       ],
       "title": "ResponseUsage",
       "type": "object"
@@ -6421,9 +6421,9 @@
         }
       },
       "required": [
-        "type",
         "output_index",
-        "item_id"
+        "item_id",
+        "type"
       ],
       "title": "ResponseWebSearchCallInProgressEvent",
       "type": "object"
@@ -6536,17 +6536,17 @@
         }
       },
       "required": [
-        "y",
-        "scroll_x",
         "scroll_y",
         "type",
-        "x"
+        "x",
+        "y",
+        "scroll_x"
       ],
       "title": "Scroll",
       "type": "object"
     },
     "ServiceTier": {
-      "description": "Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:\n\n  - If set to 'auto', and the Project is Scale tier enabled, the system\n    will utilize scale tier credits until they are exhausted.\n\n  - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n\n  - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n\n  - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).\n\n  - When not set, the default behavior is 'auto'.\n\n    When this parameter is set, the response body will include the 'service_tier' utilized.",
+      "description": "Specifies the latency tier to use for processing the request. This parameter is relevant for customers subscribed to the scale tier service:\n  - If set to 'auto', and the Project is Scale tier enabled, the system\n    will utilize scale tier credits until they are exhausted.\n  - If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n  - If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarentee.\n  - If set to 'flex', the request will be processed with the Flex Processing service tier. [Learn more](/docs/guides/flex-processing).\n  - When not set, the default behavior is 'auto'.\n\n  When this parameter is set, the response body will include the 'service_tier' utilized.",
       "enum": [
         "auto",
         "default",
@@ -6815,11 +6815,11 @@
         }
       },
       "required": [
+        "type",
+        "url",
         "start_index",
         "end_index",
-        "title",
-        "type",
-        "url"
+        "title"
       ],
       "title": "UrlCitationBody",
       "type": "object"

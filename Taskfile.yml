@@ -3,8 +3,6 @@ version: '3'
 vars:
   COMPSCHEMA: go run ./cmd/compschema
   BIN: ./bin/compschema
-  SPEC_FILE: testdata/openai/openapi.yaml
-  SCHEMA_OUT: testdata/openai/responses.schema.json
 
 tasks:
   default:
@@ -74,10 +72,11 @@ tasks:
       - "{{.COMPSCHEMA}} generate --no-cache --examples --validate --test --out examples/basic ./examples/basic"
 
   generate:openai:
-    desc: Regenerate examples/openai
+    desc: Regenerate examples/openai from OpenAI spec
+    deps: [build:bin]
     cmds:
-      - rm -f examples/openai/compschema* examples/openai/schema.gen.json
-      - "{{.COMPSCHEMA}} generate --no-cache --examples --all --validate --test --out examples/openai ./examples/openai"
+      - rm -f examples/openai/compschema* examples/openai/schema.gen.json examples/openai/types.gen.go examples/openai/responses.schema.json
+      - "{{.BIN}} run openai"
 
   generate:config-schema:
     desc: Regenerate config schema (dogfooding compschema on itself)
@@ -117,6 +116,5 @@ tasks:
     desc: Remove generated artifacts
     cmds:
       - rm -f examples/basic/compschema* examples/basic/schema.gen.json
-      - rm -f examples/openai/compschema* examples/openai/schema.gen.json
-      - rm -f {{.SCHEMA_OUT}}
+      - rm -f examples/openai/compschema* examples/openai/schema.gen.json examples/openai/types.gen.go examples/openai/responses.schema.json
       - rm -rf bin/

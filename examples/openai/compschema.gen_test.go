@@ -1354,55 +1354,6 @@ func TestCompschema_CreateModelResponseProperties_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_Reasoning_JSONSchemaBytes(t *testing.T) {
-	b := (Reasoning{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_Reasoning_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (Reasoning{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_Reasoning_ValidateRejectsWrongType(t *testing.T) {
-	err := (Reasoning{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("Reasoning.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_Reasoning_RoundTrip(t *testing.T) {
-	data := []byte(`{}`)
-	result, err := DecodeReasoning(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ModelIdsResponses_JSONSchemaBytes(t *testing.T) {
-	b := ModelIdsResponses("").JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_RankingOptions_JSONSchemaBytes(t *testing.T) {
 	b := (RankingOptions{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -1589,6 +1540,387 @@ func TestCompschema_WebSearchPreviewTool_RoundTrip(t *testing.T) {
 
 func TestCompschema_Tool_JSONSchemaBytes(t *testing.T) {
 	b := ToolJSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_Reasoning_JSONSchemaBytes(t *testing.T) {
+	b := (Reasoning{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_Reasoning_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (Reasoning{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_Reasoning_ValidateRejectsWrongType(t *testing.T) {
+	err := (Reasoning{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("Reasoning.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_Reasoning_RoundTrip(t *testing.T) {
+	data := []byte(`{}`)
+	result, err := DecodeReasoning(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseFormatJsonObject_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseFormatJsonObject{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseFormatJsonObject_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseFormatJsonObject{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseFormatJsonObject_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseFormatJsonObject{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseFormatJsonObject.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseFormatJsonObject_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseFormatJsonObject{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseFormatJsonObject.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseFormatJsonObject_RoundTrip(t *testing.T) {
+	data := []byte(`{"type":"json_object"}`)
+	result, err := DecodeResponseFormatJsonObject(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseFormatText_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseFormatText{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseFormatText_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseFormatText{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseFormatText_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseFormatText{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseFormatText.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseFormatText_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseFormatText{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseFormatText.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseFormatText_RoundTrip(t *testing.T) {
+	data := []byte(`{"type":"text"}`)
+	result, err := DecodeResponseFormatText(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseFormatJsonSchemaSchema_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseFormatJsonSchemaSchema{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_TextResponseFormatJsonSchema_JSONSchemaBytes(t *testing.T) {
+	b := (TextResponseFormatJsonSchema{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsWrongType(t *testing.T) {
+	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("TextResponseFormatJsonSchema.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsEmpty(t *testing.T) {
+	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("TextResponseFormatJsonSchema.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_TextResponseFormatJsonSchema_RoundTrip(t *testing.T) {
+	data := []byte(`{"name":"","schema":{},"type":"json_schema"}`)
+	result, err := DecodeTextResponseFormatJsonSchema(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_TextResponseFormatConfiguration_JSONSchemaBytes(t *testing.T) {
+	b := TextResponseFormatConfigurationJSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_CreateResponseText_JSONSchemaBytes(t *testing.T) {
+	b := (CreateResponseText{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_CreateResponseText_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (CreateResponseText{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_CreateResponseText_ValidateRejectsWrongType(t *testing.T) {
+	err := (CreateResponseText{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("CreateResponseText.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_CreateResponseText_RoundTrip(t *testing.T) {
+	data := []byte(`{}`)
+	result, err := DecodeCreateResponseText(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
+	b := ToolChoiceOptions("").JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
+	b := (CreateResponseToolChoiceToolChoiceOptions{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsWrongType(t *testing.T) {
+	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("CreateResponseToolChoiceToolChoiceOptions.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsEmpty(t *testing.T) {
+	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("CreateResponseToolChoiceToolChoiceOptions.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_RoundTrip(t *testing.T) {
+	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
+}
+
+func TestCompschema_ToolChoiceFunction_JSONSchemaBytes(t *testing.T) {
+	b := (ToolChoiceFunction{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ToolChoiceFunction_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ToolChoiceFunction{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ToolChoiceFunction_ValidateRejectsWrongType(t *testing.T) {
+	err := (ToolChoiceFunction{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ToolChoiceFunction.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ToolChoiceFunction_ValidateRejectsEmpty(t *testing.T) {
+	err := (ToolChoiceFunction{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ToolChoiceFunction.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ToolChoiceFunction_RoundTrip(t *testing.T) {
+	data := []byte(`{"name":"","type":"function"}`)
+	result, err := DecodeToolChoiceFunction(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ToolChoiceTypes_JSONSchemaBytes(t *testing.T) {
+	b := (ToolChoiceTypes{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ToolChoiceTypes_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ToolChoiceTypes{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ToolChoiceTypes_ValidateRejectsWrongType(t *testing.T) {
+	err := (ToolChoiceTypes{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ToolChoiceTypes.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ToolChoiceTypes_ValidateRejectsEmpty(t *testing.T) {
+	err := (ToolChoiceTypes{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ToolChoiceTypes.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ToolChoiceTypes_RoundTrip(t *testing.T) {
+	data := []byte(`{"type":"file_search"}`)
+	result, err := DecodeToolChoiceTypes(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_CreateResponseToolChoice_JSONSchemaBytes(t *testing.T) {
+	b := CreateResponseToolChoiceJSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -2421,8 +2753,8 @@ func TestCompschema_CreateResponseInput_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_ToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
-	b := ToolChoiceOptions("").JSONSchemaBytes()
+func TestCompschema_ModelIdsResponses_JSONSchemaBytes(t *testing.T) {
+	b := ModelIdsResponses("").JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -2430,338 +2762,6 @@ func TestCompschema_ToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
 	if err := json.Unmarshal(b, &v); err != nil {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
-}
-
-func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
-	b := (CreateResponseToolChoiceToolChoiceOptions{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsWrongType(t *testing.T) {
-	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("CreateResponseToolChoiceToolChoiceOptions.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_ValidateRejectsEmpty(t *testing.T) {
-	err := (CreateResponseToolChoiceToolChoiceOptions{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("CreateResponseToolChoiceToolChoiceOptions.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_CreateResponseToolChoiceToolChoiceOptions_RoundTrip(t *testing.T) {
-	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
-}
-
-func TestCompschema_ToolChoiceFunction_JSONSchemaBytes(t *testing.T) {
-	b := (ToolChoiceFunction{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ToolChoiceFunction_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ToolChoiceFunction{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ToolChoiceFunction_ValidateRejectsWrongType(t *testing.T) {
-	err := (ToolChoiceFunction{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ToolChoiceFunction.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ToolChoiceFunction_ValidateRejectsEmpty(t *testing.T) {
-	err := (ToolChoiceFunction{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ToolChoiceFunction.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ToolChoiceFunction_RoundTrip(t *testing.T) {
-	data := []byte(`{"name":"","type":"function"}`)
-	result, err := DecodeToolChoiceFunction(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ToolChoiceTypes_JSONSchemaBytes(t *testing.T) {
-	b := (ToolChoiceTypes{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ToolChoiceTypes_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ToolChoiceTypes{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ToolChoiceTypes_ValidateRejectsWrongType(t *testing.T) {
-	err := (ToolChoiceTypes{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ToolChoiceTypes.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ToolChoiceTypes_ValidateRejectsEmpty(t *testing.T) {
-	err := (ToolChoiceTypes{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ToolChoiceTypes.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ToolChoiceTypes_RoundTrip(t *testing.T) {
-	data := []byte(`{"type":"file_search"}`)
-	result, err := DecodeToolChoiceTypes(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_CreateResponseToolChoice_JSONSchemaBytes(t *testing.T) {
-	b := CreateResponseToolChoiceJSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseFormatJsonObject_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseFormatJsonObject{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseFormatJsonObject_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseFormatJsonObject{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseFormatJsonObject_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseFormatJsonObject{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseFormatJsonObject.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseFormatJsonObject_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseFormatJsonObject{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseFormatJsonObject.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseFormatJsonObject_RoundTrip(t *testing.T) {
-	data := []byte(`{"type":"json_object"}`)
-	result, err := DecodeResponseFormatJsonObject(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseFormatText_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseFormatText{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseFormatText_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseFormatText{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseFormatText_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseFormatText{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseFormatText.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseFormatText_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseFormatText{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseFormatText.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseFormatText_RoundTrip(t *testing.T) {
-	data := []byte(`{"type":"text"}`)
-	result, err := DecodeResponseFormatText(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseFormatJsonSchemaSchema_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseFormatJsonSchemaSchema{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchema_JSONSchemaBytes(t *testing.T) {
-	b := (TextResponseFormatJsonSchema{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsWrongType(t *testing.T) {
-	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("TextResponseFormatJsonSchema.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchema_ValidateRejectsEmpty(t *testing.T) {
-	err := (TextResponseFormatJsonSchema{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("TextResponseFormatJsonSchema.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_TextResponseFormatJsonSchema_RoundTrip(t *testing.T) {
-	data := []byte(`{"name":"","schema":{},"type":"json_schema"}`)
-	result, err := DecodeTextResponseFormatJsonSchema(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_TextResponseFormatConfiguration_JSONSchemaBytes(t *testing.T) {
-	b := TextResponseFormatConfigurationJSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_CreateResponseText_JSONSchemaBytes(t *testing.T) {
-	b := (CreateResponseText{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_CreateResponseText_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (CreateResponseText{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_CreateResponseText_ValidateRejectsWrongType(t *testing.T) {
-	err := (CreateResponseText{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("CreateResponseText.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_CreateResponseText_RoundTrip(t *testing.T) {
-	data := []byte(`{}`)
-	result, err := DecodeCreateResponseText(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
 }
 
 func TestCompschema_CreateResponse_JSONSchemaBytes(t *testing.T) {
@@ -3096,89 +3096,6 @@ func TestCompschema_OutputItem_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
-func TestCompschema_ResponseError_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseError{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseError_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseError{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseError_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseError{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseError.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseError_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseError{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseError.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseError_RoundTrip(t *testing.T) {
-	data := []byte(`{"code":"server_error","message":""}`)
-	result, err := DecodeResponseError(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseText_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseText{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseText_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseText{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseText_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseText{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseText.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseText_RoundTrip(t *testing.T) {
-	data := []byte(`{}`)
-	result, err := DecodeResponseText(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
 func TestCompschema_ResponseIncompleteDetails_JSONSchemaBytes(t *testing.T) {
 	b := (ResponseIncompleteDetails{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -3217,8 +3134,8 @@ func TestCompschema_ResponseIncompleteDetails_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_ResponseUsageOutputTokensDetails_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseUsageOutputTokensDetails{}).JSONSchemaBytes()
+func TestCompschema_ResponseText_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseText{}).JSONSchemaBytes()
 	if len(b) == 0 {
 		t.Fatal("JSONSchemaBytes returned empty")
 	}
@@ -3228,120 +3145,23 @@ func TestCompschema_ResponseUsageOutputTokensDetails_JSONSchemaBytes(t *testing.
 	}
 }
 
-func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`{not json}`))
+func TestCompschema_ResponseText_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseText{}).Validate([]byte(`{not json}`))
 	if err == nil {
 		t.Fatal("Validate should reject invalid JSON")
 	}
 }
 
-func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`"a string"`))
+func TestCompschema_ResponseText_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseText{}).Validate([]byte(`"a string"`))
 	if err == nil {
-		t.Fatal("ResponseUsageOutputTokensDetails.Validate should reject a string for an object type")
+		t.Fatal("ResponseText.Validate should reject a string for an object type")
 	}
 }
 
-func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseUsageOutputTokensDetails.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseUsageOutputTokensDetails_RoundTrip(t *testing.T) {
-	data := []byte(`{"reasoning_tokens":0}`)
-	result, err := DecodeResponseUsageOutputTokensDetails(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseUsageInputTokensDetails_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseUsageInputTokensDetails{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseUsageInputTokensDetails.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseUsageInputTokensDetails.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseUsageInputTokensDetails_RoundTrip(t *testing.T) {
-	data := []byte(`{"cached_tokens":0}`)
-	result, err := DecodeResponseUsageInputTokensDetails(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
-}
-
-func TestCompschema_ResponseUsage_JSONSchemaBytes(t *testing.T) {
-	b := (ResponseUsage{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponseUsage_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponseUsage{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponseUsage_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponseUsage{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponseUsage.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponseUsage_ValidateRejectsEmpty(t *testing.T) {
-	err := (ResponseUsage{}).Validate([]byte(`{}`))
-	if err == nil {
-		t.Fatal("ResponseUsage.Validate({}) should fail (has required fields)")
-	}
-}
-
-func TestCompschema_ResponseUsage_RoundTrip(t *testing.T) {
-	data := []byte(`{"input_tokens":0,"input_tokens_details":{"cached_tokens":0},"output_tokens":0,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":0}`)
-	result, err := DecodeResponseUsage(data)
+func TestCompschema_ResponseText_RoundTrip(t *testing.T) {
+	data := []byte(`{}`)
+	result, err := DecodeResponseText(data)
 	if err != nil {
 		t.Fatalf("Decode: %v", err)
 	}
@@ -3397,6 +3217,186 @@ func TestCompschema_ResponseToolChoice_JSONSchemaBytes(t *testing.T) {
 	if err := json.Unmarshal(b, &v); err != nil {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
+}
+
+func TestCompschema_ResponseError_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseError{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseError_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseError{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseError_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseError{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseError.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseError_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseError{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseError.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseError_RoundTrip(t *testing.T) {
+	data := []byte(`{"code":"server_error","message":""}`)
+	result, err := DecodeResponseError(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseUsageInputTokensDetails_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseUsageInputTokensDetails{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseUsageInputTokensDetails.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseUsageInputTokensDetails_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseUsageInputTokensDetails{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseUsageInputTokensDetails.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseUsageInputTokensDetails_RoundTrip(t *testing.T) {
+	data := []byte(`{"cached_tokens":0}`)
+	result, err := DecodeResponseUsageInputTokensDetails(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseUsageOutputTokensDetails_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseUsageOutputTokensDetails{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseUsageOutputTokensDetails.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseUsageOutputTokensDetails_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseUsageOutputTokensDetails{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseUsageOutputTokensDetails.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseUsageOutputTokensDetails_RoundTrip(t *testing.T) {
+	data := []byte(`{"reasoning_tokens":0}`)
+	result, err := DecodeResponseUsageOutputTokensDetails(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
+func TestCompschema_ResponseUsage_JSONSchemaBytes(t *testing.T) {
+	b := (ResponseUsage{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponseUsage_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponseUsage{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponseUsage_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponseUsage{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponseUsage.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponseUsage_ValidateRejectsEmpty(t *testing.T) {
+	err := (ResponseUsage{}).Validate([]byte(`{}`))
+	if err == nil {
+		t.Fatal("ResponseUsage.Validate({}) should fail (has required fields)")
+	}
+}
+
+func TestCompschema_ResponseUsage_RoundTrip(t *testing.T) {
+	data := []byte(`{"input_tokens":0,"input_tokens_details":{"cached_tokens":0},"output_tokens":0,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":0}`)
+	result, err := DecodeResponseUsage(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
 }
 
 func TestCompschema_Response_JSONSchemaBytes(t *testing.T) {
@@ -4443,6 +4443,44 @@ func TestCompschema_ResponseOutputItemDoneEvent_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
+func TestCompschema_ResponsePropertiesText_JSONSchemaBytes(t *testing.T) {
+	b := (ResponsePropertiesText{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
+func TestCompschema_ResponsePropertiesText_ValidateRejectsInvalidJSON(t *testing.T) {
+	err := (ResponsePropertiesText{}).Validate([]byte(`{not json}`))
+	if err == nil {
+		t.Fatal("Validate should reject invalid JSON")
+	}
+}
+
+func TestCompschema_ResponsePropertiesText_ValidateRejectsWrongType(t *testing.T) {
+	err := (ResponsePropertiesText{}).Validate([]byte(`"a string"`))
+	if err == nil {
+		t.Fatal("ResponsePropertiesText.Validate should reject a string for an object type")
+	}
+}
+
+func TestCompschema_ResponsePropertiesText_RoundTrip(t *testing.T) {
+	data := []byte(`{}`)
+	result, err := DecodeResponsePropertiesText(data)
+	if err != nil {
+		t.Fatalf("Decode: %v", err)
+	}
+	reencoded, err := json.Marshal(result)
+	if err != nil {
+		t.Fatalf("re-marshal: %v", err)
+	}
+	_ = reencoded // round-trip succeeded
+}
+
 func TestCompschema_ResponsePropertiesToolChoiceToolChoiceOptions_JSONSchemaBytes(t *testing.T) {
 	b := (ResponsePropertiesToolChoiceToolChoiceOptions{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4488,44 +4526,6 @@ func TestCompschema_ResponsePropertiesToolChoice_JSONSchemaBytes(t *testing.T) {
 	if err := json.Unmarshal(b, &v); err != nil {
 		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
 	}
-}
-
-func TestCompschema_ResponsePropertiesText_JSONSchemaBytes(t *testing.T) {
-	b := (ResponsePropertiesText{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
-func TestCompschema_ResponsePropertiesText_ValidateRejectsInvalidJSON(t *testing.T) {
-	err := (ResponsePropertiesText{}).Validate([]byte(`{not json}`))
-	if err == nil {
-		t.Fatal("Validate should reject invalid JSON")
-	}
-}
-
-func TestCompschema_ResponsePropertiesText_ValidateRejectsWrongType(t *testing.T) {
-	err := (ResponsePropertiesText{}).Validate([]byte(`"a string"`))
-	if err == nil {
-		t.Fatal("ResponsePropertiesText.Validate should reject a string for an object type")
-	}
-}
-
-func TestCompschema_ResponsePropertiesText_RoundTrip(t *testing.T) {
-	data := []byte(`{}`)
-	result, err := DecodeResponsePropertiesText(data)
-	if err != nil {
-		t.Fatalf("Decode: %v", err)
-	}
-	reencoded, err := json.Marshal(result)
-	if err != nil {
-		t.Fatalf("re-marshal: %v", err)
-	}
-	_ = reencoded // round-trip succeeded
 }
 
 func TestCompschema_ResponseProperties_JSONSchemaBytes(t *testing.T) {
@@ -5251,14 +5251,23 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"Metadata", `{"key1":"example"}`},
 		{"ServiceTier", `"auto"`},
 		{"CreateModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
-		{"Reasoning", `{"effort":"low","generate_summary":"auto","summary":"auto"}`},
-		{"ModelIdsResponses", `"gpt-4.1"`},
 		{"RankingOptions", `{"ranker":"auto","score_threshold":1}`},
 		{"Filters", `{"key":"example","type":"eq","value":true}`},
 		{"FileSearchTool", `{"filters":{"key":"example","type":"eq","value":true},"max_num_results":1,"ranking_options":{"ranker":"auto","score_threshold":1},"type":"file_search","vector_store_ids":["example"]}`},
 		{"FunctionTool", `{"description":"example","name":"example","parameters":{"key1":{"description":"example","name":"example","parameters":{},"strict":true,"type":"function"}},"strict":true,"type":"function"}`},
 		{"WebSearchPreviewTool", `{"search_context_size":"low","type":"web_search_preview","user_location":{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}}`},
 		{"Tool", `{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`},
+		{"Reasoning", `{"effort":"low","generate_summary":"auto","summary":"auto"}`},
+		{"ResponseFormatJsonObject", `{"type":"json_object"}`},
+		{"ResponseFormatText", `{"type":"text"}`},
+		{"ResponseFormatJsonSchemaSchema", `{"key1":"example"}`},
+		{"TextResponseFormatJsonSchema", `{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`},
+		{"TextResponseFormatConfiguration", `{"type":"json_object"}`},
+		{"CreateResponseText", `{"format":{"type":"json_object"}}`},
+		{"ToolChoiceOptions", `"none"`},
+		{"ToolChoiceFunction", `{"name":"example","type":"function"}`},
+		{"ToolChoiceTypes", `{"type":"file_search"}`},
+		{"CreateResponseToolChoice", `{"name":"example","type":"function"}`},
 		{"InputFileContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
 		{"InputImageContent", `{"detail":"low","file_id":"example","image_url":"example","type":"input_image"}`},
 		{"InputTextContent", `{"text":"example","type":"input_text"}`},
@@ -5282,16 +5291,7 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"InputItem", `{"content":"example","role":"user","type":"message"}`},
 		{"CreateResponseInputString", `"example"`},
 		{"CreateResponseInput", `"example"`},
-		{"ToolChoiceOptions", `"none"`},
-		{"ToolChoiceFunction", `{"name":"example","type":"function"}`},
-		{"ToolChoiceTypes", `{"type":"file_search"}`},
-		{"CreateResponseToolChoice", `{"name":"example","type":"function"}`},
-		{"ResponseFormatJsonObject", `{"type":"json_object"}`},
-		{"ResponseFormatText", `{"type":"text"}`},
-		{"ResponseFormatJsonSchemaSchema", `{"key1":"example"}`},
-		{"TextResponseFormatJsonSchema", `{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`},
-		{"TextResponseFormatConfiguration", `{"type":"json_object"}`},
-		{"CreateResponseText", `{"format":{"type":"json_object"}}`},
+		{"ModelIdsResponses", `"gpt-4.1"`},
 		{"CreateResponse", `{"include":["file_search_call.results"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`},
 		{"Error", `{"code":"example","message":"example","param":"example","type":"example"}`},
 		{"FunctionToolCallOutput", `{"call_id":"example","id":"example","output":"example","status":"in_progress","type":"function_call_output"}`},
@@ -5302,13 +5302,13 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"ModelIdsShared", `"gpt-4.1"`},
 		{"ModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
 		{"OutputItem", `{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}`},
-		{"ResponseError", `{"code":"server_error","message":"example"}`},
-		{"ResponseText", `{"format":{"type":"json_object"}}`},
 		{"ResponseIncompleteDetails", `{"reason":"example"}`},
-		{"ResponseUsageOutputTokensDetails", `{"reasoning_tokens":1}`},
-		{"ResponseUsageInputTokensDetails", `{"cached_tokens":1}`},
-		{"ResponseUsage", `{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`},
+		{"ResponseText", `{"format":{"type":"json_object"}}`},
 		{"ResponseToolChoice", `{"name":"example","type":"function"}`},
+		{"ResponseError", `{"code":"server_error","message":"example"}`},
+		{"ResponseUsageInputTokensDetails", `{"cached_tokens":1}`},
+		{"ResponseUsageOutputTokensDetails", `{"reasoning_tokens":1}`},
+		{"ResponseUsage", `{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`},
 		{"Response", `{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`},
 		{"ResponseAudioDeltaEvent", `{"delta":"example","type":"response.audio.delta"}`},
 		{"ResponseAudioDoneEvent", `{"type":"response.audio.done"}`},
@@ -5335,8 +5335,8 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"ResponseItemList", `{"data":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"first_id":"example","has_more":true,"last_id":"example","object":"list"}`},
 		{"ResponseOutputItemAddedEvent", `{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.added"}`},
 		{"ResponseOutputItemDoneEvent", `{"item":{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"},"output_index":1,"type":"response.output_item.done"}`},
-		{"ResponsePropertiesToolChoice", `{"name":"example","type":"function"}`},
 		{"ResponsePropertiesText", `{"format":{"type":"json_object"}}`},
+		{"ResponsePropertiesToolChoice", `{"name":"example","type":"function"}`},
 		{"ResponseProperties", `{"instructions":"example","max_output_tokens":1,"model":"gpt-4.1","previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"truncation":"auto"}`},
 		{"ResponseReasoningSummaryPartAddedEventPart", `{"text":"example","type":"example"}`},
 		{"ResponseReasoningSummaryPartAddedEvent", `{"item_id":"example","output_index":1,"part":{"text":"example","type":"example"},"summary_index":1,"type":"response.reasoning_summary_part.added"}`},
@@ -5768,22 +5768,6 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		}
 		_ = reencoded
 	})
-	t.Run("Reasoning", func(t *testing.T) {
-		data := []byte(`{"effort":"low","generate_summary":"auto","summary":"auto"}`)
-		result, err := DecodeReasoning(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("ModelIdsResponses", func(t *testing.T) {
-		data := []byte(`"gpt-4.1"`)
-		_ = data
-	})
 	t.Run("RankingOptions", func(t *testing.T) {
 		data := []byte(`{"ranker":"auto","score_threshold":1}`)
 		result, err := DecodeRankingOptions(data)
@@ -5845,6 +5829,118 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 	t.Run("Tool", func(t *testing.T) {
 		data := []byte(`{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}`)
 		result, err := DecodeTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("Reasoning", func(t *testing.T) {
+		data := []byte(`{"effort":"low","generate_summary":"auto","summary":"auto"}`)
+		result, err := DecodeReasoning(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatJsonObject", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeResponseFormatJsonObject(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatText", func(t *testing.T) {
+		data := []byte(`{"type":"text"}`)
+		result, err := DecodeResponseFormatText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatJsonSchemaSchema", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("TextResponseFormatJsonSchema", func(t *testing.T) {
+		data := []byte(`{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`)
+		result, err := DecodeTextResponseFormatJsonSchema(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("TextResponseFormatConfiguration", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeTextResponseFormatConfiguration(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CreateResponseText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeCreateResponseText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ToolChoiceOptions", func(t *testing.T) {
+		data := []byte(`"none"`)
+		_ = data
+	})
+	t.Run("ToolChoiceFunction", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeToolChoiceFunction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ToolChoiceTypes", func(t *testing.T) {
+		data := []byte(`{"type":"file_search"}`)
+		result, err := DecodeToolChoiceTypes(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CreateResponseToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeCreateResponseToolChoice(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
 		}
@@ -6092,105 +6188,9 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatal("Decode returned nil")
 		}
 	})
-	t.Run("ToolChoiceOptions", func(t *testing.T) {
-		data := []byte(`"none"`)
+	t.Run("ModelIdsResponses", func(t *testing.T) {
+		data := []byte(`"gpt-4.1"`)
 		_ = data
-	})
-	t.Run("ToolChoiceFunction", func(t *testing.T) {
-		data := []byte(`{"name":"example","type":"function"}`)
-		result, err := DecodeToolChoiceFunction(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("ToolChoiceTypes", func(t *testing.T) {
-		data := []byte(`{"type":"file_search"}`)
-		result, err := DecodeToolChoiceTypes(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("CreateResponseToolChoice", func(t *testing.T) {
-		data := []byte(`{"name":"example","type":"function"}`)
-		result, err := DecodeCreateResponseToolChoice(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
-	})
-	t.Run("ResponseFormatJsonObject", func(t *testing.T) {
-		data := []byte(`{"type":"json_object"}`)
-		result, err := DecodeResponseFormatJsonObject(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("ResponseFormatText", func(t *testing.T) {
-		data := []byte(`{"type":"text"}`)
-		result, err := DecodeResponseFormatText(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("ResponseFormatJsonSchemaSchema", func(t *testing.T) {
-		data := []byte(`{"key1":"example"}`)
-		_ = data
-	})
-	t.Run("TextResponseFormatJsonSchema", func(t *testing.T) {
-		data := []byte(`{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`)
-		result, err := DecodeTextResponseFormatJsonSchema(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
-	})
-	t.Run("TextResponseFormatConfiguration", func(t *testing.T) {
-		data := []byte(`{"type":"json_object"}`)
-		result, err := DecodeTextResponseFormatConfiguration(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
-	})
-	t.Run("CreateResponseText", func(t *testing.T) {
-		data := []byte(`{"format":{"type":"json_object"}}`)
-		result, err := DecodeCreateResponseText(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
-		}
-		_ = reencoded
 	})
 	t.Run("CreateResponse", func(t *testing.T) {
 		data := []byte(`{"include":["file_search_call.results"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`)
@@ -6300,9 +6300,9 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatal("Decode returned nil")
 		}
 	})
-	t.Run("ResponseError", func(t *testing.T) {
-		data := []byte(`{"code":"server_error","message":"example"}`)
-		result, err := DecodeResponseError(data)
+	t.Run("ResponseIncompleteDetails", func(t *testing.T) {
+		data := []byte(`{"reason":"example"}`)
+		result, err := DecodeResponseIncompleteDetails(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
 		}
@@ -6324,21 +6324,19 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		}
 		_ = reencoded
 	})
-	t.Run("ResponseIncompleteDetails", func(t *testing.T) {
-		data := []byte(`{"reason":"example"}`)
-		result, err := DecodeResponseIncompleteDetails(data)
+	t.Run("ResponseToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeResponseToolChoice(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
 		}
-		reencoded, err := json.Marshal(result)
-		if err != nil {
-			t.Fatalf("re-marshal: %v", err)
+		if result == nil {
+			t.Fatal("Decode returned nil")
 		}
-		_ = reencoded
 	})
-	t.Run("ResponseUsageOutputTokensDetails", func(t *testing.T) {
-		data := []byte(`{"reasoning_tokens":1}`)
-		result, err := DecodeResponseUsageOutputTokensDetails(data)
+	t.Run("ResponseError", func(t *testing.T) {
+		data := []byte(`{"code":"server_error","message":"example"}`)
+		result, err := DecodeResponseError(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
 		}
@@ -6360,6 +6358,18 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		}
 		_ = reencoded
 	})
+	t.Run("ResponseUsageOutputTokensDetails", func(t *testing.T) {
+		data := []byte(`{"reasoning_tokens":1}`)
+		result, err := DecodeResponseUsageOutputTokensDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
 	t.Run("ResponseUsage", func(t *testing.T) {
 		data := []byte(`{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`)
 		result, err := DecodeResponseUsage(data)
@@ -6371,16 +6381,6 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatalf("re-marshal: %v", err)
 		}
 		_ = reencoded
-	})
-	t.Run("ResponseToolChoice", func(t *testing.T) {
-		data := []byte(`{"name":"example","type":"function"}`)
-		result, err := DecodeResponseToolChoice(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
 	})
 	t.Run("Response", func(t *testing.T) {
 		data := []byte(`{"created_at":1,"error":{"code":"server_error","message":"example"},"id":"example","incomplete_details":{"reason":"example"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"gpt-4.1","object":"response","output":[{"action":{"button":"left","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"in_progress","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`)
@@ -6694,16 +6694,6 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		}
 		_ = reencoded
 	})
-	t.Run("ResponsePropertiesToolChoice", func(t *testing.T) {
-		data := []byte(`{"name":"example","type":"function"}`)
-		result, err := DecodeResponsePropertiesToolChoice(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
-	})
 	t.Run("ResponsePropertiesText", func(t *testing.T) {
 		data := []byte(`{"format":{"type":"json_object"}}`)
 		result, err := DecodeResponsePropertiesText(data)
@@ -6715,6 +6705,16 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatalf("re-marshal: %v", err)
 		}
 		_ = reencoded
+	})
+	t.Run("ResponsePropertiesToolChoice", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeResponsePropertiesToolChoice(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
 	})
 	t.Run("ResponseProperties", func(t *testing.T) {
 		data := []byte(`{"instructions":"example","max_output_tokens":1,"model":"gpt-4.1","previous_response_id":"example","reasoning":{"effort":"low","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":{"name":"example","type":"function"},"tools":[{"display_height":1,"display_width":1,"environment":"windows","type":"computer_use_preview"}],"truncation":"auto"}`)
@@ -6910,5 +6910,1236 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		data := []byte(`{"key1":"example"}`)
 		_ = data
 	})
+}
+
+func TestCompschema_NewFileCitationBody(t *testing.T) {
+	v := NewFileCitationBody(0, FileCitationBodyType("file_citation"), "")
+	if v == nil {
+		t.Fatal("NewFileCitationBody returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFileCitationBody output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFilePath(t *testing.T) {
+	v := NewFilePath(FilePathType("file_path"), "", 0)
+	if v == nil {
+		t.Fatal("NewFilePath returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFilePath output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewUrlCitationBody(t *testing.T) {
+	v := NewUrlCitationBody(UrlCitationBodyType("url_citation"), "", 0, 0, "")
+	if v == nil {
+		t.Fatal("NewUrlCitationBody returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewUrlCitationBody output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewApproximateLocation(t *testing.T) {
+	v := NewApproximateLocation(ApproximateLocationType("approximate"))
+	if v == nil {
+		t.Fatal("NewApproximateLocation returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewApproximateLocation output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewClick(t *testing.T) {
+	v := NewClick(ClickType("click"), ClickButton("left"), 0, 0)
+	if v == nil {
+		t.Fatal("NewClick returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewClick output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewCodeInterpreterFileOutput(t *testing.T) {
+	v := NewCodeInterpreterFileOutput(CodeInterpreterFileOutputType("files"), []any{nil})
+	if v == nil {
+		t.Fatal("NewCodeInterpreterFileOutput returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewCodeInterpreterFileOutput output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewCodeInterpreterTextOutput(t *testing.T) {
+	v := NewCodeInterpreterTextOutput("", CodeInterpreterTextOutputType("logs"))
+	if v == nil {
+		t.Fatal("NewCodeInterpreterTextOutput returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewCodeInterpreterTextOutput output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewCodeInterpreterToolCall(t *testing.T) {
+	v := NewCodeInterpreterToolCall([]CodeInterpreterToolOutput{&CodeInterpreterFileOutput{}}, "", CodeInterpreterToolCallType("code_interpreter_call"), "", CodeInterpreterToolCallStatus("in_progress"))
+	if v == nil {
+		t.Fatal("NewCodeInterpreterToolCall returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewComparisonFilter(t *testing.T) {
+	v := NewComparisonFilter(ComparisonFilterType("eq"), "", &ComparisonFilterValueBool{})
+	if v == nil {
+		t.Fatal("NewComparisonFilter returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewCompoundFilter(t *testing.T) {
+	v := NewCompoundFilter(CompoundFilterType("and"), []any{nil})
+	if v == nil {
+		t.Fatal("NewCompoundFilter returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewCompoundFilter output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewDoubleClick(t *testing.T) {
+	v := NewDoubleClick(DoubleClickType("double_click"), 0, 0)
+	if v == nil {
+		t.Fatal("NewDoubleClick returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewDoubleClick output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewCoordinate(t *testing.T) {
+	v := NewCoordinate(0, 0)
+	if v == nil {
+		t.Fatal("NewCoordinate returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewCoordinate output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewDrag(t *testing.T) {
+	v := NewDrag(DragType("drag"), []Coordinate{Coordinate{}})
+	if v == nil {
+		t.Fatal("NewDrag returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewDrag output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewKeyPress(t *testing.T) {
+	v := NewKeyPress(KeyPressType("keypress"), []string{""})
+	if v == nil {
+		t.Fatal("NewKeyPress returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewKeyPress output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewMove(t *testing.T) {
+	v := NewMove(0, MoveType("move"), 0)
+	if v == nil {
+		t.Fatal("NewMove returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewMove output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewScreenshot(t *testing.T) {
+	v := NewScreenshot(ScreenshotType("screenshot"))
+	if v == nil {
+		t.Fatal("NewScreenshot returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewScreenshot output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewScroll(t *testing.T) {
+	v := NewScroll(0, ScrollType("scroll"), 0, 0, 0)
+	if v == nil {
+		t.Fatal("NewScroll returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewScroll output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewType(t *testing.T) {
+	v := NewType(TypeType("type"), "")
+	if v == nil {
+		t.Fatal("NewType returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewType output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewWait(t *testing.T) {
+	v := NewWait(WaitType("wait"))
+	if v == nil {
+		t.Fatal("NewWait returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewWait output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewComputerScreenshotImage(t *testing.T) {
+	v := NewComputerScreenshotImage(ComputerScreenshotImageType("computer_screenshot"))
+	if v == nil {
+		t.Fatal("NewComputerScreenshotImage returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewComputerScreenshotImage output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewComputerCallSafetyCheckParam(t *testing.T) {
+	v := NewComputerCallSafetyCheckParam("")
+	if v == nil {
+		t.Fatal("NewComputerCallSafetyCheckParam returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewComputerCallSafetyCheckParam output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewComputerCallOutputItemParam(t *testing.T) {
+	v := NewComputerCallOutputItemParam("", ComputerCallOutputItemParamType("computer_call_output"), ComputerScreenshotImage{})
+	if v == nil {
+		t.Fatal("NewComputerCallOutputItemParam returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewComputerToolCallSafetyCheck(t *testing.T) {
+	v := NewComputerToolCallSafetyCheck("", "", "")
+	if v == nil {
+		t.Fatal("NewComputerToolCallSafetyCheck returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewComputerToolCallSafetyCheck output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewComputerToolCall(t *testing.T) {
+	v := NewComputerToolCall("", "", &Click{}, []ComputerToolCallSafetyCheck{ComputerToolCallSafetyCheck{}}, ComputerToolCallStatus("in_progress"), ComputerToolCallType("computer_call"))
+	if v == nil {
+		t.Fatal("NewComputerToolCall returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewComputerToolCallOutput(t *testing.T) {
+	v := NewComputerToolCallOutput(ComputerScreenshotImage{}, ComputerToolCallOutputType("computer_call_output"), "")
+	if v == nil {
+		t.Fatal("NewComputerToolCallOutput returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewComputerToolCallOutputResource(t *testing.T) {
+	v := NewComputerToolCallOutputResource("", ComputerScreenshotImage{}, ComputerToolCallOutputResourceType("computer_call_output"), "")
+	if v == nil {
+		t.Fatal("NewComputerToolCallOutputResource returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewComputerUsePreviewTool(t *testing.T) {
+	v := NewComputerUsePreviewTool(ComputerUsePreviewToolType("computer_use_preview"), ComputerUsePreviewToolEnvironment("windows"), 0, 0)
+	if v == nil {
+		t.Fatal("NewComputerUsePreviewTool returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewComputerUsePreviewTool output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFileSearchTool(t *testing.T) {
+	v := NewFileSearchTool([]string{""}, FileSearchToolType("file_search"))
+	if v == nil {
+		t.Fatal("NewFileSearchTool returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFileSearchTool output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFunctionTool(t *testing.T) {
+	v := NewFunctionTool("", map[string]FunctionTool{}, false, FunctionToolType("function"))
+	if v == nil {
+		t.Fatal("NewFunctionTool returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFunctionTool output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewWebSearchPreviewTool(t *testing.T) {
+	v := NewWebSearchPreviewTool(WebSearchPreviewToolType("web_search_preview"))
+	if v == nil {
+		t.Fatal("NewWebSearchPreviewTool returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewWebSearchPreviewTool output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFormatJsonObject(t *testing.T) {
+	v := NewResponseFormatJsonObject(ResponseFormatJsonObjectType("json_object"))
+	if v == nil {
+		t.Fatal("NewResponseFormatJsonObject returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFormatJsonObject output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFormatText(t *testing.T) {
+	v := NewResponseFormatText(ResponseFormatTextType("text"))
+	if v == nil {
+		t.Fatal("NewResponseFormatText returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFormatText output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewTextResponseFormatJsonSchema(t *testing.T) {
+	v := NewTextResponseFormatJsonSchema(TextResponseFormatJsonSchemaType("json_schema"), "", ResponseFormatJsonSchemaSchema{})
+	if v == nil {
+		t.Fatal("NewTextResponseFormatJsonSchema returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewTextResponseFormatJsonSchema output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewToolChoiceFunction(t *testing.T) {
+	v := NewToolChoiceFunction(ToolChoiceFunctionType("function"), "")
+	if v == nil {
+		t.Fatal("NewToolChoiceFunction returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewToolChoiceFunction output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewToolChoiceTypes(t *testing.T) {
+	v := NewToolChoiceTypes(ToolChoiceTypesType("file_search"))
+	if v == nil {
+		t.Fatal("NewToolChoiceTypes returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewToolChoiceTypes output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewInputFileContent(t *testing.T) {
+	v := NewInputFileContent(InputFileContentType("input_file"))
+	if v == nil {
+		t.Fatal("NewInputFileContent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewInputFileContent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewInputImageContent(t *testing.T) {
+	v := NewInputImageContent(InputImageContentType("input_image"), InputImageContentDetail("low"))
+	if v == nil {
+		t.Fatal("NewInputImageContent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewInputImageContent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewInputTextContent(t *testing.T) {
+	v := NewInputTextContent(InputTextContentType("input_text"), "")
+	if v == nil {
+		t.Fatal("NewInputTextContent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewInputTextContent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewEasyInputMessage(t *testing.T) {
+	v := NewEasyInputMessage(EasyInputMessageRole("user"), &EasyInputMessageContentInputMessageContentList{})
+	if v == nil {
+		t.Fatal("NewEasyInputMessage returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewFileSearchToolCall(t *testing.T) {
+	v := NewFileSearchToolCall("", FileSearchToolCallType("file_search_call"), FileSearchToolCallStatus("in_progress"), []string{""})
+	if v == nil {
+		t.Fatal("NewFileSearchToolCall returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFileSearchToolCall output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFunctionCallOutputItemParam(t *testing.T) {
+	v := NewFunctionCallOutputItemParam("", FunctionCallOutputItemParamType("function_call_output"), "")
+	if v == nil {
+		t.Fatal("NewFunctionCallOutputItemParam returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewFunctionToolCall(t *testing.T) {
+	v := NewFunctionToolCall(FunctionToolCallType("function_call"), "", "", "")
+	if v == nil {
+		t.Fatal("NewFunctionToolCall returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFunctionToolCall output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewInputMessage(t *testing.T) {
+	v := NewInputMessage(InputMessageRole("user"), InputMessageContentList{})
+	if v == nil {
+		t.Fatal("NewInputMessage returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewOutputTextContent(t *testing.T) {
+	v := NewOutputTextContent([]Annotation{&FileCitationBody{}}, OutputTextContentType("output_text"), "")
+	if v == nil {
+		t.Fatal("NewOutputTextContent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewRefusalContent(t *testing.T) {
+	v := NewRefusalContent(RefusalContentType("refusal"), "")
+	if v == nil {
+		t.Fatal("NewRefusalContent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewRefusalContent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewOutputMessage(t *testing.T) {
+	v := NewOutputMessage(OutputMessageType("message"), OutputMessageRole("assistant"), []OutputContent{&OutputTextContent{}}, OutputMessageStatus("in_progress"), "")
+	if v == nil {
+		t.Fatal("NewOutputMessage returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewReasoningItem(t *testing.T) {
+	v := NewReasoningItem(ReasoningItemType("reasoning"), "", []any{nil})
+	if v == nil {
+		t.Fatal("NewReasoningItem returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewReasoningItem output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewWebSearchToolCall(t *testing.T) {
+	v := NewWebSearchToolCall("", WebSearchToolCallType("web_search_call"), WebSearchToolCallStatus("in_progress"))
+	if v == nil {
+		t.Fatal("NewWebSearchToolCall returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewWebSearchToolCall output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewItemReferenceParam(t *testing.T) {
+	v := NewItemReferenceParam("")
+	if v == nil {
+		t.Fatal("NewItemReferenceParam returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewItemReferenceParam output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewCreateResponse(t *testing.T) {
+	v := NewCreateResponse(&CreateResponseInputSliceInputItem{}, ModelIdsResponses("gpt-4.1"))
+	if v == nil {
+		t.Fatal("NewCreateResponse returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewError(t *testing.T) {
+	v := NewError("", "", "", "")
+	if v == nil {
+		t.Fatal("NewError returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewError output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFunctionToolCallOutput(t *testing.T) {
+	v := NewFunctionToolCallOutput(FunctionToolCallOutputType("function_call_output"), "", "")
+	if v == nil {
+		t.Fatal("NewFunctionToolCallOutput returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFunctionToolCallOutput output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFunctionToolCallOutputResource(t *testing.T) {
+	v := NewFunctionToolCallOutputResource("", FunctionToolCallOutputResourceType("function_call_output"), "", "")
+	if v == nil {
+		t.Fatal("NewFunctionToolCallOutputResource returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFunctionToolCallOutputResource output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewFunctionToolCallResource(t *testing.T) {
+	v := NewFunctionToolCallResource("", FunctionToolCallResourceType("function_call"), "", "", "")
+	if v == nil {
+		t.Fatal("NewFunctionToolCallResource returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewFunctionToolCallResource output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewInputMessageResource(t *testing.T) {
+	v := NewInputMessageResource(InputMessageContentList{}, "", InputMessageResourceRole("user"))
+	if v == nil {
+		t.Fatal("NewInputMessageResource returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseError(t *testing.T) {
+	v := NewResponseError(ResponseErrorCode("server_error"), "")
+	if v == nil {
+		t.Fatal("NewResponseError returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseError output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseUsageInputTokensDetails(t *testing.T) {
+	v := NewResponseUsageInputTokensDetails(0)
+	if v == nil {
+		t.Fatal("NewResponseUsageInputTokensDetails returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseUsageInputTokensDetails output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseUsageOutputTokensDetails(t *testing.T) {
+	v := NewResponseUsageOutputTokensDetails(0)
+	if v == nil {
+		t.Fatal("NewResponseUsageOutputTokensDetails returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseUsageOutputTokensDetails output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseUsage(t *testing.T) {
+	v := NewResponseUsage(0, 0, ResponseUsageInputTokensDetails{}, 0, ResponseUsageOutputTokensDetails{})
+	if v == nil {
+		t.Fatal("NewResponseUsage returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponse(t *testing.T) {
+	v := NewResponse("", "", ResponseIncompleteDetails{}, []OutputItem{&ComputerToolCall{}}, false, Metadata{}, 0, &ResponseToolChoiceToolChoiceOptions{}, 0.0, 0, []Tool{&ComputerUsePreviewTool{}}, ResponseObject("response"), ResponseError{}, ModelIdsResponses("gpt-4.1"))
+	if v == nil {
+		t.Fatal("NewResponse returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseAudioDeltaEvent(t *testing.T) {
+	v := NewResponseAudioDeltaEvent(ResponseAudioDeltaEventType("response.audio.delta"), "")
+	if v == nil {
+		t.Fatal("NewResponseAudioDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseAudioDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseAudioDoneEvent(t *testing.T) {
+	v := NewResponseAudioDoneEvent(ResponseAudioDoneEventType("response.audio.done"))
+	if v == nil {
+		t.Fatal("NewResponseAudioDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseAudioDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseAudioTranscriptDeltaEvent(t *testing.T) {
+	v := NewResponseAudioTranscriptDeltaEvent(ResponseAudioTranscriptDeltaEventType("response.audio.transcript.delta"), "")
+	if v == nil {
+		t.Fatal("NewResponseAudioTranscriptDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseAudioTranscriptDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseAudioTranscriptDoneEvent(t *testing.T) {
+	v := NewResponseAudioTranscriptDoneEvent(ResponseAudioTranscriptDoneEventType("response.audio.transcript.done"))
+	if v == nil {
+		t.Fatal("NewResponseAudioTranscriptDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseAudioTranscriptDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseCodeInterpreterCallCodeDeltaEvent(t *testing.T) {
+	v := NewResponseCodeInterpreterCallCodeDeltaEvent(ResponseCodeInterpreterCallCodeDeltaEventType("response.code_interpreter_call.code.delta"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseCodeInterpreterCallCodeDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseCodeInterpreterCallCodeDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseCodeInterpreterCallCodeDoneEvent(t *testing.T) {
+	v := NewResponseCodeInterpreterCallCodeDoneEvent(ResponseCodeInterpreterCallCodeDoneEventType("response.code_interpreter_call.code.done"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseCodeInterpreterCallCodeDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseCodeInterpreterCallCodeDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseCodeInterpreterCallCompletedEvent(t *testing.T) {
+	v := NewResponseCodeInterpreterCallCompletedEvent(ResponseCodeInterpreterCallCompletedEventType("response.code_interpreter_call.completed"), 0, CodeInterpreterToolCall{})
+	if v == nil {
+		t.Fatal("NewResponseCodeInterpreterCallCompletedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseCodeInterpreterCallInProgressEvent(t *testing.T) {
+	v := NewResponseCodeInterpreterCallInProgressEvent(CodeInterpreterToolCall{}, ResponseCodeInterpreterCallInProgressEventType("response.code_interpreter_call.in_progress"), 0)
+	if v == nil {
+		t.Fatal("NewResponseCodeInterpreterCallInProgressEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseCodeInterpreterCallInterpretingEvent(t *testing.T) {
+	v := NewResponseCodeInterpreterCallInterpretingEvent(CodeInterpreterToolCall{}, ResponseCodeInterpreterCallInterpretingEventType("response.code_interpreter_call.interpreting"), 0)
+	if v == nil {
+		t.Fatal("NewResponseCodeInterpreterCallInterpretingEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseCompletedEvent(t *testing.T) {
+	v := NewResponseCompletedEvent(ResponseCompletedEventType("response.completed"), Response{})
+	if v == nil {
+		t.Fatal("NewResponseCompletedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseContentPartAddedEvent(t *testing.T) {
+	v := NewResponseContentPartAddedEvent("", 0, 0, &OutputTextContent{}, ResponseContentPartAddedEventType("response.content_part.added"))
+	if v == nil {
+		t.Fatal("NewResponseContentPartAddedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseContentPartDoneEvent(t *testing.T) {
+	v := NewResponseContentPartDoneEvent(ResponseContentPartDoneEventType("response.content_part.done"), "", 0, 0, &OutputTextContent{})
+	if v == nil {
+		t.Fatal("NewResponseContentPartDoneEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseCreatedEvent(t *testing.T) {
+	v := NewResponseCreatedEvent(ResponseCreatedEventType("response.created"), Response{})
+	if v == nil {
+		t.Fatal("NewResponseCreatedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseErrorEvent(t *testing.T) {
+	v := NewResponseErrorEvent("", "", ResponseErrorEventType("error"), "")
+	if v == nil {
+		t.Fatal("NewResponseErrorEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseErrorEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFailedEvent(t *testing.T) {
+	v := NewResponseFailedEvent(ResponseFailedEventType("response.failed"), Response{})
+	if v == nil {
+		t.Fatal("NewResponseFailedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseFileSearchCallCompletedEvent(t *testing.T) {
+	v := NewResponseFileSearchCallCompletedEvent(ResponseFileSearchCallCompletedEventType("response.file_search_call.completed"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseFileSearchCallCompletedEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFileSearchCallCompletedEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFileSearchCallInProgressEvent(t *testing.T) {
+	v := NewResponseFileSearchCallInProgressEvent(ResponseFileSearchCallInProgressEventType("response.file_search_call.in_progress"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseFileSearchCallInProgressEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFileSearchCallInProgressEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFileSearchCallSearchingEvent(t *testing.T) {
+	v := NewResponseFileSearchCallSearchingEvent("", ResponseFileSearchCallSearchingEventType("response.file_search_call.searching"), 0)
+	if v == nil {
+		t.Fatal("NewResponseFileSearchCallSearchingEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFileSearchCallSearchingEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFunctionCallArgumentsDeltaEvent(t *testing.T) {
+	v := NewResponseFunctionCallArgumentsDeltaEvent("", ResponseFunctionCallArgumentsDeltaEventType("response.function_call_arguments.delta"), "", 0)
+	if v == nil {
+		t.Fatal("NewResponseFunctionCallArgumentsDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFunctionCallArgumentsDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseFunctionCallArgumentsDoneEvent(t *testing.T) {
+	v := NewResponseFunctionCallArgumentsDoneEvent(ResponseFunctionCallArgumentsDoneEventType("response.function_call_arguments.done"), "", 0, "")
+	if v == nil {
+		t.Fatal("NewResponseFunctionCallArgumentsDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseFunctionCallArgumentsDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseInProgressEvent(t *testing.T) {
+	v := NewResponseInProgressEvent(ResponseInProgressEventType("response.in_progress"), Response{})
+	if v == nil {
+		t.Fatal("NewResponseInProgressEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseIncompleteEvent(t *testing.T) {
+	v := NewResponseIncompleteEvent(ResponseIncompleteEventType("response.incomplete"), Response{})
+	if v == nil {
+		t.Fatal("NewResponseIncompleteEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseItemList(t *testing.T) {
+	v := NewResponseItemList([]ItemResource{&ComputerToolCall{}}, false, "", "", ResponseItemListObject("list"))
+	if v == nil {
+		t.Fatal("NewResponseItemList returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseOutputItemAddedEvent(t *testing.T) {
+	v := NewResponseOutputItemAddedEvent(0, &ComputerToolCall{}, ResponseOutputItemAddedEventType("response.output_item.added"))
+	if v == nil {
+		t.Fatal("NewResponseOutputItemAddedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseOutputItemDoneEvent(t *testing.T) {
+	v := NewResponseOutputItemDoneEvent(&ComputerToolCall{}, ResponseOutputItemDoneEventType("response.output_item.done"), 0)
+	if v == nil {
+		t.Fatal("NewResponseOutputItemDoneEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseReasoningSummaryPartAddedEventPart(t *testing.T) {
+	v := NewResponseReasoningSummaryPartAddedEventPart("", "")
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryPartAddedEventPart returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseReasoningSummaryPartAddedEventPart output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseReasoningSummaryPartAddedEvent(t *testing.T) {
+	v := NewResponseReasoningSummaryPartAddedEvent(0, 0, ResponseReasoningSummaryPartAddedEventPart{}, ResponseReasoningSummaryPartAddedEventType("response.reasoning_summary_part.added"), "")
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryPartAddedEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseReasoningSummaryPartDoneEventPart(t *testing.T) {
+	v := NewResponseReasoningSummaryPartDoneEventPart("", "")
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryPartDoneEventPart returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseReasoningSummaryPartDoneEventPart output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseReasoningSummaryPartDoneEvent(t *testing.T) {
+	v := NewResponseReasoningSummaryPartDoneEvent(0, 0, ResponseReasoningSummaryPartDoneEventPart{}, ResponseReasoningSummaryPartDoneEventType("response.reasoning_summary_part.done"), "")
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryPartDoneEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseReasoningSummaryTextDeltaEvent(t *testing.T) {
+	v := NewResponseReasoningSummaryTextDeltaEvent(ResponseReasoningSummaryTextDeltaEventType("response.reasoning_summary_text.delta"), "", 0, 0, "")
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryTextDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseReasoningSummaryTextDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseReasoningSummaryTextDoneEvent(t *testing.T) {
+	v := NewResponseReasoningSummaryTextDoneEvent("", 0, 0, "", ResponseReasoningSummaryTextDoneEventType("response.reasoning_summary_text.done"))
+	if v == nil {
+		t.Fatal("NewResponseReasoningSummaryTextDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseReasoningSummaryTextDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseRefusalDeltaEvent(t *testing.T) {
+	v := NewResponseRefusalDeltaEvent(ResponseRefusalDeltaEventType("response.refusal.delta"), "", 0, 0, "")
+	if v == nil {
+		t.Fatal("NewResponseRefusalDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseRefusalDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseRefusalDoneEvent(t *testing.T) {
+	v := NewResponseRefusalDoneEvent(ResponseRefusalDoneEventType("response.refusal.done"), "", 0, 0, "")
+	if v == nil {
+		t.Fatal("NewResponseRefusalDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseRefusalDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseTextAnnotationDeltaEvent(t *testing.T) {
+	v := NewResponseTextAnnotationDeltaEvent(ResponseTextAnnotationDeltaEventType("response.output_text.annotation.added"), "", 0, 0, 0, &FileCitationBody{})
+	if v == nil {
+		t.Fatal("NewResponseTextAnnotationDeltaEvent returned nil")
+	}
+	// Skip validation: constructor has union-typed params whose zero values
+	// may not satisfy oneOf schema constraints.
+}
+
+func TestCompschema_NewResponseTextDeltaEvent(t *testing.T) {
+	v := NewResponseTextDeltaEvent("", 0, 0, "", ResponseTextDeltaEventType("response.output_text.delta"))
+	if v == nil {
+		t.Fatal("NewResponseTextDeltaEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseTextDeltaEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseTextDoneEvent(t *testing.T) {
+	v := NewResponseTextDoneEvent("", 0, 0, "", ResponseTextDoneEventType("response.output_text.done"))
+	if v == nil {
+		t.Fatal("NewResponseTextDoneEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseTextDoneEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseWebSearchCallCompletedEvent(t *testing.T) {
+	v := NewResponseWebSearchCallCompletedEvent(ResponseWebSearchCallCompletedEventType("response.web_search_call.completed"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseWebSearchCallCompletedEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseWebSearchCallCompletedEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseWebSearchCallInProgressEvent(t *testing.T) {
+	v := NewResponseWebSearchCallInProgressEvent(0, "", ResponseWebSearchCallInProgressEventType("response.web_search_call.in_progress"))
+	if v == nil {
+		t.Fatal("NewResponseWebSearchCallInProgressEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseWebSearchCallInProgressEvent output fails validation: %v", err)
+	}
+}
+
+func TestCompschema_NewResponseWebSearchCallSearchingEvent(t *testing.T) {
+	v := NewResponseWebSearchCallSearchingEvent(ResponseWebSearchCallSearchingEventType("response.web_search_call.searching"), 0, "")
+	if v == nil {
+		t.Fatal("NewResponseWebSearchCallSearchingEvent returned nil")
+	}
+	data, err := json.Marshal(v)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if err := v.Validate(data); err != nil {
+		t.Errorf("NewResponseWebSearchCallSearchingEvent output fails validation: %v", err)
+	}
 }
 
