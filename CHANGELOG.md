@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-04-23
+
+### Fixed
+- **Duplicate `UnmarshalJSON`** — codegen now skips emitting `UnmarshalJSON` for types that already have one defined (e.g. from the importer). Detected via `HasUnmarshalJSON` flag set during analysis.
+- **Importer discriminator detection** — `detectDiscriminator` now requires the candidate field to appear in ≥2 variants and prefers fields present in more variants. Prevents single-variant fields (e.g. `detail` on `InputImageContent`) from being picked over the correct `type` field.
+- **Integer type fidelity** — the analyzer now preserves Go’s specific integer types (`int`, `int64`, `int32`, etc.) in the IR instead of collapsing all to `"integer"`. Normalized back to `"integer"` for JSON Schema output. Fixes constructor type mismatches (`int` vs `int64`).
+- **Constructor nullable param wrapping** — required nullable fields (e.g. `Strict *bool`) now correctly unwrap the pointer from the param type, so `&param` produces `*T` not `**T`.
+
 ## [3.2.0] - 2026-04-23
 
 ### Added
@@ -359,7 +367,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v3.2.1...HEAD
+[3.2.1]: https://github.com/codewandler/compschema/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/codewandler/compschema/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/codewandler/compschema/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/codewandler/compschema/compare/v2.3.0...v3.0.0
