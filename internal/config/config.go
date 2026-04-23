@@ -63,11 +63,13 @@ type Action struct {
 	Implement []ImplementRule   `json:"implement,omitempty" yaml:"implement,omitempty" jsonschema:"description=Accessor methods to generate on union variants"`
 
 	// generate flags
-	All      bool     `json:"all,omitempty" jsonschema:"description=Analyze all exported types (not just annotated)"`
-	Packages []string `json:"packages,omitempty" jsonschema:"description=Go package patterns to analyze"`
-	Test     bool     `json:"test,omitempty" jsonschema:"description=Run generated tests after code generation"`
-	EmitIR   bool     `json:"emit_ir,omitempty" jsonschema:"description=Write IR YAML alongside generated output"`
-	Examples bool     `json:"examples,omitempty" jsonschema:"description=Add generated examples to JSON Schema output"`
+	All          bool     `json:"all,omitempty" jsonschema:"description=Analyze all exported types (not just annotated)"`
+	Packages     []string `json:"packages,omitempty" jsonschema:"description=Go package patterns to analyze"`
+	Test         bool     `json:"test,omitempty" jsonschema:"description=Run generated tests after code generation"`
+	FailOnTest   bool     `json:"fail_on_test,omitempty" jsonschema:"description=Exit with error if any generated test fails (requires test: true)"`
+	EmitIR       bool     `json:"emit_ir,omitempty" jsonschema:"description=Write IR YAML alongside generated output"`
+	Examples     bool     `json:"examples,omitempty" jsonschema:"description=Add generated examples to JSON Schema output"`
+	Constructors bool     `json:"constructors,omitempty" jsonschema:"description=Generate NewT constructors for struct types"`
 
 	// shared flags
 	ValidateSchema bool   `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`

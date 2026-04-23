@@ -10,11 +10,12 @@ import (
 
 // Config controls the import pipeline.
 type Config struct {
-	Package   string            // Go package name
-	Rename    map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
-	Exclude   []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
-	Tags      []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
-	Implement []ImplementRule   // accessor methods to generate on union variants
+	Package      string            // Go package name
+	Rename       map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
+	Exclude      []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
+	Tags         []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
+	Implement    []ImplementRule   // accessor methods to generate on union variants
+	Constructors bool              // generate NewT() constructors for struct types
 }
 
 // ImplementRule configures accessor method generation for a union's variants.

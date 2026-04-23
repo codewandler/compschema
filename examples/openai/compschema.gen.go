@@ -711,7 +711,7 @@ func DecodeComputerAction(data []byte) (ComputerAction, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "back", "forward", "left", "right", "wheel":
+	case "click":
 		var val Click
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -1384,7 +1384,7 @@ func DecodeTool(data []byte) (Tool, error) {
 		return nil, err
 	}
 	switch disc.D {
-	case "browser", "linux", "mac", "ubuntu", "windows":
+	case "computer_use_preview":
 		var val ComputerUsePreviewTool
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -1507,6 +1507,9 @@ func DecodeError(data []byte) (Error, error) {
 	}
 	return result, nil
 }
+
+// JSONSchemaBytes returns the JSON Schema for VectorStoreFileAttributes.
+func (VectorStoreFileAttributes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("VectorStoreFileAttributes") }
 
 // JSONSchemaBytes returns the JSON Schema for FileSearchToolCallResults.
 func (FileSearchToolCallResults) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FileSearchToolCallResults") }
@@ -1827,7 +1830,7 @@ func DecodeInputContent(data []byte) (InputContent, error) {
 			return nil, err
 		}
 		return &val, nil
-	case "auto", "high", "low":
+	case "input_image":
 		var val InputImageContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
@@ -2157,6 +2160,7 @@ func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
 func ItemResourceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemResource") }
 
 // DecodeItemResource validates and unmarshals JSON into the correct ItemResource variant.
+// Dispatches on the "type" discriminator field.
 func DecodeItemResource(data []byte) (ItemResource, error) {
 	sch := compschemaValidator("ItemResource")
 	var raw any
@@ -2166,65 +2170,58 @@ func DecodeItemResource(data []byte) (ItemResource, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var keys map[string]bool
-	{
-		var obj map[string]json.RawMessage
-		if err := json.Unmarshal(data, &obj); err == nil {
-			keys = make(map[string]bool, len(obj))
-			for k := range obj {
-				keys[k] = true
-			}
-		}
+	var disc struct {
+		D string `json:"type"`
 	}
-	if keys["action"] && keys["call_id"] && keys["id"] && keys["pending_safety_checks"] && keys["status"] && keys["type"] {
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "computer_call":
 		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["arguments"] && keys["call_id"] && keys["id"] && keys["name"] && keys["type"] {
-		var val FunctionToolCallResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	if keys["content"] && keys["id"] && keys["role"] && keys["status"] && keys["type"] {
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	if keys["call_id"] && keys["id"] && keys["output"] && keys["type"] {
+		return &val, nil
+	case "computer_call_output":
 		var val ComputerToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["id"] && keys["queries"] && keys["status"] && keys["type"] {
+		return &val, nil
+	case "file_search_call":
 		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["call_id"] && keys["id"] && keys["output"] && keys["type"] {
+		return &val, nil
+	case "function_call_output":
 		var val FunctionToolCallOutputResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["content"] && keys["id"] && keys["role"] {
-		var val InputMessageResource
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		return &val, nil
+	case "function_call":
+		var val FunctionToolCallResource
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["id"] && keys["status"] && keys["type"] {
+		return &val, nil
+	case "message":
+		var val OutputMessage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "web_search_call":
 		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for ItemResource", disc.D)
 	}
-	return nil, fmt.Errorf("no matching variant for ItemResource")
 }
 
 // ItemResourceAs extracts a variant from a ItemResource union value, like errors.As.
@@ -2329,6 +2326,7 @@ func DecodeReasoningItem(data []byte) (ReasoningItem, error) {
 func OutputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("OutputItem") }
 
 // DecodeOutputItem validates and unmarshals JSON into the correct OutputItem variant.
+// Dispatches on the "type" discriminator field.
 func DecodeOutputItem(data []byte) (OutputItem, error) {
 	sch := compschemaValidator("OutputItem")
 	var raw any
@@ -2338,53 +2336,52 @@ func DecodeOutputItem(data []byte) (OutputItem, error) {
 	if err := sch.Validate(raw); err != nil {
 		return nil, err
 	}
-	var keys map[string]bool
-	{
-		var obj map[string]json.RawMessage
-		if err := json.Unmarshal(data, &obj); err == nil {
-			keys = make(map[string]bool, len(obj))
-			for k := range obj {
-				keys[k] = true
-			}
-		}
+	var disc struct {
+		D string `json:"type"`
 	}
-	if keys["action"] && keys["call_id"] && keys["id"] && keys["pending_safety_checks"] && keys["status"] && keys["type"] {
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "computer_call":
 		var val ComputerToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["content"] && keys["id"] && keys["role"] && keys["status"] && keys["type"] {
-		var val OutputMessage
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	if keys["id"] && keys["queries"] && keys["status"] && keys["type"] {
+		return &val, nil
+	case "file_search_call":
 		var val FileSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["arguments"] && keys["call_id"] && keys["name"] && keys["type"] {
+		return &val, nil
+	case "function_call":
 		var val FunctionToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["id"] && keys["summary"] && keys["type"] {
+		return &val, nil
+	case "message":
+		var val OutputMessage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "reasoning":
 		var val ReasoningItem
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
-	}
-	if keys["id"] && keys["status"] && keys["type"] {
+		return &val, nil
+	case "web_search_call":
 		var val WebSearchToolCall
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
 		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for OutputItem", disc.D)
 	}
-	return nil, fmt.Errorf("no matching variant for OutputItem")
 }
 
 // OutputItemAs extracts a variant from a OutputItem union value, like errors.As.
@@ -3966,6 +3963,371 @@ func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema for VectorStoreFileAttributes.
-func (VectorStoreFileAttributes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("VectorStoreFileAttributes") }
+func (v *CodeInterpreterToolCall) UnmarshalJSON(data []byte) error {
+	type Alias CodeInterpreterToolCall
+	var raw struct {
+		Alias
+		Results []json.RawMessage `json:"results"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CodeInterpreterToolCall(raw.Alias)
+	for _, item := range raw.Results {
+		parsed, err := UnmarshalCodeInterpreterToolOutput(item)
+		if err != nil {
+			return err
+		}
+		v.Results = append(v.Results, parsed)
+	}
+	return nil
+}
+
+func (v *ComputerToolCall) UnmarshalJSON(data []byte) error {
+	type Alias ComputerToolCall
+	var raw struct {
+		Alias
+		Action json.RawMessage `json:"action"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ComputerToolCall(raw.Alias)
+	if len(raw.Action) > 0 && string(raw.Action) != "null" {
+		parsed, err := UnmarshalComputerAction(raw.Action)
+		if err != nil {
+			return err
+		}
+		v.Action = parsed
+	}
+	return nil
+}
+
+func (v *CreateResponseText) UnmarshalJSON(data []byte) error {
+	type Alias CreateResponseText
+	var raw struct {
+		Alias
+		Format json.RawMessage `json:"format"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CreateResponseText(raw.Alias)
+	if len(raw.Format) > 0 && string(raw.Format) != "null" {
+		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+		if err != nil {
+			return err
+		}
+		v.Format = parsed
+	}
+	return nil
+}
+
+func (v *CreateResponse) UnmarshalJSON(data []byte) error {
+	type Alias CreateResponse
+	var raw struct {
+		Alias
+		Tools []json.RawMessage `json:"tools"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = CreateResponse(raw.Alias)
+	for _, item := range raw.Tools {
+		parsed, err := UnmarshalTool(item)
+		if err != nil {
+			return err
+		}
+		v.Tools = append(v.Tools, parsed)
+	}
+	return nil
+}
+
+func (v *InputMessage) UnmarshalJSON(data []byte) error {
+	type Alias InputMessage
+	var raw struct {
+		Alias
+		Content []json.RawMessage `json:"content"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = InputMessage(raw.Alias)
+	for _, item := range raw.Content {
+		parsed, err := UnmarshalInputContent(item)
+		if err != nil {
+			return err
+		}
+		v.Content = append(v.Content, parsed)
+	}
+	return nil
+}
+
+func (v *InputMessageResource) UnmarshalJSON(data []byte) error {
+	type Alias InputMessageResource
+	var raw struct {
+		Alias
+		Content []json.RawMessage `json:"content"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = InputMessageResource(raw.Alias)
+	for _, item := range raw.Content {
+		parsed, err := UnmarshalInputContent(item)
+		if err != nil {
+			return err
+		}
+		v.Content = append(v.Content, parsed)
+	}
+	return nil
+}
+
+func (v *OutputTextContent) UnmarshalJSON(data []byte) error {
+	type Alias OutputTextContent
+	var raw struct {
+		Alias
+		Annotations []json.RawMessage `json:"annotations"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = OutputTextContent(raw.Alias)
+	for _, item := range raw.Annotations {
+		parsed, err := UnmarshalAnnotation(item)
+		if err != nil {
+			return err
+		}
+		v.Annotations = append(v.Annotations, parsed)
+	}
+	return nil
+}
+
+func (v *OutputMessage) UnmarshalJSON(data []byte) error {
+	type Alias OutputMessage
+	var raw struct {
+		Alias
+		Content []json.RawMessage `json:"content"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = OutputMessage(raw.Alias)
+	for _, item := range raw.Content {
+		parsed, err := UnmarshalOutputContent(item)
+		if err != nil {
+			return err
+		}
+		v.Content = append(v.Content, parsed)
+	}
+	return nil
+}
+
+func (v *ResponseText) UnmarshalJSON(data []byte) error {
+	type Alias ResponseText
+	var raw struct {
+		Alias
+		Format json.RawMessage `json:"format"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseText(raw.Alias)
+	if len(raw.Format) > 0 && string(raw.Format) != "null" {
+		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+		if err != nil {
+			return err
+		}
+		v.Format = parsed
+	}
+	return nil
+}
+
+func (v *Response) UnmarshalJSON(data []byte) error {
+	type Alias Response
+	var raw struct {
+		Alias
+		Output []json.RawMessage `json:"output"`
+		Tools []json.RawMessage `json:"tools"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = Response(raw.Alias)
+	for _, item := range raw.Output {
+		parsed, err := UnmarshalOutputItem(item)
+		if err != nil {
+			return err
+		}
+		v.Output = append(v.Output, parsed)
+	}
+	for _, item := range raw.Tools {
+		parsed, err := UnmarshalTool(item)
+		if err != nil {
+			return err
+		}
+		v.Tools = append(v.Tools, parsed)
+	}
+	return nil
+}
+
+func (v *ResponseContentPartAddedEvent) UnmarshalJSON(data []byte) error {
+	type Alias ResponseContentPartAddedEvent
+	var raw struct {
+		Alias
+		Part json.RawMessage `json:"part"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseContentPartAddedEvent(raw.Alias)
+	if len(raw.Part) > 0 && string(raw.Part) != "null" {
+		parsed, err := UnmarshalOutputContent(raw.Part)
+		if err != nil {
+			return err
+		}
+		v.Part = parsed
+	}
+	return nil
+}
+
+func (v *ResponseContentPartDoneEvent) UnmarshalJSON(data []byte) error {
+	type Alias ResponseContentPartDoneEvent
+	var raw struct {
+		Alias
+		Part json.RawMessage `json:"part"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseContentPartDoneEvent(raw.Alias)
+	if len(raw.Part) > 0 && string(raw.Part) != "null" {
+		parsed, err := UnmarshalOutputContent(raw.Part)
+		if err != nil {
+			return err
+		}
+		v.Part = parsed
+	}
+	return nil
+}
+
+func (v *ResponseItemList) UnmarshalJSON(data []byte) error {
+	type Alias ResponseItemList
+	var raw struct {
+		Alias
+		Data []json.RawMessage `json:"data"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseItemList(raw.Alias)
+	for _, item := range raw.Data {
+		parsed, err := UnmarshalItemResource(item)
+		if err != nil {
+			return err
+		}
+		v.Data = append(v.Data, parsed)
+	}
+	return nil
+}
+
+func (v *ResponseOutputItemAddedEvent) UnmarshalJSON(data []byte) error {
+	type Alias ResponseOutputItemAddedEvent
+	var raw struct {
+		Alias
+		Item json.RawMessage `json:"item"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseOutputItemAddedEvent(raw.Alias)
+	if len(raw.Item) > 0 && string(raw.Item) != "null" {
+		parsed, err := UnmarshalOutputItem(raw.Item)
+		if err != nil {
+			return err
+		}
+		v.Item = parsed
+	}
+	return nil
+}
+
+func (v *ResponseOutputItemDoneEvent) UnmarshalJSON(data []byte) error {
+	type Alias ResponseOutputItemDoneEvent
+	var raw struct {
+		Alias
+		Item json.RawMessage `json:"item"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseOutputItemDoneEvent(raw.Alias)
+	if len(raw.Item) > 0 && string(raw.Item) != "null" {
+		parsed, err := UnmarshalOutputItem(raw.Item)
+		if err != nil {
+			return err
+		}
+		v.Item = parsed
+	}
+	return nil
+}
+
+func (v *ResponsePropertiesText) UnmarshalJSON(data []byte) error {
+	type Alias ResponsePropertiesText
+	var raw struct {
+		Alias
+		Format json.RawMessage `json:"format"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponsePropertiesText(raw.Alias)
+	if len(raw.Format) > 0 && string(raw.Format) != "null" {
+		parsed, err := UnmarshalTextResponseFormatConfiguration(raw.Format)
+		if err != nil {
+			return err
+		}
+		v.Format = parsed
+	}
+	return nil
+}
+
+func (v *ResponseProperties) UnmarshalJSON(data []byte) error {
+	type Alias ResponseProperties
+	var raw struct {
+		Alias
+		Tools []json.RawMessage `json:"tools"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseProperties(raw.Alias)
+	for _, item := range raw.Tools {
+		parsed, err := UnmarshalTool(item)
+		if err != nil {
+			return err
+		}
+		v.Tools = append(v.Tools, parsed)
+	}
+	return nil
+}
+
+func (v *ResponseTextAnnotationDeltaEvent) UnmarshalJSON(data []byte) error {
+	type Alias ResponseTextAnnotationDeltaEvent
+	var raw struct {
+		Alias
+		Annotation json.RawMessage `json:"annotation"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*v = ResponseTextAnnotationDeltaEvent(raw.Alias)
+	if len(raw.Annotation) > 0 && string(raw.Annotation) != "null" {
+		parsed, err := UnmarshalAnnotation(raw.Annotation)
+		if err != nil {
+			return err
+		}
+		v.Annotation = parsed
+	}
+	return nil
+}
 

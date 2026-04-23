@@ -410,7 +410,7 @@
       "examples": [
         {
           "filters": [
-            "example"
+            {}
           ],
           "type": "and"
         }
@@ -1729,7 +1729,15 @@
             "example"
           ],
           "results": [
-            "example"
+            {
+              "attributes": {
+                "key1": "example"
+              },
+              "file_id": "example",
+              "filename": "example",
+              "score": 1,
+              "text": "example"
+            }
           ],
           "status": "completed",
           "type": "file_search_call"
@@ -1798,10 +1806,50 @@
       "description": "The results of the file search tool call.",
       "examples": [
         [
-          "example"
+          {
+            "attributes": {
+              "key1": "example"
+            },
+            "file_id": "example",
+            "filename": "example",
+            "score": 1,
+            "text": "example"
+          }
         ]
       ],
-      "items": {},
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "attributes": {
+            "$ref": "#/$defs/VectorStoreFileAttributes"
+          },
+          "file_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "filename": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "type": "object"
+      },
       "type": "array"
     },
     "Filters": {
@@ -2437,13 +2485,6 @@
       "discriminator": {
         "propertyName": "role"
       },
-      "examples": [
-        {
-          "content": "example",
-          "role": "assistant",
-          "type": "message"
-        }
-      ],
       "oneOf": [
         {
           "$ref": "#/$defs/EasyInputMessage"
@@ -2725,6 +2766,9 @@
     },
     "ItemResource": {
       "description": "is a sealed interface for oneOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "examples": [
         {
           "action": {
@@ -2966,6 +3010,9 @@
     },
     "OutputItem": {
       "description": "is a sealed interface for anyOf union.\nDiscriminated by \"type\" field.",
+      "discriminator": {
+        "propertyName": "type"
+      },
       "examples": [
         {
           "action": {

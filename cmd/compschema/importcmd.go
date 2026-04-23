@@ -10,12 +10,13 @@ import (
 
 func newImportCmd() *cobra.Command {
 	var (
-		pkg        string
-		outPath    string
-		renames    []string
-		excludes   []string
-		tags       []string
-		implements []string
+		pkg          string
+		outPath      string
+		renames      []string
+		excludes     []string
+		tags         []string
+		implements   []string
+		constructors bool
 	)
 
 	cmd := &cobra.Command{
@@ -39,9 +40,10 @@ that preserves constraints for perfect round-trip with compschema generate.`,
 			}
 
 			cfg := importer.Config{
-				Package: pkg,
-				Exclude: excludes,
-				Tags:    tags,
+				Package:      pkg,
+				Exclude:      excludes,
+				Tags:         tags,
+				Constructors: constructors,
 			}
 
 			// Parse --rename Foo=Bar flags into the map.
@@ -76,6 +78,7 @@ that preserves constraints for perfect round-trip with compschema generate.`,
 	cmd.Flags().StringArrayVar(&excludes, "exclude", nil, "glob patterns for types to exclude (repeatable)")
 	cmd.Flags().StringSliceVar(&tags, "tags", nil, "additional struct tags to emit (e.g. yaml)")
 	cmd.Flags().StringArrayVar(&implements, "implement", nil, "accessor on union variants: Union=MethodName (repeatable)")
+	cmd.Flags().BoolVar(&constructors, "constructors", false, "generate NewT() constructors for struct types")
 	_ = cmd.MarkFlagRequired("out")
 
 	return cmd

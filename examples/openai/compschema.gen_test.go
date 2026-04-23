@@ -1936,6 +1936,17 @@ func TestCompschema_Error_RoundTrip(t *testing.T) {
 	t.Skip("type has fields with union/interface types that cannot be auto-fixtured")
 }
 
+func TestCompschema_VectorStoreFileAttributes_JSONSchemaBytes(t *testing.T) {
+	b := (VectorStoreFileAttributes{}).JSONSchemaBytes()
+	if len(b) == 0 {
+		t.Fatal("JSONSchemaBytes returned empty")
+	}
+	var v any
+	if err := json.Unmarshal(b, &v); err != nil {
+		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
+	}
+}
+
 func TestCompschema_FileSearchToolCallResults_JSONSchemaBytes(t *testing.T) {
 	b := (FileSearchToolCallResults{}).JSONSchemaBytes()
 	if len(b) == 0 {
@@ -4976,17 +4987,6 @@ func TestCompschema_ToolChoiceTypes_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
-func TestCompschema_VectorStoreFileAttributes_JSONSchemaBytes(t *testing.T) {
-	b := (VectorStoreFileAttributes{}).JSONSchemaBytes()
-	if len(b) == 0 {
-		t.Fatal("JSONSchemaBytes returned empty")
-	}
-	var v any
-	if err := json.Unmarshal(b, &v); err != nil {
-		t.Fatalf("JSONSchemaBytes is not valid JSON: %v", err)
-	}
-}
-
 func TestCompschema_ExamplesValidate(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -5009,7 +5009,7 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"CodeInterpreterToolOutput", `{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}`},
 		{"CodeInterpreterToolCall", `{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"}`},
 		{"ComparisonFilter", `{"key":"example","type":"eq","value":"example"}`},
-		{"CompoundFilter", `{"filters":["example"],"type":"and"}`},
+		{"CompoundFilter", `{"filters":[{}],"type":"and"}`},
 		{"DoubleClick", `{"type":"double_click","x":1,"y":1}`},
 		{"Coordinate", `{"x":1,"y":1}`},
 		{"Drag", `{"path":[{"x":1,"y":1}],"type":"drag"}`},
@@ -5068,8 +5068,9 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"ErrorCode", `"example"`},
 		{"ErrorParam", `"example"`},
 		{"Error", `{"code":"example","message":"example","param":"example","type":"example"}`},
-		{"FileSearchToolCallResults", `["example"]`},
-		{"FileSearchToolCall", `{"id":"example","queries":["example"],"results":["example"],"status":"completed","type":"file_search_call"}`},
+		{"VectorStoreFileAttributes", `{"key1":"example"}`},
+		{"FileSearchToolCallResults", `[{"attributes":{"key1":"example"},"file_id":"example","filename":"example","score":1,"text":"example"}]`},
+		{"FileSearchToolCall", `{"id":"example","queries":["example"],"results":[{"attributes":{"key1":"example"},"file_id":"example","filename":"example","score":1,"text":"example"}],"status":"completed","type":"file_search_call"}`},
 		{"Filters", `{"key":"example","type":"eq","value":"example"}`},
 		{"FunctionCallOutputItemParamID", `"example"`},
 		{"FunctionCallOutputItemParam", `{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`},
@@ -5086,7 +5087,6 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"InputContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
 		{"Item", `{"key1":"example"}`},
 		{"ItemReferenceParam", `{"id":"example","type":"item_reference"}`},
-		{"InputItem", `{"content":"example","role":"assistant","type":"message"}`},
 		{"InputMessageContentList", `[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`},
 		{"InputMessage", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"role":"developer","status":"completed","type":"message"}`},
 		{"InputMessageResource", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"id":"example","role":"developer","status":"completed","type":"message"}`},
@@ -5166,7 +5166,6 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		{"ToolChoiceFunction", `{"name":"example","type":"function"}`},
 		{"ToolChoiceOptions", `"auto"`},
 		{"ToolChoiceTypes", `{"type":"computer_use_preview"}`},
-		{"VectorStoreFileAttributes", `{"key1":"example"}`},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -5346,7 +5345,7 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		_ = reencoded
 	})
 	t.Run("CompoundFilter", func(t *testing.T) {
-		data := []byte(`{"filters":["example"],"type":"and"}`)
+		data := []byte(`{"filters":[{}],"type":"and"}`)
 		result, err := DecodeCompoundFilter(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
@@ -5855,12 +5854,16 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		}
 		_ = reencoded
 	})
+	t.Run("VectorStoreFileAttributes", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
 	t.Run("FileSearchToolCallResults", func(t *testing.T) {
-		data := []byte(`["example"]`)
+		data := []byte(`[{"attributes":{"key1":"example"},"file_id":"example","filename":"example","score":1,"text":"example"}]`)
 		_ = data
 	})
 	t.Run("FileSearchToolCall", func(t *testing.T) {
-		data := []byte(`{"id":"example","queries":["example"],"results":["example"],"status":"completed","type":"file_search_call"}`)
+		data := []byte(`{"id":"example","queries":["example"],"results":[{"attributes":{"key1":"example"},"file_id":"example","filename":"example","score":1,"text":"example"}],"status":"completed","type":"file_search_call"}`)
 		result, err := DecodeFileSearchToolCall(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
@@ -6018,16 +6021,6 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatalf("re-marshal: %v", err)
 		}
 		_ = reencoded
-	})
-	t.Run("InputItem", func(t *testing.T) {
-		data := []byte(`{"content":"example","role":"assistant","type":"message"}`)
-		result, err := DecodeInputItem(data)
-		if err != nil {
-			t.Fatalf("Decode: %v", err)
-		}
-		if result == nil {
-			t.Fatal("Decode returned nil")
-		}
 	})
 	t.Run("InputMessageContentList", func(t *testing.T) {
 		data := []byte(`[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`)
@@ -6840,10 +6833,6 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 			t.Fatalf("re-marshal: %v", err)
 		}
 		_ = reencoded
-	})
-	t.Run("VectorStoreFileAttributes", func(t *testing.T) {
-		data := []byte(`{"key1":"example"}`)
-		_ = data
 	})
 }
 

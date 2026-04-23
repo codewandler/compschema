@@ -3,6 +3,12 @@
     "Circle": {
       "additionalProperties": false,
       "description": "is a round shape.",
+      "examples": [
+        {
+          "radius": 1,
+          "type": "circle"
+        }
+      ],
       "properties": {
         "radius": {
           "minimum": 0,
@@ -23,6 +29,12 @@
     "LineItem": {
       "additionalProperties": false,
       "description": "is a single item in an order.",
+      "examples": [
+        {
+          "qty": 1,
+          "sku": "ABC-123"
+        }
+      ],
       "properties": {
         "qty": {
           "minimum": 1,
@@ -43,6 +55,19 @@
     "Order": {
       "additionalProperties": false,
       "description": "represents a customer order.",
+      "examples": [
+        {
+          "id": "example",
+          "items": [
+            {
+              "qty": 1,
+              "sku": "ABC-123"
+            }
+          ],
+          "notes": "example",
+          "status": "pending"
+        }
+      ],
       "properties": {
         "id": {
           "type": "string"
@@ -67,6 +92,9 @@
             "confirmed",
             "shipped"
           ],
+          "examples": [
+            "pending"
+          ],
           "title": "OrderStatus",
           "type": "string"
         }
@@ -82,6 +110,13 @@
     "Rectangle": {
       "additionalProperties": false,
       "description": "has four sides.",
+      "examples": [
+        {
+          "height": 1,
+          "type": "rectangle",
+          "width": 1
+        }
+      ],
       "properties": {
         "height": {
           "minimum": 0,
@@ -109,6 +144,12 @@
       "discriminator": {
         "propertyName": "type"
       },
+      "examples": [
+        {
+          "radius": 1,
+          "type": "circle"
+        }
+      ],
       "oneOf": [
         {
           "$ref": "#/$defs/Circle"

@@ -153,3 +153,130 @@ func TestGoTests_BasicPackage(t *testing.T) {
 
 	t.Logf("tests: %d bytes", len(code))
 }
+
+func TestGoCodegen_Constructors(t *testing.T) {
+	pkgs, err := analyzer.Analyze(false, "../../testdata/basic")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pkg := pkgs[0]
+
+	// Without constructors — no NewT functions.
+	code := GoCodegen(pkg, nil)
+	if strings.Contains(code, "func NewCircle(") {
+		t.Error("default GoCodegen should NOT emit constructors")
+	}
+
+	// With constructors.
+	code = GoCodegenWithOptions(pkg, nil, EmitOptions{Constructors: true})
+
+	// Circle: has const Type="circle" and required Radius.
+	if !strings.Contains(code, "func NewCircle(") {
+		t.Error("missing NewCircle constructor")
+	}
+	if !strings.Contains(code, `Type: "circle"`) {
+		t.Error("NewCircle should auto-fill Type with \"circle\"")
+	}
+	if !strings.Contains(code, "radius float64") {
+		t.Error("NewCircle should have radius param")
+	}
+
+	// Rectangle: has const Type="rectangle", required Width + Height.
+	if !strings.Contains(code, "func NewRectangle(") {
+		t.Error("missing NewRectangle constructor")
+	}
+	if !strings.Contains(code, `Type: "rectangle"`) {
+		t.Error("NewRectangle should auto-fill Type with \"rectangle\"")
+	}
+
+	// Order: required ID, Items, Status — no const fields.
+	if !strings.Contains(code, "func NewOrder(") {
+		t.Error("missing NewOrder constructor")
+	}
+	// Notes is optional (omitempty), should NOT be a param.
+	if strings.Contains(code, "notes") {
+		t.Error("NewOrder should NOT have notes param (it's optional)")
+	}
+
+	// LineItem: required SKU + Qty.
+	if !strings.Contains(code, "func NewLineItem(") {
+		t.Error("missing NewLineItem constructor")
+	}
+
+	// Ptr helper should be emitted (Order has optional *string Notes).
+	if !strings.Contains(code, "func Ptr[T any](v T) *T") {
+		t.Error("missing Ptr helper")
+	}
+
+	// Should NOT emit constructor for Shape (union interface).
+	if strings.Contains(code, "func NewShape(") {
+		t.Error("should NOT emit constructor for Shape union")
+	}
+
+	t.Logf("codegen with constructors: %d bytes", len(code))
+}
+
+func TestGoTests_Constructors(t *testing.T) {
+	pkgs, err := analyzer.Analyze(false, "../../testdata/basic")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pkg := pkgs[0]
+
+	// Without constructors.
+	code := GoTests(pkg, nil)
+	if strings.Contains(code, "TestCompschema_NewCircle") {
+		t.Error("default GoTests should NOT emit constructor tests")
+	}
+
+	// With constructors.
+	code = GoTestsWithOptions(pkg, nil, EmitOptions{Constructors: true})
+
+	for _, name := range []string{"Circle", "Rectangle", "Order", "LineItem"} {
+		if !strings.Contains(code, "TestCompschema_New"+name) {
+			t.Errorf("missing constructor test for New%s", name)
+		}
+	}
+
+	// Constructor tests should validate round-trip.
+	if !strings.Contains(code, "v.Validate(data)") {
+		t.Error("constructor tests should validate marshaled output")
+	}
+
+	t.Logf("tests with constructors: %d bytes", len(code))
+}
+
+func TestConstructorHelpers(t *testing.T) {
+	// Test paramName.
+	tests := []struct {
+		in, want string
+	}{
+		{"ID", "id"},
+		{"Name", "name"},
+		{"URLPath", "urlPath"},
+		{"Status", "status"},
+		{"Type", "type_"},
+		{"Radius", "radius"},
+		{"SKU", "sku"},
+	}
+	for _, tt := range tests {
+		got := paramName(tt.in)
+		if got != tt.want {
+			t.Errorf("paramName(%q) = %q, want %q", tt.in, got, tt.want)
+		}
+	}
+
+	// Test goLiteral.
+	if goLiteral("circle") != `"circle"` {
+		t.Errorf("goLiteral string")
+	}
+	if goLiteral(42) != "42" {
+		t.Errorf("goLiteral int")
+	}
+	if goLiteral(3.14) != "3.14" {
+		t.Errorf("goLiteral float")
+	}
+	if goLiteral(true) != "true" {
+		t.Errorf("goLiteral bool")
+	}
+}

@@ -365,12 +365,21 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 		// Try to find discriminator value from any field:
 		// 1. const constraint in jsonschema tag
 		// 2. field type is a single-value enum (e.g. ClickType with only "click")
+		// 3. field type is a multi-value enum (fallback, only if 1+2 found nothing)
+		//
+		// When the discriminator is already established from a previous variant,
+		// only check the field matching that discriminator name.
 		if st, ok := tn.Type().Underlying().(*types.Struct); ok {
+			// Pass 1: const constraints and single-value enums (strong signals).
 			for i := 0; i < st.NumFields(); i++ {
 				f := st.Field(i)
 				tag := reflect.StructTag(st.Tag(i))
 				jsonName, _ := parseJSONTag(tag.Get("json"))
 				if jsonName == "" || jsonName == "-" {
+					continue
+				}
+				// If discriminator already known, only check that field.
+				if irType.Discriminator != "" && jsonName != irType.Discriminator {
 					continue
 				}
 
@@ -394,21 +403,31 @@ func (a *pkgAnalyzer) convertUnion(name string, iface *types.Interface) *ir.Type
 					v.DiscriminatorValues = []string{discValue}
 					if irType.Discriminator == "" {
 						irType.Discriminator = jsonName
-					} else if irType.Discriminator != jsonName {
-						irType.Discriminator = ""
 					}
 					break
 				}
+			}
 
-				// Check if field type is a multi-value enum (disjoint sets).
-				if vals := enumValues(f.Type(), a.pkg); len(vals) > 0 {
-					v.DiscriminatorValues = vals
-					if irType.Discriminator == "" {
-						irType.Discriminator = jsonName
-					} else if irType.Discriminator != jsonName {
-						irType.Discriminator = ""
+			// Pass 2: multi-value enums (weaker signal, fallback).
+			if len(v.DiscriminatorValues) == 0 {
+				for i := 0; i < st.NumFields(); i++ {
+					f := st.Field(i)
+					tag := reflect.StructTag(st.Tag(i))
+					jsonName, _ := parseJSONTag(tag.Get("json"))
+					if jsonName == "" || jsonName == "-" {
+						continue
 					}
-					break
+					if irType.Discriminator != "" && jsonName != irType.Discriminator {
+						continue
+					}
+
+					if vals := enumValues(f.Type(), a.pkg); len(vals) > 0 {
+						v.DiscriminatorValues = vals
+						if irType.Discriminator == "" {
+							irType.Discriminator = jsonName
+						}
+						break
+					}
 				}
 			}
 		}
@@ -526,6 +545,41 @@ func (a *pkgAnalyzer) resolveTypeRef(typ types.Type) ir.TypeRef {
 	case *types.Interface:
 		// interface{} / any — opaque, can't generate fixtures.
 		return ir.TypeRef{Inline: &ir.Type{Kind: ir.KindScalar, ScalarType: "any"}}
+
+	case *types.Struct:
+		// Anonymous struct — inline the fields.
+		var fields []ir.Field
+		for i := 0; i < t.NumFields(); i++ {
+			f := t.Field(i)
+			if !f.Exported() {
+				continue
+			}
+			tag := reflect.StructTag(t.Tag(i))
+			jsonTag := tag.Get("json")
+			if jsonTag == "-" {
+				continue
+			}
+			jsonName, opts := parseJSONTag(jsonTag)
+			if jsonName == "" {
+				jsonName = f.Name()
+			}
+			field := ir.Field{
+				Name:     f.Name(),
+				JSONName: jsonName,
+				Required: !opts.contains("omitempty") && !opts.contains("omitzero"),
+				Type:     a.resolveTypeRef(f.Type()),
+			}
+			if jsTag := tag.Get("jsonschema"); jsTag != "" {
+				field.Constraints, field.Description = parseConstraintsAndMeta(jsTag)
+			}
+			fields = append(fields, field)
+		}
+		return ir.TypeRef{
+			Inline: &ir.Type{
+				Kind:   ir.KindStruct,
+				Fields: fields,
+			},
+		}
 
 	default:
 		return ir.TypeRef{Inline: &ir.Type{Kind: ir.KindScalar, ScalarType: "any"}}

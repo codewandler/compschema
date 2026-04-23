@@ -38,7 +38,10 @@ type UnionAccessor struct {
 // types, and an UnmarshalX dispatcher for a single union into b.
 // If accessors is non-empty, accessor methods are added to the interface
 // and implemented on every struct variant.
-func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, accessors ...UnionAccessor) {
+// The emittedAccessorMethods map tracks which (type, method) pairs have
+// already been emitted to avoid duplicates when a variant belongs to
+// multiple unions. Pass nil to disable dedup (single-union usage).
+func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, emittedAccessorMethods map[string]bool, accessors ...UnionAccessor) {
 	marker := fmt.Sprintf("is%s", goName)
 
 	if t.Description != "" {
@@ -138,10 +141,9 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 
 	// Accessor methods on struct variants.
 	if len(accessors) > 0 {
-		emittedAccessors := make(map[string]bool)
 		for _, v := range t.Variants {
 			vName := r.GoName(v.Name)
-			if vName == goName || vName == "" || emittedAccessors[vName] {
+			if vName == goName || vName == "" {
 				continue
 			}
 			// Resolve the variant's struct type to find fields.
@@ -160,16 +162,42 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 				continue
 			}
 			for _, acc := range accessors {
+				key := vName + "." + acc.Method
+				if emittedAccessorMethods != nil && emittedAccessorMethods[key] {
+					continue // already emitted by another union
+				}
 				for _, f := range variantType.Fields {
 					if f.JSONName == acc.Field {
 						fieldGoName := r.GoName(f.JSONName)
-						b.WriteString(fmt.Sprintf("func (x *%s) %s() %s { return %s(x.%s) }\n",
-							vName, acc.Method, acc.ReturnType, acc.ReturnType, fieldGoName))
+						fieldGoType := r.GoType(&f.Type)
+						// The importer emits non-required fields as *T (pointer).
+						// The IR field type doesn't include the pointer — check Required.
+						isPtr := strings.HasPrefix(fieldGoType, "*") || !f.Required
+						baseType := strings.TrimPrefix(fieldGoType, "*")
+						needsConvert := baseType != acc.ReturnType
+
+						var body string
+						switch {
+						case isPtr && needsConvert:
+							body = fmt.Sprintf("if x.%s == nil { var zero %s; return zero }; return %s(*x.%s)",
+								fieldGoName, acc.ReturnType, acc.ReturnType, fieldGoName)
+						case isPtr:
+							body = fmt.Sprintf("if x.%s == nil { var zero %s; return zero }; return *x.%s",
+								fieldGoName, acc.ReturnType, fieldGoName)
+						case needsConvert:
+							body = fmt.Sprintf("return %s(x.%s)", acc.ReturnType, fieldGoName)
+						default:
+							body = fmt.Sprintf("return x.%s", fieldGoName)
+						}
+						b.WriteString(fmt.Sprintf("func (x *%s) %s() %s { %s }\n",
+							vName, acc.Method, acc.ReturnType, body))
+						if emittedAccessorMethods != nil {
+							emittedAccessorMethods[key] = true
+						}
 						break
 					}
 				}
 			}
-			emittedAccessors[vName] = true
 		}
 		b.WriteString("\n")
 	}
@@ -407,6 +435,15 @@ func DetectUnionField(f ir.Field, pkg *ir.Package, r TypeResolver, emittedUnions
 	// Direct interface reference: Field SomeInterface
 	if f.Type.Name != "" && checkUnion(f.Type.Name) {
 		return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(f.Type.Name), false, false}
+	}
+
+	// Named list type whose items are a union: type FooList []SomeInterface
+	if f.Type.Name != "" {
+		if listType, ok := pkg.Types[f.Type.Name]; ok && listType.Kind == ir.KindList && listType.Items != nil {
+			if listType.Items.Name != "" && checkUnion(listType.Items.Name) {
+				return &UnionFieldInfo{goFieldName, f.JSONName, r.GoName(listType.Items.Name), true, false}
+			}
+		}
 	}
 
 	if f.Type.Inline == nil {

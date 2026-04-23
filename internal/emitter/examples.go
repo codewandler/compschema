@@ -76,6 +76,12 @@ func exampleValue(t *ir.Type, pkg *ir.Package, visiting map[string]bool) (any, b
 		return nil, false
 
 	case ir.KindUnion:
+		// If the union has a catch-all map variant (map[string]any), any object
+		// example will match both the intended variant and the catch-all,
+		// violating oneOf. Skip examples for such unions.
+		if unionHasCatchAllVariant(t, pkg) {
+			return nil, false
+		}
 		// Pick the first struct variant that we can example.
 		for _, v := range t.Variants {
 			val, ok := exampleTypeRef(v.TypeRef, pkg, visiting)
@@ -89,10 +95,20 @@ func exampleValue(t *ir.Type, pkg *ir.Package, visiting map[string]bool) (any, b
 		if t.ScalarType == "any" {
 			return "example", true
 		}
+		if t.ScalarType == "" {
+			// Empty scalar type usually means an anonymous struct the analyzer
+			// couldn't represent. Return an empty object as a safe default.
+			return map[string]any{}, true
+		}
 		return exampleScalar(t.ScalarType, t.Name, t.Constraints), true
 
 	case ir.KindList:
 		if t.Items != nil {
+			// If items are any-typed (unrepresentable anonymous struct), use
+			// an empty object as a safe default that unmarshals into any struct.
+			if t.Items.Inline != nil && t.Items.Inline.Kind == ir.KindScalar && t.Items.Inline.ScalarType == "any" {
+				return []any{map[string]any{}}, true
+			}
 			item, ok := exampleTypeRef(*t.Items, pkg, visiting)
 			if ok {
 				return []any{item}, true
@@ -356,4 +372,48 @@ func applyConstraints(val any, constraints []ir.Constraint, fieldName string) an
 // ExamplesToJSON serializes an example value to indented JSON.
 func ExamplesToJSON(v any) ([]byte, error) {
 	return json.MarshalIndent(v, "", "  ")
+}
+
+// unionHasCatchAllVariant returns true if any variant in the union is a
+// catch-all type (map[string]any or any) that would match any JSON object.
+// When present in a oneOf, any example for another variant would also match
+// the catch-all, violating the oneOf exactly-one-match requirement.
+func unionHasCatchAllVariant(t *ir.Type, pkg *ir.Package) bool {
+	for _, v := range t.Variants {
+		if isCatchAllType(v.TypeRef, pkg) {
+			return true
+		}
+	}
+	return false
+}
+
+// isCatchAllType checks if a type ref resolves to a catch-all type
+// (map[string]any, any, or a KindMap with any-typed values).
+func isCatchAllType(ref ir.TypeRef, pkg *ir.Package) bool {
+	if ref.Name != "" {
+		if t, ok := pkg.Types[ref.Name]; ok {
+			// map[string]any — matches any JSON object.
+			if t.Kind == ir.KindMap {
+				if t.MapValue == nil {
+					return true
+				}
+				if t.MapValue.Inline != nil && t.MapValue.Inline.Kind == ir.KindScalar && t.MapValue.Inline.ScalarType == "any" {
+					return true
+				}
+			}
+			// any (interface{}).
+			if t.Kind == ir.KindScalar && t.ScalarType == "any" {
+				return true
+			}
+		}
+	}
+	if ref.Inline != nil {
+		if ref.Inline.Kind == ir.KindMap {
+			return true
+		}
+		if ref.Inline.Kind == ir.KindScalar && ref.Inline.ScalarType == "any" {
+			return true
+		}
+	}
+	return false
 }

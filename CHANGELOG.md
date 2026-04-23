@@ -7,7 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2026-04-23
+## [3.2.0] - 2026-04-23
+
+### Added
+- **`NewT()` constructors** — `--constructors` flag on `generate` and `import` emits type-safe constructor functions for struct types:
+  - Required fields become function parameters (compile-time enforced)
+  - `const` fields auto-filled (e.g. `NewCircle(5.0)` sets `Type: "circle"` automatically)
+  - `default` fields auto-filled
+  - Returns `*T` for consistency and interface satisfaction
+  - Constructor tests generated: validates marshaled output against schema
+- **`Ptr[T any]` helper** — emitted when constructors enabled and package has optional pointer fields. Solves `order.Notes = Ptr("rush")` without import.
+- **`--fail-on-test` flag on `generate`** — exits with error if any generated test fails (requires `--test`). Config: `fail_on_test: true`.
+- **`UnmarshalJSON` for structs with union fields** (codegen path) — `compschema generate` now emits custom unmarshalers for structs whose fields are typed as union interfaces. Previously `json.Unmarshal` failed on these fields because it can't dispatch to concrete variants. Uses the existing `Unmarshal{Name}` dispatchers.
+- **`--implement` flag on `import` CLI** — generate accessor methods on union variants (e.g. `--implement 'ResponseStreamEvent=EventType'`). Config: `implement` list on import actions.
+- **Anonymous struct support in analyzer** — `type Results []struct{Field1 T; ...}` now produces proper `KindStruct` IR with all fields, instead of collapsing to `KindScalar{"any"}`. Schema emits `"items": {"type":"object","properties":{...}}` instead of `"items": {}`.
+- **Named list union field detection** — `DetectUnionField` now unwraps named list type aliases (e.g. `type ContentList []SomeInterface`) to generate `UnmarshalJSON` dispatchers for the union items.
+
+### Fixed
+- **Discriminator value detection** — the analyzer's discriminator discovery now uses a two-pass strategy: pass 1 checks `const` constraints and single-value enums (strong signals), pass 2 falls back to multi-value enums. When a discriminator field is already established from other variants, only that field is checked. Previously, the first field with *any* enum values was selected, causing wrong discriminator values (e.g. `Click` variant picked `Button` enum values instead of `Type` const).
+- **Catch-all union examples** — example generator skips unions containing a `map[string]any` catch-all variant, which would always double-match in `oneOf` validation.
+- **Empty-scalar list items** — example generator produces `[{}]` instead of `["example"]` for list types whose items are `any`-typed (unrepresentable anonymous structs).
+
+### Changed
+- `GoCodegen()` now delegates to `GoCodegenWithOptions()` — backward compatible, constructors disabled by default
+- `EmitOptions` extended with `Constructors bool`
+- `config.Action` extended with `Constructors`, `FailOnTest` fields
+- `importer.Config` extended with `Constructors bool`
+- OpenAI example: **896 tests pass, 0 fail** (was 34 failures), 26 skipped
+- `EmitUnion()` signature extended with `emittedAccessorMethods` dedup map
+
+## [3.1.0] - 2026-04-23
+
+### Fixed
+- Circular reference guards in pre-release pipeline
 
 ### Added
 - **Smart union dispatch** — generated `DecodeX()` functions use a 3-tier strategy:
@@ -327,7 +359,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/codewandler/compschema/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/codewandler/compschema/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/codewandler/compschema/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/codewandler/compschema/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/codewandler/compschema/compare/v2.1.1...v2.2.0

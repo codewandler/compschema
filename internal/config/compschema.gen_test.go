@@ -155,8 +155,8 @@ func TestCompschema_ExamplesValidate(t *testing.T) {
 		example string
 	}{
 		{"ImplementRule", `{"discriminator_method":"example","union":"example"}`},
-		{"Action", `{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`},
-		{"File", `{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`},
+		{"Action", `{"action":"example","all":true,"constructors":true,"emit_ir":true,"examples":true,"exclude":["example"],"fail_on_test":true,"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`},
+		{"File", `{"pipelines":{"key1":[{"action":"example","all":true,"constructors":true,"emit_ir":true,"examples":true,"exclude":["example"],"fail_on_test":true,"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -188,7 +188,7 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		_ = reencoded
 	})
 	t.Run("Action", func(t *testing.T) {
-		data := []byte(`{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`)
+		data := []byte(`{"action":"example","all":true,"constructors":true,"emit_ir":true,"examples":true,"exclude":["example"],"fail_on_test":true,"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`)
 		result, err := DecodeAction(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)
@@ -200,7 +200,7 @@ func TestCompschema_ExamplesDecode(t *testing.T) {
 		_ = reencoded
 	})
 	t.Run("File", func(t *testing.T) {
-		data := []byte(`{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`)
+		data := []byte(`{"pipelines":{"key1":[{"action":"example","all":true,"constructors":true,"emit_ir":true,"examples":true,"exclude":["example"],"fail_on_test":true,"implement":[{"discriminator_method":"example","union":"example"}],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`)
 		result, err := DecodeFile(data)
 		if err != nil {
 			t.Fatalf("Decode: %v", err)

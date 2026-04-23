@@ -18,13 +18,15 @@ import (
 
 func newGenerateCmd() *cobra.Command {
 	var (
-		outDir      string
-		validate    bool
-		allTypes    bool
-		runTests    bool
-		emitIR      bool
-		noCache     bool
-		addExamples bool
+		outDir       string
+		validate     bool
+		allTypes     bool
+		runTests     bool
+		failOnTest   bool
+		emitIR       bool
+		noCache      bool
+		addExamples  bool
+		constructors bool
 	)
 
 	cmd := &cobra.Command{
@@ -137,7 +139,9 @@ types annotated with //compschema:generate, and emit:
 				fmt.Fprintf(os.Stderr, "  ✓ %s (%d bytes)\n", schemaPath, len(schemaJSON))
 
 				// 2. Go codegen
-				goCode := emitter.GoCodegen(pkg, inlined)
+				goCode := emitter.GoCodegenWithOptions(pkg, inlined, emitter.EmitOptions{
+					Constructors: constructors,
+				})
 				goPath := filepath.Join(dir, "compschema.gen.go")
 				if err := os.WriteFile(goPath, []byte(goCode), 0644); err != nil {
 					return fmt.Errorf("write codegen: %w", err)
@@ -146,7 +150,8 @@ types annotated with //compschema:generate, and emit:
 
 				// 3. Tests
 				testCode := emitter.GoTestsWithOptions(pkg, inlined, emitter.EmitOptions{
-					Examples: addExamples,
+					Examples:     addExamples,
+					Constructors: constructors,
 				})
 				testPath := filepath.Join(dir, "compschema.gen_test.go")
 				if err := os.WriteFile(testPath, []byte(testCode), 0644); err != nil {
@@ -223,6 +228,9 @@ types annotated with //compschema:generate, and emit:
 						rate = float64(testPassed) / float64(total) * 100
 					}
 					fmt.Fprintf(os.Stderr, "  tests: %d passed, %d failed, %d skipped (%.1f%%)\n", testPassed, testFailed, testSkipped, rate)
+					if failOnTest && testFailed > 0 {
+						return fmt.Errorf("%d test(s) failed", testFailed)
+					}
 				}
 			}
 
@@ -234,9 +242,11 @@ types annotated with //compschema:generate, and emit:
 	cmd.Flags().BoolVar(&validate, "validate", false, "validate generated schema against meta-schema")
 	cmd.Flags().BoolVar(&allTypes, "all", false, "analyze all exported types (not just annotated)")
 	cmd.Flags().BoolVar(&runTests, "test", false, "run generated tests after writing files")
+	cmd.Flags().BoolVar(&failOnTest, "fail-on-test", false, "exit with error if any generated test fails (requires --test)")
 	cmd.Flags().BoolVar(&emitIR, "emit-ir", false, "write IR YAML alongside generated output")
 	cmd.Flags().BoolVar(&noCache, "no-cache", false, "skip cache, force regeneration")
 	cmd.Flags().BoolVar(&addExamples, "examples", false, "add generated examples to JSON Schema output")
+	cmd.Flags().BoolVar(&constructors, "constructors", false, "generate NewT() constructors for struct types")
 
 	return cmd
 }

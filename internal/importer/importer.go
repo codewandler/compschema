@@ -117,6 +117,7 @@ func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 
 	// Track types emitted as unions (interfaces) — can't add methods to these.
 	unionTypes := make(map[string]bool)
+	emittedAccessorMethods := make(map[string]bool) // dedup across unions
 
 	// Third pass: emit types.
 	for _, name := range names {
@@ -133,7 +134,7 @@ func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 			unionTypes[goName] = true
 		}
 		b.WriteString("\n")
-		emitType(&b, name, t, pkg, cfg)
+		emitType(&b, name, t, pkg, cfg, emittedAccessorMethods)
 	}
 
 	// Fourth pass: emit UnmarshalJSON for structs with interface fields.
@@ -151,10 +152,48 @@ func GenerateGoWithConfig(pkg *ir.Package, cfg Config) string {
 		}
 	}
 
+	// Fifth pass: emit constructors for struct types.
+	if cfg.Constructors {
+		needsPtrHelper := false
+		for _, name := range names {
+			t, ok := pkg.Types[name]
+			if !ok || t.Kind != ir.KindStruct {
+				continue
+			}
+			goName := toGoName(name)
+			if unionTypes[goName] {
+				continue
+			}
+			// Check if Ptr helper is needed.
+			for _, f := range t.Fields {
+				if !f.Required && importerIsPointerField(f, pkg) {
+					needsPtrHelper = true
+					break
+				}
+			}
+		}
+		if needsPtrHelper {
+			b.WriteString("\n// Ptr returns a pointer to v. Useful for setting optional fields on generated types.\n")
+			b.WriteString("func Ptr[T any](v T) *T { return &v }\n")
+		}
+
+		for _, name := range names {
+			t, ok := pkg.Types[name]
+			if !ok || t.Kind != ir.KindStruct {
+				continue
+			}
+			goName := toGoName(name)
+			if unionTypes[goName] {
+				continue
+			}
+			emitImporterConstructor(&b, goName, t, pkg)
+		}
+	}
+
 	return b.String()
 }
 
-func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, cfg Config) {
+func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, cfg Config, emittedAccessorMethods map[string]bool) {
 	goName := toGoName(name)
 
 	switch t.Kind {
@@ -166,7 +205,7 @@ func emitType(b *strings.Builder, name string, t *ir.Type, pkg *ir.Package, cfg 
 
 	case ir.KindUnion:
 		accessors := resolveAccessors(goName, name, t, cfg.Implement)
-		uniongen.EmitUnion(b, goName, t, pkg, &importerResolver{pkg: pkg}, accessors...)
+		uniongen.EmitUnion(b, goName, t, pkg, &importerResolver{pkg: pkg}, emittedAccessorMethods, accessors...)
 
 	case ir.KindScalar:
 		if t.Description != "" {
@@ -485,6 +524,158 @@ func cleanComment(s string) string {
 	s = strings.ReplaceAll(s, "`", "'")
 	s = strings.ReplaceAll(s, "\n", "\n// ")
 	return s
+}
+
+// importerIsPointerField returns true if the field's Go representation would be a pointer type.
+func importerIsPointerField(f ir.Field, pkg *ir.Package) bool {
+	if f.Type.Inline != nil && f.Type.Inline.Kind == ir.KindNullable {
+		return true
+	}
+	if f.Type.Name != "" {
+		if t, ok := pkg.Types[f.Type.Name]; ok && t.Kind == ir.KindNullable {
+			return true
+		}
+	}
+	return false
+}
+
+// emitImporterConstructor writes a NewT() constructor for a struct type in importer output.
+func emitImporterConstructor(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package) {
+	var params []ir.Field
+	var autoFilled []ir.Field
+
+	for _, f := range t.Fields {
+		hasConst := false
+		hasDefault := false
+		for _, c := range f.Constraints {
+			if c.Keyword == "const" {
+				hasConst = true
+			}
+			if c.Keyword == "default" {
+				hasDefault = true
+			}
+		}
+		if hasConst || hasDefault {
+			autoFilled = append(autoFilled, f)
+		} else if f.Required {
+			params = append(params, f)
+		}
+	}
+
+	// Skip if nothing useful.
+	if len(params) == 0 && len(autoFilled) == 0 {
+		return
+	}
+
+	// Build parameter list.
+	var paramParts []string
+	for _, f := range params {
+		pName := importerParamName(toGoName(f.JSONName))
+		pType := typeRefGoType(&f.Type, pkg)
+		// For nullable required fields, unwrap the pointer.
+		if f.Type.Inline != nil && f.Type.Inline.Kind == ir.KindNullable && f.Type.Inline.Inner != nil {
+			pType = typeRefGoType(f.Type.Inline.Inner, pkg)
+		}
+		paramParts = append(paramParts, fmt.Sprintf("%s %s", pName, pType))
+	}
+
+	b.WriteString(fmt.Sprintf("\n// New%s creates a new %s with required fields and auto-filled const/default values.\n", goName, goName))
+	b.WriteString(fmt.Sprintf("func New%s(%s) *%s {\n", goName, strings.Join(paramParts, ", "), goName))
+	b.WriteString(fmt.Sprintf("\treturn &%s{\n", goName))
+
+	// Auto-filled fields.
+	for _, f := range autoFilled {
+		var val any
+		for _, c := range f.Constraints {
+			if c.Keyword == "const" {
+				val = c.Value
+				break
+			}
+		}
+		if val == nil {
+			for _, c := range f.Constraints {
+				if c.Keyword == "default" {
+					val = c.Value
+					break
+				}
+			}
+		}
+		b.WriteString(fmt.Sprintf("\t\t%s: %s,\n", toGoName(f.JSONName), importerGoLiteral(val)))
+	}
+
+	// Required params.
+	for _, f := range params {
+		pName := importerParamName(toGoName(f.JSONName))
+		if f.Type.Inline != nil && f.Type.Inline.Kind == ir.KindNullable {
+			b.WriteString(fmt.Sprintf("\t\t%s: &%s,\n", toGoName(f.JSONName), pName))
+		} else {
+			b.WriteString(fmt.Sprintf("\t\t%s: %s,\n", toGoName(f.JSONName), pName))
+		}
+	}
+
+	b.WriteString("\t}\n")
+	b.WriteString("}\n")
+}
+
+// importerParamName converts a Go field name to a constructor parameter name (camelCase).
+func importerParamName(fieldName string) string {
+	if fieldName == "" {
+		return "_"
+	}
+	runes := []rune(fieldName)
+	i := 0
+	for i < len(runes) && runes[i] >= 'A' && runes[i] <= 'Z' {
+		i++
+	}
+	if i == 0 {
+		// Already lowercase.
+	} else if i == 1 {
+		runes[0] = runes[0] + 32
+	} else if i == len(runes) {
+		for j := range runes {
+			if runes[j] >= 'A' && runes[j] <= 'Z' {
+				runes[j] = runes[j] + 32
+			}
+		}
+	} else {
+		for j := 0; j < i-1; j++ {
+			runes[j] = runes[j] + 32
+		}
+	}
+	name := string(runes)
+
+	switch name {
+	case "break", "case", "chan", "const", "continue", "default", "defer",
+		"else", "fallthrough", "for", "func", "go", "goto", "if", "import",
+		"interface", "map", "package", "range", "return", "select", "struct",
+		"switch", "type", "var":
+		return name + "_"
+	}
+	return name
+}
+
+// importerGoLiteral returns a Go literal string for a value.
+func importerGoLiteral(v any) string {
+	switch val := v.(type) {
+	case string:
+		return fmt.Sprintf("%q", val)
+	case float64:
+		if val == float64(int64(val)) {
+			return fmt.Sprintf("%d", int64(val))
+		}
+		return fmt.Sprintf("%v", val)
+	case int:
+		return fmt.Sprintf("%d", val)
+	case int64:
+		return fmt.Sprintf("%d", val)
+	case bool:
+		if val {
+			return "true"
+		}
+		return "false"
+	default:
+		return fmt.Sprintf("%v", val)
+	}
 }
 
 // ImportFromFile is a convenience function that reads a JSON Schema file,

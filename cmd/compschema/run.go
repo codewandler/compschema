@@ -222,11 +222,12 @@ func runImportAction(a config.Action, sr *report.StepReport) error {
 	}
 
 	cfg := importer.Config{
-		Package:   a.Package,
-		Rename:    a.Rename,
-		Exclude:   a.Exclude,
-		Tags:      a.Tags,
-		Implement: convertImplementRules(a.Implement),
+		Package:      a.Package,
+		Rename:       a.Rename,
+		Exclude:      a.Exclude,
+		Tags:         a.Tags,
+		Implement:    convertImplementRules(a.Implement),
+		Constructors: a.Constructors,
 	}
 
 	if err := importer.ImportFromFileWithConfig(schemaPath, a.Out, cfg); err != nil {
@@ -372,7 +373,9 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 		}
 		fmt.Fprintf(os.Stderr, "    ✓ %s\n", schemaPath)
 
-		goCode := emitter.GoCodegen(pkg, inlined)
+		goCode := emitter.GoCodegenWithOptions(pkg, inlined, emitter.EmitOptions{
+			Constructors: a.Constructors,
+		})
 		goPath := filepath.Join(dir, "compschema.gen.go")
 		if err := os.WriteFile(goPath, []byte(goCode), 0644); err != nil {
 			return fmt.Errorf("write codegen: %w", err)
@@ -380,7 +383,8 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 		fmt.Fprintf(os.Stderr, "    ✓ %s\n", goPath)
 
 		testCode := emitter.GoTestsWithOptions(pkg, inlined, emitter.EmitOptions{
-			Examples: a.Examples,
+			Examples:     a.Examples,
+			Constructors: a.Constructors,
 		})
 		testPath := filepath.Join(dir, "compschema.gen_test.go")
 		if err := os.WriteFile(testPath, []byte(testCode), 0644); err != nil {
@@ -443,6 +447,10 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 	}
 	if testResults != nil {
 		sr.Set("tests", *testResults)
+	}
+
+	if a.FailOnTest && testResults != nil && testResults.Failed > 0 {
+		return fmt.Errorf("%d test(s) failed", testResults.Failed)
 	}
 
 	return nil
