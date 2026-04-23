@@ -494,8 +494,8 @@ func GoCodegenWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Em
 		b.WriteString("\treturn result, nil\n")
 		b.WriteString("}\n\n")
 
-		// Constructor
-		if opts.Constructors {
+		// Constructor (skip wrapper types — they get union helpers instead)
+		if opts.Constructors && !isWrapperType(t) {
 			emitConstructor(&b, name, t, pkg)
 		}
 	}

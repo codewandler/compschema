@@ -81,11 +81,11 @@ func DecodeFileCitationBody(data []byte) (FileCitationBody, error) {
 }
 
 // NewFileCitationBody creates a new FileCitationBody with required fields and auto-filled const/default values.
-func NewFileCitationBody(index int64, type_ FileCitationBodyType, fileID string) *FileCitationBody {
+func NewFileCitationBody(type_ FileCitationBodyType, fileID string, index int64) *FileCitationBody {
 	return &FileCitationBody{
-		Index: index,
 		Type: type_,
 		FileID: fileID,
+		Index: index,
 	}
 }
 
@@ -116,11 +116,11 @@ func DecodeFilePath(data []byte) (FilePath, error) {
 }
 
 // NewFilePath creates a new FilePath with required fields and auto-filled const/default values.
-func NewFilePath(fileID string, index int64, type_ FilePathType) *FilePath {
+func NewFilePath(type_ FilePathType, fileID string, index int64) *FilePath {
 	return &FilePath{
+		Type: type_,
 		FileID: fileID,
 		Index: index,
-		Type: type_,
 	}
 }
 
@@ -151,13 +151,13 @@ func DecodeUrlCitationBody(data []byte) (UrlCitationBody, error) {
 }
 
 // NewUrlCitationBody creates a new UrlCitationBody with required fields and auto-filled const/default values.
-func NewUrlCitationBody(title string, type_ UrlCitationBodyType, url string, startIndex int64, endIndex int64) *UrlCitationBody {
+func NewUrlCitationBody(startIndex int64, endIndex int64, title string, type_ UrlCitationBodyType, url string) *UrlCitationBody {
 	return &UrlCitationBody{
+		StartIndex: startIndex,
+		EndIndex: endIndex,
 		Title: title,
 		Type: type_,
 		URL: url,
-		StartIndex: startIndex,
-		EndIndex: endIndex,
 	}
 }
 
@@ -282,12 +282,12 @@ func DecodeClick(data []byte) (Click, error) {
 }
 
 // NewClick creates a new Click with required fields and auto-filled const/default values.
-func NewClick(y int64, type_ ClickType, button ClickButton, x int64) *Click {
+func NewClick(x int64, y int64, type_ ClickType, button ClickButton) *Click {
 	return &Click{
+		X: x,
 		Y: y,
 		Type: type_,
 		Button: button,
-		X: x,
 	}
 }
 
@@ -441,13 +441,13 @@ func DecodeCodeInterpreterToolCall(data []byte) (CodeInterpreterToolCall, error)
 }
 
 // NewCodeInterpreterToolCall creates a new CodeInterpreterToolCall with required fields and auto-filled const/default values.
-func NewCodeInterpreterToolCall(status CodeInterpreterToolCallStatus, results []CodeInterpreterToolOutput, id string, type_ CodeInterpreterToolCallType, code string) *CodeInterpreterToolCall {
+func NewCodeInterpreterToolCall(id string, type_ CodeInterpreterToolCallType, code string, status CodeInterpreterToolCallStatus, results []CodeInterpreterToolOutput) *CodeInterpreterToolCall {
 	return &CodeInterpreterToolCall{
-		Status: status,
-		Results: results,
 		ID: id,
 		Type: type_,
 		Code: code,
+		Status: status,
+		Results: results,
 	}
 }
 
@@ -477,13 +477,6 @@ func DecodeComparisonFilterValueBool(data []byte) (ComparisonFilterValueBool, er
 	return result, nil
 }
 
-// NewComparisonFilterValueBool creates a new ComparisonFilterValueBool with required fields and auto-filled const/default values.
-func NewComparisonFilterValueBool(value bool) *ComparisonFilterValueBool {
-	return &ComparisonFilterValueBool{
-		Value: value,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueFloat64.
 func (ComparisonFilterValueFloat64) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValueFloat64") }
 
@@ -510,13 +503,6 @@ func DecodeComparisonFilterValueFloat64(data []byte) (ComparisonFilterValueFloat
 	return result, nil
 }
 
-// NewComparisonFilterValueFloat64 creates a new ComparisonFilterValueFloat64 with required fields and auto-filled const/default values.
-func NewComparisonFilterValueFloat64(value float64) *ComparisonFilterValueFloat64 {
-	return &ComparisonFilterValueFloat64{
-		Value: value,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for ComparisonFilterValueString.
 func (ComparisonFilterValueString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ComparisonFilterValueString") }
 
@@ -541,13 +527,6 @@ func DecodeComparisonFilterValueString(data []byte) (ComparisonFilterValueString
 		return ComparisonFilterValueString{}, err
 	}
 	return result, nil
-}
-
-// NewComparisonFilterValueString creates a new ComparisonFilterValueString with required fields and auto-filled const/default values.
-func NewComparisonFilterValueString(value string) *ComparisonFilterValueString {
-	return &ComparisonFilterValueString{
-		Value: value,
-	}
 }
 
 // ComparisonFilterValueJSONSchemaBytes returns the JSON Schema for the ComparisonFilterValue union.
@@ -663,10 +642,10 @@ func DecodeCompoundFilter(data []byte) (CompoundFilter, error) {
 }
 
 // NewCompoundFilter creates a new CompoundFilter with required fields and auto-filled const/default values.
-func NewCompoundFilter(type_ CompoundFilterType, filters []any) *CompoundFilter {
+func NewCompoundFilter(filters []any, type_ CompoundFilterType) *CompoundFilter {
 	return &CompoundFilter{
-		Type: type_,
 		Filters: filters,
+		Type: type_,
 	}
 }
 
@@ -732,10 +711,10 @@ func DecodeCoordinate(data []byte) (Coordinate, error) {
 }
 
 // NewCoordinate creates a new Coordinate with required fields and auto-filled const/default values.
-func NewCoordinate(y int64, x int64) *Coordinate {
+func NewCoordinate(x int64, y int64) *Coordinate {
 	return &Coordinate{
-		Y: y,
 		X: x,
+		Y: y,
 	}
 }
 
@@ -834,11 +813,11 @@ func DecodeMove(data []byte) (Move, error) {
 }
 
 // NewMove creates a new Move with required fields and auto-filled const/default values.
-func NewMove(type_ MoveType, x int64, y int64) *Move {
+func NewMove(y int64, type_ MoveType, x int64) *Move {
 	return &Move{
+		Y: y,
 		Type: type_,
 		X: x,
-		Y: y,
 	}
 }
 
@@ -1204,11 +1183,11 @@ func DecodeComputerToolCallSafetyCheck(data []byte) (ComputerToolCallSafetyCheck
 }
 
 // NewComputerToolCallSafetyCheck creates a new ComputerToolCallSafetyCheck with required fields and auto-filled const/default values.
-func NewComputerToolCallSafetyCheck(message string, id string, code string) *ComputerToolCallSafetyCheck {
+func NewComputerToolCallSafetyCheck(id string, code string, message string) *ComputerToolCallSafetyCheck {
 	return &ComputerToolCallSafetyCheck{
-		Message: message,
 		ID: id,
 		Code: code,
+		Message: message,
 	}
 }
 
@@ -1239,14 +1218,14 @@ func DecodeComputerToolCall(data []byte) (ComputerToolCall, error) {
 }
 
 // NewComputerToolCall creates a new ComputerToolCall with required fields and auto-filled const/default values.
-func NewComputerToolCall(type_ ComputerToolCallType, id string, callID string, action ComputerAction, pendingSafetyChecks []ComputerToolCallSafetyCheck, status ComputerToolCallStatus) *ComputerToolCall {
+func NewComputerToolCall(id string, callID string, action ComputerAction, pendingSafetyChecks []ComputerToolCallSafetyCheck, status ComputerToolCallStatus, type_ ComputerToolCallType) *ComputerToolCall {
 	return &ComputerToolCall{
-		Type: type_,
 		ID: id,
 		CallID: callID,
 		Action: action,
 		PendingSafetyChecks: pendingSafetyChecks,
 		Status: status,
+		Type: type_,
 	}
 }
 
@@ -1389,633 +1368,34 @@ func DecodeCreateModelResponseProperties(data []byte) (CreateModelResponseProper
 	return result, nil
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for Reasoning.
+func (Reasoning) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Reasoning") }
+
+// Validate checks whether raw JSON conforms to the Reasoning schema.
+func (Reasoning) Validate(data []byte) error {
+	sch := compschemaValidator("Reasoning")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeReasoning validates and unmarshals JSON into a Reasoning.
+func DecodeReasoning(data []byte) (Reasoning, error) {
+	var zero Reasoning
+	if err := zero.Validate(data); err != nil {
+		return Reasoning{}, err
+	}
+	var result Reasoning
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Reasoning{}, err
+	}
+	return result, nil
+}
+
 // JSONSchemaBytes returns the JSON Schema for ModelIdsResponses.
 func (ModelIdsResponses) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ModelIdsResponses") }
-
-// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceFunction.
-func (ToolChoiceFunction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceFunction") }
-
-// Validate checks whether raw JSON conforms to the ToolChoiceFunction schema.
-func (ToolChoiceFunction) Validate(data []byte) error {
-	sch := compschemaValidator("ToolChoiceFunction")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeToolChoiceFunction validates and unmarshals JSON into a ToolChoiceFunction.
-func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
-	var zero ToolChoiceFunction
-	if err := zero.Validate(data); err != nil {
-		return ToolChoiceFunction{}, err
-	}
-	var result ToolChoiceFunction
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ToolChoiceFunction{}, err
-	}
-	return result, nil
-}
-
-// NewToolChoiceFunction creates a new ToolChoiceFunction with required fields and auto-filled const/default values.
-func NewToolChoiceFunction(type_ ToolChoiceFunctionType, name string) *ToolChoiceFunction {
-	return &ToolChoiceFunction{
-		Type: type_,
-		Name: name,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
-func (ToolChoiceTypes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceTypes") }
-
-// Validate checks whether raw JSON conforms to the ToolChoiceTypes schema.
-func (ToolChoiceTypes) Validate(data []byte) error {
-	sch := compschemaValidator("ToolChoiceTypes")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeToolChoiceTypes validates and unmarshals JSON into a ToolChoiceTypes.
-func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
-	var zero ToolChoiceTypes
-	if err := zero.Validate(data); err != nil {
-		return ToolChoiceTypes{}, err
-	}
-	var result ToolChoiceTypes
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ToolChoiceTypes{}, err
-	}
-	return result, nil
-}
-
-// NewToolChoiceTypes creates a new ToolChoiceTypes with required fields and auto-filled const/default values.
-func NewToolChoiceTypes(type_ ToolChoiceTypesType) *ToolChoiceTypes {
-	return &ToolChoiceTypes{
-		Type: type_,
-	}
-}
-
-// CreateResponseToolChoiceJSONSchemaBytes returns the JSON Schema for the CreateResponseToolChoice union.
-func CreateResponseToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoice") }
-
-// DecodeCreateResponseToolChoice validates and unmarshals JSON into the correct CreateResponseToolChoice variant.
-// Dispatches on the "type" discriminator field.
-func DecodeCreateResponseToolChoice(data []byte) (CreateResponseToolChoice, error) {
-	sch := compschemaValidator("CreateResponseToolChoice")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "function":
-		var val ToolChoiceFunction
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "computer_use_preview", "file_search", "web_search_preview", "web_search_preview_2025_03_11":
-		var val ToolChoiceTypes
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for CreateResponseToolChoice", disc.D)
-	}
-}
-
-// CreateResponseToolChoiceAs extracts a variant from a CreateResponseToolChoice union value, like errors.As.
-// Only types whose pointer implements CreateResponseToolChoice can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if CreateResponseToolChoiceAs(shape, &circle) {
-//		// circle is populated
-//	}
-func CreateResponseToolChoiceAs[T any, P interface{ *T; CreateResponseToolChoice }](v CreateResponseToolChoice, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for InputFileContent.
-func (InputFileContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputFileContent") }
-
-// Validate checks whether raw JSON conforms to the InputFileContent schema.
-func (InputFileContent) Validate(data []byte) error {
-	sch := compschemaValidator("InputFileContent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeInputFileContent validates and unmarshals JSON into a InputFileContent.
-func DecodeInputFileContent(data []byte) (InputFileContent, error) {
-	var zero InputFileContent
-	if err := zero.Validate(data); err != nil {
-		return InputFileContent{}, err
-	}
-	var result InputFileContent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return InputFileContent{}, err
-	}
-	return result, nil
-}
-
-// NewInputFileContent creates a new InputFileContent with required fields and auto-filled const/default values.
-func NewInputFileContent(type_ InputFileContentType) *InputFileContent {
-	return &InputFileContent{
-		Type: type_,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for InputImageContent.
-func (InputImageContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageContent") }
-
-// Validate checks whether raw JSON conforms to the InputImageContent schema.
-func (InputImageContent) Validate(data []byte) error {
-	sch := compschemaValidator("InputImageContent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeInputImageContent validates and unmarshals JSON into a InputImageContent.
-func DecodeInputImageContent(data []byte) (InputImageContent, error) {
-	var zero InputImageContent
-	if err := zero.Validate(data); err != nil {
-		return InputImageContent{}, err
-	}
-	var result InputImageContent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return InputImageContent{}, err
-	}
-	return result, nil
-}
-
-// NewInputImageContent creates a new InputImageContent with required fields and auto-filled const/default values.
-func NewInputImageContent(type_ InputImageContentType, detail InputImageContentDetail) *InputImageContent {
-	return &InputImageContent{
-		Type: type_,
-		Detail: detail,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for InputTextContent.
-func (InputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTextContent") }
-
-// Validate checks whether raw JSON conforms to the InputTextContent schema.
-func (InputTextContent) Validate(data []byte) error {
-	sch := compschemaValidator("InputTextContent")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeInputTextContent validates and unmarshals JSON into a InputTextContent.
-func DecodeInputTextContent(data []byte) (InputTextContent, error) {
-	var zero InputTextContent
-	if err := zero.Validate(data); err != nil {
-		return InputTextContent{}, err
-	}
-	var result InputTextContent
-	if err := json.Unmarshal(data, &result); err != nil {
-		return InputTextContent{}, err
-	}
-	return result, nil
-}
-
-// NewInputTextContent creates a new InputTextContent with required fields and auto-filled const/default values.
-func NewInputTextContent(type_ InputTextContentType, text string) *InputTextContent {
-	return &InputTextContent{
-		Type: type_,
-		Text: text,
-	}
-}
-
-// InputContentJSONSchemaBytes returns the JSON Schema for the InputContent union.
-func InputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputContent") }
-
-// DecodeInputContent validates and unmarshals JSON into the correct InputContent variant.
-// Dispatches on the "type" discriminator field.
-func DecodeInputContent(data []byte) (InputContent, error) {
-	sch := compschemaValidator("InputContent")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"type"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "input_file":
-		var val InputFileContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "input_image":
-		var val InputImageContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	case "input_text":
-		var val InputTextContent
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown type %q for InputContent", disc.D)
-	}
-}
-
-// InputContentAs extracts a variant from a InputContent union value, like errors.As.
-// Only types whose pointer implements InputContent can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if InputContentAs(shape, &circle) {
-//		// circle is populated
-//	}
-func InputContentAs[T any, P interface{ *T; InputContent }](v InputContent, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema for InputMessageContentList.
-func (InputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessageContentList") }
-
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentInputMessageContentList.
-func (EasyInputMessageContentInputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentInputMessageContentList") }
-
-// Validate checks whether raw JSON conforms to the EasyInputMessageContentInputMessageContentList schema.
-func (EasyInputMessageContentInputMessageContentList) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessageContentInputMessageContentList")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeEasyInputMessageContentInputMessageContentList validates and unmarshals JSON into a EasyInputMessageContentInputMessageContentList.
-func DecodeEasyInputMessageContentInputMessageContentList(data []byte) (EasyInputMessageContentInputMessageContentList, error) {
-	var zero EasyInputMessageContentInputMessageContentList
-	if err := zero.Validate(data); err != nil {
-		return EasyInputMessageContentInputMessageContentList{}, err
-	}
-	var result EasyInputMessageContentInputMessageContentList
-	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessageContentInputMessageContentList{}, err
-	}
-	return result, nil
-}
-
-// NewEasyInputMessageContentInputMessageContentList creates a new EasyInputMessageContentInputMessageContentList with required fields and auto-filled const/default values.
-func NewEasyInputMessageContentInputMessageContentList(value InputMessageContentList) *EasyInputMessageContentInputMessageContentList {
-	return &EasyInputMessageContentInputMessageContentList{
-		Value: value,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentString.
-func (EasyInputMessageContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentString") }
-
-// Validate checks whether raw JSON conforms to the EasyInputMessageContentString schema.
-func (EasyInputMessageContentString) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessageContentString")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeEasyInputMessageContentString validates and unmarshals JSON into a EasyInputMessageContentString.
-func DecodeEasyInputMessageContentString(data []byte) (EasyInputMessageContentString, error) {
-	var zero EasyInputMessageContentString
-	if err := zero.Validate(data); err != nil {
-		return EasyInputMessageContentString{}, err
-	}
-	var result EasyInputMessageContentString
-	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessageContentString{}, err
-	}
-	return result, nil
-}
-
-// NewEasyInputMessageContentString creates a new EasyInputMessageContentString with required fields and auto-filled const/default values.
-func NewEasyInputMessageContentString(value string) *EasyInputMessageContentString {
-	return &EasyInputMessageContentString{
-		Value: value,
-	}
-}
-
-// EasyInputMessageContentJSONSchemaBytes returns the JSON Schema for the EasyInputMessageContent union.
-func EasyInputMessageContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContent") }
-
-// DecodeEasyInputMessageContent validates and unmarshals JSON into the correct EasyInputMessageContent variant.
-func DecodeEasyInputMessageContent(data []byte) (EasyInputMessageContent, error) {
-	sch := compschemaValidator("EasyInputMessageContent")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	{
-		var val EasyInputMessageContentInputMessageContentList
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val EasyInputMessageContentString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for EasyInputMessageContent")
-}
-
-// EasyInputMessageContentAs extracts a variant from a EasyInputMessageContent union value, like errors.As.
-// Only types whose pointer implements EasyInputMessageContent can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if EasyInputMessageContentAs(shape, &circle) {
-//		// circle is populated
-//	}
-func EasyInputMessageContentAs[T any, P interface{ *T; EasyInputMessageContent }](v EasyInputMessageContent, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessage.
-func (EasyInputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessage") }
-
-// Validate checks whether raw JSON conforms to the EasyInputMessage schema.
-func (EasyInputMessage) Validate(data []byte) error {
-	sch := compschemaValidator("EasyInputMessage")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeEasyInputMessage validates and unmarshals JSON into a EasyInputMessage.
-func DecodeEasyInputMessage(data []byte) (EasyInputMessage, error) {
-	var zero EasyInputMessage
-	if err := zero.Validate(data); err != nil {
-		return EasyInputMessage{}, err
-	}
-	var result EasyInputMessage
-	if err := json.Unmarshal(data, &result); err != nil {
-		return EasyInputMessage{}, err
-	}
-	return result, nil
-}
-
-// NewEasyInputMessage creates a new EasyInputMessage with required fields and auto-filled const/default values.
-func NewEasyInputMessage(role EasyInputMessageRole, content EasyInputMessageContent) *EasyInputMessage {
-	return &EasyInputMessage{
-		Role: role,
-		Content: content,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ItemReferenceParam.
-func (ItemReferenceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemReferenceParam") }
-
-// Validate checks whether raw JSON conforms to the ItemReferenceParam schema.
-func (ItemReferenceParam) Validate(data []byte) error {
-	sch := compschemaValidator("ItemReferenceParam")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeItemReferenceParam validates and unmarshals JSON into a ItemReferenceParam.
-func DecodeItemReferenceParam(data []byte) (ItemReferenceParam, error) {
-	var zero ItemReferenceParam
-	if err := zero.Validate(data); err != nil {
-		return ItemReferenceParam{}, err
-	}
-	var result ItemReferenceParam
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ItemReferenceParam{}, err
-	}
-	return result, nil
-}
-
-// NewItemReferenceParam creates a new ItemReferenceParam with required fields and auto-filled const/default values.
-func NewItemReferenceParam(id string) *ItemReferenceParam {
-	return &ItemReferenceParam{
-		ID: id,
-	}
-}
-
-// InputItemJSONSchemaBytes returns the JSON Schema for the InputItem union.
-func InputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItem") }
-
-// DecodeInputItem validates and unmarshals JSON into the correct InputItem variant.
-// Dispatches on the "role" discriminator field.
-func DecodeInputItem(data []byte) (InputItem, error) {
-	sch := compschemaValidator("InputItem")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	var disc struct {
-		D string `json:"role"`
-	}
-	if err := json.Unmarshal(data, &disc); err != nil {
-		return nil, err
-	}
-	switch disc.D {
-	case "assistant", "developer", "system", "user":
-		var val EasyInputMessage
-		if err := json.Unmarshal(data, &val); err != nil {
-			return nil, err
-		}
-		return &val, nil
-	default:
-		return nil, fmt.Errorf("unknown role %q for InputItem", disc.D)
-	}
-}
-
-// InputItemAs extracts a variant from a InputItem union value, like errors.As.
-// Only types whose pointer implements InputItem can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if InputItemAs(shape, &circle) {
-//		// circle is populated
-//	}
-func InputItemAs[T any, P interface{ *T; InputItem }](v InputItem, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputSliceInputItem.
-func (CreateResponseInputSliceInputItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputSliceInputItem") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseInputSliceInputItem schema.
-func (CreateResponseInputSliceInputItem) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseInputSliceInputItem")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponseInputSliceInputItem validates and unmarshals JSON into a CreateResponseInputSliceInputItem.
-func DecodeCreateResponseInputSliceInputItem(data []byte) (CreateResponseInputSliceInputItem, error) {
-	var zero CreateResponseInputSliceInputItem
-	if err := zero.Validate(data); err != nil {
-		return CreateResponseInputSliceInputItem{}, err
-	}
-	var result CreateResponseInputSliceInputItem
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseInputSliceInputItem{}, err
-	}
-	return result, nil
-}
-
-// NewCreateResponseInputSliceInputItem creates a new CreateResponseInputSliceInputItem with required fields and auto-filled const/default values.
-func NewCreateResponseInputSliceInputItem(value []InputItem) *CreateResponseInputSliceInputItem {
-	return &CreateResponseInputSliceInputItem{
-		Value: value,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputString.
-func (CreateResponseInputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputString") }
-
-// Validate checks whether raw JSON conforms to the CreateResponseInputString schema.
-func (CreateResponseInputString) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseInputString")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeCreateResponseInputString validates and unmarshals JSON into a CreateResponseInputString.
-func DecodeCreateResponseInputString(data []byte) (CreateResponseInputString, error) {
-	var zero CreateResponseInputString
-	if err := zero.Validate(data); err != nil {
-		return CreateResponseInputString{}, err
-	}
-	var result CreateResponseInputString
-	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseInputString{}, err
-	}
-	return result, nil
-}
-
-// NewCreateResponseInputString creates a new CreateResponseInputString with required fields and auto-filled const/default values.
-func NewCreateResponseInputString(value string) *CreateResponseInputString {
-	return &CreateResponseInputString{
-		Value: value,
-	}
-}
-
-// CreateResponseInputJSONSchemaBytes returns the JSON Schema for the CreateResponseInput union.
-func CreateResponseInputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInput") }
-
-// DecodeCreateResponseInput validates and unmarshals JSON into the correct CreateResponseInput variant.
-func DecodeCreateResponseInput(data []byte) (CreateResponseInput, error) {
-	sch := compschemaValidator("CreateResponseInput")
-	var raw any
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, err
-	}
-	if err := sch.Validate(raw); err != nil {
-		return nil, err
-	}
-	{
-		var val CreateResponseInputSliceInputItem
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	{
-		var val CreateResponseInputString
-		if err := json.Unmarshal(data, &val); err == nil {
-			return &val, nil
-		}
-	}
-	return nil, fmt.Errorf("no matching variant for CreateResponseInput")
-}
-
-// CreateResponseInputAs extracts a variant from a CreateResponseInput union value, like errors.As.
-// Only types whose pointer implements CreateResponseInput can be used as target (compile-time checked).
-//
-// Usage:
-//
-//	var circle Circle
-//	if CreateResponseInputAs(shape, &circle) {
-//		// circle is populated
-//	}
-func CreateResponseInputAs[T any, P interface{ *T; CreateResponseInput }](v CreateResponseInput, target *T) bool {
-	t, ok := v.(P)
-	if ok {
-		*target = *t
-	}
-	return ok
-}
 
 // JSONSchemaBytes returns the JSON Schema definition for RankingOptions.
 func (RankingOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("RankingOptions") }
@@ -2268,12 +1648,12 @@ func ToolAs[T any, P interface{ *T; Tool }](v Tool, target *T) bool {
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for Reasoning.
-func (Reasoning) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Reasoning") }
+// JSONSchemaBytes returns the JSON Schema definition for InputFileContent.
+func (InputFileContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputFileContent") }
 
-// Validate checks whether raw JSON conforms to the Reasoning schema.
-func (Reasoning) Validate(data []byte) error {
-	sch := compschemaValidator("Reasoning")
+// Validate checks whether raw JSON conforms to the InputFileContent schema.
+func (InputFileContent) Validate(data []byte) error {
+	sch := compschemaValidator("InputFileContent")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2281,58 +1661,32 @@ func (Reasoning) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeReasoning validates and unmarshals JSON into a Reasoning.
-func DecodeReasoning(data []byte) (Reasoning, error) {
-	var zero Reasoning
+// DecodeInputFileContent validates and unmarshals JSON into a InputFileContent.
+func DecodeInputFileContent(data []byte) (InputFileContent, error) {
+	var zero InputFileContent
 	if err := zero.Validate(data); err != nil {
-		return Reasoning{}, err
+		return InputFileContent{}, err
 	}
-	var result Reasoning
+	var result InputFileContent
 	if err := json.Unmarshal(data, &result); err != nil {
-		return Reasoning{}, err
+		return InputFileContent{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatJsonObject.
-func (ResponseFormatJsonObject) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonObject") }
-
-// Validate checks whether raw JSON conforms to the ResponseFormatJsonObject schema.
-func (ResponseFormatJsonObject) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFormatJsonObject")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseFormatJsonObject validates and unmarshals JSON into a ResponseFormatJsonObject.
-func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, error) {
-	var zero ResponseFormatJsonObject
-	if err := zero.Validate(data); err != nil {
-		return ResponseFormatJsonObject{}, err
-	}
-	var result ResponseFormatJsonObject
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFormatJsonObject{}, err
-	}
-	return result, nil
-}
-
-// NewResponseFormatJsonObject creates a new ResponseFormatJsonObject with required fields and auto-filled const/default values.
-func NewResponseFormatJsonObject(type_ ResponseFormatJsonObjectType) *ResponseFormatJsonObject {
-	return &ResponseFormatJsonObject{
+// NewInputFileContent creates a new InputFileContent with required fields and auto-filled const/default values.
+func NewInputFileContent(type_ InputFileContentType) *InputFileContent {
+	return &InputFileContent{
 		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
-func (ResponseFormatText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatText") }
+// JSONSchemaBytes returns the JSON Schema definition for InputImageContent.
+func (InputImageContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputImageContent") }
 
-// Validate checks whether raw JSON conforms to the ResponseFormatText schema.
-func (ResponseFormatText) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseFormatText")
+// Validate checks whether raw JSON conforms to the InputImageContent schema.
+func (InputImageContent) Validate(data []byte) error {
+	sch := compschemaValidator("InputImageContent")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2340,35 +1694,33 @@ func (ResponseFormatText) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponseFormatText validates and unmarshals JSON into a ResponseFormatText.
-func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
-	var zero ResponseFormatText
+// DecodeInputImageContent validates and unmarshals JSON into a InputImageContent.
+func DecodeInputImageContent(data []byte) (InputImageContent, error) {
+	var zero InputImageContent
 	if err := zero.Validate(data); err != nil {
-		return ResponseFormatText{}, err
+		return InputImageContent{}, err
 	}
-	var result ResponseFormatText
+	var result InputImageContent
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseFormatText{}, err
+		return InputImageContent{}, err
 	}
 	return result, nil
 }
 
-// NewResponseFormatText creates a new ResponseFormatText with required fields and auto-filled const/default values.
-func NewResponseFormatText(type_ ResponseFormatTextType) *ResponseFormatText {
-	return &ResponseFormatText{
+// NewInputImageContent creates a new InputImageContent with required fields and auto-filled const/default values.
+func NewInputImageContent(detail InputImageContentDetail, type_ InputImageContentType) *InputImageContent {
+	return &InputImageContent{
+		Detail: detail,
 		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
-func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonSchemaSchema") }
+// JSONSchemaBytes returns the JSON Schema definition for InputTextContent.
+func (InputTextContent) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputTextContent") }
 
-// JSONSchemaBytes returns the JSON Schema definition for TextResponseFormatJsonSchema.
-func (TextResponseFormatJsonSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatJsonSchema") }
-
-// Validate checks whether raw JSON conforms to the TextResponseFormatJsonSchema schema.
-func (TextResponseFormatJsonSchema) Validate(data []byte) error {
-	sch := compschemaValidator("TextResponseFormatJsonSchema")
+// Validate checks whether raw JSON conforms to the InputTextContent schema.
+func (InputTextContent) Validate(data []byte) error {
+	sch := compschemaValidator("InputTextContent")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2376,35 +1728,34 @@ func (TextResponseFormatJsonSchema) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeTextResponseFormatJsonSchema validates and unmarshals JSON into a TextResponseFormatJsonSchema.
-func DecodeTextResponseFormatJsonSchema(data []byte) (TextResponseFormatJsonSchema, error) {
-	var zero TextResponseFormatJsonSchema
+// DecodeInputTextContent validates and unmarshals JSON into a InputTextContent.
+func DecodeInputTextContent(data []byte) (InputTextContent, error) {
+	var zero InputTextContent
 	if err := zero.Validate(data); err != nil {
-		return TextResponseFormatJsonSchema{}, err
+		return InputTextContent{}, err
 	}
-	var result TextResponseFormatJsonSchema
+	var result InputTextContent
 	if err := json.Unmarshal(data, &result); err != nil {
-		return TextResponseFormatJsonSchema{}, err
+		return InputTextContent{}, err
 	}
 	return result, nil
 }
 
-// NewTextResponseFormatJsonSchema creates a new TextResponseFormatJsonSchema with required fields and auto-filled const/default values.
-func NewTextResponseFormatJsonSchema(name string, schema ResponseFormatJsonSchemaSchema, type_ TextResponseFormatJsonSchemaType) *TextResponseFormatJsonSchema {
-	return &TextResponseFormatJsonSchema{
-		Name: name,
-		Schema: schema,
+// NewInputTextContent creates a new InputTextContent with required fields and auto-filled const/default values.
+func NewInputTextContent(type_ InputTextContentType, text string) *InputTextContent {
+	return &InputTextContent{
 		Type: type_,
+		Text: text,
 	}
 }
 
-// TextResponseFormatConfigurationJSONSchemaBytes returns the JSON Schema for the TextResponseFormatConfiguration union.
-func TextResponseFormatConfigurationJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatConfiguration") }
+// InputContentJSONSchemaBytes returns the JSON Schema for the InputContent union.
+func InputContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputContent") }
 
-// DecodeTextResponseFormatConfiguration validates and unmarshals JSON into the correct TextResponseFormatConfiguration variant.
+// DecodeInputContent validates and unmarshals JSON into the correct InputContent variant.
 // Dispatches on the "type" discriminator field.
-func DecodeTextResponseFormatConfiguration(data []byte) (TextResponseFormatConfiguration, error) {
-	sch := compschemaValidator("TextResponseFormatConfiguration")
+func DecodeInputContent(data []byte) (InputContent, error) {
+	sch := compschemaValidator("InputContent")
 	var raw any
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, err
@@ -2419,39 +1770,39 @@ func DecodeTextResponseFormatConfiguration(data []byte) (TextResponseFormatConfi
 		return nil, err
 	}
 	switch disc.D {
-	case "json_object":
-		var val ResponseFormatJsonObject
+	case "input_file":
+		var val InputFileContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "text":
-		var val ResponseFormatText
+	case "input_image":
+		var val InputImageContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
-	case "json_schema":
-		var val TextResponseFormatJsonSchema
+	case "input_text":
+		var val InputTextContent
 		if err := json.Unmarshal(data, &val); err != nil {
 			return nil, err
 		}
 		return &val, nil
 	default:
-		return nil, fmt.Errorf("unknown type %q for TextResponseFormatConfiguration", disc.D)
+		return nil, fmt.Errorf("unknown type %q for InputContent", disc.D)
 	}
 }
 
-// TextResponseFormatConfigurationAs extracts a variant from a TextResponseFormatConfiguration union value, like errors.As.
-// Only types whose pointer implements TextResponseFormatConfiguration can be used as target (compile-time checked).
+// InputContentAs extracts a variant from a InputContent union value, like errors.As.
+// Only types whose pointer implements InputContent can be used as target (compile-time checked).
 //
 // Usage:
 //
 //	var circle Circle
-//	if TextResponseFormatConfigurationAs(shape, &circle) {
+//	if InputContentAs(shape, &circle) {
 //		// circle is populated
 //	}
-func TextResponseFormatConfigurationAs[T any, P interface{ *T; TextResponseFormatConfiguration }](v TextResponseFormatConfiguration, target *T) bool {
+func InputContentAs[T any, P interface{ *T; InputContent }](v InputContent, target *T) bool {
 	t, ok := v.(P)
 	if ok {
 		*target = *t
@@ -2459,12 +1810,15 @@ func TextResponseFormatConfigurationAs[T any, P interface{ *T; TextResponseForma
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseText.
-func (CreateResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseText") }
+// JSONSchemaBytes returns the JSON Schema for InputMessageContentList.
+func (InputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputMessageContentList") }
 
-// Validate checks whether raw JSON conforms to the CreateResponseText schema.
-func (CreateResponseText) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseText")
+// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentInputMessageContentList.
+func (EasyInputMessageContentInputMessageContentList) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentInputMessageContentList") }
+
+// Validate checks whether raw JSON conforms to the EasyInputMessageContentInputMessageContentList schema.
+func (EasyInputMessageContentInputMessageContentList) Validate(data []byte) error {
+	sch := compschemaValidator("EasyInputMessageContentInputMessageContentList")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2472,25 +1826,25 @@ func (CreateResponseText) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCreateResponseText validates and unmarshals JSON into a CreateResponseText.
-func DecodeCreateResponseText(data []byte) (CreateResponseText, error) {
-	var zero CreateResponseText
+// DecodeEasyInputMessageContentInputMessageContentList validates and unmarshals JSON into a EasyInputMessageContentInputMessageContentList.
+func DecodeEasyInputMessageContentInputMessageContentList(data []byte) (EasyInputMessageContentInputMessageContentList, error) {
+	var zero EasyInputMessageContentInputMessageContentList
 	if err := zero.Validate(data); err != nil {
-		return CreateResponseText{}, err
+		return EasyInputMessageContentInputMessageContentList{}, err
 	}
-	var result CreateResponseText
+	var result EasyInputMessageContentInputMessageContentList
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseText{}, err
+		return EasyInputMessageContentInputMessageContentList{}, err
 	}
 	return result, nil
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponse.
-func (CreateResponse) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponse") }
+// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessageContentString.
+func (EasyInputMessageContentString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContentString") }
 
-// Validate checks whether raw JSON conforms to the CreateResponse schema.
-func (CreateResponse) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponse")
+// Validate checks whether raw JSON conforms to the EasyInputMessageContentString schema.
+func (EasyInputMessageContentString) Validate(data []byte) error {
+	sch := compschemaValidator("EasyInputMessageContentString")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2498,36 +1852,70 @@ func (CreateResponse) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCreateResponse validates and unmarshals JSON into a CreateResponse.
-func DecodeCreateResponse(data []byte) (CreateResponse, error) {
-	var zero CreateResponse
+// DecodeEasyInputMessageContentString validates and unmarshals JSON into a EasyInputMessageContentString.
+func DecodeEasyInputMessageContentString(data []byte) (EasyInputMessageContentString, error) {
+	var zero EasyInputMessageContentString
 	if err := zero.Validate(data); err != nil {
-		return CreateResponse{}, err
+		return EasyInputMessageContentString{}, err
 	}
-	var result CreateResponse
+	var result EasyInputMessageContentString
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponse{}, err
+		return EasyInputMessageContentString{}, err
 	}
 	return result, nil
 }
 
-// NewCreateResponse creates a new CreateResponse with required fields and auto-filled const/default values.
-func NewCreateResponse(model ModelIdsResponses, input CreateResponseInput) *CreateResponse {
-	return &CreateResponse{
-		Model: model,
-		Input: input,
+// EasyInputMessageContentJSONSchemaBytes returns the JSON Schema for the EasyInputMessageContent union.
+func EasyInputMessageContentJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessageContent") }
+
+// DecodeEasyInputMessageContent validates and unmarshals JSON into the correct EasyInputMessageContent variant.
+func DecodeEasyInputMessageContent(data []byte) (EasyInputMessageContent, error) {
+	sch := compschemaValidator("EasyInputMessageContent")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
 	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val EasyInputMessageContentInputMessageContentList
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val EasyInputMessageContentString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for EasyInputMessageContent")
 }
 
-// JSONSchemaBytes returns the JSON Schema for ToolChoiceOptions.
-func (ToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceOptions") }
+// EasyInputMessageContentAs extracts a variant from a EasyInputMessageContent union value, like errors.As.
+// Only types whose pointer implements EasyInputMessageContent can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if EasyInputMessageContentAs(shape, &circle) {
+//		// circle is populated
+//	}
+func EasyInputMessageContentAs[T any, P interface{ *T; EasyInputMessageContent }](v EasyInputMessageContent, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
 
-// JSONSchemaBytes returns the JSON Schema definition for CreateResponseToolChoiceToolChoiceOptions.
-func (CreateResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoiceToolChoiceOptions") }
+// JSONSchemaBytes returns the JSON Schema definition for EasyInputMessage.
+func (EasyInputMessage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("EasyInputMessage") }
 
-// Validate checks whether raw JSON conforms to the CreateResponseToolChoiceToolChoiceOptions schema.
-func (CreateResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("CreateResponseToolChoiceToolChoiceOptions")
+// Validate checks whether raw JSON conforms to the EasyInputMessage schema.
+func (EasyInputMessage) Validate(data []byte) error {
+	sch := compschemaValidator("EasyInputMessage")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2535,59 +1923,24 @@ func (CreateResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeCreateResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a CreateResponseToolChoiceToolChoiceOptions.
-func DecodeCreateResponseToolChoiceToolChoiceOptions(data []byte) (CreateResponseToolChoiceToolChoiceOptions, error) {
-	var zero CreateResponseToolChoiceToolChoiceOptions
+// DecodeEasyInputMessage validates and unmarshals JSON into a EasyInputMessage.
+func DecodeEasyInputMessage(data []byte) (EasyInputMessage, error) {
+	var zero EasyInputMessage
 	if err := zero.Validate(data); err != nil {
-		return CreateResponseToolChoiceToolChoiceOptions{}, err
+		return EasyInputMessage{}, err
 	}
-	var result CreateResponseToolChoiceToolChoiceOptions
+	var result EasyInputMessage
 	if err := json.Unmarshal(data, &result); err != nil {
-		return CreateResponseToolChoiceToolChoiceOptions{}, err
+		return EasyInputMessage{}, err
 	}
 	return result, nil
 }
 
-// NewCreateResponseToolChoiceToolChoiceOptions creates a new CreateResponseToolChoiceToolChoiceOptions with required fields and auto-filled const/default values.
-func NewCreateResponseToolChoiceToolChoiceOptions(value ToolChoiceOptions) *CreateResponseToolChoiceToolChoiceOptions {
-	return &CreateResponseToolChoiceToolChoiceOptions{
-		Value: value,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for Error.
-func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
-
-// Validate checks whether raw JSON conforms to the Error schema.
-func (Error) Validate(data []byte) error {
-	sch := compschemaValidator("Error")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeError validates and unmarshals JSON into a Error.
-func DecodeError(data []byte) (Error, error) {
-	var zero Error
-	if err := zero.Validate(data); err != nil {
-		return Error{}, err
-	}
-	var result Error
-	if err := json.Unmarshal(data, &result); err != nil {
-		return Error{}, err
-	}
-	return result, nil
-}
-
-// NewError creates a new Error with required fields and auto-filled const/default values.
-func NewError(param string, type_ string, code string, message string) *Error {
-	return &Error{
-		Param: &param,
-		Type: type_,
-		Code: &code,
-		Message: message,
+// NewEasyInputMessage creates a new EasyInputMessage with required fields and auto-filled const/default values.
+func NewEasyInputMessage(content EasyInputMessageContent, role EasyInputMessageRole) *EasyInputMessage {
+	return &EasyInputMessage{
+		Content: content,
+		Role: role,
 	}
 }
 
@@ -2654,11 +2007,11 @@ func DecodeFunctionCallOutputItemParam(data []byte) (FunctionCallOutputItemParam
 }
 
 // NewFunctionCallOutputItemParam creates a new FunctionCallOutputItemParam with required fields and auto-filled const/default values.
-func NewFunctionCallOutputItemParam(callID string, type_ FunctionCallOutputItemParamType, output string) *FunctionCallOutputItemParam {
+func NewFunctionCallOutputItemParam(output string, callID string, type_ FunctionCallOutputItemParamType) *FunctionCallOutputItemParam {
 	return &FunctionCallOutputItemParam{
+		Output: output,
 		CallID: callID,
 		Type: type_,
-		Output: output,
 	}
 }
 
@@ -2695,114 +2048,6 @@ func NewFunctionToolCall(type_ FunctionToolCallType, callID string, name string,
 		CallID: callID,
 		Name: name,
 		Arguments: arguments,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
-func (FunctionToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutput") }
-
-// Validate checks whether raw JSON conforms to the FunctionToolCallOutput schema.
-func (FunctionToolCallOutput) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallOutput")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionToolCallOutput validates and unmarshals JSON into a FunctionToolCallOutput.
-func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
-	var zero FunctionToolCallOutput
-	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallOutput{}, err
-	}
-	var result FunctionToolCallOutput
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallOutput{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionToolCallOutput creates a new FunctionToolCallOutput with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutput(type_ FunctionToolCallOutputType, callID string, output string) *FunctionToolCallOutput {
-	return &FunctionToolCallOutput{
-		Type: type_,
-		CallID: callID,
-		Output: output,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
-func (FunctionToolCallOutputResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutputResource") }
-
-// Validate checks whether raw JSON conforms to the FunctionToolCallOutputResource schema.
-func (FunctionToolCallOutputResource) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallOutputResource")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionToolCallOutputResource validates and unmarshals JSON into a FunctionToolCallOutputResource.
-func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputResource, error) {
-	var zero FunctionToolCallOutputResource
-	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallOutputResource{}, err
-	}
-	var result FunctionToolCallOutputResource
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallOutputResource{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionToolCallOutputResource creates a new FunctionToolCallOutputResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallOutputResource(id string, type_ FunctionToolCallOutputResourceType, callID string, output string) *FunctionToolCallOutputResource {
-	return &FunctionToolCallOutputResource{
-		ID: id,
-		Type: type_,
-		CallID: callID,
-		Output: output,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
-func (FunctionToolCallResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallResource") }
-
-// Validate checks whether raw JSON conforms to the FunctionToolCallResource schema.
-func (FunctionToolCallResource) Validate(data []byte) error {
-	sch := compschemaValidator("FunctionToolCallResource")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeFunctionToolCallResource validates and unmarshals JSON into a FunctionToolCallResource.
-func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, error) {
-	var zero FunctionToolCallResource
-	if err := zero.Validate(data); err != nil {
-		return FunctionToolCallResource{}, err
-	}
-	var result FunctionToolCallResource
-	if err := json.Unmarshal(data, &result); err != nil {
-		return FunctionToolCallResource{}, err
-	}
-	return result, nil
-}
-
-// NewFunctionToolCallResource creates a new FunctionToolCallResource with required fields and auto-filled const/default values.
-func NewFunctionToolCallResource(arguments string, id string, type_ FunctionToolCallResourceType, callID string, name string) *FunctionToolCallResource {
-	return &FunctionToolCallResource{
-		Arguments: arguments,
-		ID: id,
-		Type: type_,
-		CallID: callID,
-		Name: name,
 	}
 }
 
@@ -2991,13 +2236,13 @@ func DecodeOutputMessage(data []byte) (OutputMessage, error) {
 }
 
 // NewOutputMessage creates a new OutputMessage with required fields and auto-filled const/default values.
-func NewOutputMessage(id string, type_ OutputMessageType, role OutputMessageRole, content []OutputContent, status OutputMessageStatus) *OutputMessage {
+func NewOutputMessage(status OutputMessageStatus, id string, type_ OutputMessageType, role OutputMessageRole, content []OutputContent) *OutputMessage {
 	return &OutputMessage{
+		Status: status,
 		ID: id,
 		Type: type_,
 		Role: role,
 		Content: content,
-		Status: status,
 	}
 }
 
@@ -3063,11 +2308,11 @@ func DecodeWebSearchToolCall(data []byte) (WebSearchToolCall, error) {
 }
 
 // NewWebSearchToolCall creates a new WebSearchToolCall with required fields and auto-filled const/default values.
-func NewWebSearchToolCall(type_ WebSearchToolCallType, status WebSearchToolCallStatus, id string) *WebSearchToolCall {
+func NewWebSearchToolCall(id string, type_ WebSearchToolCallType, status WebSearchToolCallStatus) *WebSearchToolCall {
 	return &WebSearchToolCall{
+		ID: id,
 		Type: type_,
 		Status: status,
-		ID: id,
 	}
 }
 
@@ -3188,10 +2433,702 @@ func DecodeInputItemItem(data []byte) (InputItemItem, error) {
 	return result, nil
 }
 
-// NewInputItemItem creates a new InputItemItem with required fields and auto-filled const/default values.
-func NewInputItemItem(value Item) *InputItemItem {
-	return &InputItemItem{
-		Value: value,
+// JSONSchemaBytes returns the JSON Schema definition for ItemReferenceParam.
+func (ItemReferenceParam) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ItemReferenceParam") }
+
+// Validate checks whether raw JSON conforms to the ItemReferenceParam schema.
+func (ItemReferenceParam) Validate(data []byte) error {
+	sch := compschemaValidator("ItemReferenceParam")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeItemReferenceParam validates and unmarshals JSON into a ItemReferenceParam.
+func DecodeItemReferenceParam(data []byte) (ItemReferenceParam, error) {
+	var zero ItemReferenceParam
+	if err := zero.Validate(data); err != nil {
+		return ItemReferenceParam{}, err
+	}
+	var result ItemReferenceParam
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ItemReferenceParam{}, err
+	}
+	return result, nil
+}
+
+// NewItemReferenceParam creates a new ItemReferenceParam with required fields and auto-filled const/default values.
+func NewItemReferenceParam(id string) *ItemReferenceParam {
+	return &ItemReferenceParam{
+		ID: id,
+	}
+}
+
+// InputItemJSONSchemaBytes returns the JSON Schema for the InputItem union.
+func InputItemJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("InputItem") }
+
+// DecodeInputItem validates and unmarshals JSON into the correct InputItem variant.
+// Dispatches on the "role" discriminator field.
+func DecodeInputItem(data []byte) (InputItem, error) {
+	sch := compschemaValidator("InputItem")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"role"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "assistant", "developer", "system", "user":
+		var val EasyInputMessage
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown role %q for InputItem", disc.D)
+	}
+}
+
+// InputItemAs extracts a variant from a InputItem union value, like errors.As.
+// Only types whose pointer implements InputItem can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if InputItemAs(shape, &circle) {
+//		// circle is populated
+//	}
+func InputItemAs[T any, P interface{ *T; InputItem }](v InputItem, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputSliceInputItem.
+func (CreateResponseInputSliceInputItem) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputSliceInputItem") }
+
+// Validate checks whether raw JSON conforms to the CreateResponseInputSliceInputItem schema.
+func (CreateResponseInputSliceInputItem) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponseInputSliceInputItem")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponseInputSliceInputItem validates and unmarshals JSON into a CreateResponseInputSliceInputItem.
+func DecodeCreateResponseInputSliceInputItem(data []byte) (CreateResponseInputSliceInputItem, error) {
+	var zero CreateResponseInputSliceInputItem
+	if err := zero.Validate(data); err != nil {
+		return CreateResponseInputSliceInputItem{}, err
+	}
+	var result CreateResponseInputSliceInputItem
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponseInputSliceInputItem{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponseInputString.
+func (CreateResponseInputString) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInputString") }
+
+// Validate checks whether raw JSON conforms to the CreateResponseInputString schema.
+func (CreateResponseInputString) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponseInputString")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponseInputString validates and unmarshals JSON into a CreateResponseInputString.
+func DecodeCreateResponseInputString(data []byte) (CreateResponseInputString, error) {
+	var zero CreateResponseInputString
+	if err := zero.Validate(data); err != nil {
+		return CreateResponseInputString{}, err
+	}
+	var result CreateResponseInputString
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponseInputString{}, err
+	}
+	return result, nil
+}
+
+// CreateResponseInputJSONSchemaBytes returns the JSON Schema for the CreateResponseInput union.
+func CreateResponseInputJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseInput") }
+
+// DecodeCreateResponseInput validates and unmarshals JSON into the correct CreateResponseInput variant.
+func DecodeCreateResponseInput(data []byte) (CreateResponseInput, error) {
+	sch := compschemaValidator("CreateResponseInput")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	{
+		var val CreateResponseInputSliceInputItem
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	{
+		var val CreateResponseInputString
+		if err := json.Unmarshal(data, &val); err == nil {
+			return &val, nil
+		}
+	}
+	return nil, fmt.Errorf("no matching variant for CreateResponseInput")
+}
+
+// CreateResponseInputAs extracts a variant from a CreateResponseInput union value, like errors.As.
+// Only types whose pointer implements CreateResponseInput can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CreateResponseInputAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CreateResponseInputAs[T any, P interface{ *T; CreateResponseInput }](v CreateResponseInput, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema for ToolChoiceOptions.
+func (ToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceOptions") }
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponseToolChoiceToolChoiceOptions.
+func (CreateResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoiceToolChoiceOptions") }
+
+// Validate checks whether raw JSON conforms to the CreateResponseToolChoiceToolChoiceOptions schema.
+func (CreateResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponseToolChoiceToolChoiceOptions")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a CreateResponseToolChoiceToolChoiceOptions.
+func DecodeCreateResponseToolChoiceToolChoiceOptions(data []byte) (CreateResponseToolChoiceToolChoiceOptions, error) {
+	var zero CreateResponseToolChoiceToolChoiceOptions
+	if err := zero.Validate(data); err != nil {
+		return CreateResponseToolChoiceToolChoiceOptions{}, err
+	}
+	var result CreateResponseToolChoiceToolChoiceOptions
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponseToolChoiceToolChoiceOptions{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceFunction.
+func (ToolChoiceFunction) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceFunction") }
+
+// Validate checks whether raw JSON conforms to the ToolChoiceFunction schema.
+func (ToolChoiceFunction) Validate(data []byte) error {
+	sch := compschemaValidator("ToolChoiceFunction")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeToolChoiceFunction validates and unmarshals JSON into a ToolChoiceFunction.
+func DecodeToolChoiceFunction(data []byte) (ToolChoiceFunction, error) {
+	var zero ToolChoiceFunction
+	if err := zero.Validate(data); err != nil {
+		return ToolChoiceFunction{}, err
+	}
+	var result ToolChoiceFunction
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ToolChoiceFunction{}, err
+	}
+	return result, nil
+}
+
+// NewToolChoiceFunction creates a new ToolChoiceFunction with required fields and auto-filled const/default values.
+func NewToolChoiceFunction(type_ ToolChoiceFunctionType, name string) *ToolChoiceFunction {
+	return &ToolChoiceFunction{
+		Type: type_,
+		Name: name,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ToolChoiceTypes.
+func (ToolChoiceTypes) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ToolChoiceTypes") }
+
+// Validate checks whether raw JSON conforms to the ToolChoiceTypes schema.
+func (ToolChoiceTypes) Validate(data []byte) error {
+	sch := compschemaValidator("ToolChoiceTypes")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeToolChoiceTypes validates and unmarshals JSON into a ToolChoiceTypes.
+func DecodeToolChoiceTypes(data []byte) (ToolChoiceTypes, error) {
+	var zero ToolChoiceTypes
+	if err := zero.Validate(data); err != nil {
+		return ToolChoiceTypes{}, err
+	}
+	var result ToolChoiceTypes
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ToolChoiceTypes{}, err
+	}
+	return result, nil
+}
+
+// NewToolChoiceTypes creates a new ToolChoiceTypes with required fields and auto-filled const/default values.
+func NewToolChoiceTypes(type_ ToolChoiceTypesType) *ToolChoiceTypes {
+	return &ToolChoiceTypes{
+		Type: type_,
+	}
+}
+
+// CreateResponseToolChoiceJSONSchemaBytes returns the JSON Schema for the CreateResponseToolChoice union.
+func CreateResponseToolChoiceJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseToolChoice") }
+
+// DecodeCreateResponseToolChoice validates and unmarshals JSON into the correct CreateResponseToolChoice variant.
+// Dispatches on the "type" discriminator field.
+func DecodeCreateResponseToolChoice(data []byte) (CreateResponseToolChoice, error) {
+	sch := compschemaValidator("CreateResponseToolChoice")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "function":
+		var val ToolChoiceFunction
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "computer_use_preview", "file_search", "web_search_preview", "web_search_preview_2025_03_11":
+		var val ToolChoiceTypes
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for CreateResponseToolChoice", disc.D)
+	}
+}
+
+// CreateResponseToolChoiceAs extracts a variant from a CreateResponseToolChoice union value, like errors.As.
+// Only types whose pointer implements CreateResponseToolChoice can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if CreateResponseToolChoiceAs(shape, &circle) {
+//		// circle is populated
+//	}
+func CreateResponseToolChoiceAs[T any, P interface{ *T; CreateResponseToolChoice }](v CreateResponseToolChoice, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatJsonObject.
+func (ResponseFormatJsonObject) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonObject") }
+
+// Validate checks whether raw JSON conforms to the ResponseFormatJsonObject schema.
+func (ResponseFormatJsonObject) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseFormatJsonObject")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseFormatJsonObject validates and unmarshals JSON into a ResponseFormatJsonObject.
+func DecodeResponseFormatJsonObject(data []byte) (ResponseFormatJsonObject, error) {
+	var zero ResponseFormatJsonObject
+	if err := zero.Validate(data); err != nil {
+		return ResponseFormatJsonObject{}, err
+	}
+	var result ResponseFormatJsonObject
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseFormatJsonObject{}, err
+	}
+	return result, nil
+}
+
+// NewResponseFormatJsonObject creates a new ResponseFormatJsonObject with required fields and auto-filled const/default values.
+func NewResponseFormatJsonObject(type_ ResponseFormatJsonObjectType) *ResponseFormatJsonObject {
+	return &ResponseFormatJsonObject{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseFormatText.
+func (ResponseFormatText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatText") }
+
+// Validate checks whether raw JSON conforms to the ResponseFormatText schema.
+func (ResponseFormatText) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseFormatText")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseFormatText validates and unmarshals JSON into a ResponseFormatText.
+func DecodeResponseFormatText(data []byte) (ResponseFormatText, error) {
+	var zero ResponseFormatText
+	if err := zero.Validate(data); err != nil {
+		return ResponseFormatText{}, err
+	}
+	var result ResponseFormatText
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseFormatText{}, err
+	}
+	return result, nil
+}
+
+// NewResponseFormatText creates a new ResponseFormatText with required fields and auto-filled const/default values.
+func NewResponseFormatText(type_ ResponseFormatTextType) *ResponseFormatText {
+	return &ResponseFormatText{
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema for ResponseFormatJsonSchemaSchema.
+func (ResponseFormatJsonSchemaSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseFormatJsonSchemaSchema") }
+
+// JSONSchemaBytes returns the JSON Schema definition for TextResponseFormatJsonSchema.
+func (TextResponseFormatJsonSchema) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatJsonSchema") }
+
+// Validate checks whether raw JSON conforms to the TextResponseFormatJsonSchema schema.
+func (TextResponseFormatJsonSchema) Validate(data []byte) error {
+	sch := compschemaValidator("TextResponseFormatJsonSchema")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeTextResponseFormatJsonSchema validates and unmarshals JSON into a TextResponseFormatJsonSchema.
+func DecodeTextResponseFormatJsonSchema(data []byte) (TextResponseFormatJsonSchema, error) {
+	var zero TextResponseFormatJsonSchema
+	if err := zero.Validate(data); err != nil {
+		return TextResponseFormatJsonSchema{}, err
+	}
+	var result TextResponseFormatJsonSchema
+	if err := json.Unmarshal(data, &result); err != nil {
+		return TextResponseFormatJsonSchema{}, err
+	}
+	return result, nil
+}
+
+// NewTextResponseFormatJsonSchema creates a new TextResponseFormatJsonSchema with required fields and auto-filled const/default values.
+func NewTextResponseFormatJsonSchema(type_ TextResponseFormatJsonSchemaType, name string, schema ResponseFormatJsonSchemaSchema) *TextResponseFormatJsonSchema {
+	return &TextResponseFormatJsonSchema{
+		Type: type_,
+		Name: name,
+		Schema: schema,
+	}
+}
+
+// TextResponseFormatConfigurationJSONSchemaBytes returns the JSON Schema for the TextResponseFormatConfiguration union.
+func TextResponseFormatConfigurationJSONSchemaBytes() json.RawMessage { return compschemaDefBytes("TextResponseFormatConfiguration") }
+
+// DecodeTextResponseFormatConfiguration validates and unmarshals JSON into the correct TextResponseFormatConfiguration variant.
+// Dispatches on the "type" discriminator field.
+func DecodeTextResponseFormatConfiguration(data []byte) (TextResponseFormatConfiguration, error) {
+	sch := compschemaValidator("TextResponseFormatConfiguration")
+	var raw any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+	if err := sch.Validate(raw); err != nil {
+		return nil, err
+	}
+	var disc struct {
+		D string `json:"type"`
+	}
+	if err := json.Unmarshal(data, &disc); err != nil {
+		return nil, err
+	}
+	switch disc.D {
+	case "json_object":
+		var val ResponseFormatJsonObject
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "text":
+		var val ResponseFormatText
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	case "json_schema":
+		var val TextResponseFormatJsonSchema
+		if err := json.Unmarshal(data, &val); err != nil {
+			return nil, err
+		}
+		return &val, nil
+	default:
+		return nil, fmt.Errorf("unknown type %q for TextResponseFormatConfiguration", disc.D)
+	}
+}
+
+// TextResponseFormatConfigurationAs extracts a variant from a TextResponseFormatConfiguration union value, like errors.As.
+// Only types whose pointer implements TextResponseFormatConfiguration can be used as target (compile-time checked).
+//
+// Usage:
+//
+//	var circle Circle
+//	if TextResponseFormatConfigurationAs(shape, &circle) {
+//		// circle is populated
+//	}
+func TextResponseFormatConfigurationAs[T any, P interface{ *T; TextResponseFormatConfiguration }](v TextResponseFormatConfiguration, target *T) bool {
+	t, ok := v.(P)
+	if ok {
+		*target = *t
+	}
+	return ok
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponseText.
+func (CreateResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponseText") }
+
+// Validate checks whether raw JSON conforms to the CreateResponseText schema.
+func (CreateResponseText) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponseText")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponseText validates and unmarshals JSON into a CreateResponseText.
+func DecodeCreateResponseText(data []byte) (CreateResponseText, error) {
+	var zero CreateResponseText
+	if err := zero.Validate(data); err != nil {
+		return CreateResponseText{}, err
+	}
+	var result CreateResponseText
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponseText{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for CreateResponse.
+func (CreateResponse) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("CreateResponse") }
+
+// Validate checks whether raw JSON conforms to the CreateResponse schema.
+func (CreateResponse) Validate(data []byte) error {
+	sch := compschemaValidator("CreateResponse")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeCreateResponse validates and unmarshals JSON into a CreateResponse.
+func DecodeCreateResponse(data []byte) (CreateResponse, error) {
+	var zero CreateResponse
+	if err := zero.Validate(data); err != nil {
+		return CreateResponse{}, err
+	}
+	var result CreateResponse
+	if err := json.Unmarshal(data, &result); err != nil {
+		return CreateResponse{}, err
+	}
+	return result, nil
+}
+
+// NewCreateResponse creates a new CreateResponse with required fields and auto-filled const/default values.
+func NewCreateResponse(model ModelIdsResponses, input CreateResponseInput) *CreateResponse {
+	return &CreateResponse{
+		Model: model,
+		Input: input,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for Error.
+func (Error) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Error") }
+
+// Validate checks whether raw JSON conforms to the Error schema.
+func (Error) Validate(data []byte) error {
+	sch := compschemaValidator("Error")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeError validates and unmarshals JSON into a Error.
+func DecodeError(data []byte) (Error, error) {
+	var zero Error
+	if err := zero.Validate(data); err != nil {
+		return Error{}, err
+	}
+	var result Error
+	if err := json.Unmarshal(data, &result); err != nil {
+		return Error{}, err
+	}
+	return result, nil
+}
+
+// NewError creates a new Error with required fields and auto-filled const/default values.
+func NewError(code string, message string, param string, type_ string) *Error {
+	return &Error{
+		Code: &code,
+		Message: message,
+		Param: &param,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutput.
+func (FunctionToolCallOutput) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutput") }
+
+// Validate checks whether raw JSON conforms to the FunctionToolCallOutput schema.
+func (FunctionToolCallOutput) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionToolCallOutput")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionToolCallOutput validates and unmarshals JSON into a FunctionToolCallOutput.
+func DecodeFunctionToolCallOutput(data []byte) (FunctionToolCallOutput, error) {
+	var zero FunctionToolCallOutput
+	if err := zero.Validate(data); err != nil {
+		return FunctionToolCallOutput{}, err
+	}
+	var result FunctionToolCallOutput
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionToolCallOutput{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionToolCallOutput creates a new FunctionToolCallOutput with required fields and auto-filled const/default values.
+func NewFunctionToolCallOutput(callID string, output string, type_ FunctionToolCallOutputType) *FunctionToolCallOutput {
+	return &FunctionToolCallOutput{
+		CallID: callID,
+		Output: output,
+		Type: type_,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallOutputResource.
+func (FunctionToolCallOutputResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallOutputResource") }
+
+// Validate checks whether raw JSON conforms to the FunctionToolCallOutputResource schema.
+func (FunctionToolCallOutputResource) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionToolCallOutputResource")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionToolCallOutputResource validates and unmarshals JSON into a FunctionToolCallOutputResource.
+func DecodeFunctionToolCallOutputResource(data []byte) (FunctionToolCallOutputResource, error) {
+	var zero FunctionToolCallOutputResource
+	if err := zero.Validate(data); err != nil {
+		return FunctionToolCallOutputResource{}, err
+	}
+	var result FunctionToolCallOutputResource
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionToolCallOutputResource{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionToolCallOutputResource creates a new FunctionToolCallOutputResource with required fields and auto-filled const/default values.
+func NewFunctionToolCallOutputResource(output string, id string, type_ FunctionToolCallOutputResourceType, callID string) *FunctionToolCallOutputResource {
+	return &FunctionToolCallOutputResource{
+		Output: output,
+		ID: id,
+		Type: type_,
+		CallID: callID,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for FunctionToolCallResource.
+func (FunctionToolCallResource) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("FunctionToolCallResource") }
+
+// Validate checks whether raw JSON conforms to the FunctionToolCallResource schema.
+func (FunctionToolCallResource) Validate(data []byte) error {
+	sch := compschemaValidator("FunctionToolCallResource")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeFunctionToolCallResource validates and unmarshals JSON into a FunctionToolCallResource.
+func DecodeFunctionToolCallResource(data []byte) (FunctionToolCallResource, error) {
+	var zero FunctionToolCallResource
+	if err := zero.Validate(data); err != nil {
+		return FunctionToolCallResource{}, err
+	}
+	var result FunctionToolCallResource
+	if err := json.Unmarshal(data, &result); err != nil {
+		return FunctionToolCallResource{}, err
+	}
+	return result, nil
+}
+
+// NewFunctionToolCallResource creates a new FunctionToolCallResource with required fields and auto-filled const/default values.
+func NewFunctionToolCallResource(type_ FunctionToolCallResourceType, callID string, name string, arguments string, id string) *FunctionToolCallResource {
+	return &FunctionToolCallResource{
+		Type: type_,
+		CallID: callID,
+		Name: name,
+		Arguments: arguments,
+		ID: id,
 	}
 }
 
@@ -3423,6 +3360,40 @@ func OutputItemAs[T any, P interface{ *T; OutputItem }](v OutputItem, target *T)
 	return ok
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for ResponseError.
+func (ResponseError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseError") }
+
+// Validate checks whether raw JSON conforms to the ResponseError schema.
+func (ResponseError) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseError")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseError validates and unmarshals JSON into a ResponseError.
+func DecodeResponseError(data []byte) (ResponseError, error) {
+	var zero ResponseError
+	if err := zero.Validate(data); err != nil {
+		return ResponseError{}, err
+	}
+	var result ResponseError
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseError{}, err
+	}
+	return result, nil
+}
+
+// NewResponseError creates a new ResponseError with required fields and auto-filled const/default values.
+func NewResponseError(code ResponseErrorCode, message string) *ResponseError {
+	return &ResponseError{
+		Code: code,
+		Message: message,
+	}
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for ResponseText.
 func (ResponseText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseText") }
 
@@ -3471,6 +3442,135 @@ func DecodeResponseIncompleteDetails(data []byte) (ResponseIncompleteDetails, er
 	var result ResponseIncompleteDetails
 	if err := json.Unmarshal(data, &result); err != nil {
 		return ResponseIncompleteDetails{}, err
+	}
+	return result, nil
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageOutputTokensDetails.
+func (ResponseUsageOutputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageOutputTokensDetails") }
+
+// Validate checks whether raw JSON conforms to the ResponseUsageOutputTokensDetails schema.
+func (ResponseUsageOutputTokensDetails) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseUsageOutputTokensDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseUsageOutputTokensDetails validates and unmarshals JSON into a ResponseUsageOutputTokensDetails.
+func DecodeResponseUsageOutputTokensDetails(data []byte) (ResponseUsageOutputTokensDetails, error) {
+	var zero ResponseUsageOutputTokensDetails
+	if err := zero.Validate(data); err != nil {
+		return ResponseUsageOutputTokensDetails{}, err
+	}
+	var result ResponseUsageOutputTokensDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseUsageOutputTokensDetails{}, err
+	}
+	return result, nil
+}
+
+// NewResponseUsageOutputTokensDetails creates a new ResponseUsageOutputTokensDetails with required fields and auto-filled const/default values.
+func NewResponseUsageOutputTokensDetails(reasoningTokens int64) *ResponseUsageOutputTokensDetails {
+	return &ResponseUsageOutputTokensDetails{
+		ReasoningTokens: reasoningTokens,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
+func (ResponseUsageInputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageInputTokensDetails") }
+
+// Validate checks whether raw JSON conforms to the ResponseUsageInputTokensDetails schema.
+func (ResponseUsageInputTokensDetails) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseUsageInputTokensDetails")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseUsageInputTokensDetails validates and unmarshals JSON into a ResponseUsageInputTokensDetails.
+func DecodeResponseUsageInputTokensDetails(data []byte) (ResponseUsageInputTokensDetails, error) {
+	var zero ResponseUsageInputTokensDetails
+	if err := zero.Validate(data); err != nil {
+		return ResponseUsageInputTokensDetails{}, err
+	}
+	var result ResponseUsageInputTokensDetails
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseUsageInputTokensDetails{}, err
+	}
+	return result, nil
+}
+
+// NewResponseUsageInputTokensDetails creates a new ResponseUsageInputTokensDetails with required fields and auto-filled const/default values.
+func NewResponseUsageInputTokensDetails(cachedTokens int64) *ResponseUsageInputTokensDetails {
+	return &ResponseUsageInputTokensDetails{
+		CachedTokens: cachedTokens,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseUsage.
+func (ResponseUsage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsage") }
+
+// Validate checks whether raw JSON conforms to the ResponseUsage schema.
+func (ResponseUsage) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseUsage")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseUsage validates and unmarshals JSON into a ResponseUsage.
+func DecodeResponseUsage(data []byte) (ResponseUsage, error) {
+	var zero ResponseUsage
+	if err := zero.Validate(data); err != nil {
+		return ResponseUsage{}, err
+	}
+	var result ResponseUsage
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseUsage{}, err
+	}
+	return result, nil
+}
+
+// NewResponseUsage creates a new ResponseUsage with required fields and auto-filled const/default values.
+func NewResponseUsage(outputTokensDetails ResponseUsageOutputTokensDetails, totalTokens int64, inputTokens int64, inputTokensDetails ResponseUsageInputTokensDetails, outputTokens int64) *ResponseUsage {
+	return &ResponseUsage{
+		OutputTokensDetails: outputTokensDetails,
+		TotalTokens: totalTokens,
+		InputTokens: inputTokens,
+		InputTokensDetails: inputTokensDetails,
+		OutputTokens: outputTokens,
+	}
+}
+
+// JSONSchemaBytes returns the JSON Schema definition for ResponseToolChoiceToolChoiceOptions.
+func (ResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseToolChoiceToolChoiceOptions") }
+
+// Validate checks whether raw JSON conforms to the ResponseToolChoiceToolChoiceOptions schema.
+func (ResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
+	sch := compschemaValidator("ResponseToolChoiceToolChoiceOptions")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponseToolChoiceToolChoiceOptions.
+func DecodeResponseToolChoiceToolChoiceOptions(data []byte) (ResponseToolChoiceToolChoiceOptions, error) {
+	var zero ResponseToolChoiceToolChoiceOptions
+	if err := zero.Validate(data); err != nil {
+		return ResponseToolChoiceToolChoiceOptions{}, err
+	}
+	var result ResponseToolChoiceToolChoiceOptions
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponseToolChoiceToolChoiceOptions{}, err
 	}
 	return result, nil
 }
@@ -3530,143 +3630,6 @@ func ResponseToolChoiceAs[T any, P interface{ *T; ResponseToolChoice }](v Respon
 	return ok
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponseError.
-func (ResponseError) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseError") }
-
-// Validate checks whether raw JSON conforms to the ResponseError schema.
-func (ResponseError) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseError")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseError validates and unmarshals JSON into a ResponseError.
-func DecodeResponseError(data []byte) (ResponseError, error) {
-	var zero ResponseError
-	if err := zero.Validate(data); err != nil {
-		return ResponseError{}, err
-	}
-	var result ResponseError
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseError{}, err
-	}
-	return result, nil
-}
-
-// NewResponseError creates a new ResponseError with required fields and auto-filled const/default values.
-func NewResponseError(code ResponseErrorCode, message string) *ResponseError {
-	return &ResponseError{
-		Code: code,
-		Message: message,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageInputTokensDetails.
-func (ResponseUsageInputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageInputTokensDetails") }
-
-// Validate checks whether raw JSON conforms to the ResponseUsageInputTokensDetails schema.
-func (ResponseUsageInputTokensDetails) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsageInputTokensDetails")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseUsageInputTokensDetails validates and unmarshals JSON into a ResponseUsageInputTokensDetails.
-func DecodeResponseUsageInputTokensDetails(data []byte) (ResponseUsageInputTokensDetails, error) {
-	var zero ResponseUsageInputTokensDetails
-	if err := zero.Validate(data); err != nil {
-		return ResponseUsageInputTokensDetails{}, err
-	}
-	var result ResponseUsageInputTokensDetails
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsageInputTokensDetails{}, err
-	}
-	return result, nil
-}
-
-// NewResponseUsageInputTokensDetails creates a new ResponseUsageInputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageInputTokensDetails(cachedTokens int64) *ResponseUsageInputTokensDetails {
-	return &ResponseUsageInputTokensDetails{
-		CachedTokens: cachedTokens,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsageOutputTokensDetails.
-func (ResponseUsageOutputTokensDetails) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsageOutputTokensDetails") }
-
-// Validate checks whether raw JSON conforms to the ResponseUsageOutputTokensDetails schema.
-func (ResponseUsageOutputTokensDetails) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsageOutputTokensDetails")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseUsageOutputTokensDetails validates and unmarshals JSON into a ResponseUsageOutputTokensDetails.
-func DecodeResponseUsageOutputTokensDetails(data []byte) (ResponseUsageOutputTokensDetails, error) {
-	var zero ResponseUsageOutputTokensDetails
-	if err := zero.Validate(data); err != nil {
-		return ResponseUsageOutputTokensDetails{}, err
-	}
-	var result ResponseUsageOutputTokensDetails
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsageOutputTokensDetails{}, err
-	}
-	return result, nil
-}
-
-// NewResponseUsageOutputTokensDetails creates a new ResponseUsageOutputTokensDetails with required fields and auto-filled const/default values.
-func NewResponseUsageOutputTokensDetails(reasoningTokens int64) *ResponseUsageOutputTokensDetails {
-	return &ResponseUsageOutputTokensDetails{
-		ReasoningTokens: reasoningTokens,
-	}
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseUsage.
-func (ResponseUsage) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseUsage") }
-
-// Validate checks whether raw JSON conforms to the ResponseUsage schema.
-func (ResponseUsage) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseUsage")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseUsage validates and unmarshals JSON into a ResponseUsage.
-func DecodeResponseUsage(data []byte) (ResponseUsage, error) {
-	var zero ResponseUsage
-	if err := zero.Validate(data); err != nil {
-		return ResponseUsage{}, err
-	}
-	var result ResponseUsage
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseUsage{}, err
-	}
-	return result, nil
-}
-
-// NewResponseUsage creates a new ResponseUsage with required fields and auto-filled const/default values.
-func NewResponseUsage(inputTokens int64, inputTokensDetails ResponseUsageInputTokensDetails, outputTokens int64, outputTokensDetails ResponseUsageOutputTokensDetails, totalTokens int64) *ResponseUsage {
-	return &ResponseUsage{
-		InputTokens: inputTokens,
-		InputTokensDetails: inputTokensDetails,
-		OutputTokens: outputTokens,
-		OutputTokensDetails: outputTokensDetails,
-		TotalTokens: totalTokens,
-	}
-}
-
 // JSONSchemaBytes returns the JSON Schema definition for Response.
 func (Response) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("Response") }
 
@@ -3694,22 +3657,22 @@ func DecodeResponse(data []byte) (Response, error) {
 }
 
 // NewResponse creates a new Response with required fields and auto-filled const/default values.
-func NewResponse(object ResponseObject, incompleteDetails ResponseIncompleteDetails, output []OutputItem, metadata Metadata, model ModelIdsResponses, tools []Tool, id string, createdAt float64, instructions string, toolChoice ResponseToolChoice, error ResponseError, parallelToolCalls bool, temperature float64, topP float64) *Response {
+func NewResponse(id string, parallelToolCalls bool, topP float64, model ModelIdsResponses, object ResponseObject, error ResponseError, temperature float64, instructions string, createdAt float64, incompleteDetails ResponseIncompleteDetails, output []OutputItem, metadata Metadata, tools []Tool, toolChoice ResponseToolChoice) *Response {
 	return &Response{
+		ID: id,
+		ParallelToolCalls: parallelToolCalls,
+		TopP: &topP,
+		Model: model,
 		Object: object,
+		Error: error,
+		Temperature: &temperature,
+		Instructions: &instructions,
+		CreatedAt: createdAt,
 		IncompleteDetails: incompleteDetails,
 		Output: output,
 		Metadata: metadata,
-		Model: model,
 		Tools: tools,
-		ID: id,
-		CreatedAt: createdAt,
-		Instructions: &instructions,
 		ToolChoice: toolChoice,
-		Error: error,
-		ParallelToolCalls: parallelToolCalls,
-		Temperature: &temperature,
-		TopP: &topP,
 	}
 }
 
@@ -3807,10 +3770,10 @@ func DecodeResponseAudioTranscriptDeltaEvent(data []byte) (ResponseAudioTranscri
 }
 
 // NewResponseAudioTranscriptDeltaEvent creates a new ResponseAudioTranscriptDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseAudioTranscriptDeltaEvent(type_ ResponseAudioTranscriptDeltaEventType, delta string) *ResponseAudioTranscriptDeltaEvent {
+func NewResponseAudioTranscriptDeltaEvent(delta string, type_ ResponseAudioTranscriptDeltaEventType) *ResponseAudioTranscriptDeltaEvent {
 	return &ResponseAudioTranscriptDeltaEvent{
-		Type: type_,
 		Delta: delta,
+		Type: type_,
 	}
 }
 
@@ -3979,11 +3942,11 @@ func DecodeResponseCodeInterpreterCallInProgressEvent(data []byte) (ResponseCode
 }
 
 // NewResponseCodeInterpreterCallInProgressEvent creates a new ResponseCodeInterpreterCallInProgressEvent with required fields and auto-filled const/default values.
-func NewResponseCodeInterpreterCallInProgressEvent(codeInterpreterCall CodeInterpreterToolCall, type_ ResponseCodeInterpreterCallInProgressEventType, outputIndex int64) *ResponseCodeInterpreterCallInProgressEvent {
+func NewResponseCodeInterpreterCallInProgressEvent(outputIndex int64, codeInterpreterCall CodeInterpreterToolCall, type_ ResponseCodeInterpreterCallInProgressEventType) *ResponseCodeInterpreterCallInProgressEvent {
 	return &ResponseCodeInterpreterCallInProgressEvent{
+		OutputIndex: outputIndex,
 		CodeInterpreterCall: codeInterpreterCall,
 		Type: type_,
-		OutputIndex: outputIndex,
 	}
 }
 
@@ -4083,13 +4046,13 @@ func DecodeResponseContentPartAddedEvent(data []byte) (ResponseContentPartAddedE
 }
 
 // NewResponseContentPartAddedEvent creates a new ResponseContentPartAddedEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartAddedEvent(type_ ResponseContentPartAddedEventType, itemID string, outputIndex int64, contentIndex int64, part OutputContent) *ResponseContentPartAddedEvent {
+func NewResponseContentPartAddedEvent(part OutputContent, type_ ResponseContentPartAddedEventType, itemID string, outputIndex int64, contentIndex int64) *ResponseContentPartAddedEvent {
 	return &ResponseContentPartAddedEvent{
+		Part: part,
 		Type: type_,
 		ItemID: itemID,
 		OutputIndex: outputIndex,
 		ContentIndex: contentIndex,
-		Part: part,
 	}
 }
 
@@ -4120,13 +4083,13 @@ func DecodeResponseContentPartDoneEvent(data []byte) (ResponseContentPartDoneEve
 }
 
 // NewResponseContentPartDoneEvent creates a new ResponseContentPartDoneEvent with required fields and auto-filled const/default values.
-func NewResponseContentPartDoneEvent(contentIndex int64, part OutputContent, type_ ResponseContentPartDoneEventType, itemID string, outputIndex int64) *ResponseContentPartDoneEvent {
+func NewResponseContentPartDoneEvent(type_ ResponseContentPartDoneEventType, itemID string, outputIndex int64, contentIndex int64, part OutputContent) *ResponseContentPartDoneEvent {
 	return &ResponseContentPartDoneEvent{
-		ContentIndex: contentIndex,
-		Part: part,
 		Type: type_,
 		ItemID: itemID,
 		OutputIndex: outputIndex,
+		ContentIndex: contentIndex,
+		Part: part,
 	}
 }
 
@@ -4261,11 +4224,11 @@ func DecodeResponseFileSearchCallCompletedEvent(data []byte) (ResponseFileSearch
 }
 
 // NewResponseFileSearchCallCompletedEvent creates a new ResponseFileSearchCallCompletedEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallCompletedEvent(outputIndex int64, itemID string, type_ ResponseFileSearchCallCompletedEventType) *ResponseFileSearchCallCompletedEvent {
+func NewResponseFileSearchCallCompletedEvent(itemID string, type_ ResponseFileSearchCallCompletedEventType, outputIndex int64) *ResponseFileSearchCallCompletedEvent {
 	return &ResponseFileSearchCallCompletedEvent{
-		OutputIndex: outputIndex,
 		ItemID: itemID,
 		Type: type_,
+		OutputIndex: outputIndex,
 	}
 }
 
@@ -4331,11 +4294,11 @@ func DecodeResponseFileSearchCallSearchingEvent(data []byte) (ResponseFileSearch
 }
 
 // NewResponseFileSearchCallSearchingEvent creates a new ResponseFileSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseFileSearchCallSearchingEvent(type_ ResponseFileSearchCallSearchingEventType, outputIndex int64, itemID string) *ResponseFileSearchCallSearchingEvent {
+func NewResponseFileSearchCallSearchingEvent(itemID string, type_ ResponseFileSearchCallSearchingEventType, outputIndex int64) *ResponseFileSearchCallSearchingEvent {
 	return &ResponseFileSearchCallSearchingEvent{
+		ItemID: itemID,
 		Type: type_,
 		OutputIndex: outputIndex,
-		ItemID: itemID,
 	}
 }
 
@@ -4402,12 +4365,12 @@ func DecodeResponseFunctionCallArgumentsDoneEvent(data []byte) (ResponseFunction
 }
 
 // NewResponseFunctionCallArgumentsDoneEvent creates a new ResponseFunctionCallArgumentsDoneEvent with required fields and auto-filled const/default values.
-func NewResponseFunctionCallArgumentsDoneEvent(outputIndex int64, arguments string, type_ ResponseFunctionCallArgumentsDoneEventType, itemID string) *ResponseFunctionCallArgumentsDoneEvent {
+func NewResponseFunctionCallArgumentsDoneEvent(type_ ResponseFunctionCallArgumentsDoneEventType, itemID string, outputIndex int64, arguments string) *ResponseFunctionCallArgumentsDoneEvent {
 	return &ResponseFunctionCallArgumentsDoneEvent{
-		OutputIndex: outputIndex,
-		Arguments: arguments,
 		Type: type_,
 		ItemID: itemID,
+		OutputIndex: outputIndex,
+		Arguments: arguments,
 	}
 }
 
@@ -4506,13 +4469,13 @@ func DecodeResponseItemList(data []byte) (ResponseItemList, error) {
 }
 
 // NewResponseItemList creates a new ResponseItemList with required fields and auto-filled const/default values.
-func NewResponseItemList(object ResponseItemListObject, data []ItemResource, hasMore bool, firstID string, lastID string) *ResponseItemList {
+func NewResponseItemList(hasMore bool, firstID string, lastID string, object ResponseItemListObject, data []ItemResource) *ResponseItemList {
 	return &ResponseItemList{
-		Object: object,
-		Data: data,
 		HasMore: hasMore,
 		FirstID: firstID,
 		LastID: lastID,
+		Object: object,
+		Data: data,
 	}
 }
 
@@ -4578,20 +4541,20 @@ func DecodeResponseOutputItemDoneEvent(data []byte) (ResponseOutputItemDoneEvent
 }
 
 // NewResponseOutputItemDoneEvent creates a new ResponseOutputItemDoneEvent with required fields and auto-filled const/default values.
-func NewResponseOutputItemDoneEvent(outputIndex int64, item OutputItem, type_ ResponseOutputItemDoneEventType) *ResponseOutputItemDoneEvent {
+func NewResponseOutputItemDoneEvent(type_ ResponseOutputItemDoneEventType, outputIndex int64, item OutputItem) *ResponseOutputItemDoneEvent {
 	return &ResponseOutputItemDoneEvent{
+		Type: type_,
 		OutputIndex: outputIndex,
 		Item: item,
-		Type: type_,
 	}
 }
 
-// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesText.
-func (ResponsePropertiesText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesText") }
+// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesToolChoiceToolChoiceOptions.
+func (ResponsePropertiesToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesToolChoiceToolChoiceOptions") }
 
-// Validate checks whether raw JSON conforms to the ResponsePropertiesText schema.
-func (ResponsePropertiesText) Validate(data []byte) error {
-	sch := compschemaValidator("ResponsePropertiesText")
+// Validate checks whether raw JSON conforms to the ResponsePropertiesToolChoiceToolChoiceOptions schema.
+func (ResponsePropertiesToolChoiceToolChoiceOptions) Validate(data []byte) error {
+	sch := compschemaValidator("ResponsePropertiesToolChoiceToolChoiceOptions")
 	var v any
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -4599,15 +4562,15 @@ func (ResponsePropertiesText) Validate(data []byte) error {
 	return sch.Validate(v)
 }
 
-// DecodeResponsePropertiesText validates and unmarshals JSON into a ResponsePropertiesText.
-func DecodeResponsePropertiesText(data []byte) (ResponsePropertiesText, error) {
-	var zero ResponsePropertiesText
+// DecodeResponsePropertiesToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponsePropertiesToolChoiceToolChoiceOptions.
+func DecodeResponsePropertiesToolChoiceToolChoiceOptions(data []byte) (ResponsePropertiesToolChoiceToolChoiceOptions, error) {
+	var zero ResponsePropertiesToolChoiceToolChoiceOptions
 	if err := zero.Validate(data); err != nil {
-		return ResponsePropertiesText{}, err
+		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
 	}
-	var result ResponsePropertiesText
+	var result ResponsePropertiesToolChoiceToolChoiceOptions
 	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponsePropertiesText{}, err
+		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
 	}
 	return result, nil
 }
@@ -4667,6 +4630,32 @@ func ResponsePropertiesToolChoiceAs[T any, P interface{ *T; ResponsePropertiesTo
 	return ok
 }
 
+// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesText.
+func (ResponsePropertiesText) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesText") }
+
+// Validate checks whether raw JSON conforms to the ResponsePropertiesText schema.
+func (ResponsePropertiesText) Validate(data []byte) error {
+	sch := compschemaValidator("ResponsePropertiesText")
+	var v any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	return sch.Validate(v)
+}
+
+// DecodeResponsePropertiesText validates and unmarshals JSON into a ResponsePropertiesText.
+func DecodeResponsePropertiesText(data []byte) (ResponsePropertiesText, error) {
+	var zero ResponsePropertiesText
+	if err := zero.Validate(data); err != nil {
+		return ResponsePropertiesText{}, err
+	}
+	var result ResponsePropertiesText
+	if err := json.Unmarshal(data, &result); err != nil {
+		return ResponsePropertiesText{}, err
+	}
+	return result, nil
+}
+
 // JSONSchemaBytes returns the JSON Schema definition for ResponseProperties.
 func (ResponseProperties) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseProperties") }
 
@@ -4691,39 +4680,6 @@ func DecodeResponseProperties(data []byte) (ResponseProperties, error) {
 		return ResponseProperties{}, err
 	}
 	return result, nil
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponsePropertiesToolChoiceToolChoiceOptions.
-func (ResponsePropertiesToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponsePropertiesToolChoiceToolChoiceOptions") }
-
-// Validate checks whether raw JSON conforms to the ResponsePropertiesToolChoiceToolChoiceOptions schema.
-func (ResponsePropertiesToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("ResponsePropertiesToolChoiceToolChoiceOptions")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponsePropertiesToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponsePropertiesToolChoiceToolChoiceOptions.
-func DecodeResponsePropertiesToolChoiceToolChoiceOptions(data []byte) (ResponsePropertiesToolChoiceToolChoiceOptions, error) {
-	var zero ResponsePropertiesToolChoiceToolChoiceOptions
-	if err := zero.Validate(data); err != nil {
-		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
-	}
-	var result ResponsePropertiesToolChoiceToolChoiceOptions
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponsePropertiesToolChoiceToolChoiceOptions{}, err
-	}
-	return result, nil
-}
-
-// NewResponsePropertiesToolChoiceToolChoiceOptions creates a new ResponsePropertiesToolChoiceToolChoiceOptions with required fields and auto-filled const/default values.
-func NewResponsePropertiesToolChoiceToolChoiceOptions(value ToolChoiceOptions) *ResponsePropertiesToolChoiceToolChoiceOptions {
-	return &ResponsePropertiesToolChoiceToolChoiceOptions{
-		Value: value,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema definition for ResponseReasoningSummaryPartAddedEventPart.
@@ -4753,10 +4709,10 @@ func DecodeResponseReasoningSummaryPartAddedEventPart(data []byte) (ResponseReas
 }
 
 // NewResponseReasoningSummaryPartAddedEventPart creates a new ResponseReasoningSummaryPartAddedEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartAddedEventPart(text string, type_ string) *ResponseReasoningSummaryPartAddedEventPart {
+func NewResponseReasoningSummaryPartAddedEventPart(type_ string, text string) *ResponseReasoningSummaryPartAddedEventPart {
 	return &ResponseReasoningSummaryPartAddedEventPart{
-		Text: text,
 		Type: type_,
+		Text: text,
 	}
 }
 
@@ -4824,10 +4780,10 @@ func DecodeResponseReasoningSummaryPartDoneEventPart(data []byte) (ResponseReaso
 }
 
 // NewResponseReasoningSummaryPartDoneEventPart creates a new ResponseReasoningSummaryPartDoneEventPart with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryPartDoneEventPart(text string, type_ string) *ResponseReasoningSummaryPartDoneEventPart {
+func NewResponseReasoningSummaryPartDoneEventPart(type_ string, text string) *ResponseReasoningSummaryPartDoneEventPart {
 	return &ResponseReasoningSummaryPartDoneEventPart{
-		Text: text,
 		Type: type_,
+		Text: text,
 	}
 }
 
@@ -4895,13 +4851,13 @@ func DecodeResponseReasoningSummaryTextDeltaEvent(data []byte) (ResponseReasonin
 }
 
 // NewResponseReasoningSummaryTextDeltaEvent creates a new ResponseReasoningSummaryTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseReasoningSummaryTextDeltaEvent(type_ ResponseReasoningSummaryTextDeltaEventType, itemID string, outputIndex int64, summaryIndex int64, delta string) *ResponseReasoningSummaryTextDeltaEvent {
+func NewResponseReasoningSummaryTextDeltaEvent(delta string, type_ ResponseReasoningSummaryTextDeltaEventType, itemID string, outputIndex int64, summaryIndex int64) *ResponseReasoningSummaryTextDeltaEvent {
 	return &ResponseReasoningSummaryTextDeltaEvent{
+		Delta: delta,
 		Type: type_,
 		ItemID: itemID,
 		OutputIndex: outputIndex,
 		SummaryIndex: summaryIndex,
-		Delta: delta,
 	}
 }
 
@@ -4969,13 +4925,13 @@ func DecodeResponseRefusalDeltaEvent(data []byte) (ResponseRefusalDeltaEvent, er
 }
 
 // NewResponseRefusalDeltaEvent creates a new ResponseRefusalDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseRefusalDeltaEvent(delta string, type_ ResponseRefusalDeltaEventType, itemID string, outputIndex int64, contentIndex int64) *ResponseRefusalDeltaEvent {
+func NewResponseRefusalDeltaEvent(type_ ResponseRefusalDeltaEventType, itemID string, outputIndex int64, contentIndex int64, delta string) *ResponseRefusalDeltaEvent {
 	return &ResponseRefusalDeltaEvent{
-		Delta: delta,
 		Type: type_,
 		ItemID: itemID,
 		OutputIndex: outputIndex,
 		ContentIndex: contentIndex,
+		Delta: delta,
 	}
 }
 
@@ -5081,13 +5037,13 @@ func DecodeResponseTextDeltaEvent(data []byte) (ResponseTextDeltaEvent, error) {
 }
 
 // NewResponseTextDeltaEvent creates a new ResponseTextDeltaEvent with required fields and auto-filled const/default values.
-func NewResponseTextDeltaEvent(type_ ResponseTextDeltaEventType, itemID string, outputIndex int64, contentIndex int64, delta string) *ResponseTextDeltaEvent {
+func NewResponseTextDeltaEvent(itemID string, outputIndex int64, contentIndex int64, delta string, type_ ResponseTextDeltaEventType) *ResponseTextDeltaEvent {
 	return &ResponseTextDeltaEvent{
-		Type: type_,
 		ItemID: itemID,
 		OutputIndex: outputIndex,
 		ContentIndex: contentIndex,
 		Delta: delta,
+		Type: type_,
 	}
 }
 
@@ -5225,11 +5181,11 @@ func DecodeResponseWebSearchCallSearchingEvent(data []byte) (ResponseWebSearchCa
 }
 
 // NewResponseWebSearchCallSearchingEvent creates a new ResponseWebSearchCallSearchingEvent with required fields and auto-filled const/default values.
-func NewResponseWebSearchCallSearchingEvent(itemID string, type_ ResponseWebSearchCallSearchingEventType, outputIndex int64) *ResponseWebSearchCallSearchingEvent {
+func NewResponseWebSearchCallSearchingEvent(type_ ResponseWebSearchCallSearchingEventType, outputIndex int64, itemID string) *ResponseWebSearchCallSearchingEvent {
 	return &ResponseWebSearchCallSearchingEvent{
-		ItemID: itemID,
 		Type: type_,
 		OutputIndex: outputIndex,
+		ItemID: itemID,
 	}
 }
 
@@ -5490,39 +5446,6 @@ func ResponseStreamEventAs[T any, P interface{ *T; ResponseStreamEvent }](v Resp
 		*target = *t
 	}
 	return ok
-}
-
-// JSONSchemaBytes returns the JSON Schema definition for ResponseToolChoiceToolChoiceOptions.
-func (ResponseToolChoiceToolChoiceOptions) JSONSchemaBytes() json.RawMessage { return compschemaDefBytes("ResponseToolChoiceToolChoiceOptions") }
-
-// Validate checks whether raw JSON conforms to the ResponseToolChoiceToolChoiceOptions schema.
-func (ResponseToolChoiceToolChoiceOptions) Validate(data []byte) error {
-	sch := compschemaValidator("ResponseToolChoiceToolChoiceOptions")
-	var v any
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	return sch.Validate(v)
-}
-
-// DecodeResponseToolChoiceToolChoiceOptions validates and unmarshals JSON into a ResponseToolChoiceToolChoiceOptions.
-func DecodeResponseToolChoiceToolChoiceOptions(data []byte) (ResponseToolChoiceToolChoiceOptions, error) {
-	var zero ResponseToolChoiceToolChoiceOptions
-	if err := zero.Validate(data); err != nil {
-		return ResponseToolChoiceToolChoiceOptions{}, err
-	}
-	var result ResponseToolChoiceToolChoiceOptions
-	if err := json.Unmarshal(data, &result); err != nil {
-		return ResponseToolChoiceToolChoiceOptions{}, err
-	}
-	return result, nil
-}
-
-// NewResponseToolChoiceToolChoiceOptions creates a new ResponseToolChoiceToolChoiceOptions with required fields and auto-filled const/default values.
-func NewResponseToolChoiceToolChoiceOptions(value ToolChoiceOptions) *ResponseToolChoiceToolChoiceOptions {
-	return &ResponseToolChoiceToolChoiceOptions{
-		Value: value,
-	}
 }
 
 // JSONSchemaBytes returns the JSON Schema for VectorStoreFileAttributes.

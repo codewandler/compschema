@@ -200,6 +200,26 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 			}
 		}
 		b.WriteString("\n")
+
+		// Accessor methods on wrapper types.
+		for wrapperName, primType := range wrapperTypes {
+			for _, acc := range accessors {
+				key := wrapperName + "." + acc.Method
+				if emittedAccessorMethods != nil && emittedAccessorMethods[key] {
+					continue
+				}
+				var body string
+				if primType == "string" || primType == acc.ReturnType {
+					body = fmt.Sprintf("return %s(w.Value)", acc.ReturnType)
+				} else {
+					body = fmt.Sprintf("return fmt.Sprintf(\"%%v\", w.Value)")
+				}
+				b.WriteString(fmt.Sprintf("func (w *%s) %s() %s { %s }\n", wrapperName, acc.Method, acc.ReturnType, body))
+				if emittedAccessorMethods != nil {
+					emittedAccessorMethods[key] = true
+				}
+			}
+		}
 	}
 
 	// MarshalJSON + UnmarshalJSON for wrapper types.
@@ -212,6 +232,9 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 		b.WriteString("}\n\n")
 		_ = primType
 	}
+
+	// Union helper functions — convenience constructors returning the union interface.
+	emitUnionHelpers(b, goName, t, pkg, r, wrapperTypes)
 
 	// UnmarshalX dispatcher.
 	emitUnmarshalFunc(b, goName, t, pkg, r, wrapperTypes)
@@ -465,4 +488,70 @@ func DetectUnionField(f ir.Field, pkg *ir.Package, r TypeResolver, emittedUnions
 	}
 
 	return nil
+}
+
+// emitUnionHelpers generates convenience functions for constructing union values:
+//
+//  1. For each struct variant: {UnionName}From{VariantName}(v *Variant) UnionName
+//  2. For each wrapper variant: {UnionName}{ShortType}(v InnerType) UnionName
+//
+// These make it easy to construct union values without knowing wrapper type names.
+func emitUnionHelpers(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r TypeResolver, wrapperTypes map[string]string) {
+	if len(t.Variants) == 0 {
+		return
+	}
+
+	emitted := make(map[string]bool)
+
+	// Wrapper variant helpers: New{WrapperName}(v InnerType) UnionName
+	for wrapperName, primType := range wrapperTypes {
+		funcName := "New" + wrapperName
+		if emitted[funcName] {
+			continue
+		}
+		emitted[funcName] = true
+		b.WriteString(fmt.Sprintf("// %s creates a %s from a %s value.\n", funcName, goName, primType))
+		b.WriteString(fmt.Sprintf("func %s(v %s) %s {\n", funcName, primType, goName))
+		b.WriteString(fmt.Sprintf("\treturn &%s{Value: v}\n", wrapperName))
+		b.WriteString("}\n\n")
+	}
+
+	// Struct variant helpers: {UnionName}From{VariantName}(v *Variant) UnionName
+	for _, v := range t.Variants {
+		vName := r.GoName(v.Name)
+		if vName == "" || vName == goName {
+			continue
+		}
+		// Skip wrapper types (already handled above).
+		if _, isWrapper := wrapperTypes[vName]; isWrapper {
+			continue
+		}
+
+		// Check if the variant is a struct type.
+		if v.TypeRef.Name != "" {
+			vt, ok := pkg.Types[v.TypeRef.Name]
+			if !ok || vt.Kind != ir.KindStruct {
+				continue
+			}
+		} else if v.TypeRef.Inline != nil {
+			if v.TypeRef.Inline.Kind == ir.KindRef {
+				vt, ok := pkg.Types[v.TypeRef.Inline.RefName]
+				if !ok || vt.Kind != ir.KindStruct {
+					continue
+				}
+			} else if v.TypeRef.Inline.Kind != ir.KindStruct {
+				continue
+			}
+		}
+
+		funcName := goName + "From" + vName
+		if emitted[funcName] {
+			continue
+		}
+		emitted[funcName] = true
+		b.WriteString(fmt.Sprintf("// %s wraps a *%s as a %s union value.\n", funcName, vName, goName))
+		b.WriteString(fmt.Sprintf("func %s(v *%s) %s {\n", funcName, vName, goName))
+		b.WriteString("\treturn v\n")
+		b.WriteString("}\n\n")
+	}
 }

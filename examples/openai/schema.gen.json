@@ -97,10 +97,10 @@
         }
       },
       "required": [
+        "x",
         "y",
         "type",
-        "button",
-        "x"
+        "button"
       ],
       "title": "Click",
       "type": "object"
@@ -192,11 +192,11 @@
         }
       },
       "required": [
-        "status",
-        "results",
         "id",
         "type",
-        "code"
+        "code",
+        "status",
+        "results"
       ],
       "title": "CodeInterpreterToolCall",
       "type": "object"
@@ -325,8 +325,8 @@
         }
       },
       "required": [
-        "type",
-        "filters"
+        "filters",
+        "type"
       ],
       "title": "CompoundFilter",
       "type": "object"
@@ -532,12 +532,12 @@
         }
       },
       "required": [
-        "type",
         "id",
         "call_id",
         "action",
         "pending_safety_checks",
-        "status"
+        "status",
+        "type"
       ],
       "title": "ComputerToolCall",
       "type": "object"
@@ -678,9 +678,9 @@
         }
       },
       "required": [
-        "message",
         "id",
-        "code"
+        "code",
+        "message"
       ],
       "title": "ComputerToolCallSafetyCheck",
       "type": "object"
@@ -741,8 +741,8 @@
         }
       },
       "required": [
-        "y",
-        "x"
+        "x",
+        "y"
       ],
       "title": "Coordinate",
       "type": "object"
@@ -1027,6 +1027,9 @@
       },
       "oneOf": [
         {
+          "$ref": "#/$defs/CreateResponseToolChoiceToolChoiceOptions"
+        },
+        {
           "$ref": "#/$defs/ToolChoiceFunction"
         },
         {
@@ -1141,8 +1144,8 @@
         }
       },
       "required": [
-        "role",
-        "content"
+        "content",
+        "role"
       ],
       "title": "EasyInputMessage",
       "type": "object"
@@ -1209,10 +1212,10 @@
         }
       },
       "required": [
-        "param",
-        "type",
         "code",
-        "message"
+        "message",
+        "param",
+        "type"
       ],
       "title": "Error",
       "type": "object"
@@ -1239,9 +1242,9 @@
         }
       },
       "required": [
-        "index",
         "type",
-        "file_id"
+        "file_id",
+        "index"
       ],
       "title": "FileCitationBody",
       "type": "object"
@@ -1268,9 +1271,9 @@
         }
       },
       "required": [
+        "type",
         "file_id",
-        "index",
-        "type"
+        "index"
       ],
       "title": "FilePath",
       "type": "object"
@@ -1436,9 +1439,9 @@
         }
       },
       "required": [
+        "output",
         "call_id",
-        "type",
-        "output"
+        "type"
       ],
       "title": "FunctionCallOutputItemParam",
       "type": "object"
@@ -1596,9 +1599,9 @@
         }
       },
       "required": [
-        "type",
         "call_id",
-        "output"
+        "output",
+        "type"
       ],
       "title": "FunctionToolCallOutput",
       "type": "object"
@@ -1647,10 +1650,10 @@
         }
       },
       "required": [
+        "output",
         "id",
         "type",
-        "call_id",
-        "output"
+        "call_id"
       ],
       "title": "FunctionToolCallOutputResource",
       "type": "object"
@@ -1703,11 +1706,11 @@
         }
       },
       "required": [
-        "arguments",
-        "id",
         "type",
         "call_id",
-        "name"
+        "name",
+        "arguments",
+        "id"
       ],
       "title": "FunctionToolCallResource",
       "type": "object"
@@ -1807,8 +1810,8 @@
         }
       },
       "required": [
-        "type",
-        "detail"
+        "detail",
+        "type"
       ],
       "title": "InputImageContent",
       "type": "object"
@@ -1821,6 +1824,9 @@
       "oneOf": [
         {
           "$ref": "#/$defs/EasyInputMessage"
+        },
+        {
+          "$ref": "#/$defs/InputItemItem"
         },
         {
           "$ref": "#/$defs/ItemReferenceParam"
@@ -2323,9 +2329,9 @@
         }
       },
       "required": [
+        "y",
         "type",
-        "x",
-        "y"
+        "x"
       ],
       "title": "Move",
       "type": "object"
@@ -2413,11 +2419,11 @@
         }
       },
       "required": [
+        "status",
         "id",
         "type",
         "role",
-        "content",
-        "status"
+        "content"
       ],
       "title": "OutputMessage",
       "type": "object"
@@ -2804,20 +2810,20 @@
         }
       },
       "required": [
+        "id",
+        "parallel_tool_calls",
+        "top_p",
+        "model",
         "object",
+        "error",
+        "temperature",
+        "instructions",
+        "created_at",
         "incomplete_details",
         "output",
         "metadata",
-        "model",
         "tools",
-        "id",
-        "created_at",
-        "instructions",
-        "tool_choice",
-        "error",
-        "parallel_tool_calls",
-        "temperature",
-        "top_p"
+        "tool_choice"
       ],
       "title": "Response",
       "type": "object"
@@ -2883,8 +2889,8 @@
         }
       },
       "required": [
-        "type",
-        "delta"
+        "delta",
+        "type"
       ],
       "title": "ResponseAudioTranscriptDeltaEvent",
       "type": "object"
@@ -3015,9 +3021,9 @@
         }
       },
       "required": [
+        "output_index",
         "code_interpreter_call",
-        "type",
-        "output_index"
+        "type"
       ],
       "title": "ResponseCodeInterpreterCallInProgressEvent",
       "type": "object"
@@ -3102,11 +3108,11 @@
         }
       },
       "required": [
+        "part",
         "type",
         "item_id",
         "output_index",
-        "content_index",
-        "part"
+        "content_index"
       ],
       "title": "ResponseContentPartAddedEvent",
       "type": "object"
@@ -3140,11 +3146,11 @@
         }
       },
       "required": [
-        "content_index",
-        "part",
         "type",
         "item_id",
-        "output_index"
+        "output_index",
+        "content_index",
+        "part"
       ],
       "title": "ResponseContentPartDoneEvent",
       "type": "object"
@@ -3298,9 +3304,9 @@
         }
       },
       "required": [
-        "output_index",
         "item_id",
-        "type"
+        "type",
+        "output_index"
       ],
       "title": "ResponseFileSearchCallCompletedEvent",
       "type": "object"
@@ -3356,9 +3362,9 @@
         }
       },
       "required": [
+        "item_id",
         "type",
-        "output_index",
-        "item_id"
+        "output_index"
       ],
       "title": "ResponseFileSearchCallSearchingEvent",
       "type": "object"
@@ -3465,10 +3471,10 @@
         }
       },
       "required": [
-        "output_index",
-        "arguments",
         "type",
-        "item_id"
+        "item_id",
+        "output_index",
+        "arguments"
       ],
       "title": "ResponseFunctionCallArgumentsDoneEvent",
       "type": "object"
@@ -3567,11 +3573,11 @@
         }
       },
       "required": [
-        "object",
-        "data",
         "has_more",
         "first_id",
-        "last_id"
+        "last_id",
+        "object",
+        "data"
       ],
       "title": "ResponseItemList",
       "type": "object"
@@ -3625,9 +3631,9 @@
         }
       },
       "required": [
+        "type",
         "output_index",
-        "item",
-        "type"
+        "item"
       ],
       "title": "ResponseOutputItemDoneEvent",
       "type": "object"
@@ -3737,6 +3743,9 @@
       },
       "oneOf": [
         {
+          "$ref": "#/$defs/ResponsePropertiesToolChoiceToolChoiceOptions"
+        },
+        {
           "$ref": "#/$defs/ToolChoiceFunction"
         },
         {
@@ -3811,8 +3820,8 @@
         }
       },
       "required": [
-        "text",
-        "type"
+        "type",
+        "text"
       ],
       "title": "ResponseReasoningSummaryPartAddedEventPart",
       "type": "object"
@@ -3870,8 +3879,8 @@
         }
       },
       "required": [
-        "text",
-        "type"
+        "type",
+        "text"
       ],
       "title": "ResponseReasoningSummaryPartDoneEventPart",
       "type": "object"
@@ -3906,11 +3915,11 @@
         }
       },
       "required": [
+        "delta",
         "type",
         "item_id",
         "output_index",
-        "summary_index",
-        "delta"
+        "summary_index"
       ],
       "title": "ResponseReasoningSummaryTextDeltaEvent",
       "type": "object"
@@ -3984,11 +3993,11 @@
         }
       },
       "required": [
-        "delta",
         "type",
         "item_id",
         "output_index",
-        "content_index"
+        "content_index",
+        "delta"
       ],
       "title": "ResponseRefusalDeltaEvent",
       "type": "object"
@@ -4232,11 +4241,11 @@
         }
       },
       "required": [
-        "type",
         "item_id",
         "output_index",
         "content_index",
-        "delta"
+        "delta",
+        "type"
       ],
       "title": "ResponseTextDeltaEvent",
       "type": "object"
@@ -4287,6 +4296,9 @@
       },
       "oneOf": [
         {
+          "$ref": "#/$defs/ResponseToolChoiceToolChoiceOptions"
+        },
+        {
           "$ref": "#/$defs/ToolChoiceFunction"
         },
         {
@@ -4334,11 +4346,11 @@
         }
       },
       "required": [
+        "output_tokens_details",
+        "total_tokens",
         "input_tokens",
         "input_tokens_details",
-        "output_tokens",
-        "output_tokens_details",
-        "total_tokens"
+        "output_tokens"
       ],
       "title": "ResponseUsage",
       "type": "object"
@@ -4453,9 +4465,9 @@
         }
       },
       "required": [
-        "item_id",
         "type",
-        "output_index"
+        "output_index",
+        "item_id"
       ],
       "title": "ResponseWebSearchCallSearchingEvent",
       "type": "object"
@@ -4580,9 +4592,9 @@
         }
       },
       "required": [
+        "type",
         "name",
-        "schema",
-        "type"
+        "schema"
       ],
       "title": "TextResponseFormatJsonSchema",
       "type": "object"
@@ -4717,11 +4729,11 @@
         }
       },
       "required": [
+        "start_index",
+        "end_index",
         "title",
         "type",
-        "url",
-        "start_index",
-        "end_index"
+        "url"
       ],
       "title": "UrlCitationBody",
       "type": "object"
@@ -4827,9 +4839,9 @@
         }
       },
       "required": [
+        "id",
         "type",
-        "status",
-        "id"
+        "status"
       ],
       "title": "WebSearchToolCall",
       "type": "object"

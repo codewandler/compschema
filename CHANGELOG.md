@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-04-23
+
+### Added
+- **Union helper functions** — generated convenience functions for constructing union values:
+  - **`{UnionName}From{VariantName}(v *Variant) UnionName`** — wraps a struct variant as the union interface (e.g. `InputItemFromEasyInputMessage`, `ToolFromFunctionTool`)
+  - **`New{WrapperName}(v InnerType) UnionName`** — creates a wrapper variant returning the union interface (e.g. `NewCreateResponseInputSliceInputItem(items) CreateResponseInput`, `NewEasyInputMessageContentString(text) EasyInputMessageContent`)
+  - 106 helpers generated for the OpenAI Responses API
+- **Wrapper type accessor methods** — wrapper types now implement `DiscriminatorValue()` when the union has accessor methods, returning the string representation of the wrapped value
+
+### Changed
+- Constructor generation skips wrapper types (they get union helpers instead, avoiding duplicate `New` functions with different return types)
+
 ## [3.3.0] - 2026-04-23
 
 ### Changed
@@ -386,7 +398,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Makefile` for pipeline orchestration.
 - `PRD.md` — project design document with scope, IR design, and validation strategy.
 
-[Unreleased]: https://github.com/codewandler/compschema/compare/v3.3.0...HEAD
+[Unreleased]: https://github.com/codewandler/compschema/compare/v3.4.0...HEAD
+[3.4.0]: https://github.com/codewandler/compschema/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/codewandler/compschema/compare/v3.2.1...v3.3.0
 [3.2.1]: https://github.com/codewandler/compschema/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/codewandler/compschema/compare/v3.1.0...v3.2.0
