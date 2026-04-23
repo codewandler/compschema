@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.1] - 2026-04-24
+
+### Fixed
+- **Scalar wrapper JSON Schema emission** — wrapper types that wrap scalars (e.g., `ComparisonFilterValueString`, `ComparisonFilterValueBool`) now emit the inner scalar type in JSON Schema (`{"type": "string"}`) instead of an object with a `Value` property. This matches their `MarshalJSON`/`UnmarshalJSON` behavior which serializes as the raw value.
+- **Example generation for scalar wrapper unions** — union fields whose variants are scalar wrappers (e.g., `ComparisonFilter.Value`) now generate valid examples instead of `null`. Fixes `ExamplesValidate` test failures.
+- **`UnmarshalTool` discriminator** — `ComputerUsePreviewTool` case in the hand-written `UnmarshalTool` dispatcher used the `environment` field's enum values (`"windows"`, `"mac"`, ...) instead of the `type` field's value (`"computer_use_preview"`). Stale from a previous import run.
+- **Discriminator extraction filtering** — `shallowDiscriminatorValues` in the JSON Schema → IR parser now respects the known discriminator property name when set. Previously, Go map iteration could pick up the wrong field's enum values when multiple fields had enums. This was the root cause of the `UnmarshalTool` bug.
+
+### Removed
+- `Makefile` — fully replaced by `Taskfile.yml` and `compschema run` pipelines since v3.3.0.
+
 ## [3.4.0] - 2026-04-23
 
 ### Added

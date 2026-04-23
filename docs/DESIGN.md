@@ -155,7 +155,7 @@ To prove completeness against a real-world, complex schema we use the **OpenAI `
 | **(4)** Go structs → JSON Schema | Run compschema on the generated Go package. **This is the system under test.** | `compschema ./testdata/openai/generated/...` | ⬜ TODO |
 | **(5)** Diff & report | Structurally compare step 2 output (ground truth) with step 4 output. Report per-keyword coverage, missing constraints, extra properties. | Custom Go test or `json-diff` CLI. | ⬜ TODO |
 
-All steps are orchestrated via `make pipeline` (see `Makefile`).
+All steps are orchestrated via `compschema run` (see `.compschema.yaml`).
 
 ### What This Proves
 
