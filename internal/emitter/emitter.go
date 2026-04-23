@@ -287,7 +287,13 @@ func typeToSchema(t *ir.Type, topLevel bool) map[string]any {
 			// interface{} — accepts any JSON value.
 			return s
 		}
-		s["type"] = t.ScalarType
+		scalarType := t.ScalarType
+		// Normalize Go-specific integer types to JSON Schema "integer".
+		switch scalarType {
+		case "int", "int8", "int16", "int32", "int64":
+			scalarType = "integer"
+		}
+		s["type"] = scalarType
 
 	case ir.KindList:
 		s["type"] = "array"
@@ -515,6 +521,9 @@ func GoCodegenWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Em
 		if t.Kind != ir.KindStruct || isAnyType(t) || isWrapperType(t) {
 			continue
 		}
+		if t.HasUnmarshalJSON {
+			continue // already has a custom UnmarshalJSON (e.g. from importer)
+		}
 		emitCodegenUnmarshalJSON(&b, name, t, pkg, resolver, unionTypes)
 	}
 
@@ -661,6 +670,8 @@ func fieldGoTypeFromInline(t *ir.Type, pkg *ir.Package) string {
 			return "string"
 		case "integer":
 			return "int"
+		case "int", "int8", "int16", "int32", "int64":
+			return t.ScalarType
 		case "number":
 			return "float64"
 		case "boolean":
@@ -799,6 +810,11 @@ func emitConstructor(b *strings.Builder, name string, t *ir.Type, pkg *ir.Packag
 	for _, f := range params {
 		pName := paramName(f.Name)
 		pType := fieldGoType(f, pkg)
+		// For nullable required fields, the param should be the unwrapped type
+		// (the constructor will wrap with & when assigning to the field).
+		if isNullableRequiredField(f, pkg) {
+			pType = strings.TrimPrefix(pType, "*")
+		}
 		paramParts = append(paramParts, fmt.Sprintf("%s %s", pName, pType))
 	}
 
@@ -1345,7 +1361,7 @@ func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
 				switch t.ScalarType {
 				case "string":
 					return `""`
-				case "integer":
+				case "integer", "int", "int8", "int16", "int32", "int64":
 					return "0"
 				case "number":
 					return "0.0"
@@ -1373,7 +1389,7 @@ func constructorTestArgFromType(ref ir.TypeRef, pkg *ir.Package) string {
 			switch ref.Inline.ScalarType {
 			case "string":
 				return `""`
-			case "integer":
+			case "integer", "int", "int8", "int16", "int32", "int64":
 				return "0"
 			case "number":
 				return "0.0"
@@ -1580,7 +1596,7 @@ func scalarZero(t string) any {
 	switch t {
 	case "string":
 		return ""
-	case "integer":
+	case "integer", "int", "int8", "int16", "int32", "int64":
 		return 0
 	case "number":
 		return 0.0

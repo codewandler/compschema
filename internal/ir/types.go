@@ -82,6 +82,10 @@ type Type struct {
 
 	// Constraints (applicable to any kind)
 	Constraints []Constraint
+
+	// HasUnmarshalJSON is true if the type already has a custom UnmarshalJSON method
+	// defined in the source package. The codegen skips emitting one to avoid duplicates.
+	HasUnmarshalJSON bool
 }
 
 // Field is a property in a struct type.

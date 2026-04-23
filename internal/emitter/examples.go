@@ -205,7 +205,7 @@ func exampleScalar(scalarType, name string, constraints []ir.Constraint) any {
 	switch scalarType {
 	case "string":
 		return exampleString(name, constraints)
-	case "integer":
+	case "integer", "int", "int8", "int16", "int32", "int64":
 		return exampleInteger(constraints)
 	case "number":
 		return exampleNumber(constraints)

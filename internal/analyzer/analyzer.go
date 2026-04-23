@@ -164,8 +164,23 @@ func (a *pkgAnalyzer) ensureType(name string) {
 
 	t := a.convertType(name, tn.Type())
 	if t != nil {
+		// Check if the type already has UnmarshalJSON defined.
+		if t.Kind == ir.KindStruct && hasMethod(tn.Type(), "UnmarshalJSON") {
+			t.HasUnmarshalJSON = true
+		}
 		a.irPkg.Add(t)
 	}
+}
+
+// hasMethod checks if a type has a method with the given name.
+func hasMethod(typ types.Type, name string) bool {
+	mset := types.NewMethodSet(types.NewPointer(typ))
+	for i := 0; i < mset.Len(); i++ {
+		if mset.At(i).Obj().Name() == name {
+			return true
+		}
+	}
+	return false
 }
 
 // convertType converts a go/types.Type into an IR Type.
@@ -912,7 +927,21 @@ func basicToScalar(b *types.Basic) string {
 	case b.Info()&types.IsFloat != 0:
 		return "number"
 	case b.Info()&types.IsInteger != 0:
-		return "integer"
+		// Preserve specific Go integer type for codegen fidelity.
+		switch b.Kind() {
+		case types.Int:
+			return "int"
+		case types.Int64:
+			return "int64"
+		case types.Int32:
+			return "int32"
+		case types.Int16:
+			return "int16"
+		case types.Int8:
+			return "int8"
+		default:
+			return "integer"
+		}
 	default:
 		return "string"
 	}

@@ -514,12 +514,14 @@ func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
 
 	// For each variant, find fields with const or single-value enum constraints.
 	// Map: fieldName → set of discriminator values across variants.
-	discFields := make(map[string][]string)
-	variantCount := 0
+	// Also track how many variants contribute to each field.
+	type fieldInfo struct {
+		values       []string
+		variantCount int
+	}
+	discFields := make(map[string]*fieldInfo)
 
 	for _, v := range t.Variants {
-		// Resolve the variant's type to get its fields.
-		// Use shallow extraction to avoid recursion on circular refs.
 		var discVals map[string][]string
 		if v.TypeRef.Inline != nil && v.TypeRef.Inline.Kind == ir.KindStruct {
 			discVals = make(map[string][]string)
@@ -535,31 +537,41 @@ func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
 			}
 		}
 
-		if len(discVals) == 0 {
-			continue
-		}
-		variantCount++
-
 		for fieldName, vals := range discVals {
-			discFields[fieldName] = append(discFields[fieldName], vals...)
+			fi := discFields[fieldName]
+			if fi == nil {
+				fi = &fieldInfo{}
+				discFields[fieldName] = fi
+			}
+			fi.values = append(fi.values, vals...)
+			fi.variantCount++
 		}
 	}
 
-	// Find a field where all values across variants are disjoint.
-	// Each variant must contribute at least one value.
-	for fieldName, values := range discFields {
-		if len(values) >= variantCount {
-			unique := make(map[string]bool, len(values))
-			for _, v := range values {
-				unique[v] = true
-			}
-			if len(unique) == len(values) {
-				return fieldName
-			}
+	// Find a field where:
+	// 1. All variants (or most) contribute values
+	// 2. All values are disjoint
+	// Prefer fields present in more variants.
+	bestField := ""
+	bestCount := 0
+	for fieldName, fi := range discFields {
+		if fi.variantCount < 2 {
+			continue // Must appear in at least 2 variants
+		}
+		unique := make(map[string]bool, len(fi.values))
+		for _, v := range fi.values {
+			unique[v] = true
+		}
+		if len(unique) != len(fi.values) {
+			continue // Values not disjoint
+		}
+		if fi.variantCount > bestCount {
+			bestField = fieldName
+			bestCount = fi.variantCount
 		}
 	}
 
-	return ""
+	return bestField
 }
 
 // extractDiscriminatorValues gets discriminator values from a field.
