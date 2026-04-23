@@ -86,10 +86,10 @@ type Type struct {
 
 // Field is a property in a struct type.
 type Field struct {
-	Name        string            // Go field name
-	JSONName    string            // from json tag
+	Name        string // Go field name
+	JSONName    string // from json tag
 	Description string
-	Required    bool              // true if no omitempty/omitzero
+	Required    bool // true if no omitempty/omitzero
 	Type        TypeRef
 	Constraints []Constraint
 	Tags        map[string]string // raw struct tags: "json" → "bar,omitempty", "yaml" → "baz", etc.
@@ -103,7 +103,7 @@ type TypeRef struct {
 
 // Variant is one arm of a union type.
 type Variant struct {
-	Name                string   // Go type name of the variant
+	Name                string // Go type name of the variant
 	TypeRef             TypeRef
 	DiscriminatorValues []string // discriminator field values that map to this variant
 }

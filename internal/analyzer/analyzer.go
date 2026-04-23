@@ -669,6 +669,7 @@ func (o tagOptions) contains(name string) bool {
 	}
 	return false
 }
+
 // parseStructTags extracts all key:"value" pairs from a reflect.StructTag.
 // Returns a map like {"json": "bar,omitempty", "yaml": "baz", "mapstructure": "bar"}.
 // The jsonschema tag is excluded (handled separately as constraints).
@@ -704,7 +705,6 @@ func parseStructTags(tag reflect.StructTag) map[string]string {
 	}
 	return tags
 }
-
 
 // Metadata keywords that go to Field.Description / Type properties, not JSON Schema constraints.
 

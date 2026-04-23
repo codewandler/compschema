@@ -39,7 +39,7 @@ func ParseBytes(data []byte) (*ir.Package, error) {
 		}
 	}
 
-	ctx := &parseContext{defs: parsedDefs}
+	ctx := &parseContext{defs: parsedDefs, visiting: make(map[string]bool)}
 	pkg := ir.NewPackage("schema", "")
 
 	for name, s := range parsedDefs {
@@ -54,7 +54,8 @@ func ParseBytes(data []byte) (*ir.Package, error) {
 
 // parseContext holds the full $defs for cross-reference resolution.
 type parseContext struct {
-	defs map[string]*schemaNode
+	defs     map[string]*schemaNode
+	visiting map[string]bool // cycle guard for convertNode
 }
 
 // schemaNode is a minimal JSON Schema representation for parsing.
@@ -112,6 +113,15 @@ type discNode struct {
 func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 	if s == nil {
 		return nil
+	}
+
+	// Cycle guard: if we're already converting this named type, return a ref.
+	if name != "" && ctx.visiting[name] {
+		return &ir.Type{Name: name, Kind: ir.KindRef, RefName: name}
+	}
+	if name != "" {
+		ctx.visiting[name] = true
+		defer delete(ctx.visiting, name)
 	}
 
 	// $ref → KindRef
@@ -212,21 +222,18 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 					v.Name = vt.RefName
 				}
 				// Check for const/enum field to set variant discriminator value.
-				if vt.Kind == ir.KindStruct || (vt.Kind == ir.KindRef && ctx.defs != nil) {
-					resolved := vt
-					if vt.Kind == ir.KindRef {
-						if sn, ok := ctx.defs[vt.RefName]; ok {
-							resolved = ctx.convertNode("", sn)
+				// Use shallow extraction to avoid infinite recursion on circular refs.
+				if vt.Kind == ir.KindStruct {
+					for _, f := range vt.Fields {
+						vals := extractDiscriminatorValues(f)
+						if len(vals) > 0 {
+							v.DiscriminatorValues = vals
+							break
 						}
 					}
-					if resolved != nil {
-						for _, f := range resolved.Fields {
-							vals := extractDiscriminatorValues(f)
-							if len(vals) > 0 {
-								v.DiscriminatorValues = vals
-								break
-							}
-						}
+				} else if vt.Kind == ir.KindRef && ctx.defs != nil {
+					if sn, ok := ctx.defs[vt.RefName]; ok {
+						v.DiscriminatorValues = shallowDiscriminatorValues(sn, ctx)
 					}
 				}
 				t.Variants = append(t.Variants, v)
@@ -512,28 +519,29 @@ func detectDiscriminator(t *ir.Type, ctx *parseContext) string {
 
 	for _, v := range t.Variants {
 		// Resolve the variant's type to get its fields.
-		var fields []ir.Field
+		// Use shallow extraction to avoid recursion on circular refs.
+		var discVals map[string][]string
 		if v.TypeRef.Inline != nil && v.TypeRef.Inline.Kind == ir.KindStruct {
-			fields = v.TypeRef.Inline.Fields
+			discVals = make(map[string][]string)
+			for _, f := range v.TypeRef.Inline.Fields {
+				vals := extractDiscriminatorValues(f)
+				if len(vals) > 0 {
+					discVals[f.JSONName] = vals
+				}
+			}
 		} else if v.TypeRef.Name != "" {
 			if sn, ok := ctx.defs[v.TypeRef.Name]; ok {
-				resolved := ctx.convertNode("", sn)
-				if resolved != nil && resolved.Kind == ir.KindStruct {
-					fields = resolved.Fields
-				}
+				discVals = shallowDiscriminatorFields(sn, ctx)
 			}
 		}
 
-		if len(fields) == 0 {
+		if len(discVals) == 0 {
 			continue
 		}
 		variantCount++
 
-		for _, f := range fields {
-			vals := extractDiscriminatorValues(f)
-			if len(vals) > 0 {
-				discFields[f.JSONName] = append(discFields[f.JSONName], vals...)
-			}
+		for fieldName, vals := range discVals {
+			discFields[fieldName] = append(discFields[fieldName], vals...)
 		}
 	}
 
@@ -578,4 +586,72 @@ func extractDiscriminatorValues(f ir.Field) []string {
 	}
 
 	return nil
+}
+
+// shallowDiscriminatorValues extracts discriminator values from a schema node's
+// properties without recursively converting the entire node tree.
+// This avoids stack overflow on circular $ref chains.
+func shallowDiscriminatorValues(sn *schemaNode, ctx *parseContext) []string {
+	for _, raw := range sn.Properties {
+		var ps schemaNode
+		if json.Unmarshal(raw, &ps) != nil {
+			continue
+		}
+		// Check for const.
+		if ps.Const != nil {
+			return []string{fmt.Sprintf("%v", ps.Const)}
+		}
+		// Check for single/multi-value enum on a string type.
+		if len(ps.Enum) > 0 && resolveType(ps.Type) == "string" {
+			vals := make([]string, len(ps.Enum))
+			for i, v := range ps.Enum {
+				vals[i] = fmt.Sprintf("%v", v)
+			}
+			return vals
+		}
+	}
+	return nil
+}
+
+// shallowDiscriminatorFields extracts all candidate discriminator fields from
+// a schema node without deep conversion. Returns fieldName → values map.
+func shallowDiscriminatorFields(sn *schemaNode, ctx *parseContext) map[string][]string {
+	result := make(map[string][]string)
+	for propName, raw := range sn.Properties {
+		var ps schemaNode
+		if json.Unmarshal(raw, &ps) != nil {
+			continue
+		}
+		// Check for const.
+		if ps.Const != nil {
+			result[propName] = []string{fmt.Sprintf("%v", ps.Const)}
+			continue
+		}
+		// Check for enum.
+		if len(ps.Enum) > 0 {
+			vals := make([]string, len(ps.Enum))
+			for i, v := range ps.Enum {
+				vals[i] = fmt.Sprintf("%v", v)
+			}
+			result[propName] = vals
+			continue
+		}
+		// Check for $ref to a single-value enum def.
+		if ps.Ref != "" {
+			refName := ps.Ref
+			if strings.HasPrefix(refName, "#/$defs/") {
+				refName = strings.TrimPrefix(refName, "#/$defs/")
+			}
+			if refDef, ok := ctx.defs[refName]; ok {
+				if len(refDef.Enum) > 0 {
+					vals := make([]string, len(refDef.Enum))
+					for i, v := range refDef.Enum {
+						vals[i] = fmt.Sprintf("%v", v)
+					}
+					result[propName] = vals
+				}
+			}
+		}
+	}
+	return result
 }

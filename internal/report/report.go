@@ -48,12 +48,12 @@ func (s *StepReport) Set(key string, value any) {
 
 // Print writes a human-readable summary of the pipeline report to w.
 func (r *PipelineReport) Print(w io.Writer) {
-	fmt.Fprintf(w, "\n╔══════════════════════════════════════════════════╗\n")
-	fmt.Fprintf(w, "║  Pipeline: %-38s║\n", r.Pipeline)
-	fmt.Fprintf(w, "╠══════════════════════════════════════════════════╣\n")
+	_, _ = fmt.Fprintf(w, "\n╔══════════════════════════════════════════════════╗\n")
+	_, _ = fmt.Fprintf(w, "║  Pipeline: %-38s║\n", r.Pipeline)
+	_, _ = fmt.Fprintf(w, "╠══════════════════════════════════════════════════╣\n")
 
 	for _, step := range r.Steps {
-		fmt.Fprintf(w, "║  %-8s  %s", step.Action, step.Duration.Round(time.Millisecond))
+		_, _ = fmt.Fprintf(w, "║  %-8s  %s", step.Action, step.Duration.Round(time.Millisecond))
 
 		// Sort metric keys for deterministic output.
 		keys := make([]string, 0, len(step.Metrics))
@@ -66,17 +66,17 @@ func (r *PipelineReport) Print(w io.Writer) {
 			v := step.Metrics[k]
 			switch val := v.(type) {
 			case TestResults:
-				fmt.Fprintf(w, "\n║    tests: %dp/%df/%ds (%.1f%%)", val.Passed, val.Failed, val.Skipped, val.Rate)
+				_, _ = fmt.Fprintf(w, "\n║    tests: %dp/%df/%ds (%.1f%%)", val.Passed, val.Failed, val.Skipped, val.Rate)
 			default:
-				fmt.Fprintf(w, "  %s=%v", k, val)
+				_, _ = fmt.Fprintf(w, "  %s=%v", k, val)
 			}
 		}
-		fmt.Fprintf(w, "\n")
+		_, _ = fmt.Fprintf(w, "\n")
 	}
 
-	fmt.Fprintf(w, "╠══════════════════════════════════════════════════╣\n")
-	fmt.Fprintf(w, "║  Total: %-41s║\n", r.Duration.Round(time.Millisecond).String())
-	fmt.Fprintf(w, "╚══════════════════════════════════════════════════╝\n")
+	_, _ = fmt.Fprintf(w, "╠══════════════════════════════════════════════════╣\n")
+	_, _ = fmt.Fprintf(w, "║  Total: %-41s║\n", r.Duration.Round(time.Millisecond).String())
+	_, _ = fmt.Fprintf(w, "╚══════════════════════════════════════════════════╝\n")
 }
 
 // YAML serializes the report as YAML.

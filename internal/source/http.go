@@ -26,7 +26,7 @@ func (s *HTTPSource) Fetch() ([]byte, Meta, error) {
 	if err != nil {
 		return nil, Meta{}, fmt.Errorf("http source %s: %w", s.URL, err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck // best-effort close
 
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return nil, Meta{}, fmt.Errorf("http source %s: status %d", s.URL, resp.StatusCode)

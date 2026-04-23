@@ -71,19 +71,19 @@ tasks:
     desc: Regenerate examples/basic
     cmds:
       - rm -f examples/basic/compschema* examples/basic/schema.gen.json
-      - "{{.COMPSCHEMA}} generate --validate --out examples/basic ./examples/basic"
+      - "{{.COMPSCHEMA}} generate --no-cache --examples --validate --test --out examples/basic ./examples/basic"
 
   generate:openai:
     desc: Regenerate examples/openai
     cmds:
       - rm -f examples/openai/compschema* examples/openai/schema.gen.json
-      - "{{.COMPSCHEMA}} generate --all --validate --out examples/openai ./examples/openai"
+      - "{{.COMPSCHEMA}} generate --no-cache --examples --all --validate --test --out examples/openai ./examples/openai"
 
   generate:config-schema:
     desc: Regenerate config schema (dogfooding compschema on itself)
     deps: [build:bin]
     cmds:
-      - "{{.BIN}} generate --all --validate --out internal/config ./internal/config/"
+      - "{{.BIN}} generate --no-cache --all --examples --validate --test --out internal/config ./internal/config/"
 
   generate:
     desc: Regenerate all examples + config schema
@@ -91,23 +91,6 @@ tasks:
       - task: generate:basic
       - task: generate:openai
       - task: generate:config-schema
-
-  # ── Pipeline ─────────────────────────────────────────────
-
-  pipeline:fetch:
-    desc: Download the OpenAI OpenAPI spec
-    cmds:
-      - mkdir -p $(dirname {{.SPEC_FILE}})
-      - curl -sL -o {{.SPEC_FILE}} 'https://raw.githubusercontent.com/openai/openai-openapi/refs/heads/manual_spec/openapi.yaml'
-    status:
-      - test -f {{.SPEC_FILE}}
-
-  pipeline:
-    desc: Run the full OpenAI round-trip pipeline
-    deps: [build:bin]
-    cmds:
-      - task: pipeline:fetch
-      - "{{.BIN}} run openai"
 
   # ── Multi-spec testing ──────────────────────────────────
 
@@ -118,6 +101,17 @@ tasks:
       - "{{.BIN}} run specs"
 
   # ── Release ──────────────────────────────────────────────
+
+  pre-release:
+    desc: Run all pre-release checks (fmt, vet, lint, test, generate, specs)
+    cmds:
+      - task: clean
+      - task: fmt
+      - task: vet
+      - task: lint
+      - task: test
+      - task: build
+      - task: generate
 
   clean:
     desc: Remove generated artifacts

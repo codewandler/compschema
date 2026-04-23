@@ -195,13 +195,13 @@ func TestConstraintHash_OrderIndependent(t *testing.T) {
 
 func TestTypeHash_List(t *testing.T) {
 	t1 := &Type{
-		Name: "Names",
-		Kind: KindList,
+		Name:  "Names",
+		Kind:  KindList,
 		Items: &TypeRef{Inline: &Type{Kind: KindScalar, ScalarType: "string"}},
 	}
 	t2 := &Type{
-		Name: "Names",
-		Kind: KindList,
+		Name:  "Names",
+		Kind:  KindList,
 		Items: &TypeRef{Inline: &Type{Kind: KindScalar, ScalarType: "integer"}},
 	}
 	if t1.Hash() == t2.Hash() {

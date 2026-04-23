@@ -9,8 +9,8 @@ import "time"
 // Meta describes a fetched source with content hash and origin info.
 type Meta struct {
 	Origin    string    `json:"origin" yaml:"origin"`
-	Hash      string    `json:"hash" yaml:"hash"`                                       // sha256:<hex>
-	CommitRef string    `json:"commit_ref,omitempty" yaml:"commit_ref,omitempty"`        // resolved git commit (empty for file/http)
+	Hash      string    `json:"hash" yaml:"hash"`                                 // sha256:<hex>
+	CommitRef string    `json:"commit_ref,omitempty" yaml:"commit_ref,omitempty"` // resolved git commit (empty for file/http)
 	FetchedAt time.Time `json:"fetched_at" yaml:"fetched_at"`
 }
 

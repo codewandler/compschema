@@ -69,8 +69,8 @@ type Action struct {
 	Examples bool     `json:"examples,omitempty" jsonschema:"description=Add generated examples to JSON Schema output"`
 
 	// shared flags
-	ValidateSchema bool `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`
-	Out      string `json:"out,omitempty" jsonschema:"description=Output file or directory path"`
+	ValidateSchema bool   `json:"validate,omitempty" jsonschema:"description=Validate generated schema against meta-schema"`
+	Out            string `json:"out,omitempty" jsonschema:"description=Output file or directory path"`
 }
 
 // Load reads a config file (YAML or JSON).

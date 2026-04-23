@@ -65,8 +65,8 @@ func TestPipelineReport_PrintDeterministic(t *testing.T) {
 				Action:   "extract",
 				Duration: 50 * time.Millisecond,
 				Metrics: map[string]any{
-					"zebra": 1,
-					"alpha": 2,
+					"zebra":  1,
+					"alpha":  2,
 					"middle": 3,
 				},
 			},

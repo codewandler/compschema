@@ -211,13 +211,13 @@ func (c *Constraint) Hash() [32]byte {
 
 // writeString writes a null-terminated string to the hasher.
 func writeString(h interface{ Write([]byte) (int, error) }, s string) {
-	h.Write([]byte(s))
-	h.Write([]byte{0})
+	_, _ = h.Write([]byte(s))
+	_, _ = h.Write([]byte{0})
 }
 
 // writeUint8 writes a single byte to the hasher.
 func writeUint8(h interface{ Write([]byte) (int, error) }, v uint8) {
-	h.Write([]byte{v})
+	_, _ = h.Write([]byte{v})
 }
 
 // writeConstraints writes sorted constraint hashes to the hasher.
@@ -240,8 +240,8 @@ func writeConstraints(h interface{ Write([]byte) (int, error) }, cs []Constraint
 	// Write count then hashes.
 	var buf [4]byte
 	binary.LittleEndian.PutUint32(buf[:], uint32(len(sorted)))
-	h.Write(buf[:])
+	_, _ = h.Write(buf[:])
 	for _, c := range sorted {
-		h.Write(c.hash[:])
+		_, _ = h.Write(c.hash[:])
 	}
 }

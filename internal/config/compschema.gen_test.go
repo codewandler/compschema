@@ -104,3 +104,54 @@ func TestCompschema_File_RoundTrip(t *testing.T) {
 	_ = reencoded // round-trip succeeded
 }
 
+func TestCompschema_ExamplesValidate(t *testing.T) {
+	tests := []struct {
+		name    string
+		example string
+	}{
+		{"Action", `{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`},
+		{"File", `{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Verify example is valid JSON.
+			var v any
+			if err := json.Unmarshal([]byte(tt.example), &v); err != nil {
+				t.Fatalf("example is not valid JSON: %v", err)
+			}
+			// Validate against schema.
+			sch := compschemaValidator(tt.name)
+			if err := sch.Validate(v); err != nil {
+				t.Errorf("example failed validation: %v", err)
+			}
+		})
+	}
+}
+
+func TestCompschema_ExamplesDecode(t *testing.T) {
+	t.Run("Action", func(t *testing.T) {
+		data := []byte(`{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}`)
+		result, err := DecodeAction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("File", func(t *testing.T) {
+		data := []byte(`{"pipelines":{"key1":[{"action":"example","all":true,"emit_ir":true,"examples":true,"exclude":["example"],"out":"example","package":"example","packages":["example"],"path":"example","rename":{"key1":"example"},"schema":"example","spec":"example","tags":["example"],"test":true,"validate":true}]}}`)
+		result, err := DecodeFile(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+}
+

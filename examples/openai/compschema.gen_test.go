@@ -4987,3 +4987,1863 @@ func TestCompschema_VectorStoreFileAttributes_JSONSchemaBytes(t *testing.T) {
 	}
 }
 
+func TestCompschema_ExamplesValidate(t *testing.T) {
+	tests := []struct {
+		name    string
+		example string
+	}{
+		{"FileCitationBody", `{"file_id":"example","index":1,"type":"file_citation"}`},
+		{"FilePath", `{"file_id":"example","index":1,"type":"file_path"}`},
+		{"URLCitationBody", `{"end_index":1,"start_index":1,"title":"example","type":"url_citation","url":"example"}`},
+		{"Annotation", `{"file_id":"example","index":1,"type":"file_citation"}`},
+		{"ApproximateLocationCity", `"example"`},
+		{"ApproximateLocationCountry", `"example"`},
+		{"ApproximateLocationRegion", `"example"`},
+		{"ApproximateLocationTimezone", `"example"`},
+		{"ApproximateLocationType", `"approximate"`},
+		{"ApproximateLocation", `{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`},
+		{"Click", `{"button":"back","type":"click","x":1,"y":1}`},
+		{"CodeInterpreterFileOutputFilesElem", `{"file_id":"example","mime_type":"example"}`},
+		{"CodeInterpreterFileOutput", `{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}`},
+		{"CodeInterpreterTextOutput", `{"logs":"example","type":"logs"}`},
+		{"CodeInterpreterToolOutput", `{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}`},
+		{"CodeInterpreterToolCall", `{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"}`},
+		{"ComparisonFilter", `{"key":"example","type":"eq","value":"example"}`},
+		{"CompoundFilter", `{"filters":["example"],"type":"and"}`},
+		{"DoubleClick", `{"type":"double_click","x":1,"y":1}`},
+		{"Coordinate", `{"x":1,"y":1}`},
+		{"Drag", `{"path":[{"x":1,"y":1}],"type":"drag"}`},
+		{"KeyPress", `{"keys":["example"],"type":"keypress"}`},
+		{"Move", `{"type":"move","x":1,"y":1}`},
+		{"Screenshot", `{"type":"screenshot"}`},
+		{"Scroll", `{"scroll_x":1,"scroll_y":1,"type":"scroll","x":1,"y":1}`},
+		{"Type", `{"text":"example","type":"type"}`},
+		{"Wait", `{"type":"wait"}`},
+		{"ComputerAction", `{"button":"back","type":"click","x":1,"y":1}`},
+		{"ComputerCallSafetyCheckParamCode", `"example"`},
+		{"ComputerCallSafetyCheckParamMessage", `"example"`},
+		{"ComputerCallSafetyCheckParam", `{"code":"example","id":"example","message":"example"}`},
+		{"ComputerCallOutputItemParamAcknowledgedSafetyChecks", `[{"code":"example","id":"example","message":"example"}]`},
+		{"ComputerCallOutputItemParamID", `"example"`},
+		{"ComputerScreenshotImage", `{"file_id":"example","image_url":"example","type":"computer_screenshot"}`},
+		{"ComputerCallOutputItemParam", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`},
+		{"ComputerToolCallSafetyCheck", `{"code":"example","id":"example","message":"example"}`},
+		{"ComputerToolCall", `{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`},
+		{"ComputerToolCallOutput", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`},
+		{"ComputerToolCallOutputResource", `{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`},
+		{"ComputerUsePreviewTool", `{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}`},
+		{"Metadata", `{"key1":"example"}`},
+		{"ServiceTier", `"auto"`},
+		{"CreateModelResponsePropertiesTemperature", `1`},
+		{"CreateModelResponsePropertiesTopP", `1`},
+		{"CreateModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
+		{"CreateResponseInclude", `["computer_call_output.output.image_url"]`},
+		{"CreateResponseInstructions", `"example"`},
+		{"CreateResponseMaxOutputTokens", `1`},
+		{"CreateResponseParallelToolCalls", `true`},
+		{"CreateResponsePreviousResponseID", `"example"`},
+		{"Reasoning", `{"effort":"high","generate_summary":"auto","summary":"auto"}`},
+		{"CreateResponseStore", `true`},
+		{"CreateResponseStream", `true`},
+		{"CreateResponseTemperature", `1`},
+		{"ResponseFormatJsonObject", `{"type":"json_object"}`},
+		{"ResponseFormatText", `{"type":"text"}`},
+		{"ResponseFormatJsonSchemaSchema", `{"key1":"example"}`},
+		{"TextResponseFormatJsonSchemaStrict", `true`},
+		{"TextResponseFormatJsonSchema", `{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`},
+		{"TextResponseFormatConfiguration", `{"type":"json_object"}`},
+		{"CreateResponseText", `{"format":{"type":"json_object"}}`},
+		{"RankingOptions", `{"ranker":"auto","score_threshold":1}`},
+		{"FileSearchTool", `{"filters":"example","max_num_results":1,"ranking_options":{"ranker":"auto","score_threshold":1},"type":"file_search","vector_store_ids":["example"]}`},
+		{"FunctionToolDescription", `"example"`},
+		{"FunctionToolParameters", `{"key1":{"description":"example","name":"example","parameters":{},"strict":true,"type":"function"}}`},
+		{"FunctionToolStrict", `true`},
+		{"FunctionTool", `{"description":"example","name":"example","parameters":{"key1":{"description":"example","name":"example","parameters":null,"strict":true,"type":"function"}},"strict":true,"type":"function"}`},
+		{"WebSearchPreviewToolUserLocation", `{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`},
+		{"WebSearchPreviewTool", `{"search_context_size":"low","type":"web_search_preview","user_location":{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}}`},
+		{"Tool", `{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}`},
+		{"CreateResponseTopP", `1`},
+		{"CreateResponse", `{"include":["computer_call_output.output.image_url"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`},
+		{"EasyInputMessage", `{"content":"example","role":"assistant","type":"message"}`},
+		{"ErrorCode", `"example"`},
+		{"ErrorParam", `"example"`},
+		{"Error", `{"code":"example","message":"example","param":"example","type":"example"}`},
+		{"FileSearchToolCallResults", `["example"]`},
+		{"FileSearchToolCall", `{"id":"example","queries":["example"],"results":["example"],"status":"completed","type":"file_search_call"}`},
+		{"Filters", `{"key":"example","type":"eq","value":"example"}`},
+		{"FunctionCallOutputItemParamID", `"example"`},
+		{"FunctionCallOutputItemParam", `{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`},
+		{"FunctionToolCall", `{"arguments":"example","call_id":"example","id":"example","name":"example","status":"completed","type":"function_call"}`},
+		{"FunctionToolCallOutput", `{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`},
+		{"FunctionToolCallOutputResource", `{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`},
+		{"FunctionToolCallResource", `{"arguments":"example","call_id":"example","id":"example","name":"example","status":"completed","type":"function_call"}`},
+		{"InputFileContentFileID", `"example"`},
+		{"InputFileContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
+		{"InputImageContentFileID", `"example"`},
+		{"InputImageContentImageURL", `"example"`},
+		{"InputImageContent", `{"detail":"auto","file_id":"example","image_url":"example","type":"input_image"}`},
+		{"InputTextContent", `{"text":"example","type":"input_text"}`},
+		{"InputContent", `{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`},
+		{"Item", `{"key1":"example"}`},
+		{"ItemReferenceParam", `{"id":"example","type":"item_reference"}`},
+		{"InputItem", `{"content":"example","role":"assistant","type":"message"}`},
+		{"InputMessageContentList", `[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`},
+		{"InputMessage", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"role":"developer","status":"completed","type":"message"}`},
+		{"InputMessageResource", `{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"id":"example","role":"developer","status":"completed","type":"message"}`},
+		{"OutputTextContent", `{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`},
+		{"RefusalContent", `{"refusal":"example","type":"refusal"}`},
+		{"OutputContent", `{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`},
+		{"OutputMessage", `{"content":[{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}],"id":"example","role":"assistant","status":"completed","type":"message"}`},
+		{"WebSearchToolCall", `{"id":"example","status":"in_progress","type":"web_search_call"}`},
+		{"ItemResource", `{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`},
+		{"ModelIdsShared", `"id_abc123"`},
+		{"ModelResponsePropertiesTemperature", `1`},
+		{"ModelResponsePropertiesTopP", `1`},
+		{"ModelResponseProperties", `{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`},
+		{"ReasoningItemSummaryElem", `{"text":"example","type":"summary_text"}`},
+		{"ReasoningItem", `{"id":"example","status":"completed","summary":[{"text":"example","type":"summary_text"}],"type":"reasoning"}`},
+		{"OutputItem", `{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`},
+		{"ResponseError", `{"code":"empty_image_file","message":"example"}`},
+		{"ResponseIncompleteDetails", `{"reason":"content_filter"}`},
+		{"ResponseInstructions", `"example"`},
+		{"ResponseMaxOutputTokens", `1`},
+		{"ResponseOutputText", `"example"`},
+		{"ResponsePreviousResponseID", `"example"`},
+		{"ResponseTemperature", `1`},
+		{"ResponseText", `{"format":{"type":"json_object"}}`},
+		{"ResponseTopP", `1`},
+		{"ResponseUsageInputTokensDetails", `{"cached_tokens":1}`},
+		{"ResponseUsageOutputTokensDetails", `{"reasoning_tokens":1}`},
+		{"ResponseUsage", `{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`},
+		{"Response", `{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`},
+		{"ResponseAudioDeltaEvent", `{"delta":"example","type":"response.audio.delta"}`},
+		{"ResponseAudioDoneEvent", `{"type":"response.audio.done"}`},
+		{"ResponseAudioTranscriptDeltaEvent", `{"delta":"example","type":"response.audio.transcript.delta"}`},
+		{"ResponseAudioTranscriptDoneEvent", `{"type":"response.audio.transcript.done"}`},
+		{"ResponseCodeInterpreterCallCodeDeltaEvent", `{"delta":"example","output_index":1,"type":"response.code_interpreter_call.code.delta"}`},
+		{"ResponseCodeInterpreterCallCodeDoneEvent", `{"code":"example","output_index":1,"type":"response.code_interpreter_call.code.done"}`},
+		{"ResponseCodeInterpreterCallCompletedEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.completed"}`},
+		{"ResponseCodeInterpreterCallInProgressEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.in_progress"}`},
+		{"ResponseCodeInterpreterCallInterpretingEvent", `{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.interpreting"}`},
+		{"ResponseCompletedEvent", `{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.completed"}`},
+		{"ResponseContentPartAddedEvent", `{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.added"}`},
+		{"ResponseContentPartDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.done"}`},
+		{"ResponseCreatedEvent", `{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.created"}`},
+		{"ResponseErrorEventCode", `"example"`},
+		{"ResponseErrorEventParam", `"example"`},
+		{"ResponseErrorEvent", `{"code":"example","message":"example","param":"example","type":"error"}`},
+		{"ResponseFailedEvent", `{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.failed"}`},
+		{"ResponseFileSearchCallCompletedEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.completed"}`},
+		{"ResponseFileSearchCallInProgressEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.in_progress"}`},
+		{"ResponseFileSearchCallSearchingEvent", `{"item_id":"example","output_index":1,"type":"response.file_search_call.searching"}`},
+		{"ResponseFunctionCallArgumentsDeltaEvent", `{"delta":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.delta"}`},
+		{"ResponseFunctionCallArgumentsDoneEvent", `{"arguments":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.done"}`},
+		{"ResponseInProgressEvent", `{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.in_progress"}`},
+		{"ResponseIncompleteEvent", `{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.incomplete"}`},
+		{"ResponseItemList", `{"data":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"first_id":"example","has_more":true,"last_id":"example","object":"list"}`},
+		{"ResponseOutputItemAddedEvent", `{"item":{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"},"output_index":1,"type":"response.output_item.added"}`},
+		{"ResponseOutputItemDoneEvent", `{"item":{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"},"output_index":1,"type":"response.output_item.done"}`},
+		{"ResponsePropertiesInstructions", `"example"`},
+		{"ResponsePropertiesMaxOutputTokens", `1`},
+		{"ResponsePropertiesPreviousResponseID", `"example"`},
+		{"ResponsePropertiesText", `{"format":{"type":"json_object"}}`},
+		{"ResponseProperties", `{"instructions":"example","max_output_tokens":1,"model":"example","previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"truncation":"auto"}`},
+		{"ResponseReasoningSummaryPartAddedEventPart", `{"text":"example","type":"summary_text"}`},
+		{"ResponseReasoningSummaryPartAddedEvent", `{"item_id":"example","output_index":1,"part":{"text":"example","type":"summary_text"},"summary_index":1,"type":"response.reasoning_summary_part.added"}`},
+		{"ResponseReasoningSummaryPartDoneEventPart", `{"text":"example","type":"summary_text"}`},
+		{"ResponseReasoningSummaryPartDoneEvent", `{"item_id":"example","output_index":1,"part":{"text":"example","type":"summary_text"},"summary_index":1,"type":"response.reasoning_summary_part.done"}`},
+		{"ResponseReasoningSummaryTextDeltaEvent", `{"delta":"example","item_id":"example","output_index":1,"summary_index":1,"type":"response.reasoning_summary_text.delta"}`},
+		{"ResponseReasoningSummaryTextDoneEvent", `{"item_id":"example","output_index":1,"summary_index":1,"text":"example","type":"response.reasoning_summary_text.done"}`},
+		{"ResponseRefusalDeltaEvent", `{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.refusal.delta"}`},
+		{"ResponseRefusalDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"refusal":"example","type":"response.refusal.done"}`},
+		{"ResponseTextAnnotationDeltaEvent", `{"annotation":{"file_id":"example","index":1,"type":"file_citation"},"annotation_index":1,"content_index":1,"item_id":"example","output_index":1,"type":"response.output_text.annotation.added"}`},
+		{"ResponseTextDeltaEvent", `{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.output_text.delta"}`},
+		{"ResponseTextDoneEvent", `{"content_index":1,"item_id":"example","output_index":1,"text":"example","type":"response.output_text.done"}`},
+		{"ResponseWebSearchCallCompletedEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.completed"}`},
+		{"ResponseWebSearchCallInProgressEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.in_progress"}`},
+		{"ResponseWebSearchCallSearchingEvent", `{"item_id":"example","output_index":1,"type":"response.web_search_call.searching"}`},
+		{"ResponseStreamEvent", `{"delta":"example","type":"response.audio.delta"}`},
+		{"ToolChoiceFunction", `{"name":"example","type":"function"}`},
+		{"ToolChoiceOptions", `"auto"`},
+		{"ToolChoiceTypes", `{"type":"computer_use_preview"}`},
+		{"VectorStoreFileAttributes", `{"key1":"example"}`},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Verify example is valid JSON.
+			var v any
+			if err := json.Unmarshal([]byte(tt.example), &v); err != nil {
+				t.Fatalf("example is not valid JSON: %v", err)
+			}
+			// Validate against schema.
+			sch := compschemaValidator(tt.name)
+			if err := sch.Validate(v); err != nil {
+				t.Errorf("example failed validation: %v", err)
+			}
+		})
+	}
+}
+
+func TestCompschema_ExamplesDecode(t *testing.T) {
+	t.Run("FileCitationBody", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_citation"}`)
+		result, err := DecodeFileCitationBody(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FilePath", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_path"}`)
+		result, err := DecodeFilePath(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("URLCitationBody", func(t *testing.T) {
+		data := []byte(`{"end_index":1,"start_index":1,"title":"example","type":"url_citation","url":"example"}`)
+		result, err := DecodeURLCitationBody(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Annotation", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","index":1,"type":"file_citation"}`)
+		result, err := DecodeAnnotation(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ApproximateLocationCity", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ApproximateLocationCountry", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ApproximateLocationRegion", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ApproximateLocationTimezone", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ApproximateLocationType", func(t *testing.T) {
+		data := []byte(`"approximate"`)
+		_ = data
+	})
+	t.Run("ApproximateLocation", func(t *testing.T) {
+		data := []byte(`{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`)
+		result, err := DecodeApproximateLocation(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Click", func(t *testing.T) {
+		data := []byte(`{"button":"back","type":"click","x":1,"y":1}`)
+		result, err := DecodeClick(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterFileOutputFilesElem", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","mime_type":"example"}`)
+		result, err := DecodeCodeInterpreterFileOutputFilesElem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterFileOutput", func(t *testing.T) {
+		data := []byte(`{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}`)
+		result, err := DecodeCodeInterpreterFileOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterTextOutput", func(t *testing.T) {
+		data := []byte(`{"logs":"example","type":"logs"}`)
+		result, err := DecodeCodeInterpreterTextOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CodeInterpreterToolOutput", func(t *testing.T) {
+		data := []byte(`{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}`)
+		result, err := DecodeCodeInterpreterToolOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CodeInterpreterToolCall", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"}`)
+		result, err := DecodeCodeInterpreterToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComparisonFilter", func(t *testing.T) {
+		data := []byte(`{"key":"example","type":"eq","value":"example"}`)
+		result, err := DecodeComparisonFilter(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CompoundFilter", func(t *testing.T) {
+		data := []byte(`{"filters":["example"],"type":"and"}`)
+		result, err := DecodeCompoundFilter(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("DoubleClick", func(t *testing.T) {
+		data := []byte(`{"type":"double_click","x":1,"y":1}`)
+		result, err := DecodeDoubleClick(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Coordinate", func(t *testing.T) {
+		data := []byte(`{"x":1,"y":1}`)
+		result, err := DecodeCoordinate(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Drag", func(t *testing.T) {
+		data := []byte(`{"path":[{"x":1,"y":1}],"type":"drag"}`)
+		result, err := DecodeDrag(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("KeyPress", func(t *testing.T) {
+		data := []byte(`{"keys":["example"],"type":"keypress"}`)
+		result, err := DecodeKeyPress(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Move", func(t *testing.T) {
+		data := []byte(`{"type":"move","x":1,"y":1}`)
+		result, err := DecodeMove(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Screenshot", func(t *testing.T) {
+		data := []byte(`{"type":"screenshot"}`)
+		result, err := DecodeScreenshot(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Scroll", func(t *testing.T) {
+		data := []byte(`{"scroll_x":1,"scroll_y":1,"type":"scroll","x":1,"y":1}`)
+		result, err := DecodeScroll(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Type", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"type"}`)
+		result, err := DecodeType(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Wait", func(t *testing.T) {
+		data := []byte(`{"type":"wait"}`)
+		result, err := DecodeWait(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerAction", func(t *testing.T) {
+		data := []byte(`{"button":"back","type":"click","x":1,"y":1}`)
+		result, err := DecodeComputerAction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ComputerCallSafetyCheckParamCode", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ComputerCallSafetyCheckParamMessage", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ComputerCallSafetyCheckParam", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","message":"example"}`)
+		result, err := DecodeComputerCallSafetyCheckParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerCallOutputItemParamAcknowledgedSafetyChecks", func(t *testing.T) {
+		data := []byte(`[{"code":"example","id":"example","message":"example"}]`)
+		_ = data
+	})
+	t.Run("ComputerCallOutputItemParamID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ComputerScreenshotImage", func(t *testing.T) {
+		data := []byte(`{"file_id":"example","image_url":"example","type":"computer_screenshot"}`)
+		result, err := DecodeComputerScreenshotImage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerCallOutputItemParam", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`)
+		result, err := DecodeComputerCallOutputItemParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallSafetyCheck", func(t *testing.T) {
+		data := []byte(`{"code":"example","id":"example","message":"example"}`)
+		result, err := DecodeComputerToolCallSafetyCheck(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCall", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`)
+		result, err := DecodeComputerToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallOutput", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`)
+		result, err := DecodeComputerToolCallOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerToolCallOutputResource", func(t *testing.T) {
+		data := []byte(`{"acknowledged_safety_checks":[{"code":"example","id":"example","message":"example"}],"call_id":"example","id":"example","output":{"file_id":"example","image_url":"example","type":"computer_screenshot"},"status":"completed","type":"computer_call_output"}`)
+		result, err := DecodeComputerToolCallOutputResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ComputerUsePreviewTool", func(t *testing.T) {
+		data := []byte(`{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}`)
+		result, err := DecodeComputerUsePreviewTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Metadata", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("ServiceTier", func(t *testing.T) {
+		data := []byte(`"auto"`)
+		_ = data
+	})
+	t.Run("CreateModelResponsePropertiesTemperature", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("CreateModelResponsePropertiesTopP", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("CreateModelResponseProperties", func(t *testing.T) {
+		data := []byte(`{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`)
+		result, err := DecodeCreateModelResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CreateResponseInclude", func(t *testing.T) {
+		data := []byte(`["computer_call_output.output.image_url"]`)
+		_ = data
+	})
+	t.Run("CreateResponseInstructions", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("CreateResponseMaxOutputTokens", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("CreateResponseParallelToolCalls", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data
+	})
+	t.Run("CreateResponsePreviousResponseID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("Reasoning", func(t *testing.T) {
+		data := []byte(`{"effort":"high","generate_summary":"auto","summary":"auto"}`)
+		result, err := DecodeReasoning(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("CreateResponseStore", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data
+	})
+	t.Run("CreateResponseStream", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data
+	})
+	t.Run("CreateResponseTemperature", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ResponseFormatJsonObject", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeResponseFormatJsonObject(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatText", func(t *testing.T) {
+		data := []byte(`{"type":"text"}`)
+		result, err := DecodeResponseFormatText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFormatJsonSchemaSchema", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("TextResponseFormatJsonSchemaStrict", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data
+	})
+	t.Run("TextResponseFormatJsonSchema", func(t *testing.T) {
+		data := []byte(`{"description":"example","name":"example","schema":{"key1":"example"},"strict":true,"type":"json_schema"}`)
+		result, err := DecodeTextResponseFormatJsonSchema(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("TextResponseFormatConfiguration", func(t *testing.T) {
+		data := []byte(`{"type":"json_object"}`)
+		result, err := DecodeTextResponseFormatConfiguration(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CreateResponseText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeCreateResponseText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("RankingOptions", func(t *testing.T) {
+		data := []byte(`{"ranker":"auto","score_threshold":1}`)
+		result, err := DecodeRankingOptions(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FileSearchTool", func(t *testing.T) {
+		data := []byte(`{"filters":"example","max_num_results":1,"ranking_options":{"ranker":"auto","score_threshold":1},"type":"file_search","vector_store_ids":["example"]}`)
+		result, err := DecodeFileSearchTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolDescription", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("FunctionToolParameters", func(t *testing.T) {
+		data := []byte(`{"key1":{"description":"example","name":"example","parameters":{},"strict":true,"type":"function"}}`)
+		_ = data
+	})
+	t.Run("FunctionToolStrict", func(t *testing.T) {
+		data := []byte(`true`)
+		_ = data
+	})
+	t.Run("FunctionTool", func(t *testing.T) {
+		data := []byte(`{"description":"example","name":"example","parameters":{"key1":{"description":"example","name":"example","parameters":null,"strict":true,"type":"function"}},"strict":true,"type":"function"}`)
+		result, err := DecodeFunctionTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("WebSearchPreviewToolUserLocation", func(t *testing.T) {
+		data := []byte(`{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}`)
+		result, err := DecodeWebSearchPreviewToolUserLocation(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("WebSearchPreviewTool", func(t *testing.T) {
+		data := []byte(`{"search_context_size":"low","type":"web_search_preview","user_location":{"city":"example","country":"example","region":"example","timezone":"example","type":"approximate"}}`)
+		result, err := DecodeWebSearchPreviewTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Tool", func(t *testing.T) {
+		data := []byte(`{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}`)
+		result, err := DecodeTool(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("CreateResponseTopP", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("CreateResponse", func(t *testing.T) {
+		data := []byte(`{"include":["computer_call_output.output.image_url"],"input":"example","instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","store":true,"stream":true,"temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","user":"example"}`)
+		result, err := DecodeCreateResponse(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("EasyInputMessage", func(t *testing.T) {
+		data := []byte(`{"content":"example","role":"assistant","type":"message"}`)
+		result, err := DecodeEasyInputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ErrorCode", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ErrorParam", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("Error", func(t *testing.T) {
+		data := []byte(`{"code":"example","message":"example","param":"example","type":"example"}`)
+		result, err := DecodeError(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FileSearchToolCallResults", func(t *testing.T) {
+		data := []byte(`["example"]`)
+		_ = data
+	})
+	t.Run("FileSearchToolCall", func(t *testing.T) {
+		data := []byte(`{"id":"example","queries":["example"],"results":["example"],"status":"completed","type":"file_search_call"}`)
+		result, err := DecodeFileSearchToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Filters", func(t *testing.T) {
+		data := []byte(`{"key":"example","type":"eq","value":"example"}`)
+		result, err := DecodeFilters(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("FunctionCallOutputItemParamID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("FunctionCallOutputItemParam", func(t *testing.T) {
+		data := []byte(`{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`)
+		result, err := DecodeFunctionCallOutputItemParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCall", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","call_id":"example","id":"example","name":"example","status":"completed","type":"function_call"}`)
+		result, err := DecodeFunctionToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallOutput", func(t *testing.T) {
+		data := []byte(`{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`)
+		result, err := DecodeFunctionToolCallOutput(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallOutputResource", func(t *testing.T) {
+		data := []byte(`{"call_id":"example","id":"example","output":"example","status":"completed","type":"function_call_output"}`)
+		result, err := DecodeFunctionToolCallOutputResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("FunctionToolCallResource", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","call_id":"example","id":"example","name":"example","status":"completed","type":"function_call"}`)
+		result, err := DecodeFunctionToolCallResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputFileContentFileID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("InputFileContent", func(t *testing.T) {
+		data := []byte(`{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`)
+		result, err := DecodeInputFileContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputImageContentFileID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("InputImageContentImageURL", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("InputImageContent", func(t *testing.T) {
+		data := []byte(`{"detail":"auto","file_id":"example","image_url":"example","type":"input_image"}`)
+		result, err := DecodeInputImageContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputTextContent", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"input_text"}`)
+		result, err := DecodeInputTextContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputContent", func(t *testing.T) {
+		data := []byte(`{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}`)
+		result, err := DecodeInputContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("Item", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+	t.Run("ItemReferenceParam", func(t *testing.T) {
+		data := []byte(`{"id":"example","type":"item_reference"}`)
+		result, err := DecodeItemReferenceParam(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputItem", func(t *testing.T) {
+		data := []byte(`{"content":"example","role":"assistant","type":"message"}`)
+		result, err := DecodeInputItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("InputMessageContentList", func(t *testing.T) {
+		data := []byte(`[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}]`)
+		_ = data
+	})
+	t.Run("InputMessage", func(t *testing.T) {
+		data := []byte(`{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"role":"developer","status":"completed","type":"message"}`)
+		result, err := DecodeInputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("InputMessageResource", func(t *testing.T) {
+		data := []byte(`{"content":[{"file_data":"example","file_id":"example","filename":"example","type":"input_file"}],"id":"example","role":"developer","status":"completed","type":"message"}`)
+		result, err := DecodeInputMessageResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputTextContent", func(t *testing.T) {
+		data := []byte(`{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`)
+		result, err := DecodeOutputTextContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("RefusalContent", func(t *testing.T) {
+		data := []byte(`{"refusal":"example","type":"refusal"}`)
+		result, err := DecodeRefusalContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputContent", func(t *testing.T) {
+		data := []byte(`{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}`)
+		result, err := DecodeOutputContent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("OutputMessage", func(t *testing.T) {
+		data := []byte(`{"content":[{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"}],"id":"example","role":"assistant","status":"completed","type":"message"}`)
+		result, err := DecodeOutputMessage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("WebSearchToolCall", func(t *testing.T) {
+		data := []byte(`{"id":"example","status":"in_progress","type":"web_search_call"}`)
+		result, err := DecodeWebSearchToolCall(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ItemResource", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`)
+		result, err := DecodeItemResource(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ModelIdsShared", func(t *testing.T) {
+		data := []byte(`"id_abc123"`)
+		_ = data
+	})
+	t.Run("ModelResponsePropertiesTemperature", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ModelResponsePropertiesTopP", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ModelResponseProperties", func(t *testing.T) {
+		data := []byte(`{"metadata":{"key1":"example"},"service_tier":"auto","temperature":1,"top_p":1,"user":"example"}`)
+		result, err := DecodeModelResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ReasoningItemSummaryElem", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"summary_text"}`)
+		result, err := DecodeReasoningItemSummaryElem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ReasoningItem", func(t *testing.T) {
+		data := []byte(`{"id":"example","status":"completed","summary":[{"text":"example","type":"summary_text"}],"type":"reasoning"}`)
+		result, err := DecodeReasoningItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("OutputItem", func(t *testing.T) {
+		data := []byte(`{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}`)
+		result, err := DecodeOutputItem(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ResponseError", func(t *testing.T) {
+		data := []byte(`{"code":"empty_image_file","message":"example"}`)
+		result, err := DecodeResponseError(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseIncompleteDetails", func(t *testing.T) {
+		data := []byte(`{"reason":"content_filter"}`)
+		result, err := DecodeResponseIncompleteDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseInstructions", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponseMaxOutputTokens", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ResponseOutputText", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponsePreviousResponseID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponseTemperature", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ResponseText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeResponseText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTopP", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ResponseUsageInputTokensDetails", func(t *testing.T) {
+		data := []byte(`{"cached_tokens":1}`)
+		result, err := DecodeResponseUsageInputTokensDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseUsageOutputTokensDetails", func(t *testing.T) {
+		data := []byte(`{"reasoning_tokens":1}`)
+		result, err := DecodeResponseUsageOutputTokensDetails(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseUsage", func(t *testing.T) {
+		data := []byte(`{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1}`)
+		result, err := DecodeResponseUsage(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("Response", func(t *testing.T) {
+		data := []byte(`{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"}`)
+		result, err := DecodeResponse(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.delta"}`)
+		result, err := DecodeResponseAudioDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioDoneEvent", func(t *testing.T) {
+		data := []byte(`{"type":"response.audio.done"}`)
+		result, err := DecodeResponseAudioDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioTranscriptDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.transcript.delta"}`)
+		result, err := DecodeResponseAudioTranscriptDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseAudioTranscriptDoneEvent", func(t *testing.T) {
+		data := []byte(`{"type":"response.audio.transcript.done"}`)
+		result, err := DecodeResponseAudioTranscriptDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCodeDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","output_index":1,"type":"response.code_interpreter_call.code.delta"}`)
+		result, err := DecodeResponseCodeInterpreterCallCodeDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCodeDoneEvent", func(t *testing.T) {
+		data := []byte(`{"code":"example","output_index":1,"type":"response.code_interpreter_call.code.done"}`)
+		result, err := DecodeResponseCodeInterpreterCallCodeDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.completed"}`)
+		result, err := DecodeResponseCodeInterpreterCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.in_progress"}`)
+		result, err := DecodeResponseCodeInterpreterCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCodeInterpreterCallInterpretingEvent", func(t *testing.T) {
+		data := []byte(`{"code_interpreter_call":{"code":"example","id":"example","results":[{"files":[{"file_id":"example","mime_type":"example"}],"type":"files"}],"status":"completed","type":"code_interpreter_call"},"output_index":1,"type":"response.code_interpreter_call.interpreting"}`)
+		result, err := DecodeResponseCodeInterpreterCallInterpretingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.completed"}`)
+		result, err := DecodeResponseCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseContentPartAddedEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.added"}`)
+		result, err := DecodeResponseContentPartAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseContentPartDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"part":{"annotations":[{"file_id":"example","index":1,"type":"file_citation"}],"text":"example","type":"output_text"},"type":"response.content_part.done"}`)
+		result, err := DecodeResponseContentPartDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseCreatedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.created"}`)
+		result, err := DecodeResponseCreatedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseErrorEventCode", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponseErrorEventParam", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponseErrorEvent", func(t *testing.T) {
+		data := []byte(`{"code":"example","message":"example","param":"example","type":"error"}`)
+		result, err := DecodeResponseErrorEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFailedEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.failed"}`)
+		result, err := DecodeResponseFailedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.completed"}`)
+		result, err := DecodeResponseFileSearchCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.in_progress"}`)
+		result, err := DecodeResponseFileSearchCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFileSearchCallSearchingEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.file_search_call.searching"}`)
+		result, err := DecodeResponseFileSearchCallSearchingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFunctionCallArgumentsDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.delta"}`)
+		result, err := DecodeResponseFunctionCallArgumentsDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseFunctionCallArgumentsDoneEvent", func(t *testing.T) {
+		data := []byte(`{"arguments":"example","item_id":"example","output_index":1,"type":"response.function_call_arguments.done"}`)
+		result, err := DecodeResponseFunctionCallArgumentsDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.in_progress"}`)
+		result, err := DecodeResponseInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseIncompleteEvent", func(t *testing.T) {
+		data := []byte(`{"response":{"created_at":1,"error":{"code":"empty_image_file","message":"example"},"id":"example","incomplete_details":{"reason":"content_filter"},"instructions":"example","max_output_tokens":1,"metadata":{"key1":"example"},"model":"example","object":"response","output":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"output_text":"example","parallel_tool_calls":true,"previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"service_tier":"auto","status":"completed","temperature":1,"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"top_p":1,"truncation":"auto","usage":{"input_tokens":1,"input_tokens_details":{"cached_tokens":1},"output_tokens":1,"output_tokens_details":{"reasoning_tokens":1},"total_tokens":1},"user":"example"},"type":"response.incomplete"}`)
+		result, err := DecodeResponseIncompleteEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseItemList", func(t *testing.T) {
+		data := []byte(`{"data":[{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"}],"first_id":"example","has_more":true,"last_id":"example","object":"list"}`)
+		result, err := DecodeResponseItemList(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseOutputItemAddedEvent", func(t *testing.T) {
+		data := []byte(`{"item":{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"},"output_index":1,"type":"response.output_item.added"}`)
+		result, err := DecodeResponseOutputItemAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseOutputItemDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item":{"action":{"button":"back","type":"click","x":1,"y":1},"call_id":"example","id":"example","pending_safety_checks":[{"code":"example","id":"example","message":"example"}],"status":"completed","type":"computer_call"},"output_index":1,"type":"response.output_item.done"}`)
+		result, err := DecodeResponseOutputItemDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponsePropertiesInstructions", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponsePropertiesMaxOutputTokens", func(t *testing.T) {
+		data := []byte(`1`)
+		_ = data
+	})
+	t.Run("ResponsePropertiesPreviousResponseID", func(t *testing.T) {
+		data := []byte(`"example"`)
+		_ = data
+	})
+	t.Run("ResponsePropertiesText", func(t *testing.T) {
+		data := []byte(`{"format":{"type":"json_object"}}`)
+		result, err := DecodeResponsePropertiesText(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseProperties", func(t *testing.T) {
+		data := []byte(`{"instructions":"example","max_output_tokens":1,"model":"example","previous_response_id":"example","reasoning":{"effort":"high","generate_summary":"auto","summary":"auto"},"text":{"format":{"type":"json_object"}},"tool_choice":"example","tools":[{"display_height":1,"display_width":1,"environment":"browser","type":"computer_use_preview"}],"truncation":"auto"}`)
+		result, err := DecodeResponseProperties(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartAddedEventPart", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"summary_text"}`)
+		result, err := DecodeResponseReasoningSummaryPartAddedEventPart(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartAddedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"part":{"text":"example","type":"summary_text"},"summary_index":1,"type":"response.reasoning_summary_part.added"}`)
+		result, err := DecodeResponseReasoningSummaryPartAddedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartDoneEventPart", func(t *testing.T) {
+		data := []byte(`{"text":"example","type":"summary_text"}`)
+		result, err := DecodeResponseReasoningSummaryPartDoneEventPart(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryPartDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"part":{"text":"example","type":"summary_text"},"summary_index":1,"type":"response.reasoning_summary_part.done"}`)
+		result, err := DecodeResponseReasoningSummaryPartDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryTextDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","item_id":"example","output_index":1,"summary_index":1,"type":"response.reasoning_summary_text.delta"}`)
+		result, err := DecodeResponseReasoningSummaryTextDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseReasoningSummaryTextDoneEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"summary_index":1,"text":"example","type":"response.reasoning_summary_text.done"}`)
+		result, err := DecodeResponseReasoningSummaryTextDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseRefusalDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.refusal.delta"}`)
+		result, err := DecodeResponseRefusalDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseRefusalDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"refusal":"example","type":"response.refusal.done"}`)
+		result, err := DecodeResponseRefusalDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextAnnotationDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"annotation":{"file_id":"example","index":1,"type":"file_citation"},"annotation_index":1,"content_index":1,"item_id":"example","output_index":1,"type":"response.output_text.annotation.added"}`)
+		result, err := DecodeResponseTextAnnotationDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextDeltaEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"delta":"example","item_id":"example","output_index":1,"type":"response.output_text.delta"}`)
+		result, err := DecodeResponseTextDeltaEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseTextDoneEvent", func(t *testing.T) {
+		data := []byte(`{"content_index":1,"item_id":"example","output_index":1,"text":"example","type":"response.output_text.done"}`)
+		result, err := DecodeResponseTextDoneEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallCompletedEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.completed"}`)
+		result, err := DecodeResponseWebSearchCallCompletedEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallInProgressEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.in_progress"}`)
+		result, err := DecodeResponseWebSearchCallInProgressEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseWebSearchCallSearchingEvent", func(t *testing.T) {
+		data := []byte(`{"item_id":"example","output_index":1,"type":"response.web_search_call.searching"}`)
+		result, err := DecodeResponseWebSearchCallSearchingEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ResponseStreamEvent", func(t *testing.T) {
+		data := []byte(`{"delta":"example","type":"response.audio.delta"}`)
+		result, err := DecodeResponseStreamEvent(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		if result == nil {
+			t.Fatal("Decode returned nil")
+		}
+	})
+	t.Run("ToolChoiceFunction", func(t *testing.T) {
+		data := []byte(`{"name":"example","type":"function"}`)
+		result, err := DecodeToolChoiceFunction(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("ToolChoiceOptions", func(t *testing.T) {
+		data := []byte(`"auto"`)
+		_ = data
+	})
+	t.Run("ToolChoiceTypes", func(t *testing.T) {
+		data := []byte(`{"type":"computer_use_preview"}`)
+		result, err := DecodeToolChoiceTypes(data)
+		if err != nil {
+			t.Fatalf("Decode: %v", err)
+		}
+		reencoded, err := json.Marshal(result)
+		if err != nil {
+			t.Fatalf("re-marshal: %v", err)
+		}
+		_ = reencoded
+	})
+	t.Run("VectorStoreFileAttributes", func(t *testing.T) {
+		data := []byte(`{"key1":"example"}`)
+		_ = data
+	})
+}
+

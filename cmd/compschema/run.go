@@ -137,7 +137,7 @@ func runExtractAction(a config.Action, sr *report.StepReport) error {
 			return fmt.Errorf("fetch source: %w", err)
 		}
 		if isTemp {
-			defer os.Remove(path)
+			defer os.Remove(path) //nolint:errcheck // best-effort temp cleanup
 		}
 		specPath = path
 		sr.Set("source_hash", meta.Hash)
@@ -205,7 +205,7 @@ func runImportAction(a config.Action, sr *report.StepReport) error {
 			return fmt.Errorf("fetch source: %w", err)
 		}
 		if isTemp {
-			defer os.Remove(path)
+			defer os.Remove(path) //nolint:errcheck // best-effort temp cleanup
 		}
 		schemaPath = path
 		sr.Set("source_hash", meta.Hash)
@@ -283,14 +283,14 @@ func runGenerateAction(a config.Action, sr *report.StepReport) error {
 	var pkgs []*ir.Package
 	var err error
 	if len(a.Packages) > 0 && filepath.IsAbs(a.Packages[0]) {
-		origDir, err := os.Getwd()
-		if err != nil {
-			return fmt.Errorf("getwd: %w", err)
+		origDir, getErr := os.Getwd()
+		if getErr != nil {
+			return fmt.Errorf("getwd: %w", getErr)
 		}
-		if err := os.Chdir(a.Packages[0]); err != nil {
-			return fmt.Errorf("chdir to %s: %w", a.Packages[0], err)
+		if chErr := os.Chdir(a.Packages[0]); chErr != nil {
+			return fmt.Errorf("chdir to %s: %w", a.Packages[0], chErr)
 		}
-		defer os.Chdir(origDir)
+		defer os.Chdir(origDir) //nolint:errcheck // best-effort restore
 		pkgs, err = analyzer.Analyze(a.All, packages...)
 	} else {
 		pkgs, err = analyzer.Analyze(a.All, packages...)
@@ -500,11 +500,11 @@ func fetchSourceToTemp(raw any) (path string, meta source.Meta, isTemp bool, err
 		return "", source.Meta{}, false, fmt.Errorf("create temp file: %w", err)
 	}
 	if _, err := tmpFile.Write(data); err != nil {
-		tmpFile.Close()
-		os.Remove(tmpFile.Name())
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpFile.Name())
 		return "", source.Meta{}, false, fmt.Errorf("write temp file: %w", err)
 	}
-	tmpFile.Close()
+	_ = tmpFile.Close()
 
 	fmt.Fprintf(os.Stderr, "  ✓ fetched %s → %s (%d bytes, %s)\n", src, tmpFile.Name(), len(data), meta.Hash[:15]+"...")
 	return tmpFile.Name(), meta, true, nil

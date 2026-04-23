@@ -83,7 +83,7 @@ func TestIsStale(t *testing.T) {
 func TestLoad_IncompatibleVersion(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "cache.json")
 	data := []byte(`{"version": 999, "entries": {"pkg": {"ir_hash": "old"}}}`)
-	os.WriteFile(path, data, 0644)
+	_ = os.WriteFile(path, data, 0644)
 
 	c := Load(path)
 	if len(c.Entries) != 0 {
@@ -93,7 +93,7 @@ func TestLoad_IncompatibleVersion(t *testing.T) {
 
 func TestLoad_CorruptJSON(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "cache.json")
-	os.WriteFile(path, []byte(`{invalid json`), 0644)
+	_ = os.WriteFile(path, []byte(`{invalid json`), 0644)
 
 	c := Load(path)
 	if len(c.Entries) != 0 {

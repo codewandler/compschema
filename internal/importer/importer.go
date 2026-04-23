@@ -287,15 +287,14 @@ func emitEnum(b *strings.Builder, goName string, t *ir.Type) {
 	b.WriteString(")\n")
 }
 
-
 // importerResolver adapts importer's helpers to the uniongen.TypeResolver interface.
 type importerResolver struct {
 	pkg *ir.Package
 }
 
-func (r *importerResolver) GoName(name string) string         { return toGoName(name) }
-func (r *importerResolver) GoType(ref *ir.TypeRef) string     { return typeRefGoType(ref, r.pkg) }
-func (r *importerResolver) Comment(desc string) string        { return cleanComment(desc) }
+func (r *importerResolver) GoName(name string) string     { return toGoName(name) }
+func (r *importerResolver) GoType(ref *ir.TypeRef) string { return typeRefGoType(ref, r.pkg) }
+func (r *importerResolver) Comment(desc string) string    { return cleanComment(desc) }
 func (r *importerResolver) IsStruct(name string) bool {
 	if t, ok := r.pkg.Types[name]; ok {
 		return t.Kind == ir.KindStruct

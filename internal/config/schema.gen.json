@@ -3,6 +3,33 @@
     "Action": {
       "additionalProperties": false,
       "description": "is a single step in a pipeline, corresponding to a CLI subcommand.",
+      "examples": [
+        {
+          "action": "example",
+          "all": true,
+          "emit_ir": true,
+          "examples": true,
+          "exclude": [
+            "example"
+          ],
+          "out": "example",
+          "package": "example",
+          "packages": [
+            "example"
+          ],
+          "path": "example",
+          "rename": {
+            "key1": "example"
+          },
+          "schema": "example",
+          "spec": "example",
+          "tags": [
+            "example"
+          ],
+          "test": true,
+          "validate": true
+        }
+      ],
       "properties": {
         "action": {
           "description": "CLI subcommand to run,enum=extract,enum=import,enum=generate,enum=diff",
@@ -14,6 +41,10 @@
         },
         "emit_ir": {
           "description": "Write IR YAML alongside generated output",
+          "type": "boolean"
+        },
+        "examples": {
+          "description": "Add generated examples to JSON Schema output",
           "type": "boolean"
         },
         "exclude": {
@@ -57,6 +88,13 @@
           "description": "Path to the OpenAPI spec file",
           "type": "string"
         },
+        "tags": {
+          "description": "Additional struct tags to emit (e.g. yaml)",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "test": {
           "description": "Run generated tests after code generation",
           "type": "boolean"
@@ -75,6 +113,39 @@
     "File": {
       "additionalProperties": false,
       "description": "is the top-level config file structure.",
+      "examples": [
+        {
+          "pipelines": {
+            "key1": [
+              {
+                "action": "example",
+                "all": true,
+                "emit_ir": true,
+                "examples": true,
+                "exclude": [
+                  "example"
+                ],
+                "out": "example",
+                "package": "example",
+                "packages": [
+                  "example"
+                ],
+                "path": "example",
+                "rename": {
+                  "key1": "example"
+                },
+                "schema": "example",
+                "spec": "example",
+                "tags": [
+                  "example"
+                ],
+                "test": true,
+                "validate": true
+              }
+            ]
+          }
+        }
+      ],
       "properties": {
         "pipelines": {
           "additionalProperties": {

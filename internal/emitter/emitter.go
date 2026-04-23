@@ -437,13 +437,13 @@ func GoCodegen(pkg *ir.Package, inlinedTypes map[string]bool) string {
 func emitUnionAs(b *strings.Builder, name string) {
 	b.WriteString(fmt.Sprintf("// %sAs extracts a variant from a %s union value, like errors.As.\n", name, name))
 	b.WriteString(fmt.Sprintf("// Only types whose pointer implements %s can be used as target (compile-time checked).\n", name))
-	b.WriteString(fmt.Sprintf("//\n"))
-	b.WriteString(fmt.Sprintf("// Usage:\n"))
-	b.WriteString(fmt.Sprintf("//\n"))
-	b.WriteString(fmt.Sprintf("//\tvar circle Circle\n"))
+	b.WriteString("//\n")
+	b.WriteString("// Usage:\n")
+	b.WriteString("//\n")
+	b.WriteString("//\tvar circle Circle\n")
 	b.WriteString(fmt.Sprintf("//\tif %sAs(shape, &circle) {\n", name))
-	b.WriteString(fmt.Sprintf("//\t\t// circle is populated\n"))
-	b.WriteString(fmt.Sprintf("//\t}\n"))
+	b.WriteString("//\t\t// circle is populated\n")
+	b.WriteString("//\t}\n")
 	b.WriteString(fmt.Sprintf("func %sAs[T any, P interface{ *T; %s }](v %s, target *T) bool {\n", name, name, name))
 	b.WriteString("\tt, ok := v.(P)\n")
 	b.WriteString("\tif ok {\n")
@@ -673,10 +673,10 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 
 		// JSONSchemaBytes test — for all types.
 		b.WriteString(fmt.Sprintf("func TestCompschema_%s_JSONSchemaBytes(t *testing.T) {\n", name))
-		switch {
-		case t.Kind == ir.KindUnion:
+		switch t.Kind {
+		case ir.KindUnion:
 			b.WriteString(fmt.Sprintf("\tb := %sJSONSchemaBytes()\n", name))
-		case t.Kind == ir.KindEnum || t.Kind == ir.KindScalar:
+		case ir.KindEnum, ir.KindScalar:
 			b.WriteString(fmt.Sprintf("\tb := %s(\"\").JSONSchemaBytes()\n", name))
 		default:
 			b.WriteString(fmt.Sprintf("\tb := (%s{}).JSONSchemaBytes()\n", name))
@@ -752,9 +752,9 @@ func GoTestsWithOptions(pkg *ir.Package, inlinedTypes map[string]bool, opts Emit
 
 		// Collect types that have examples.
 		type exEntry struct {
-			name  string
-			json  string
-			t     *ir.Type
+			name string
+			json string
+			t    *ir.Type
 		}
 		var entries []exEntry
 

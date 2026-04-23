@@ -9,10 +9,10 @@ import (
 
 // Config controls the import pipeline.
 type Config struct {
-	Package  string            // Go package name
-	Rename   map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
-	Exclude  []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
-	Tags     []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
+	Package string            // Go package name
+	Rename  map[string]string // schema name → Go name overrides (e.g. "CompactionBody" → "CompactionItem")
+	Exclude []string          // glob patterns for type names to skip (e.g. "Response*Event", "*Param")
+	Tags    []string          // additional struct tags to emit (e.g. ["yaml"] → adds `yaml:"field_name"` tags)
 }
 
 // ApplyConfig transforms an IR package according to the config:

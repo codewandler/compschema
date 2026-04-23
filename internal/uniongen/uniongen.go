@@ -128,7 +128,7 @@ func EmitUnion(b *strings.Builder, goName string, t *ir.Type, pkg *ir.Package, r
 		b.WriteString("\treturn json.Marshal(w.Value)\n")
 		b.WriteString("}\n\n")
 		b.WriteString(fmt.Sprintf("func (w *%s) UnmarshalJSON(data []byte) error {\n", wrapperName))
-		b.WriteString(fmt.Sprintf("\treturn json.Unmarshal(data, &w.Value)\n"))
+		b.WriteString("\treturn json.Unmarshal(data, &w.Value)\n")
 		b.WriteString("}\n\n")
 		_ = primType
 	}

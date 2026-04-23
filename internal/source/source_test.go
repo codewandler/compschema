@@ -55,7 +55,7 @@ func TestHTTPSource(t *testing.T) {
 		if r.Header.Get("User-Agent") != "compschema/1.0" {
 			t.Errorf("unexpected User-Agent: %q", r.Header.Get("User-Agent"))
 		}
-		w.Write([]byte(content))
+		_, _ = w.Write([]byte(content))
 	}))
 	defer srv.Close()
 

@@ -28,14 +28,14 @@ func (s *GitSource) Fetch() ([]byte, Meta, error) {
 	if err != nil {
 		return nil, Meta{}, fmt.Errorf("git source: create temp dir: %w", err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer os.RemoveAll(tmpDir) //nolint:errcheck // best-effort temp cleanup
 
 	// Clone with depth=1. Try --branch first (works for tags and branches).
 	cloneCmd := exec.Command("git", "clone", "--depth=1", "--branch", ref, s.Repo, tmpDir)
 	cloneCmd.Stderr = os.Stderr
 	if err := cloneCmd.Run(); err != nil {
 		// --branch doesn't work for commit hashes. Fall back to full clone + checkout.
-		os.RemoveAll(tmpDir)
+		_ = os.RemoveAll(tmpDir)
 		if err := os.MkdirAll(tmpDir, 0755); err != nil {
 			return nil, Meta{}, fmt.Errorf("git source: recreate temp dir: %w", err)
 		}
