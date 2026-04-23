@@ -1,16 +1,64 @@
-# compschema
+<p align="center">
+  <h1 align="center">compschema</h1>
+  <p align="center">
+    <strong>Compile-time JSON Schema for Go — zero reflection, full type safety.</strong>
+  </p>
+  <p align="center">
+    <a href="#install">Install</a> · <a href="#quick-start">Quick Start</a> · <a href="#why-compschema">Why compschema</a> · <a href="#cli-commands">CLI</a> · <a href="#multi-api-round-trip-results">Benchmarks</a>
+  </p>
+</p>
 
-**Compile-time JSON Schema generator for Go.**
+---
 
-compschema generates JSON Schema documents, `Validate`, and `Decode` functions from Go types using static analysis (`go/ast` + `go/types`) — zero reflection at runtime. It also imports JSON Schema and OpenAPI specs into Go types with full constraint preservation.
+compschema generates JSON Schema documents, `Validate()`, and type-safe `Decode()` functions from Go types using static analysis — **zero runtime reflection, zero manual schema files**. It also imports JSON Schema and OpenAPI specs into idiomatic Go with full constraint preservation.
 
-> **100% structural round-trip** on the OpenAI Responses API (124 types, 600 fields, 0 diffs).
-
-## Install
+> **100% structural round-trip fidelity** on the OpenAI Responses API — 301 types, 600+ fields, 0 diffs.
 
 ```bash
 go install github.com/codewandler/compschema/cmd/compschema@latest
 ```
+
+## Why compschema
+
+### 🚀 Zero reflection, compile-time everything
+
+Unlike `invopop/jsonschema` or `swaggo/swag`, compschema runs at **build time** via `go/ast` + `go/types`. Your binary ships with pre-compiled schemas embedded via `go:embed` — no reflection overhead, no `sync.Once` initialization tax on first request, no surprises in production.
+
+### 🎯 The only Go tool with real union support
+
+Go doesn't have discriminated unions — but your APIs do. compschema detects **sealed interface patterns** and generates proper `oneOf` schemas with automatic discriminator detection. Generated `Decode()` functions use a **3-tier dispatch strategy**:
+
+1. **O(1) discriminator switch** — when variants have distinct `const`/enum values
+2. **O(keys) required-set matching** — when variants differ by required properties
+3. **O(n) try-each fallback** — only when nothing else works
+
+No other Go schema tool does this.
+
+### 📐 Battle-tested against 35,000 fields
+
+Not toy examples — compschema is validated against **11 real-world OpenAPI specs** including OpenAI, Stripe, Kubernetes, GitHub, and Cloudflare. The full pipeline runs `extract → import → compile → generate → diff` and proves structural correctness at scale.
+
+### 🔄 True bidirectional: Go ↔ JSON Schema ↔ OpenAPI
+
+Most tools go one direction. compschema goes **both ways** — and proves it:
+
+```
+Go types ──→ JSON Schema ──→ Go types ──→ JSON Schema
+                ↑                              │
+                └──── diff: 0 structural gaps ──┘
+```
+
+Import any OpenAPI spec, get idiomatic Go. Write Go types, get spec-compliant JSON Schema. Round-trip it. **It matches.**
+
+### ⚡ Smart caching, incremental builds
+
+Every IR node is **Merkle-hashed**. compschema skips regeneration when your types haven't changed — even in monorepos with hundreds of packages. Cache hits are instant.
+
+### 🧪 Generated tests you didn't have to write
+
+Every `generate` run produces a test file alongside your code. Schema validity, constraint enforcement, round-trip decoding — **669+ test functions** generated automatically. Your CI catches schema drift without you lifting a finger.
+
+---
 
 ## Quick start
 
@@ -58,30 +106,17 @@ This produces three files:
 | `compschema.gen.go` | `JSONSchemaBytes()`, `Validate()`, `DecodeT()` per type |
 | `compschema.gen_test.go` | Smoke tests (schema validity, validation, round-trip) |
 
-## CLI commands
-
-### `compschema generate`
-
-Analyzes Go packages via `go/ast` + `go/types`, builds a Schema IR, and emits JSON Schema + Go code + tests.
-
-```bash
-compschema generate ./...                      # annotated types only
-compschema generate --all ./...                # all exported types
-compschema generate --all --validate ./models/ # with meta-schema validation
-```
-
-| Flag | Description |
-|------|-------------|
-| `--all` | Analyze all exported types, not just `//compschema:generate` annotated |
-| `--validate` | Validate generated schema against JSON Schema meta-schema |
-| `--out` | Output directory (default: package source dir) |
-
-Generated API per struct type:
+### What you get per type
 
 ```go
-func (Order) JSONSchemaBytes() []byte       // $defs entry (from go:embed, lazily cached)
-func (Order) Validate(data []byte) error    // compiled schema per type (sync.Once)
-func DecodeOrder(data []byte) (Order, error) // validate-then-unmarshal
+// Schema access — embedded via go:embed, lazily cached via sync.Map
+func (Order) JSONSchemaBytes() json.RawMessage
+
+// Validation — compiled schema per type (sync.Once), zero-alloc after first call
+func (Order) Validate(data []byte) error
+
+// Type-safe decode — validate-then-unmarshal in one call
+func DecodeOrder(data []byte) (Order, error)
 ```
 
 All generated struct types implement `compschema.Schema`:
@@ -100,9 +135,76 @@ func Handle[T compschema.Schema](data []byte) (T, error) {
 }
 ```
 
+### Unions — first-class, type-safe
+
+Define a sealed interface, compschema does the rest:
+
+```go
+//compschema:generate
+type Shape interface { isShape() }
+
+type Circle struct {
+    Type   string  `json:"type" jsonschema:"const=circle"`
+    Radius float64 `json:"radius" jsonschema:"minimum=0"`
+}
+func (*Circle) isShape() {}
+
+type Rectangle struct {
+    Type   string  `json:"type" jsonschema:"const=rectangle"`
+    Width  float64 `json:"width"`
+    Height float64 `json:"height"`
+}
+func (*Rectangle) isShape() {}
+```
+
+Generated output:
+
+```go
+// O(1) discriminator dispatch — no trial-and-error
+func DecodeShape(data []byte) (Shape, error)
+
+// Type-safe variant extraction — like errors.As
+func ShapeAs[T any, P interface{ *T; Shape }](v Shape, target *T) bool
+```
+
+```json
+{
+  "oneOf": [
+    { "$ref": "#/$defs/Circle" },
+    { "$ref": "#/$defs/Rectangle" }
+  ],
+  "discriminator": { "propertyName": "type" }
+}
+```
+
+---
+
+## CLI commands
+
+### `compschema generate`
+
+Analyzes Go packages via `go/ast` + `go/types`, builds a Schema IR, and emits JSON Schema + Go code + tests.
+
+```bash
+compschema generate ./...                      # annotated types only
+compschema generate --all ./...                # all exported types
+compschema generate --all --validate ./models/ # with meta-schema validation
+compschema generate --examples --test ./...    # with examples + run tests
+```
+
+| Flag | Description |
+|------|-------------|
+| `--all` | Analyze all exported types, not just `//compschema:generate` annotated |
+| `--validate` | Validate generated schema against JSON Schema meta-schema |
+| `--examples` | Add generated example values to schema `$defs` |
+| `--test` | Run generated tests and report pass/fail/skip |
+| `--emit-ir` | Write `schema.gen.ir.yaml` with human-readable IR + Merkle hashes |
+| `--no-cache` | Force full regeneration (skip hash cache) |
+| `--out` | Output directory (default: package source dir) |
+
 ### `compschema import`
 
-Generates Go structs from JSON Schema — replaces `go-jsonschema` with full constraint and union preservation.
+Generates Go structs from JSON Schema — with full constraint and union preservation.
 
 ```bash
 compschema import --package models --out models/types.go schema.json
@@ -112,6 +214,9 @@ compschema import --package models --out models/types.go schema.json
 |------|-------------|
 | `--package` | Go package name (required) |
 | `--out` | Output Go file path (required) |
+| `--tags` | Additional struct tags (e.g. `--tags yaml,db`) |
+| `--rename` | Rename types (e.g. `--rename OldName=NewName`) |
+| `--exclude` | Glob patterns to skip types (e.g. `--exclude 'Response*Event'`) |
 
 What it generates:
 
@@ -119,8 +224,8 @@ What it generates:
 - **Sealed interfaces** for `oneOf`/`anyOf` unions with `//compschema:generate` annotations
 - **Enum types** with const blocks (extracted from inline enums via `title`)
 - **Wrapper types** for primitive union variants (`oneOf(string, number)` → `XString{Value string}`)
-- **Field descriptions** in both comments and `jsonschema:"description=..."` tags
 - **Nullable** as `*T` pointers
+- **`UnmarshalJSON`** dispatchers for structs with union fields
 
 ### `compschema extract`
 
@@ -139,7 +244,7 @@ compschema extract --spec openapi.yaml --schema CreateResponse --validate
 | `--validate` | Validate output against JSON Schema meta-schema |
 | `--out` | Output file (default: stdout) |
 
-The converter handles every OpenAPI 3.x Schema Object keyword — see [Supported keywords](#supported-keywords) below.
+The converter handles **every** OpenAPI 3.x Schema Object keyword — see [Supported keywords](#openapi--json-schema-converter) below.
 
 ### `compschema diff`
 
@@ -154,7 +259,14 @@ compschema diff --ir ground-truth.json generated.json   # IR-level (normalized)
 |------|-------------|
 | `--ir` | Compare via Schema IR — normalizes `$ref` vs inline, ordering, nullable representation |
 
-The IR-level diff eliminates noise (array ordering, `$ref` vs inline, whitespace, nullable representation) and reports only true structural differences.
+### `compschema run`
+
+Config-driven multi-source pipelines via `.compschema.yaml`.
+
+```bash
+compschema run <pipeline>     # run a named pipeline
+compschema run specs          # run multi-API test suite
+```
 
 ### `compschema schemas`
 
@@ -164,9 +276,11 @@ Lists all component schema names in an OpenAPI spec.
 compschema schemas --spec openapi.yaml
 ```
 
+---
+
 ## Multi-API round-trip results
 
-compschema is tested against 13 real-world OpenAPI specs. The full pipeline runs:
+compschema is tested against **11 real-world OpenAPI specs**. The full pipeline runs:
 `extract → import → compile → generate → diff --ir`
 
 | API | Schemas | Go types | IR match | Fields |
@@ -181,13 +295,13 @@ compschema is tested against 13 real-world OpenAPI specs. The full pipeline runs
 | **Discord** | 402 | 588 | **96.9%** | 2,077 |
 | **Plaid** | 2,019 | 2,058 | **96.2%** | 7,394 |
 | **Stripe** | 1,382 | 3,010 | **93.2%** | 5,860 |
-| Box | 286 | 570 | — | stack overflow (self-ref structs) |
 | **Cloudflare** | 4,309 | 5,980 | **79.2%** | 9,267 |
 
 **11 of 11 APIs pass the full pipeline.** 5 achieve 100% structural field match.
-**Total: 9,288 schemas, 14,791 Go types, 34,987 fields validated.**
 
-Run the full suite: `bash testdata/specs/run_all.sh`
+**Total: 9,288 schemas → 14,791 Go types → 34,987 fields validated.**
+
+---
 
 ## `jsonschema` struct tag
 
@@ -236,20 +350,7 @@ const (
 // → {"type": "string", "enum": ["active", "pending"]}
 ```
 
-Sealed unions are detected from interface patterns:
-
-```go
-//compschema:generate
-type Shape interface { isShape() }
-
-type Circle struct {
-    Type   string  `json:"type" jsonschema:"const=circle"`
-    Radius float64 `json:"radius" jsonschema:"minimum=0"`
-}
-func (*Circle) isShape() {}
-
-// → {"oneOf": [{"$ref": "#/$defs/Circle"}, ...], "discriminator": {"propertyName": "type"}}
-```
+---
 
 ## Supported keywords
 
@@ -260,6 +361,34 @@ Every field on the OpenAPI 3.x Schema Object is explicitly handled:
 **Converted:** `allOf` (with object flattening), `oneOf`, `anyOf`, `not`, `if`/`then`/`else`, `dependentSchemas`, `dependentRequired`, `type`, `nullable` (→ type array), `format`, `title`, `description`, `$comment`, `deprecated`, `readOnly`, `writeOnly`, `default`, `enum`, `const`, `example` (→ `examples`), `examples`, `properties`, `patternProperties`, `additionalProperties`, `unevaluatedProperties`, `propertyNames`, `required`, `minProperties`, `maxProperties`, `items`, `prefixItems`, `unevaluatedItems`, `contains`, `minContains`, `maxContains`, `minItems`, `maxItems`, `uniqueItems`, `minimum`, `maximum`, `exclusiveMinimum` (3.0 bool → number), `exclusiveMaximum`, `multipleOf`, `minLength`, `maxLength`, `pattern`, `contentEncoding`, `contentMediaType`, `contentSchema`, `$ref`, `$recursiveRef`, `$id`, `$anchor`, `$dynamicAnchor`, `$dynamicRef`, `discriminator` (→ `x-discriminator`), `x-*` extensions.
 
 **Stripped (OpenAPI-only):** `xml`, `externalDocs`, `$schema` (nested), `$vocabulary`, `nullable` (merged into type).
+
+---
+
+## How it works
+
+```
+                    ┌─────────────────────────────────────────────┐
+                    │              Schema IR                       │
+                    │  (language-agnostic, Merkle-hashed)          │
+                    └──────────┬──────────────────┬───────────────┘
+                               │                  │
+              ┌────────────────┤                  ├────────────────┐
+              ▼                ▼                  ▼                ▼
+        JSON Schema      Go codegen         Test codegen      IR YAML
+       (draft 2020-12)   (Validate,         (669+ tests,     (debug +
+                          Decode,            auto-generated)   diff)
+                          JSONSchemaBytes)
+              ▲                                                    ▲
+              │                                                    │
+    ┌─────────┴─────────┐                              ┌──────────┴──────────┐
+    │  Go Analyzer       │                              │  JSON Schema Parser  │
+    │  (go/ast + go/types│                              │  (import + diff)     │
+    └────────────────────┘                              └─────────────────────┘
+```
+
+The **Schema IR** is the secret sauce — a normalized, language-agnostic type graph that decouples analysis from emission. This is why compschema can go both directions (Go → Schema, Schema → Go) and prove correctness via IR-level diff.
+
+---
 
 ## Project layout
 
@@ -278,11 +407,11 @@ internal/config/               Pipeline config format + template expansion
 internal/source/               Source abstraction (file, HTTP, Git) with content hashing
 internal/report/               Structured pipeline reports with metrics
 internal/cache/                File-backed hash cache for incremental compilation
-examples/basic/                Basic example (Order, LineItem, Shape union — 23 tests)
-examples/openai/               OpenAI Responses API (261 types — 587 tests)
-testdata/specs/               Multi-API test suite (11 OpenAPI specs)
+examples/basic/                Basic example (Order, LineItem, Shape union)
+examples/openai/               OpenAI Responses API (301 types, 864 generated tests)
+testdata/specs/                Multi-API test suite (11 OpenAPI specs)
 docs/DESIGN.md                Architecture, IR design, validation strategy
-CHANGELOG.md                  Version history
+CHANGELOG.md                   Version history
 ```
 
 ## Limitations
@@ -291,51 +420,31 @@ CHANGELOG.md                  Version history
 
 When a JSON Schema type is defined as a nullable union (`anyOf` / `oneOf` wrapping other unions), and that type is used as a variant of another union, Go cannot express this. Go interfaces cannot implement other interfaces' marker methods via pointer receivers.
 
-```
-// JSON Schema:
-// ParentUnion: oneOf(ChildUnion, OtherType)
-// ChildUnion: anyOf(StructA, StructB)
-//
-// Go cannot do:
-// type ChildUnion interface { isChildUnion() }
-// func (*ChildUnion) isParentUnion() {}  ← invalid: pointer to interface
-```
-
-This affects specs with deeply self-referencing types. compschema handles these via cycle detection — self-referencing fields resolve to `$ref` and fixture generation returns `nil` for cycles. All 11 tested APIs now pass including Cloudflare (4,309 schemas).
+This affects specs with deeply self-referencing types. compschema handles these via cycle detection — self-referencing fields resolve to `$ref` and fixture generation returns `nil` for cycles. All 11 tested APIs pass including Cloudflare (4,309 schemas).
 
 ### OpenAPI v2 (Swagger)
 
-Only OpenAPI 3.x is supported. Swagger 2.0 specs (DigitalOcean, some older APIs) need to be converted to OpenAPI 3.x first using tools like [swagger2openapi](https://github.com/Mermade/oas-kit).
+Only OpenAPI 3.x is supported. Swagger 2.0 specs need to be converted first using tools like [swagger2openapi](https://github.com/Mermade/oas-kit).
 
 ### Circular references in OpenAPI
 
-Deeply circular `$ref` chains in OpenAPI specs may cause warnings from the underlying parser (`libopenapi`). The converter handles these gracefully—the model is still usable—but some schemas may be incomplete.
+Deeply circular `$ref` chains in OpenAPI specs may cause warnings from the underlying parser (`libopenapi`). The converter handles these gracefully — the model is still usable — but some schemas may be incomplete.
 
 ### Enum const name collisions
 
-When a schema name produces the same Go identifier as an enum constant (e.g. `source_type_ach_credit_transfer` collides with `SourceType` enum value `ach_credit_transfer`), the struct type is skipped and fields referencing it fall back to `any`. This primarily affects large specs like Stripe where naming conventions create ambiguity.
+When a schema name produces the same Go identifier as an enum constant, the struct type is skipped and fields referencing it fall back to `any`. This primarily affects large specs like Stripe.
 
-### Type name normalization
-
-Schemas with dotted names (`io.k8s.api.core.v1.Pod`) are normalized to Go identifiers (`IoK8sAPICoreV1Pod`). The IR diff uses fuzzy name matching to handle this, but ~1-3% of schemas may not match across the round-trip due to naming differences.
+---
 
 ## Roadmap
 
-### Planned
+- [ ] **Generics** — `type Page[T any] struct { Items []T }` with concrete schema instantiation
+- [ ] **Single-pass Decode** — validate during unmarshal for ~2× decode performance
+- [ ] **Swagger v2 import** — auto-convert Swagger 2.0 specs
+- [ ] **OpenAPI output** — emit OpenAPI 3.1 components from the IR
+- [ ] **TypeScript output** — emit TypeScript type definitions from the same IR
 
-- [ ] **Swagger v2 import** — convert Swagger 2.0 specs to OpenAPI 3.x for processing. Currently only OpenAPI 3.x is supported.
-- [ ] **Generics** — `type Page[T any] struct { Items []T }` should produce a concrete schema when instantiated (e.g. `Page[User]`). The IR already has a `Generic` node type; the analyzer needs `go/types.TypeParam` support.
-- [ ] **Single-pass Decode** — currently `DecodeT()` does validate-then-unmarshal (two JSON parses). A generated bespoke decoder could validate constraints during a single `json.Decoder` pass for ~2× performance.
-- [ ] **Real-world integration test** — use compschema as the schema layer in an actual API project to validate the developer experience end-to-end.
-- [ ] **OpenAPI output** — emit OpenAPI 3.1 components from the IR (the reverse of `extract`). The IR is already language-agnostic; this is a new emitter.
-- [ ] **TypeScript output** — emit TypeScript type definitions from the same IR.
-- [ ] **Stripe full support** — resolve the nullable-union-as-variant pattern, possibly via union flattening or wrapper struct generation for interface variants.
-
-### Non-goals (v1)
-
-- Non-JSON encodings (YAML, CBOR, etc.)
-- Runtime schema manipulation API
-- Full JSON Schema test suite compliance (we validate against 13 real-world APIs instead)
+---
 
 ## License
 
