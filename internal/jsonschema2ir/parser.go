@@ -223,8 +223,12 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 				}
 				// Check for const/enum field to set variant discriminator value.
 				// Use shallow extraction to avoid infinite recursion on circular refs.
+				// When the discriminator property is known, only extract from that field.
 				if vt.Kind == ir.KindStruct {
 					for _, f := range vt.Fields {
+						if t.Discriminator != "" && f.JSONName != t.Discriminator {
+							continue
+						}
 						vals := extractDiscriminatorValues(f)
 						if len(vals) > 0 {
 							v.DiscriminatorValues = vals
@@ -233,7 +237,7 @@ func (ctx *parseContext) convertNode(name string, s *schemaNode) *ir.Type {
 					}
 				} else if vt.Kind == ir.KindRef && ctx.defs != nil {
 					if sn, ok := ctx.defs[vt.RefName]; ok {
-						v.DiscriminatorValues = shallowDiscriminatorValues(sn, ctx)
+						v.DiscriminatorValues = shallowDiscriminatorValues(sn, ctx, t.Discriminator)
 					}
 				}
 				t.Variants = append(t.Variants, v)
@@ -603,8 +607,12 @@ func extractDiscriminatorValues(f ir.Field) []string {
 // shallowDiscriminatorValues extracts discriminator values from a schema node's
 // properties without recursively converting the entire node tree.
 // This avoids stack overflow on circular $ref chains.
-func shallowDiscriminatorValues(sn *schemaNode, ctx *parseContext) []string {
-	for _, raw := range sn.Properties {
+// When discProp is non-empty, only the matching property is considered.
+func shallowDiscriminatorValues(sn *schemaNode, ctx *parseContext, discProp string) []string {
+	for propName, raw := range sn.Properties {
+		if discProp != "" && propName != discProp {
+			continue
+		}
 		var ps schemaNode
 		if json.Unmarshal(raw, &ps) != nil {
 			continue
